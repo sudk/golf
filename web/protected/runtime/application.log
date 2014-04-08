@@ -1,0 +1,40 @@
+2014/04/04 23:20:08 [error] [system.db.CDbCommand] CDbCommand::execute() failed: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'golf.system_log' doesn't exist. The SQL statement executed was: create table if not exists `system_log_201404` like system_log.
+in /Applications/XAMPP/xamppfiles/htdocs/golf/web/protected/models/Systemlog.php (113)
+in /Applications/XAMPP/xamppfiles/htdocs/golf/web/protected/models/Systemlog.php (61)
+in /Applications/XAMPP/xamppfiles/htdocs/golf/web/protected/modules/log/controllers/SystemlogController.php (59)
+2014/04/04 23:20:08 [error] [system.db.CDbCommand] CDbCommand::fetch() failed: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'golf.system_log_201404' doesn't exist. The SQL statement executed was: SELECT count(1) c
+FROM `system_log_201404`
+WHERE  recordtime >=:startdate AND recordtime<=:enddate.
+in /Applications/XAMPP/xamppfiles/htdocs/golf/web/protected/models/Systemlog.php (70)
+in /Applications/XAMPP/xamppfiles/htdocs/golf/web/protected/modules/log/controllers/SystemlogController.php (59)
+in /Applications/XAMPP/xamppfiles/htdocs/golf/web/protected/modules/log/views/systemlog/list.php (11)
+2014/04/04 23:20:08 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand 无法执行 SQL 语句: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'golf.system_log_201404' doesn't exist. The SQL statement executed was: SELECT count(1) c
+FROM `system_log_201404`
+WHERE  recordtime >=:startdate AND recordtime<=:enddate' in /Applications/XAMPP/xamppfiles/htdocs/yii-1.1.14/db/CDbCommand.php:543
+Stack trace:
+#0 /Applications/XAMPP/xamppfiles/htdocs/yii-1.1.14/db/CDbCommand.php(415): CDbCommand->queryInternal('fetch', Array, Array)
+#1 /Applications/XAMPP/xamppfiles/htdocs/golf/web/protected/models/Systemlog.php(70): CDbCommand->queryRow()
+#2 /Applications/XAMPP/xamppfiles/htdocs/golf/web/protected/modules/log/controllers/SystemlogController.php(59): Systemlog::queryList(0, 100, Array)
+#3 /Applications/XAMPP/xamppfiles/htdocs/golf/web/protected/modules/log/views/systemlog/list.php(11): SystemlogController->actionGrid()
+#4 /Applications/XAMPP/xamppfiles/htdocs/yii-1.1.14/web/CBaseController.php(126): require('/Applications/X...')
+#5 /Applications/XAMPP/xamppfiles/htdocs/yii-1.1.14/web/CBaseController.php(95): CBaseController->renderInternal('/Applications/X...', NULL, true)
+#6 /Applications/XAMPP/xamppfiles/htdocs/yii-1.1.14/web/CController.php(869): CBaseController->renderFile('/Applications/X...', NULL, true)
+#7 /Applications/XAMPP/xamppfiles/htdocs/yii-1.1.14/web/CController.php(782): CController->renderPartial('list', NULL, true)
+#8 /Applications/XAMPP/xamppfiles/htdocs/golf/web/protected/modules/log/controllers/SystemlogController.php(79): CController->render('list')
+#9 /Applications/XAMPP/xamppfiles/htdocs/yii-1.1.14/web/actions/CInlineAction.php(49): SystemlogController->actionList()
+#10 /Applications/XAMPP/xamppfiles/htdocs/yii-1.1.14/web/CController.php(308): CInlineAction->runWithParams(Array)
+#11 /Applications/XAMPP/xamppfiles/htdocs/yii-1.1.14/web/filters/CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#12 /Applications/XAMPP/xamppfiles/htdocs/yii-1.1.14/web/filters/CFilter.php(40): CFilterChain->run()
+#13 /Applications/XAMPP/xamppfiles/htdocs/yii-1.1.14/web/CController.php(1145): CFilter->filter(Object(CFilterChain))
+#14 /Applications/XAMPP/xamppfiles/htdocs/yii-1.1.14/web/filters/CInlineFilter.php(58): CController->filterAccessControl(Object(CFilterChain))
+#15 /Applications/XAMPP/xamppfiles/htdocs/yii-1.1.14/web/filters/CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#16 /Applications/XAMPP/xamppfiles/htdocs/yii-1.1.14/web/CController.php(291): CFilterChain->run()
+#17 /Applications/XAMPP/xamppfiles/htdocs/yii-1.1.14/web/CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#18 /Applications/XAMPP/xamppfiles/htdocs/yii-1.1.14/web/CWebApplication.php(282): CController->run('list')
+#19 /Applications/XAMPP/xamppfiles/htdocs/yii-1.1.14/web/CWebApplication.php(141): CWebApplication->runController('log/systemlog/l...')
+#20 /Applications/XAMPP/xamppfiles/htdocs/yii-1.1.14/base/CApplication.php(180): CWebApplication->processRequest()
+#21 /Applications/XAMPP/xamppfiles/htdocs/golf/web/index.php(20): CApplication->run()
+#22 {main}
+REQUEST_URI=/golf/web/?r=log/systemlog/list
+HTTP_REFERER=http://localhost/golf/web/?r=operator/operator/list
+---
