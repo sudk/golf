@@ -14,3 +14,4 @@ web/.idea/vcs.xml
 *.iml
 
 web/.idea/workspace.xml
+/web/nbproject/private/

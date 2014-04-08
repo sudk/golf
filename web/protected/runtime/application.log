@@ -912,3 +912,14 @@ REQUEST_URI=/golf/trunk/web/index.php?r=court/showpoint
 in /Users/apple/web/root/golf/trunk/web/protected/controllers/CourtController.php (217)
 in /Users/apple/web/root/golf/trunk/web/protected/controllers/CourtController.php (229)
 in /Users/apple/web/root/golf/trunk/web/index.php (20)
+2014/04/08 21:57:10 [error] [exception.CHttpException.404] exception 'CHttpException' with message '系统无法找到请求的 "list" 动作.' in /Users/apple/web/root/golf_root/web/framework/web/CController.php:483
+Stack trace:
+#0 /Users/apple/web/root/golf_root/web/framework/web/CController.php(270): CController->missingAction('list')
+#1 /Users/apple/web/root/golf_root/web/framework/web/CWebApplication.php(282): CController->run('list')
+#2 /Users/apple/web/root/golf_root/web/framework/web/CWebApplication.php(141): CWebApplication->runController('order/list')
+#3 /Users/apple/web/root/golf_root/web/framework/base/CApplication.php(169): CWebApplication->processRequest()
+#4 /Users/apple/web/root/golf_root/web/index.php(20): CApplication->run()
+#5 {main}
+REQUEST_URI=/golf_root/web/?r=order/list
+HTTP_REFERER=http://localhost/golf_root/web/?r=operator/operator/list
+---

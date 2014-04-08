@@ -96,7 +96,7 @@ class UinfoController extends BaseController
                 'opt_detail'=>"会员姓名：".$model->user_name.",".$msg['msg'],
                 'opt_status'=>$msg['status'] == 0? "00":"01",
             );
-            Systemlog::addLog($log_args);
+            Operatorlog::addLog($log_args);
 
         }
         
@@ -124,7 +124,7 @@ class UinfoController extends BaseController
             'opt_detail'=>"会员姓名：".$name.".".($msg['status'] ? "密码重置成功。":"密码重置失败"),
             'opt_status'=>$msg['status'] ? "00":"01",
         );
-        Systemlog::addLog($log_args);
+        Operatorlog::addLog($log_args);
         print_r(json_encode($msg));
     }
     
@@ -146,7 +146,7 @@ class UinfoController extends BaseController
             'opt_detail'=>"会员姓名：".$name.".".($msg['status'] ? "会员删除成功。":"会员删除失败"),
             'opt_status'=>$msg['status'] ? "00":"01",
         );
-        Systemlog::addLog($log_args);
+        Operatorlog::addLog($log_args);
         print_r(json_encode($msg));
     }
     public function actionDetail()

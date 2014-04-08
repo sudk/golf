@@ -92,7 +92,7 @@ class CardController extends BaseController
                 'opt_detail'=>"会员卡号：".$model->id.".".$msg['msg'],
                 'opt_status'=>$msg['status']==1 ? "00":"01",
             );
-            Systemlog::addLog($log_args);
+            Operatorlog::addLog($log_args);
         }
         $this->render("new",array('model' => $model, 'msg' => $msg));
     }
@@ -123,7 +123,7 @@ class CardController extends BaseController
                 'opt_detail'=>"会员卡号：".$model->id.".".$msg['msg'],
                 'opt_status'=>$msg['status']== 1 ? "00":"01",
             );
-            Systemlog::addLog($log_args);
+            Operatorlog::addLog($log_args);
 
         }
        //var_dump($msg);
@@ -175,7 +175,7 @@ class CardController extends BaseController
             'opt_detail'=>"会员卡号：".$id.".".($msg['status'] ? "会员卡删除成功。":"会员卡删除失败"),
             'opt_status'=>$msg['status'] ? "00":"01",
         );
-        Systemlog::addLog($log_args);
+        Operatorlog::addLog($log_args);
         
         print_r(json_encode($msg));
     }
