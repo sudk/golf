@@ -7,7 +7,7 @@ ini_set('short_open_tag','1');
 mb_internal_encoding("UTF-8");
 
 // change the following paths if necessary
-$yii=dirname(__FILE__).'/../../yii-1.1.14/yii.php';
+$yii=dirname(__FILE__).'/framework/yii.php';
 $config=dirname(__FILE__).'/protected/config/main.php';
 
 

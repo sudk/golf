@@ -5,7 +5,7 @@
  * @author #guohao#
  * @copyright Copyright &copy; 2003-2009 TrunkBow Co., Inc
  */
-class Systemlog extends CActiveRecord {
+class Operatorlog extends CActiveRecord {
 
 
     public static function model($className=__CLASS__){
