@@ -923,3 +923,332 @@ Stack trace:
 REQUEST_URI=/golf_root/web/?r=order/list
 HTTP_REFERER=http://localhost/golf_root/web/?r=operator/operator/list
 ---
+2014/04/09 21:50:54 [error] [exception.CException] exception 'CException' with message '属性 "Court.province" 未被定义.' in /Users/apple/web/root/golf_root/web/framework/base/CComponent.php:130
+Stack trace:
+#0 /Users/apple/web/root/golf_root/web/framework/db/ar/CActiveRecord.php(143): CComponent->__get('province')
+#1 /Users/apple/web/root/golf_root/web/framework/web/helpers/CHtml.php(2255): CActiveRecord->__get('province')
+#2 /Users/apple/web/root/golf_root/web/framework/web/helpers/CHtml.php(1980): CHtml::resolveValue(Object(Court), 'province')
+#3 /Users/apple/web/root/golf_root/web/framework/web/helpers/CHtml.php(1257): CHtml::activeInputField('text', Object(Court), 'province', Array)
+#4 /Users/apple/web/root/golf_root/web/protected/components/widgets/SimpleForm.php(472): CHtml::activeTextField(Object(Court), 'province', Array)
+#5 /Users/apple/web/root/golf_root/web/protected/views/court/_form.php(47): SimpleForm->activeTextField(Object(Court), 'province', Array, Array, 'required')
+#6 /Users/apple/web/root/golf_root/web/framework/web/CBaseController.php(126): require('/Users/apple/we...')
+#7 /Users/apple/web/root/golf_root/web/framework/web/CBaseController.php(95): CBaseController->renderInternal('/Users/apple/we...', Array, true)
+#8 /Users/apple/web/root/golf_root/web/framework/web/CController.php(869): CBaseController->renderFile('/Users/apple/we...', Array, true)
+#9 /Users/apple/web/root/golf_root/web/protected/views/court/new.php(6): CController->renderPartial('_form', Array)
+#10 /Users/apple/web/root/golf_root/web/framework/web/CBaseController.php(126): require('/Users/apple/we...')
+#11 /Users/apple/web/root/golf_root/web/framework/web/CBaseController.php(95): CBaseController->renderInternal('/Users/apple/we...', Array, true)
+#12 /Users/apple/web/root/golf_root/web/framework/web/CController.php(869): CBaseController->renderFile('/Users/apple/we...', Array, true)
+#13 /Users/apple/web/root/golf_root/web/framework/web/CController.php(782): CController->renderPartial('new', Array, true)
+#14 /Users/apple/web/root/golf_root/web/protected/controllers/CourtController.php(102): CController->render('new', Array)
+#15 /Users/apple/web/root/golf_root/web/framework/web/actions/CInlineAction.php(49): CourtController->actionNew()
+#16 /Users/apple/web/root/golf_root/web/framework/web/CController.php(308): CInlineAction->runWithParams(Array)
+#17 /Users/apple/web/root/golf_root/web/framework/web/filters/CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#18 /Users/apple/web/root/golf_root/web/framework/web/filters/CFilter.php(40): CFilterChain->run()
+#19 /Users/apple/web/root/golf_root/web/framework/web/CController.php(1145): CFilter->filter(Object(CFilterChain))
+#20 /Users/apple/web/root/golf_root/web/framework/web/filters/CInlineFilter.php(58): CController->filterAccessControl(Object(CFilterChain))
+#21 /Users/apple/web/root/golf_root/web/framework/web/filters/CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#22 /Users/apple/web/root/golf_root/web/framework/web/CController.php(291): CFilterChain->run()
+#23 /Users/apple/web/root/golf_root/web/framework/web/CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#24 /Users/apple/web/root/golf_root/web/framework/web/CWebApplication.php(282): CController->run('new')
+#25 /Users/apple/web/root/golf_root/web/framework/web/CWebApplication.php(141): CWebApplication->runController('court/new')
+#26 /Users/apple/web/root/golf_root/web/framework/base/CApplication.php(169): CWebApplication->processRequest()
+#27 /Users/apple/web/root/golf_root/web/index.php(20): CApplication->run()
+#28 {main}
+REQUEST_URI=/golf_root/web/?r=court/new
+HTTP_REFERER=http://localhost/golf_root/web/?r=court/list
+---
+2014/04/09 21:51:21 [error] [php] htmlspecialchars() expects parameter 1 to be string, array given (/Users/apple/web/root/golf_root/web/framework/web/helpers/CHtml.php:98)
+Stack trace:
+#0 /Users/apple/web/root/golf_root/web/framework/web/helpers/CHtml.php(153): renderAttributes()
+#1 /Users/apple/web/root/golf_root/web/framework/web/helpers/CHtml.php(1983): tag()
+#2 /Users/apple/web/root/golf_root/web/framework/web/helpers/CHtml.php(1257): activeInputField()
+#3 /Users/apple/web/root/golf_root/web/protected/components/widgets/SimpleForm.php(472): activeTextField()
+#4 /Users/apple/web/root/golf_root/web/protected/views/court/_form.php(47): SimpleForm->activeTextField()
+#5 /Users/apple/web/root/golf_root/web/framework/web/CBaseController.php(126): require()
+#6 /Users/apple/web/root/golf_root/web/framework/web/CBaseController.php(95): CourtController->renderInternal()
+#7 /Users/apple/web/root/golf_root/web/framework/web/CController.php(869): CourtController->renderFile()
+#8 /Users/apple/web/root/golf_root/web/protected/views/court/new.php(6): CourtController->renderPartial()
+#9 /Users/apple/web/root/golf_root/web/framework/web/CBaseController.php(126): require()
+#10 /Users/apple/web/root/golf_root/web/framework/web/CBaseController.php(95): CourtController->renderInternal()
+#11 /Users/apple/web/root/golf_root/web/framework/web/CController.php(869): CourtController->renderFile()
+#12 /Users/apple/web/root/golf_root/web/framework/web/CController.php(782): CourtController->renderPartial()
+#13 /Users/apple/web/root/golf_root/web/protected/controllers/CourtController.php(102): CourtController->render()
+#14 /Users/apple/web/root/golf_root/web/framework/web/actions/CInlineAction.php(49): CourtController->actionNew()
+#15 /Users/apple/web/root/golf_root/web/framework/web/CController.php(308): CInlineAction->runWithParams()
+#16 /Users/apple/web/root/golf_root/web/framework/web/filters/CFilterChain.php(133): CourtController->runAction()
+#17 /Users/apple/web/root/golf_root/web/framework/web/filters/CFilter.php(40): CFilterChain->run()
+#18 /Users/apple/web/root/golf_root/web/framework/web/CController.php(1145): CAccessControlFilter->filter()
+#19 /Users/apple/web/root/golf_root/web/framework/web/filters/CInlineFilter.php(58): CourtController->filterAccessControl()
+#20 /Users/apple/web/root/golf_root/web/framework/web/filters/CFilterChain.php(130): CInlineFilter->filter()
+#21 /Users/apple/web/root/golf_root/web/framework/web/CController.php(291): CFilterChain->run()
+#22 /Users/apple/web/root/golf_root/web/framework/web/CController.php(265): CourtController->runActionWithFilters()
+#23 /Users/apple/web/root/golf_root/web/framework/web/CWebApplication.php(282): CourtController->run()
+#24 /Users/apple/web/root/golf_root/web/framework/web/CWebApplication.php(141): CWebApplication->runController()
+#25 /Users/apple/web/root/golf_root/web/framework/base/CApplication.php(169): CWebApplication->processRequest()
+#26 /Users/apple/web/root/golf_root/web/index.php(20): CWebApplication->run()
+REQUEST_URI=/golf_root/web/?r=court/new
+in /Users/apple/web/root/golf_root/web/protected/components/widgets/SimpleForm.php (472)
+in /Users/apple/web/root/golf_root/web/protected/views/court/_form.php (47)
+in /Users/apple/web/root/golf_root/web/protected/views/court/new.php (6)
+2014/04/09 22:04:20 [warning] [application] Failed to set unsafe attribute "province" of "Court".
+in /Users/apple/web/root/golf_root/web/protected/controllers/CourtController.php (63)
+in /Users/apple/web/root/golf_root/web/index.php (20)
+2014/04/09 22:04:20 [warning] [application] Failed to set unsafe attribute "facilities" of "Court".
+in /Users/apple/web/root/golf_root/web/protected/controllers/CourtController.php (63)
+in /Users/apple/web/root/golf_root/web/index.php (20)
+2014/04/09 22:04:20 [warning] [application] Failed to set unsafe attribute "remark" of "Court".
+in /Users/apple/web/root/golf_root/web/protected/controllers/CourtController.php (63)
+in /Users/apple/web/root/golf_root/web/index.php (20)
+2014/04/09 22:04:57 [warning] [application] Failed to set unsafe attribute "province" of "Court".
+in /Users/apple/web/root/golf_root/web/protected/controllers/CourtController.php (63)
+in /Users/apple/web/root/golf_root/web/index.php (20)
+2014/04/09 22:04:57 [warning] [application] Failed to set unsafe attribute "facilities" of "Court".
+in /Users/apple/web/root/golf_root/web/protected/controllers/CourtController.php (63)
+in /Users/apple/web/root/golf_root/web/index.php (20)
+2014/04/09 22:04:57 [warning] [application] Failed to set unsafe attribute "remark" of "Court".
+in /Users/apple/web/root/golf_root/web/protected/controllers/CourtController.php (63)
+in /Users/apple/web/root/golf_root/web/index.php (20)
+2014/04/09 22:04:58 [error] [exception.CException] exception 'CException' with message '属性 "Card.name" 未被定义.' in /Users/apple/web/root/golf_root/web/framework/base/CComponent.php:130
+Stack trace:
+#0 /Users/apple/web/root/golf_root/web/framework/db/ar/CActiveRecord.php(143): CComponent->__get('name')
+#1 /Users/apple/web/root/golf_root/web/framework/web/helpers/CHtml.php(2255): CActiveRecord->__get('name')
+#2 /Users/apple/web/root/golf_root/web/framework/web/helpers/CHtml.php(1980): CHtml::resolveValue(Object(Card), 'name')
+#3 /Users/apple/web/root/golf_root/web/framework/web/helpers/CHtml.php(1257): CHtml::activeInputField('text', Object(Card), 'name', Array)
+#4 /Users/apple/web/root/golf_root/web/protected/components/widgets/SimpleForm.php(472): CHtml::activeTextField(Object(Card), 'name', Array)
+#5 /Users/apple/web/root/golf_root/web/protected/views/court/_form.php(36): SimpleForm->activeTextField(Object(Card), 'name', Array, 'required')
+#6 /Users/apple/web/root/golf_root/web/framework/web/CBaseController.php(126): require('/Users/apple/we...')
+#7 /Users/apple/web/root/golf_root/web/framework/web/CBaseController.php(95): CBaseController->renderInternal('/Users/apple/we...', Array, true)
+#8 /Users/apple/web/root/golf_root/web/framework/web/CController.php(869): CBaseController->renderFile('/Users/apple/we...', Array, true)
+#9 /Users/apple/web/root/golf_root/web/protected/views/court/new.php(6): CController->renderPartial('_form', Array)
+#10 /Users/apple/web/root/golf_root/web/framework/web/CBaseController.php(126): require('/Users/apple/we...')
+#11 /Users/apple/web/root/golf_root/web/framework/web/CBaseController.php(95): CBaseController->renderInternal('/Users/apple/we...', Array, true)
+#12 /Users/apple/web/root/golf_root/web/framework/web/CController.php(869): CBaseController->renderFile('/Users/apple/we...', Array, true)
+#13 /Users/apple/web/root/golf_root/web/framework/web/CController.php(782): CController->renderPartial('new', Array, true)
+#14 /Users/apple/web/root/golf_root/web/protected/controllers/CourtController.php(102): CController->render('new', Array)
+#15 /Users/apple/web/root/golf_root/web/framework/web/actions/CInlineAction.php(49): CourtController->actionNew()
+#16 /Users/apple/web/root/golf_root/web/framework/web/CController.php(308): CInlineAction->runWithParams(Array)
+#17 /Users/apple/web/root/golf_root/web/framework/web/filters/CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#18 /Users/apple/web/root/golf_root/web/framework/web/filters/CFilter.php(40): CFilterChain->run()
+#19 /Users/apple/web/root/golf_root/web/framework/web/CController.php(1145): CFilter->filter(Object(CFilterChain))
+#20 /Users/apple/web/root/golf_root/web/framework/web/filters/CInlineFilter.php(58): CController->filterAccessControl(Object(CFilterChain))
+#21 /Users/apple/web/root/golf_root/web/framework/web/filters/CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#22 /Users/apple/web/root/golf_root/web/framework/web/CController.php(291): CFilterChain->run()
+#23 /Users/apple/web/root/golf_root/web/framework/web/CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#24 /Users/apple/web/root/golf_root/web/framework/web/CWebApplication.php(282): CController->run('new')
+#25 /Users/apple/web/root/golf_root/web/framework/web/CWebApplication.php(141): CWebApplication->runController('court/new')
+#26 /Users/apple/web/root/golf_root/web/framework/base/CApplication.php(169): CWebApplication->processRequest()
+#27 /Users/apple/web/root/golf_root/web/index.php(20): CApplication->run()
+#28 {main}
+REQUEST_URI=/golf_root/web/?r=court/new
+HTTP_REFERER=http://localhost/golf_root/web/?r=court/new
+---
+2014/04/09 22:05:38 [warning] [application] Failed to set unsafe attribute "province" of "Court".
+in /Users/apple/web/root/golf_root/web/protected/controllers/CourtController.php (63)
+in /Users/apple/web/root/golf_root/web/index.php (20)
+2014/04/09 22:05:38 [warning] [application] Failed to set unsafe attribute "facilities" of "Court".
+in /Users/apple/web/root/golf_root/web/protected/controllers/CourtController.php (63)
+in /Users/apple/web/root/golf_root/web/index.php (20)
+2014/04/09 22:05:38 [warning] [application] Failed to set unsafe attribute "remark" of "Court".
+in /Users/apple/web/root/golf_root/web/protected/controllers/CourtController.php (63)
+in /Users/apple/web/root/golf_root/web/index.php (20)
+2014/04/09 22:05:38 [error] [exception.CException] exception 'CException' with message '属性 "Court.id" 未被定义.' in /Users/apple/web/root/golf_root/web/framework/base/CComponent.php:130
+Stack trace:
+#0 /Users/apple/web/root/golf_root/web/framework/db/ar/CActiveRecord.php(143): CComponent->__get('id')
+#1 /Users/apple/web/root/golf_root/web/protected/controllers/CourtController.php(97): CActiveRecord->__get('id')
+#2 /Users/apple/web/root/golf_root/web/framework/web/actions/CInlineAction.php(49): CourtController->actionNew()
+#3 /Users/apple/web/root/golf_root/web/framework/web/CController.php(308): CInlineAction->runWithParams(Array)
+#4 /Users/apple/web/root/golf_root/web/framework/web/filters/CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#5 /Users/apple/web/root/golf_root/web/framework/web/filters/CFilter.php(40): CFilterChain->run()
+#6 /Users/apple/web/root/golf_root/web/framework/web/CController.php(1145): CFilter->filter(Object(CFilterChain))
+#7 /Users/apple/web/root/golf_root/web/framework/web/filters/CInlineFilter.php(58): CController->filterAccessControl(Object(CFilterChain))
+#8 /Users/apple/web/root/golf_root/web/framework/web/filters/CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#9 /Users/apple/web/root/golf_root/web/framework/web/CController.php(291): CFilterChain->run()
+#10 /Users/apple/web/root/golf_root/web/framework/web/CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#11 /Users/apple/web/root/golf_root/web/framework/web/CWebApplication.php(282): CController->run('new')
+#12 /Users/apple/web/root/golf_root/web/framework/web/CWebApplication.php(141): CWebApplication->runController('court/new')
+#13 /Users/apple/web/root/golf_root/web/framework/base/CApplication.php(169): CWebApplication->processRequest()
+#14 /Users/apple/web/root/golf_root/web/index.php(20): CApplication->run()
+#15 {main}
+REQUEST_URI=/golf_root/web/?r=court/new
+HTTP_REFERER=http://localhost/golf_root/web/?r=court/new
+---
+2014/04/09 22:07:39 [warning] [application] Failed to set unsafe attribute "province" of "Court".
+in /Users/apple/web/root/golf_root/web/protected/controllers/CourtController.php (63)
+in /Users/apple/web/root/golf_root/web/index.php (20)
+2014/04/09 22:07:39 [warning] [application] Failed to set unsafe attribute "facilities" of "Court".
+in /Users/apple/web/root/golf_root/web/protected/controllers/CourtController.php (63)
+in /Users/apple/web/root/golf_root/web/index.php (20)
+2014/04/09 22:07:39 [warning] [application] Failed to set unsafe attribute "remark" of "Court".
+in /Users/apple/web/root/golf_root/web/protected/controllers/CourtController.php (63)
+in /Users/apple/web/root/golf_root/web/index.php (20)
+2014/04/09 22:29:06 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'record_time' in 'order clause'. The SQL statement executed was: SELECT *
+FROM `g_system_log_201404`
+WHERE  recordtime >=:startdate AND recordtime<=:enddate
+ORDER BY `record_time` DESC LIMIT 100.
+in /Users/apple/web/root/golf_root/web/protected/models/Systemlog.php (90)
+in /Users/apple/web/root/golf_root/web/protected/modules/service/controllers/RouteController.php (59)
+in /Users/apple/web/root/golf_root/web/protected/modules/service/views/route/list.php (11)
+2014/04/09 22:29:06 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand 无法执行 SQL 语句: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'record_time' in 'order clause'. The SQL statement executed was: SELECT *
+FROM `g_system_log_201404`
+WHERE  recordtime >=:startdate AND recordtime<=:enddate
+ORDER BY `record_time` DESC LIMIT 100' in /Users/apple/web/root/golf_root/web/framework/db/CDbCommand.php:541
+Stack trace:
+#0 /Users/apple/web/root/golf_root/web/framework/db/CDbCommand.php(395): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 /Users/apple/web/root/golf_root/web/protected/models/Systemlog.php(90): CDbCommand->queryAll()
+#2 /Users/apple/web/root/golf_root/web/protected/modules/service/controllers/RouteController.php(59): Systemlog::queryList(0, 100, Array)
+#3 /Users/apple/web/root/golf_root/web/protected/modules/service/views/route/list.php(11): RouteController->actionGrid()
+#4 /Users/apple/web/root/golf_root/web/framework/web/CBaseController.php(126): require('/Users/apple/we...')
+#5 /Users/apple/web/root/golf_root/web/framework/web/CBaseController.php(95): CBaseController->renderInternal('/Users/apple/we...', NULL, true)
+#6 /Users/apple/web/root/golf_root/web/framework/web/CController.php(869): CBaseController->renderFile('/Users/apple/we...', NULL, true)
+#7 /Users/apple/web/root/golf_root/web/framework/web/CController.php(782): CController->renderPartial('list', NULL, true)
+#8 /Users/apple/web/root/golf_root/web/protected/modules/service/controllers/RouteController.php(79): CController->render('list')
+#9 /Users/apple/web/root/golf_root/web/framework/web/actions/CInlineAction.php(49): RouteController->actionList()
+#10 /Users/apple/web/root/golf_root/web/framework/web/CController.php(308): CInlineAction->runWithParams(Array)
+#11 /Users/apple/web/root/golf_root/web/framework/web/filters/CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#12 /Users/apple/web/root/golf_root/web/framework/web/filters/CFilter.php(40): CFilterChain->run()
+#13 /Users/apple/web/root/golf_root/web/framework/web/CController.php(1145): CFilter->filter(Object(CFilterChain))
+#14 /Users/apple/web/root/golf_root/web/framework/web/filters/CInlineFilter.php(58): CController->filterAccessControl(Object(CFilterChain))
+#15 /Users/apple/web/root/golf_root/web/framework/web/filters/CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#16 /Users/apple/web/root/golf_root/web/framework/web/CController.php(291): CFilterChain->run()
+#17 /Users/apple/web/root/golf_root/web/framework/web/CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#18 /Users/apple/web/root/golf_root/web/framework/web/CWebApplication.php(282): CController->run('list')
+#19 /Users/apple/web/root/golf_root/web/framework/web/CWebApplication.php(141): CWebApplication->runController('service/route/l...')
+#20 /Users/apple/web/root/golf_root/web/framework/base/CApplication.php(169): CWebApplication->processRequest()
+#21 /Users/apple/web/root/golf_root/web/index.php(20): CApplication->run()
+#22 {main}
+REQUEST_URI=/golf_root/web/?r=service/route/list
+HTTP_REFERER=http://localhost/golf_root/web/?r=court/list
+---
+2014/04/09 23:17:06 [error] [php] Non-static method Img::queryList() should not be called statically, assuming $this from incompatible context (/Users/apple/web/root/golf_root/web/protected/controllers/CourtController.php:327)
+Stack trace:
+#0 /Users/apple/web/root/golf_root/web/framework/web/CBaseController.php(95): CourtController->renderInternal()
+#1 /Users/apple/web/root/golf_root/web/framework/web/CController.php(869): CourtController->renderFile()
+#2 /Users/apple/web/root/golf_root/web/framework/web/CController.php(782): CourtController->renderPartial()
+#3 /Users/apple/web/root/golf_root/web/protected/controllers/CourtController.php(294): CourtController->render()
+#4 /Users/apple/web/root/golf_root/web/framework/web/actions/CInlineAction.php(49): CourtController->actionShowPic()
+#5 /Users/apple/web/root/golf_root/web/framework/web/CController.php(308): CInlineAction->runWithParams()
+#6 /Users/apple/web/root/golf_root/web/framework/web/filters/CFilterChain.php(133): CourtController->runAction()
+#7 /Users/apple/web/root/golf_root/web/framework/web/filters/CFilter.php(40): CFilterChain->run()
+#8 /Users/apple/web/root/golf_root/web/framework/web/CController.php(1145): CAccessControlFilter->filter()
+#9 /Users/apple/web/root/golf_root/web/framework/web/filters/CInlineFilter.php(58): CourtController->filterAccessControl()
+#10 /Users/apple/web/root/golf_root/web/framework/web/filters/CFilterChain.php(130): CInlineFilter->filter()
+#11 /Users/apple/web/root/golf_root/web/framework/web/CController.php(291): CFilterChain->run()
+#12 /Users/apple/web/root/golf_root/web/framework/web/CController.php(265): CourtController->runActionWithFilters()
+#13 /Users/apple/web/root/golf_root/web/framework/web/CWebApplication.php(282): CourtController->run()
+#14 /Users/apple/web/root/golf_root/web/framework/web/CWebApplication.php(141): CWebApplication->runController()
+#15 /Users/apple/web/root/golf_root/web/framework/base/CApplication.php(169): CWebApplication->processRequest()
+#16 /Users/apple/web/root/golf_root/web/index.php(20): CWebApplication->run()
+REQUEST_URI=/golf_root/web/index.php?r=court/showpic&id=admin20140409220741&name=%E5%B9%BF%E5%B7%9E%E7%8F%A0%E6%B5%B7%E9%87%91%E6%B9%BE%E9%AB%98%E5%B0%94%E5%A4%AB
+in /Users/apple/web/root/golf_root/web/protected/controllers/CourtController.php (327)
+in /Users/apple/web/root/golf_root/web/protected/views/court/pic_list.php (8)
+in /Users/apple/web/root/golf_root/web/protected/controllers/CourtController.php (294)
+2014/04/09 23:17:35 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'golf.img' doesn't exist. The SQL statement executed was: SHOW FULL COLUMNS FROM `img`.
+in /Users/apple/web/root/golf_root/web/protected/models/Img.php (11)
+in /Users/apple/web/root/golf_root/web/protected/models/Img.php (50)
+in /Users/apple/web/root/golf_root/web/protected/controllers/CourtController.php (327)
+2014/04/09 23:17:35 [error] [exception.CDbException] exception 'CDbException' with message '数据库中无法找到 active record class "Img" 对应的 table "img".' in /Users/apple/web/root/golf_root/web/framework/db/ar/CActiveRecord.php:2310
+Stack trace:
+#0 /Users/apple/web/root/golf_root/web/framework/db/ar/CActiveRecord.php(387): CActiveRecordMetaData->__construct(Object(Img))
+#1 /Users/apple/web/root/golf_root/web/protected/models/Img.php(11): CActiveRecord::model('Img')
+#2 /Users/apple/web/root/golf_root/web/protected/models/Img.php(50): Img::model()
+#3 /Users/apple/web/root/golf_root/web/protected/controllers/CourtController.php(327): Img::queryList(0, 100, NULL)
+#4 /Users/apple/web/root/golf_root/web/protected/views/court/pic_list.php(8): CourtController->actionPicList()
+#5 /Users/apple/web/root/golf_root/web/framework/web/CBaseController.php(126): require('/Users/apple/we...')
+#6 /Users/apple/web/root/golf_root/web/framework/web/CBaseController.php(95): CBaseController->renderInternal('/Users/apple/we...', NULL, true)
+#7 /Users/apple/web/root/golf_root/web/framework/web/CController.php(869): CBaseController->renderFile('/Users/apple/we...', NULL, true)
+#8 /Users/apple/web/root/golf_root/web/framework/web/CController.php(782): CController->renderPartial('pic_list', NULL, true)
+#9 /Users/apple/web/root/golf_root/web/protected/controllers/CourtController.php(294): CController->render('pic_list')
+#10 /Users/apple/web/root/golf_root/web/framework/web/actions/CInlineAction.php(49): CourtController->actionShowPic()
+#11 /Users/apple/web/root/golf_root/web/framework/web/CController.php(308): CInlineAction->runWithParams(Array)
+#12 /Users/apple/web/root/golf_root/web/framework/web/filters/CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#13 /Users/apple/web/root/golf_root/web/framework/web/filters/CFilter.php(40): CFilterChain->run()
+#14 /Users/apple/web/root/golf_root/web/framework/web/CController.php(1145): CFilter->filter(Object(CFilterChain))
+#15 /Users/apple/web/root/golf_root/web/framework/web/filters/CInlineFilter.php(58): CController->filterAccessControl(Object(CFilterChain))
+#16 /Users/apple/web/root/golf_root/web/framework/web/filters/CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#17 /Users/apple/web/root/golf_root/web/framework/web/CController.php(291): CFilterChain->run()
+#18 /Users/apple/web/root/golf_root/web/framework/web/CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#19 /Users/apple/web/root/golf_root/web/framework/web/CWebApplication.php(282): CController->run('showpic')
+#20 /Users/apple/web/root/golf_root/web/framework/web/CWebApplication.php(141): CWebApplication->runController('court/showpic')
+#21 /Users/apple/web/root/golf_root/web/framework/base/CApplication.php(169): CWebApplication->processRequest()
+#22 /Users/apple/web/root/golf_root/web/index.php(20): CApplication->run()
+#23 {main}
+REQUEST_URI=/golf_root/web/index.php?r=court/showpic&id=admin20140409220741&name=%E5%B9%BF%E5%B7%9E%E7%8F%A0%E6%B5%B7%E9%87%91%E6%B9%BE%E9%AB%98%E5%B0%94%E5%A4%AB
+HTTP_REFERER=http://localhost/golf_root/web/?r=court/list
+---
+2014/04/09 23:25:19 [error] [exception.CHttpException.404] exception 'CHttpException' with message '系统无法找到请求的 "newPic" 动作.' in /Users/apple/web/root/golf_root/web/framework/web/CController.php:483
+Stack trace:
+#0 /Users/apple/web/root/golf_root/web/framework/web/CController.php(270): CController->missingAction('newPic')
+#1 /Users/apple/web/root/golf_root/web/framework/web/CWebApplication.php(282): CController->run('newPic')
+#2 /Users/apple/web/root/golf_root/web/framework/web/CWebApplication.php(141): CWebApplication->runController('court/newPic')
+#3 /Users/apple/web/root/golf_root/web/framework/base/CApplication.php(169): CWebApplication->processRequest()
+#4 /Users/apple/web/root/golf_root/web/index.php(20): CApplication->run()
+#5 {main}
+REQUEST_URI=/golf_root/web/?r=court/newPic
+HTTP_REFERER=http://localhost/golf_root/web/index.php?r=court/showpic&id=admin20140409220741&name=%E5%B9%BF%E5%B7%9E%E7%8F%A0%E6%B5%B7%E9%87%91%E6%B9%BE%E9%AB%98%E5%B0%94%E5%A4%AB
+---
+2014/04/09 23:38:48 [error] [exception.CException] exception 'CException' with message '属性 "SimpleForm.enctype" 未被定义.' in /Users/apple/web/root/golf_root/web/framework/base/CComponent.php:173
+Stack trace:
+#0 /Users/apple/web/root/golf_root/web/framework/web/CWidgetFactory.php(161): CComponent->__set('enctype', 'multipart/form-...')
+#1 /Users/apple/web/root/golf_root/web/framework/web/CBaseController.php(146): CWidgetFactory->createWidget(Object(CourtController), 'SimpleForm', Array)
+#2 /Users/apple/web/root/golf_root/web/framework/web/CBaseController.php(189): CBaseController->createWidget('SimpleForm', Array)
+#3 /Users/apple/web/root/golf_root/web/protected/views/court/_picform.php(24): CBaseController->beginWidget('SimpleForm', Array)
+#4 /Users/apple/web/root/golf_root/web/framework/web/CBaseController.php(126): require('/Users/apple/we...')
+#5 /Users/apple/web/root/golf_root/web/framework/web/CBaseController.php(95): CBaseController->renderInternal('/Users/apple/we...', Array, true)
+#6 /Users/apple/web/root/golf_root/web/framework/web/CController.php(869): CBaseController->renderFile('/Users/apple/we...', Array, true)
+#7 /Users/apple/web/root/golf_root/web/protected/views/court/new_pic.php(6): CController->renderPartial('_picform', Array)
+#8 /Users/apple/web/root/golf_root/web/framework/web/CBaseController.php(126): require('/Users/apple/we...')
+#9 /Users/apple/web/root/golf_root/web/framework/web/CBaseController.php(95): CBaseController->renderInternal('/Users/apple/we...', Array, true)
+#10 /Users/apple/web/root/golf_root/web/framework/web/CController.php(869): CBaseController->renderFile('/Users/apple/we...', Array, true)
+#11 /Users/apple/web/root/golf_root/web/framework/web/CController.php(782): CController->renderPartial('new_pic', Array, true)
+#12 /Users/apple/web/root/golf_root/web/protected/controllers/CourtController.php(377): CController->render('new_pic', Array)
+#13 /Users/apple/web/root/golf_root/web/framework/web/actions/CInlineAction.php(49): CourtController->actionNewPic()
+#14 /Users/apple/web/root/golf_root/web/framework/web/CController.php(308): CInlineAction->runWithParams(Array)
+#15 /Users/apple/web/root/golf_root/web/framework/web/filters/CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#16 /Users/apple/web/root/golf_root/web/framework/web/filters/CFilter.php(40): CFilterChain->run()
+#17 /Users/apple/web/root/golf_root/web/framework/web/CController.php(1145): CFilter->filter(Object(CFilterChain))
+#18 /Users/apple/web/root/golf_root/web/framework/web/filters/CInlineFilter.php(58): CController->filterAccessControl(Object(CFilterChain))
+#19 /Users/apple/web/root/golf_root/web/framework/web/filters/CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#20 /Users/apple/web/root/golf_root/web/framework/web/CController.php(291): CFilterChain->run()
+#21 /Users/apple/web/root/golf_root/web/framework/web/CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#22 /Users/apple/web/root/golf_root/web/framework/web/CWebApplication.php(282): CController->run('newPic')
+#23 /Users/apple/web/root/golf_root/web/framework/web/CWebApplication.php(141): CWebApplication->runController('court/newPic')
+#24 /Users/apple/web/root/golf_root/web/framework/base/CApplication.php(169): CWebApplication->processRequest()
+#25 /Users/apple/web/root/golf_root/web/index.php(20): CApplication->run()
+#26 {main}
+REQUEST_URI=/golf_root/web/?r=court/newPic
+HTTP_REFERER=http://localhost/golf_root/web/index.php?r=court/showpic&id=admin20140409220741&name=%E5%B9%BF%E5%B7%9E%E7%8F%A0%E6%B5%B7%E9%87%91%E6%B9%BE%E9%AB%98%E5%B0%94%E5%A4%AB
+---
+2014/04/09 23:39:23 [error] [exception.CException] exception 'CException' with message '属性 "Img.name" 未被定义.' in /Users/apple/web/root/golf_root/web/framework/base/CComponent.php:130
+Stack trace:
+#0 /Users/apple/web/root/golf_root/web/framework/db/ar/CActiveRecord.php(143): CComponent->__get('name')
+#1 /Users/apple/web/root/golf_root/web/framework/web/helpers/CHtml.php(2255): CActiveRecord->__get('name')
+#2 /Users/apple/web/root/golf_root/web/framework/web/helpers/CHtml.php(1980): CHtml::resolveValue(Object(Img), 'name')
+#3 /Users/apple/web/root/golf_root/web/framework/web/helpers/CHtml.php(1257): CHtml::activeInputField('text', Object(Img), 'name', Array)
+#4 /Users/apple/web/root/golf_root/web/protected/components/widgets/SimpleForm.php(472): CHtml::activeTextField(Object(Img), 'name', Array)
+#5 /Users/apple/web/root/golf_root/web/protected/views/court/_picform.php(37): SimpleForm->activeTextField(Object(Img), 'name', Array, 'required')
+#6 /Users/apple/web/root/golf_root/web/framework/web/CBaseController.php(126): require('/Users/apple/we...')
+#7 /Users/apple/web/root/golf_root/web/framework/web/CBaseController.php(95): CBaseController->renderInternal('/Users/apple/we...', Array, true)
+#8 /Users/apple/web/root/golf_root/web/framework/web/CController.php(869): CBaseController->renderFile('/Users/apple/we...', Array, true)
+#9 /Users/apple/web/root/golf_root/web/protected/views/court/new_pic.php(6): CController->renderPartial('_picform', Array)
+#10 /Users/apple/web/root/golf_root/web/framework/web/CBaseController.php(126): require('/Users/apple/we...')
+#11 /Users/apple/web/root/golf_root/web/framework/web/CBaseController.php(95): CBaseController->renderInternal('/Users/apple/we...', Array, true)
+#12 /Users/apple/web/root/golf_root/web/framework/web/CController.php(869): CBaseController->renderFile('/Users/apple/we...', Array, true)
+#13 /Users/apple/web/root/golf_root/web/framework/web/CController.php(782): CController->renderPartial('new_pic', Array, true)
+#14 /Users/apple/web/root/golf_root/web/protected/controllers/CourtController.php(377): CController->render('new_pic', Array)
+#15 /Users/apple/web/root/golf_root/web/framework/web/actions/CInlineAction.php(49): CourtController->actionNewPic()
+#16 /Users/apple/web/root/golf_root/web/framework/web/CController.php(308): CInlineAction->runWithParams(Array)
+#17 /Users/apple/web/root/golf_root/web/framework/web/filters/CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#18 /Users/apple/web/root/golf_root/web/framework/web/filters/CFilter.php(40): CFilterChain->run()
+#19 /Users/apple/web/root/golf_root/web/framework/web/CController.php(1145): CFilter->filter(Object(CFilterChain))
+#20 /Users/apple/web/root/golf_root/web/framework/web/filters/CInlineFilter.php(58): CController->filterAccessControl(Object(CFilterChain))
+#21 /Users/apple/web/root/golf_root/web/framework/web/filters/CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#22 /Users/apple/web/root/golf_root/web/framework/web/CController.php(291): CFilterChain->run()
+#23 /Users/apple/web/root/golf_root/web/framework/web/CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#24 /Users/apple/web/root/golf_root/web/framework/web/CWebApplication.php(282): CController->run('newPic')
+#25 /Users/apple/web/root/golf_root/web/framework/web/CWebApplication.php(141): CWebApplication->runController('court/newPic')
+#26 /Users/apple/web/root/golf_root/web/framework/base/CApplication.php(169): CWebApplication->processRequest()
+#27 /Users/apple/web/root/golf_root/web/index.php(20): CApplication->run()
+#28 {main}
+REQUEST_URI=/golf_root/web/?r=court/newPic
+HTTP_REFERER=http://localhost/golf_root/web/index.php?r=court/showpic&id=admin20140409220741&name=%E5%B9%BF%E5%B7%9E%E7%8F%A0%E6%B5%B7%E9%87%91%E6%B9%BE%E9%AB%98%E5%B0%94%E5%A4%AB
+---
