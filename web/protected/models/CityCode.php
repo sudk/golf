@@ -12,24 +12,48 @@ class CityCode extends CActiveRecord {
     }
 
     public function tableName(){
-        return 'base_city_code';
+        return 'district_code_full';
     }
-    public static function GetCityCode($m_city_code=null){
-        $codes=CityCode::model()->findAll();
-        $tmp=array();
-        foreach ($codes as $value) {
-            $tmp[$value->mcity_code] = $value->city_code;
+    
+    public static function getProvince()
+    {
+        if(isset($_SESSION['global_province_list']))
+        {
+            return $_SESSION['global_province_list'];
         }
-        return $m_city_code?$tmp[$m_city_code]:$tmp;
+        
+        $sql = "select distinct(p_id) as pro_id,p_name from g_district_code_full  ";
+        $rows  = Yii::app()->db->createCommand($sql)->queryAll();
+        $list = array();
+        if($rows)
+        {
+            foreach($rows as $row)
+            {
+                $list[$row['pro_id']] = $row['p_name'];
+            }
+        }
+        $_SESSION['global_province_list'] = $list;
+        return $list;
     }
-
-     public static function GetCityName($m_city_code=null){
-        $codes=CityCode::model()->findAll();
-        $tmp=array(''=>'--请选择--');
-        foreach ($codes as $value) {
-            $tmp[$value->mcity_code] = $value->city_name;
+    
+    public static function getCity($p_id=null)
+    {
+        $sql = "select distinct(c_id) as city_id,c_name from g_district_code_full ";
+        if($p_id)
+        {
+            $sql .= " where p_id='".$p_id."'";
         }
-        return $m_city_code?$tmp[$m_city_code]:$tmp;
+        $rows = Yii::app()->db->createCommand($sql)->queryAll();
+        $list = array();
+        if($rows)
+        {
+            foreach($rows as $row)
+            {
+                $list[$row['city_id']] = $row['c_name'];
+            }
+        }
+        
+        return $list;
     }
 }
 

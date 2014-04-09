@@ -8,7 +8,7 @@
 class Court extends CActiveRecord {
 
    
-    
+    public $province;
 
     public static function model($className=__CLASS__){
         return parent::model($className);
@@ -24,6 +24,28 @@ class Court extends CActiveRecord {
          );
     }
 
+    public static function getCourtModel()
+    {
+//        $rs = array(
+//            '滨海球场'=>'滨海球场',
+//            '林克斯球场'=>'林克斯球场',
+//            '欧石南荒地球场'=>'欧石南荒地球场',
+//            '平原球场'=>'平原球场',
+//           
+//        );
+        $rs = array();
+        $sql = "select distinct model from g_court ";
+        $rows = Yii::app()->db->createCommand($sql)->queryAll();
+        if($rows)
+        {
+            foreach($rows as $row)
+            {
+                $rs[$row['model']] = $row['model'];
+            }
+        }
+        return $rs;
+    }
+    
     
     public static function getCourtArray()
     {
