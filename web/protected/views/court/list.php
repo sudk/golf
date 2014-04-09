@@ -17,7 +17,7 @@
     var itemEdit = function (id) {
         tipsWindown(
             "编辑卡片信息", // title：窗口标题
-            "iframe:index.php?r=user/card/edit&id=" + id, // Url：弹窗所加截的页面路径
+            "iframe:index.php?r=court/edit&id=" + id, // Url：弹窗所加截的页面路径
             "900", // width：窗体宽度
             "520", // height：窗体高度
             "true", // drag：是否可以拖动（ture为是,false为否）
@@ -26,12 +26,20 @@
             "text"    // cssName：附加class名称
         );
     }
+    
+    var itemPic=function(id,name){
+        window.location.href = 'index.php?r=court/showpic&id='+id+'&name='+name;
+    }
+    
+    var itemComment=function(id,name){
+        window.location.href = 'index.php?r=court/comment&id='+id+'&name='+name;
+    }
    
     var itemDelete = function(id,name){
         if(!confirm("确认要删除卡片:"+name+"吗？")){return ;}
         $.ajax({
             data:{id:id},
-            url:"index.php?r=user/card/del",
+            url:"index.php?r=court/del",
             dataType:"json",
             type:"POST",
             success:function(data){
@@ -68,7 +76,7 @@
         var detail="";
         $.ajax({
             data:{id:objid},
-            url:"./?r=user/card/detail",
+            url:"./?r=court/detail",
             type:"POST",
             dataType:"json",
             beforeSend:function(){

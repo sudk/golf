@@ -43,7 +43,9 @@ if($__model__!="edit"){
         <td class="maxname">所在城市：</td>
         <td class="mivalue">
            <?php
-                echo $form->activeTextField($model, 'city', array('title' => '本项必填', 'class' => 'input_text', 'maxlength' => 20,'onblur'=>$checkId), 'required');         
+                $province_list = CityCode::getProvince();
+                echo $form->activeDropDownList($model, 'province',$province_list, array('title' => '本项必填', 'class' => 'input_text','id'=>'province_code'), 'required');  
+                echo $form->activeDropDownList($model, 'city',array(''=>'--选择--'), array('title' => '本项必填', 'class' => 'input_text','id'=>'city_code'), 'required'); 
             ?>
         </td>
         <td class="maxname">建立年代：</td>
@@ -113,6 +115,17 @@ if($__model__!="edit"){
 </table>
 <?php $this->endWidget();?>
 <script type="text/javascript">
+    
+    jQuery("#province_code").click(function(){
+        var v = jQuery(this).val();
+        var url = "index.php?r=court/getcity&pid="+v;
+        //alert(url);
+        jQuery.post(url,function(data){
+            jQuery("#city_code").html(data);
+        });
+    });
+    
+    
     var flag = true;
     function formSubmit() {
         checkMyForm();
