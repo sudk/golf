@@ -36,8 +36,8 @@ class SysMenu extends CWidget
 
         //球场管理
         $sub_menu = array();
-        $sub_menu[] = array("title" => "球场管理", "url" => "./?r=court/list", "match" => array('court\/list','court\/new'));
-       
+        $sub_menu[] = array("title" => "球场管理", "url" => "./?r=court/list", "match" => array('court\/list','court\/new','court\/showpic','court\/addpic'));
+        $sub_menu[] = array("title" => "球场评论管理", "url" => "./?r=court/comment", "match" => array('court\/comment'));
         if(count($sub_menu))
         $menus['court'] = array("title" => "球场管理", "url" => "./?r=court/list", "child" => $sub_menu);
 
