@@ -43,6 +43,7 @@ if($__model__!="edit"){
         <td class="maxname">上传图片：</td>
         <td class="mivalue"  colspan="3">
             <span><a href="javascript:void(0);" onclick="javascript:addP(this);">[新增图片链接]</a></span>
+            <span>注意：如果图片过多，请分批上传</span>
         </td>
        
     </tr>

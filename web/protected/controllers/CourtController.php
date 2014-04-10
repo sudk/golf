@@ -11,6 +11,8 @@ class CourtController extends BaseController
     public $cGridId = 'comment_list';
     public $pageSize = 100;
     public $module_id = 'court';
+    
+    
 
     /**
      * 表头
@@ -336,46 +338,248 @@ class CourtController extends BaseController
         
         if($_POST['Img']){
             $model->attributes=$_POST['Img'];
-            //先判断name是否重复
-            if(!$this->checkName($_POST['Court']['name']))
+            $succ_num = 0;
+            $false_num = 0;
+            $up_msg = "";
+            $files = $_FILES['upfile'];
+            if(isset($files))
             {
-                $msg['msg']="添加失败！球场名称重复";
-                $msg['status']=-1;
+                //var_dump($files['error']);
+                foreach($files['error'] as $k=>$v)
+                {
+                    if($v == 0)
+                    {
+                        sleep(1);
+                        //可以上传
+                        $rs = $this->uploadImg($files['tmp_name'][$k],$files['name'][$k]);
+                        //var_dump($rs);
+                        if($rs['status'] == 0)
+                        {
+                            $up_msg .="第".($k+1)."张图片上传成功.";
+                            $succ_num++;
+                            //save to db
+                            $model_img = new Img();
+                            //$model_img->id = $this->getImgId();
+                            $model_img->type = $_POST['Img']['type'];
+                            $model_img->relation_id = $_POST['Img']['relation_id'];
+                            $model_img->img_url = $rs['url'];
+                            $model_img->record_time = date('Y-m-d H:i:s');
+                            //var_dump($model->attributes);
+                            $img_id = $model_img->save();
+                            //var_dump($img_id);
+                            if(!$img_id)
+                            {
+                                $up_msg .=  "第".($k+1)."张图片保存失败.";
+                                $this->delImg($rs['url']);
+                            }
+                        }else{
+                            $up_msg .= "第".($k+1)."张图片上传失败.";
+                            $false_num++;
+                        }
+                    }  else 
+                    {
+                        $up_msg .= "第".($k+1)."张图片上传失败.";
+                        $false_num++;
+                    }
+                }
+                $msg['status'] = 1;
+                $msg['msg'] = $succ_num>0?"上传成功。":"上传失败。";
+                $msg['msg'] .= $succ_num>0?"成功数量:".$succ_num.",":"";
+                $msg['msg'] .= $false_num>0?"失败数量:".$false_num.",":"";
+                $msg['msg'] .= $up_msg;
+                
             }else
             {
-                $model->record_time=date("Y-m-d H:i:s");
-                
-                try{
-                    $rs=$model->save();
-                    if($rs){
-                        $msg['msg']="添加成功！";
-                        $msg['status']=1;
-                        $model=new Img('create');
-                    }else{
-                        $msg['msg']="添加失败！";
-                        $msg['status']=-1;
-                    }
-                }catch (Exception $e){
-                    if($e->errorInfo[0]==23000){
-                        $msg['msg']="球场编号重复！";
-                        $msg['status']=-1;
-                    }
-
-                }
-
-                //add log
-                $log_args = array(
-                    'module_id'=>$this->module_id,
-                    'opt_name'=>'球场图片添加',
-                    'opt_detail'=>"球场编号：".$_SESSION['cur_court_id']."球场名称：".$_SESSION['cur_court_name'].".".$msg['msg'],
-                    'opt_status'=>$msg['status']==1 ? "00":"01",
-                );
-                Operatorlog::addLog($log_args);
-            }
-            $model->relation_id = $_SESSION['cur_rout_id'];
+                $msg['msg']="添加失败！请至少上传一张图片";
+                $msg['status']=-1;
+            }           
+            
         }
+        $model->relation_id = $_SESSION['cur_court_id'];
+        
+        
+        
         $this->render("new_pic",array('model' => $model, 'msg' => $msg));
     }
+    
+    
+    
+    
+    public function actionLoadPic()
+    {
+        $name = trim($_GET['name']);
+        $upload_dir = Yii::app()->params['upload_dir'];
+        
+        $file_name = $upload_dir.$name;
+        $img_array = getimagesize($file_name);
+	$mime = $img_array['mime'];
+        $file_mime = explode("/", $mime);
+        $suffix = $file_mime[1];
+        header('Content-Type:image/'.$suffix);
+        echo file_get_contents($file_name);
+        exit;
+    }
+    
+    
+    public function actionDelPic()
+    {
+        $id = trim($_POST['id']);
+        $info = Img::model()->findByPk($id);
+        //var_dump($info);
+        $url = $info['img_url'];
+        $rs = Img::model()->deleteByPk($id);
+        //var_dump($rs);
+        $data['status'] = 0;
+        $data['msg'] = "";
+        if($rs)
+        {
+            $this->delImg($url);
+            
+        }else{
+            $data['msg'] = "删除失败。";
+        }
+        
+        echo json_encode($data);
+        exit;
+    }
+    
+    /**
+     * 删除文件
+     * @param type $url
+     * @return boolean
+     */
+    private function delImg($url)
+    {
+        $upload_dir = Yii::app()->params['upload_dir'];
+        $url_array = explode(".", $url);
+        $file_small = $url_array[0]."_small.".$url_array[1];
+        @unlink($upload_dir.$url);
+        @unlink($upload_dir.$file_small);
+        return true;
+    }
+    
+    /**
+     * 上传图片到服务器
+     * @param type $tmp_file
+     * @param type $tmp_name
+     * @return string
+     */
+    private function uploadImg($tmp_file,$tmp_name)
+    {
+        $upload_dir = Yii::app()->params['upload_dir'];
+        //路径是以目录/日期/时间+rand(100,999).png
+        $upload_dir .= date('Ymd');
+        if(!is_dir($upload_dir))
+        {
+            @mkdir($upload_dir."/",0777); 
+        }
+        $suffix = $this->getSuffix($tmp_name);
+        $file = date('His').  rand(100, 9999);
+        $new_file_path = $upload_dir."/".$file;
+        $new_file_name = $new_file_path.".".$suffix;
+        $new_file_name_s = $new_file_path."_small.".$suffix;
+        $rs['status'] = 0;
+        $rs['url'] = date('Ymd')."/".$file.".".$suffix;
+        if(move_uploaded_file($tmp_file, $new_file_name))
+        {
+            //然后要生成一张缩略图
+            $this->saveThumbnails($new_file_name, $new_file_name_s);
+        }else{
+            $rs['status'] = -1;
+            $rs['msg'] = "上传图片到服务器失败";
+        }
+        return $rs;
+    }
+    
+    
+    private function getSuffix($name)
+    {
+        $name_a = explode(".", $name);
+        return $name_a[count($name_a)-1];
+    }
+    
+    
+    /**
+     * 保存头像
+     * 180x180 50x50 30x30三个尺寸
+     */
+    function saveThumbnails($file_name,$file_name_small){
+      
+        $middle_size = 56;     
+        $src = $file_name;
+        //$suffix = strtolower($suffix);
+        
+        $img_array = getimagesize($file_name);
+	$mime = $img_array['mime'];
+        $file_mime = explode("/", $mime);
+        $suffix = $file_mime[1];
+        if($suffix == 'png')
+        {
+            $img_r = @imagecreatefrompng($src);
+            
+            $img_r_m = $this->resizeImage($img_r,$middle_size,$middle_size,$src);
+            imagepng($img_r_m,$file_name_small);
+        }else if($suffix == 'gif')
+        {
+            $img_r  = @imagecreatefromgif($src);
+            
+            $img_r_m = $this->resizeImage($img_r,$middle_size,$middle_size,$src);
+            imagegif($img_r_m,$file_name_small);
+            
+        }else//jpg
+        {
+            $img_r = imagecreatefromjpeg($src);       
+            $img_r_m = $this->resizeImage($img_r,$middle_size,$middle_size,$src);
+            imagejpeg($img_r_m,$file_name_small);
+           
+        }        
+        imagedestroy($img_r);   
+        imagedestroy($img_r_m);
+       
+        return true;
+    }
+
+    /**
+     *等比例缩放
+     * @param <type> $im--image object
+     * @param <type> $maxwidth  目标图片的宽度 例如168
+     * @param <type> $maxheight  目标图片的高度 例如168
+     */
+    private function resizeImage($im,$maxwidth=116,$maxheight=116,$src)
+    {
+        //源图片的宽、高
+        $pic_width = imagesx($im);
+        $pic_height = imagesy($im);
+        //$pic_array = getimagesize($src);
+        //$pic_width = $pic_array[0];
+        //$pic_height = $pic_array[1];
+        //if(($maxwidth && $pic_width > $maxwidth) || ($maxheight && $pic_height > $maxheight))
+        if(true)
+        {
+
+            $newwidth = $maxwidth;//$pic_width * $ratio;
+            $newheight = $maxheight;//$pic_height * $ratio;
+           
+            if(function_exists("imagecopyresampled"))
+            {
+                $newim = imagecreatetruecolor($newwidth,$newheight);
+                imagecopyresampled($newim,$im,0,0,0,0,$newwidth,$newheight,$pic_width,$pic_height);
+            }
+            else
+            {
+                $newim = imagecreate($newwidth,$newheight);
+               imagecopyresized($newim,$im,0,0,0,0,$newwidth,$newheight,$pic_width,$pic_height);
+            }
+
+            return $newim;
+
+        }
+        else
+        {
+            return $im;
+        }
+    }
+
 
 
 }

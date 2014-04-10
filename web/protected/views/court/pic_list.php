@@ -19,7 +19,7 @@
         if(!confirm("确认要删除图片吗？")){return ;}
         $.ajax({
             data:{id:id},
-            url:"index.php?r=court/delPic",
+            url:"index.php?r=court/delpic",
             dataType:"json",
             type:"POST",
             success:function(data){

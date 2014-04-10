@@ -7,10 +7,10 @@ if (is_array($rows))
     {
         //$t->begin_row("onclick","getDetail(this,'{$row['court_id']}');");
 	
-       
+        $link = "";
         $link .= CHtml::link('删除',"javascript:itemDelete('{$row['id']}');", array());
-        $base_url = Yii::app()->request->baseUrl;
-        $img = '<img src="'.$base_url.'/protected/runtime/picture/'.$row['img_url'].'"/>';
+        $url = "index.php?r=court/loadpic&name=".$row['img_url'];
+        $img = '<img src="'.$url.'" style="width:50px;height:50px;"/>';
         $t->echo_td($type_list[$row['type']]);
         $t->echo_td($img); //
       
