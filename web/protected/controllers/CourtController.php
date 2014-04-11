@@ -126,12 +126,16 @@ class CourtController extends BaseController
     public function actionEdit(){
         $id=$_GET['id'];
         $model=Court::model()->findByPk($id);
+        $city = $model->city;
+        $province = substr($city,0,2)."0000";
+        $model->province = $province;
+        //var_dump($model->attributes);
         if($_POST['Court']){
             
             $model->setScenario("modify");
             $model->attributes=$_POST['Court'];
-            $model->desc=htmlspecialchars($_POST['Court']['desc']);
-            
+            $model->remark=htmlspecialchars($_POST['Court']['remark']);
+            //var_dump($model->attributes);
             $rs=$model->save();
             if($rs){
                 $msg['msg']="修改成功！";
@@ -145,11 +149,11 @@ class CourtController extends BaseController
             //add log
             $log_args = array(
                 'module_id'=>$this->module_id,
-                'opt_name'=>'会员卡编辑',
-                'opt_detail'=>"会员卡号：".$model->id.".".$msg['msg'],
+                'opt_name'=>'球场信息编辑',
+                'opt_detail'=>"球场编号：".$model->court_id.",球场名称:".$model->name.".".$msg['msg'],
                 'opt_status'=>$msg['status']== 1 ? "00":"01",
             );
-            Systemlog::addLog($log_args);
+            Operatorlog::addLog($log_args);
 
         }
        //var_dump($msg);
@@ -178,6 +182,7 @@ class CourtController extends BaseController
     public function actionGetCity()
     {
         $pid = trim($_GET['pid']);
+        $selected = trim($_GET['selected']);
         
         $list = CityCode::getCity($pid);
         
@@ -185,7 +190,12 @@ class CourtController extends BaseController
         {
             foreach($list as $key=>$value)
             {
-                echo '<option value="',$key,'">',$value,'</option>';
+                echo '<option value="',$key,'"';
+                if($selected == $key)
+                {
+                    echo ' selected';
+                }
+                echo '>',$value,'</option>';
             }
         }else
         {
@@ -194,33 +204,24 @@ class CourtController extends BaseController
         exit;
     }
   
-    
+    /**
+     * 球场删除
+     * 包括 
+     * 球场信息
+     * 球场的图片
+     * 球场的评论
+     * 球场的附近设施
+     * 暂时没实现
+     */
     public function actionDel(){
         $id=$_POST['id'];
-        $cnt = User::model()->count(" card_no='".$id."'");
-        if($cnt > 0)
-        {
-            $msg['status']=false;
-            $msg['msg'] = "卡片已使用";
-            print_r(json_encode($msg));
-            exit;
-        }
-        $rs=Card::model()->deleteByPk($id);
+        $rs = true;
         if($rs){
             $msg['status']=true;
         }else{
             $msg['status']=false;
         }
-        
-        //add log
-        $log_args = array(
-            'module_id'=>$this->module_id,
-            'opt_name'=>'会员卡删除',
-            'opt_detail'=>"会员卡号：".$id.".".($msg['status'] ? "会员卡删除成功。":"会员卡删除失败"),
-            'opt_status'=>$msg['status'] ? "00":"01",
-        );
-        Systemlog::addLog($log_args);
-        
+       
         print_r(json_encode($msg));
     }
     public function actionDetail()
@@ -580,6 +581,82 @@ class CourtController extends BaseController
         }
     }
 
+    
+    
+    public function actionComment()
+    {
+        
+        unset($_SESSION['cur_court_id']);
+        unset($_SESSION['cur_court_name']);
+        $this->render('comment_list');
+    }
+    
+    /**
+     * 表头
+     * @return SimpleGrid
+     */
+    private function genCDataGrid()
+    {
+        $t = new SimpleGrid($this->cGridId);
+        $t->url = 'index.php?r=court/commentlist';
+        $t->updateDom = 'datagrid';
+        $t->set_header('球场名称', '200', '');
+        $t->set_header('服务', '50', '');   
+        $t->set_header('设计', '50', '');   
+        $t->set_header('设施', '50', '');   
+        $t->set_header('草坪', '50', '');        
+        $t->set_header('评分人', '100', '');  
+        $t->set_header('评分时间', '100', '');  
+        $t->set_header('备注', '100', '');  
+        return $t;
+    }
+
+    
+    public function actionCommentList($cur_court_id=null)
+    {
+        $page = $_GET['page'] == '' ? 0 : $_GET['page']; //当前页码
+        $_GET['page']=$_GET['page']+1;
+        $args = $_GET['q']; //查询条件
+
+
+        if ($_REQUEST['q_value'])
+        {
+            $args[$_REQUEST['q_by']] = $_REQUEST['q_value'];
+        }
+        if($cur_court_id!=null)
+        {
+            $args['court_id'] = $cur_court_id;
+        }
+        $t = $this->genCDataGrid();
+        var_dump($args);
+        $list = Comment::queryList($page, $this->pageSize, $args);
+        
+        if($list['rows'])
+        {
+            $court_list = Court::getCourtArray();
+            foreach($list['rows'] as $key=>$row)
+            {
+                $court_id = $row['court_id'];
+                $list['rows'][$key]['court_name'] = $court_list[$court_id];
+            }
+        }
+
+        $this->renderPartial('_commentlist', array('t' => $t, 'rows' => $list['rows'], 'cnt' => $list['total_num'], 'curpage' => $list['page_num']));
+    }
+    
+    /**
+     * 某一个球场的评论
+     */
+    public function actionMyComment()
+    {
+        $id = trim($_GET['id']);
+        $name=trim($_GET['name']);
+        
+        $_SESSION['cur_court_id'] = $id;
+        $_SESSION['cur_court_name'] = $name;
+        
+        $this->render('my_comment',array('cur_court_id'=>$id));
+    }
 
 
 }
