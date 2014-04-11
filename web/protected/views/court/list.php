@@ -32,11 +32,11 @@
     }
     
     var itemComment=function(id,name){
-        window.location.href = 'index.php?r=court/comment&id='+id+'&name='+name;
+        window.location.href = 'index.php?r=court/mycomment&id='+id+'&name='+name;
     }
    
     var itemDelete = function(id,name){
-        if(!confirm("确认要删除卡片:"+name+"吗？")){return ;}
+        if(!confirm("确认要删除球场:"+name+"吗？")){return ;}
         $.ajax({
             data:{id:id},
             url:"index.php?r=court/del",

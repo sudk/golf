@@ -115,7 +115,20 @@ if($__model__!="edit"){
 </table>
 <?php $this->endWidget();?>
 <script type="text/javascript">
-    
+    <?php
+    if($__model__=="edit" && $model->province){
+        ?>
+            //alert("a");
+            var v = jQuery("#province_code").val();
+            var city = '<?php echo $model->city;?>';
+            var url = "index.php?r=court/getcity&pid="+v+"&selected="+city;
+            //alert(url);
+            jQuery.post(url,function(data){
+                jQuery("#city_code").html(data);
+            });
+            <?php
+    }
+    ?>
     jQuery("#province_code").click(function(){
         var v = jQuery(this).val();
         var url = "index.php?r=court/getcity&pid="+v;
