@@ -5,64 +5,26 @@
  * @author #guohao 
  * @copyright Copyright &copy; 2003-2009 TrunkBow Co., Inc
  */
-class Court extends CActiveRecord {
+class Comment extends CActiveRecord {
 
    
     public $province;
+    public $court_name;
 
     public static function model($className=__CLASS__){
         return parent::model($className);
     }
 
     public function tableName(){
-        return 'g_court';
+        return 'g_comment';
     }
 
     public function rules(){
         return array(
-          array('court_id,name,city,area,addr,model,lon,lat,create_year,area,green_grass,court_data,designer,fairway_length,fairway_grass,phone,creatorid', 'safe', 'on' => 'create'),
-            array('court_id,name,city,area,addr,model,lon,lat,create_year,area,green_grass,court_data,designer,fairway_length,fairway_grass,phone,creatorid', 'safe', 'on' => 'modify'),
-         );
-    }
-
-    public static function getCourtModel()
-    {
-//        $rs = array(
-//            '滨海球场'=>'滨海球场',
-//            '林克斯球场'=>'林克斯球场',
-//            '欧石南荒地球场'=>'欧石南荒地球场',
-//            '平原球场'=>'平原球场',
-//           
-//        );
-        $rs = array();
-        $sql = "select distinct model from g_court ";
-        $rows = Yii::app()->db->createCommand($sql)->queryAll();
-        if($rows)
-        {
-            foreach($rows as $row)
-            {
-                $rs[$row['model']] = $row['model'];
-            }
-        }
-        return $rs;
+          
+                );
     }
     
-    
-    public static function getCourtArray()
-    {
-        $rows = Court::model()->findAll();
-        $data = array();
-        if($rows)
-        {
-            foreach($rows as $row)
-            {
-                $data[$row['court_id']] = $row['name'];
-            }
-        }
-        
-        return $data;
-    }
-
     
 
 
@@ -83,9 +45,16 @@ class Court extends CActiveRecord {
             $params['court_id'] = $args['court_id'];
         }
         
+        if($args['begin_date']!="" && $args['end_date']!="")
+        {
+            $condition .=" AND record_time >= '".$args['begin_date']." 00:00:00' AND record_time <= '".$args['end_date']." 23:59:59'";
+            //$params['begin_date'] = $args['begin_date'];
+            //$params['end_date'] = $args['end_date'];
+        }
         
         
-        $total_num = Court::model()->count($condition, $params); //总记录数
+        
+        $total_num = Comment::model()->count($condition, $params); //总记录数
 
         $criteria = new CDbCriteria();
         
@@ -106,7 +75,7 @@ class Court extends CActiveRecord {
         $pages->setCurrentPage($page);
         $pages->applyLimit($criteria);
 
-        $rows = Court::model()->findAll($criteria);
+        $rows = Comment::model()->findAll($criteria);
 
         $rs['status'] = 0;
         $rs['desc'] = '成功';

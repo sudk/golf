@@ -1,19 +1,29 @@
 <form name="_query_form" id="_query_form" action="javascript:itemQuery(0);">
     <li>
         <span class="sift-title">搜索：</span>
-        <select name="q_by">
-            <option value="name">球场名称</option>
-            
-        </select>
-        <input name="q_value" type="text" class="grayTips" />
-        <span style="float:left; margin:0 3px; margin-top:-3px;">球场模式</span>
-        <select name="q[model]">
+        
+        <span style="float:left; margin:0 3px; margin-top:-3px;">订单类型</span>
+        <select name="q[order_type]">
             <option value="">--选择--</option>
             <?php
-            $model_list = Court::getCourtModel();
-            if(@count($model_list) > 0 )
+            $type_list = Order::getOrderType();
+            if(@count($type_list) > 0 )
             {
-                foreach($model_list as $key=>$value)
+                foreach($type_list as $key=>$value)
+                {
+                    echo '<option value="'.$key.'">'.$value.'</option>';
+                }
+            }
+            ?>
+        </select>
+        <span style="float:left; margin:0 3px; margin-top:-3px;">订单状态</span>
+        <select name="q[status]">
+            <option value="">--选择--</option>
+            <?php
+            $status_list = Order::getStatus();
+            if(@count($status_list) > 0 )
+            {
+                foreach($status_list as $key=>$value)
                 {
                     echo '<option value="'.$key.'">'.$value.'</option>';
                 }

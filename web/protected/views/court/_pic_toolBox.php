@@ -1,25 +1,22 @@
 <form name="_query_form" id="_query_form" action="javascript:itemQuery(0);">
     <li>
         <span class="sift-title">搜索：</span>
-        <select name="q_by">
-            <option value="name">球场名称</option>
-            
-        </select>
-        <input name="q_value" type="text" class="grayTips" />
-        <span style="float:left; margin:0 3px; margin-top:-3px;">球场模式</span>
-        <select name="q[model]">
+        
+        <span style="float:left; margin:0 3px; margin-top:-3px;">图片分类</span>
+        <select name="q[type]">
             <option value="">--选择--</option>
             <?php
-            $model_list = Court::getCourtModel();
-            if(@count($model_list) > 0 )
+            $type_list = Img::getType();
+            if(@count($type_list) > 0 )
             {
-                foreach($model_list as $key=>$value)
+                foreach($type_list as $key=>$value)
                 {
                     echo '<option value="'.$key.'">'.$value.'</option>';
                 }
             }
             ?>
         </select>
+        <input type="hidden" name="q[relation_id]" value="<?php echo $_SESSION['cur_court_id'];?>"/>
         <input type="submit" value="" class="search_btn"/>
     </li>
     
@@ -33,7 +30,7 @@
     var itemQuery = function(){
         var length=arguments.length;
         if(length==1){
-            <?=$this->gridId?>.page = arguments[0];
+            <?=$this->picGridId?>.page = arguments[0];
         }
         var objs = document.getElementById("_query_form").elements;
         var i = 0;
@@ -44,8 +41,8 @@
             obj = objs.item(i);
             url += '&' + obj.name + '=' + obj.value;
         }
-<?php echo $this->gridId; ?>.condition = url;
-<?php echo $this->gridId; ?>.refresh();
+<?php echo $this->picGridId; ?>.condition = url;
+<?php echo $this->picGridId; ?>.refresh();
     }
 
 </script>

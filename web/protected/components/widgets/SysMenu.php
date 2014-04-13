@@ -29,15 +29,15 @@ class SysMenu extends CWidget
 
         //订单管理
         $sub_menu = array();
-        $sub_menu[] = array("title" => "订单管理", "url" => "./?r=order/list", "match" => array('order\/order\/list'));
+        $sub_menu[] = array("title" => "订单管理", "url" => "./?r=order/list", "match" => array('order\/list'));
       
         if(count($sub_menu))
         $menus['order'] = array("title" => "订单管理", "url" => "./?r=order/list", "child" => $sub_menu);
 
         //球场管理
         $sub_menu = array();
-        $sub_menu[] = array("title" => "球场管理", "url" => "./?r=court/list", "match" => array('court\/list','court\/new'));
-       
+        $sub_menu[] = array("title" => "球场管理", "url" => "./?r=court/list", "match" => array('court\/list','court\/new','court\/showpic','court\/addpic','court\/mycomment'));
+        $sub_menu[] = array("title" => "球场评论管理", "url" => "./?r=court/comment", "match" => array('court\/comment'));
         if(count($sub_menu))
         $menus['court'] = array("title" => "球场管理", "url" => "./?r=court/list", "child" => $sub_menu);
 

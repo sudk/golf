@@ -1143,10 +1143,10 @@ page;
                 if($i%2==0){
                     $msg.="<tr>";
                 }
-                $msg.= "<td class='head'><span>{$key}:</span></td><td>" . ($val?$val:'无') . "</td>";
-                if($i/2==1){
-                    $msg.="</tr>";
-                }
+                $msg.= "<td class='head' style='width:80px;'><span>{$key}:</span></td><td>" . ($val?$val:'无') . "</td>";
+//                if($i/2==1){
+//                    $msg.="</tr>";
+//                }
                 $i++;
             }
             if($i/2==1){

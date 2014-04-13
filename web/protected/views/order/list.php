@@ -1,5 +1,5 @@
 <div class="title-box">
-    <h1><span style="float:left;">球场列表</span><a href="./?r=court/new" style="float:right;"><span class="add_ico"></span><span>球场添加</span></a></h1>
+    <h1><span style="float:left;">订单列表</span></h1>
     <ul class="sift">
         <?php $this->renderPartial('_toolBox'); ?>
     </ul>
@@ -16,8 +16,8 @@
     
     var itemEdit = function (id) {
         tipsWindown(
-            "编辑卡片信息", // title：窗口标题
-            "iframe:index.php?r=court/edit&id=" + id, // Url：弹窗所加截的页面路径
+            "编辑订单信息", // title：窗口标题
+            "iframe:index.php?r=order/edit&id=" + id, // Url：弹窗所加截的页面路径
             "900", // width：窗体宽度
             "520", // height：窗体高度
             "true", // drag：是否可以拖动（ture为是,false为否）
@@ -27,19 +27,12 @@
         );
     }
     
-    var itemPic=function(id,name){
-        window.location.href = 'index.php?r=court/showpic&id='+id+'&name='+name;
-    }
-    
-    var itemComment=function(id,name){
-        window.location.href = 'index.php?r=court/mycomment&id='+id+'&name='+name;
-    }
    
-    var itemDelete = function(id,name){
-        if(!confirm("确认要删除球场:"+name+"吗？")){return ;}
+    var itemDelete = function(id){
+        if(!confirm("确认要删除订单:"+id+"吗？")){return ;}
         $.ajax({
             data:{id:id},
-            url:"index.php?r=court/del",
+            url:"index.php?r=order/del",
             dataType:"json",
             type:"POST",
             success:function(data){
@@ -76,7 +69,7 @@
         var detail="";
         $.ajax({
             data:{id:objid},
-            url:"./?r=court/detail",
+            url:"./?r=order/detail",
             type:"POST",
             dataType:"json",
             beforeSend:function(){
