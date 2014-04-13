@@ -33,10 +33,17 @@
     }
     else
     {
-        NSLog(@"_contentArray====%@",_contentArray);
-        [_contentArray replaceObjectAtIndex:[[[_changeDic allKeys]objectAtIndex:0] intValue] withObject:[[_changeDic allValues]objectAtIndex:0]];
-        [_conditionTable reloadData];
-    }
+        if (_isFromCourtList==YES) {
+            _isFromCourtList=NO;
+        }
+        else
+        {
+            NSLog(@"_contentArray====%@",_contentArray);
+            [_contentArray replaceObjectAtIndex:[[[_changeDic allKeys]objectAtIndex:0] intValue] withObject:[[_changeDic allValues]objectAtIndex:0]];
+            [_conditionTable reloadData];
+
+        }
+}
 }
 - (void)viewDidLoad
 {
@@ -50,9 +57,10 @@
     self.changeDic=[NSDictionary dictionary];
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     formatter.dateFormat = @"EE";
-    NSString *weekStr = [formatter stringFromDate:[NSDate date]];
+    NSTimeInterval  interval = 24*60*60;
+    NSString *weekStr = [formatter stringFromDate:[[NSDate date]initWithTimeInterval:interval sinceDate:[NSDate date]]];
     if (_selectDateStr==nil) {
-        _selectDateStr=[@"今天" stringByAppendingString:weekStr];;
+        _selectDateStr=[@"明天" stringByAppendingString:weekStr];;
     }
     NSArray *tmpContent=@[@"青岛",_selectDateStr,@"9:00",@"选择价格",@"球场名称"];
     for (int i=0; i<[tmpContent count]; i++) {
@@ -305,6 +313,9 @@
 {
     ListCourtViewController *courtVc=[[ListCourtViewController alloc]init];
     courtVc.courtTitle=[[[_contentArray objectAtIndex:0] stringByAppendingString:[_contentArray objectAtIndex:1]] stringByAppendingString:[_contentArray objectAtIndex:2]];
+    courtVc.dateStr=[_contentArray objectAtIndex:1];
+    courtVc.timeStr=[_contentArray objectAtIndex:2];
+    self.hidesBottomBarWhenPushed=YES;
     [self.navigationController pushViewController:courtVc animated:YES];
 }
 #pragma mark - DSLCalendarViewDelegate methods

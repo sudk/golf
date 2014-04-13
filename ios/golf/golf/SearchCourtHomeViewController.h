@@ -25,4 +25,5 @@
 @property(nonatomic,strong)NSArray *timeArray;
 @property(nonatomic,strong)UIView *timePickView;
 @property(nonatomic,strong)NSString *selectTime;
+@property(nonatomic,assign)BOOL isFromCourtList;
 @end

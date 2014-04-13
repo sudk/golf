@@ -7,6 +7,7 @@
 //
 
 #import "BaseViewController.h"
+#import "Utils.h"
 
 @interface BaseViewController ()
 
@@ -27,7 +28,7 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    self.view.backgroundColor=[UIColor whiteColor];
+    self.view.backgroundColor=[Utils colorWithHexString:@"#237fca"];
     if ([self respondsToSelector:@selector(setEdgesForExtendedLayout:)])
     {
         [self setEdgesForExtendedLayout:UIRectEdgeNone];
