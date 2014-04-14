@@ -30,11 +30,11 @@ return array(
             'class' => 'CPhpAuthManager',
         ),
         'db' => array(
-            'connectionString' => 'mysql:host=127.0.0.1;port=3306; dbname=golf',
+            'connectionString' => 'mysql:host=115.29.150.98;port=3306; dbname=golf',
             'emulatePrepare' => true,
             'enableProfiling'=>true,
             'username' => 'root',
-            'password' => '',
+            'password' => '123456',
             'charset' => 'utf8',
         ),
         // uncomment the following to use a MySQL database
