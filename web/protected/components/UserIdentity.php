@@ -54,7 +54,7 @@ class UserIdentity extends CUserIdentity
             'opt_detail'=>'管理员登陆',
             'opt_status'=>'00',
         );
-        Systemlog::addLog($log_args);
+        Operatorlog::addLog($log_args);
 
         return !$this->errorCode;
     }

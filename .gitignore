@@ -1,16 +1,10 @@
 
-web/.idea/.name
+web/.idea/*
 
-web/.idea/encodings.xml
+web/assets/3360bef8/pager.css
 
-web/.idea/misc.xml
+web/protected/runtime/application.log
 
-web/.idea/modules.xml
+web/assets/*
 
-web/.idea/scopes/scope_settings.xml
-
-web/.idea/vcs.xml
-
-*.iml
-
-web/.idea/workspace.xml
+web/protected/config/main.php
