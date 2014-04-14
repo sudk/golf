@@ -4,3 +4,7 @@ web/.idea/*
 web/assets/3360bef8/pager.css
 
 web/protected/runtime/application.log
+
+web/assets/*
+
+web/protected/config/main.php

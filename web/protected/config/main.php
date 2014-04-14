@@ -56,8 +56,9 @@ return array(
             ),
     ),
     'modules'=>array(
-        'log'       =>array(),
-        'operator'       =>array(),
+        'cmd'=>array(),
+        'log'=>array(),
+        'operator'=>array(),
         'msg'=>array(),
         'rpt'=>array(),
         'user'=>array(),
