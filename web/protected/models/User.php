@@ -26,9 +26,9 @@ class User extends CActiveRecord {
     public function rules(){
         return array(
              //安全性
-         
-            array('user_id,user_name,phone,email,sex,remark,record_time,status', 'safe', 'on' => 'modify'),
-
+            array('user_id,user_name,phone,card_no,email,sex,remark,record_time,status,balance,point', 'safe', 'on' => 'modify'),
+            array('user_id,user_name,phone,card_no,passwd,email,sex,remark,record_time,status,balance,point', 'safe', 'on' => 'create'),
+            array('phone,passwd','required','on'=>'create'),
             //array('password', 'compare', 'compareAttribute'=>'passwordc', 'on'=>'create,modify'),
          );
     }
@@ -155,10 +155,10 @@ class User extends CActiveRecord {
     }
 
 
-    
-    
+
+
     public static function GetBoxAr(){
-    	
+
     	$rows = Yii::app()->db->createCommand()
     	->select("id,name,type,abbreviation")
     	->from("g_operator")

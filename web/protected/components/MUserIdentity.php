@@ -23,6 +23,22 @@ class MUserIdentity extends CUserIdentity
 
     private function auth()
     {
+        $user=User::model()->find('phone=:phone ', array(':phone' => $this->username));
+
+        //var_dump($operator);exit;
+        if ($user == null) {
+            $this->errorCode = self::ERROR_USERNAME_INVALID;
+            return false;
+        }
+        if ($user->status != User::STATUS_NORMAL) {
+            $this->errorCode = self::ERROR_USERNAME_INVALID;
+            return false;
+        }
+
+        if (crypt($this->password,$user->passwd) != $user->passwd) {
+            $this->errorCode = self::ERROR_PASSWORD_INVALID;
+            return false;
+        }
 
         $this->errorCode = self::ERROR_NONE;
 

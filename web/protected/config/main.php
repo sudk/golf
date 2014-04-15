@@ -54,6 +54,9 @@ return array(
 		 'fcache'=>array(
             'class'=>'system.caching.CFileCache'
             ),
+        'command'=>array(
+            'class'=>'application.components.Command'
+        ),
     ),
     'modules'=>array(
         'cmd'=>array(),

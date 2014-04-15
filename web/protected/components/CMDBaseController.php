@@ -3,16 +3,8 @@
  * Controller is the customized base controller class.
  * All controller classes for this application should extend from this base class.
  */
-class MBaseController extends CController
+class CMDBaseController extends CController
 {
-    public $cmdObj;
-    public $cmd;
-
-    const WRONG_FORMAT=-1;
-    const SUCCESS=0;
-    const NAME_OR_PASSWORD_FALSE=1;
-    const KEY_TIME_OUT=-2;
-    const MISSING_PARAMETER=-3;
 
     public function filters()
     {
@@ -24,10 +16,10 @@ class MBaseController extends CController
     public function accessRules() {
         return array(
             array('allow',
-                'actions' => array('login','security'),
                 'users' => array('*'),
             ),
             array('allow',
+                'actions' => array('u'),
                 'users' => array('@'),
             ),
             array('deny',
@@ -38,7 +30,7 @@ class MBaseController extends CController
 
      public function init()
      {
-         //session_start();
+
      }
 
     /**
@@ -48,16 +40,6 @@ class MBaseController extends CController
 	*/
 	protected function beforeAction($action)
 	{
-        if(Yii::app()->command->cmdObj){
-            if(isset(Yii::app()->command->cmd)){
-                return true;
-            }else{
-                echo json_encode(array('result'=>self::MISSING_PARAMETER,'desc'=>Yii::app()->params['cmd_status'][self::MISSING_PARAMETER]));
-                return false;
-            }
-        }else{
-            echo json_encode(array('result'=>self::WRONG_FORMAT,'desc'=>Yii::app()->params['cmd_status'][self::WRONG_FORMAT]));
-            return false;
-        }
+        return true;
     }
 }

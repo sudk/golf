@@ -20,7 +20,7 @@ class CommandController extends MBaseController
     }
 
     public function actionIndex(){
-        Yii::app()->runController("cmd/user/login");
+        Yii::app()->runController("cmd/".Yii::app()->command->cmd);
     }
 
 }
