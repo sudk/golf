@@ -154,8 +154,14 @@ class User extends CActiveRecord {
         return $rs;
     }
 
-
-
+    public static function FindOneByPhone($phone){
+        $row = Yii::app()->db->createCommand()
+            ->select("user_id,user_name,phone,card_no,email,sex,remark,record_time,status,balance,point")
+            ->from("g_user")
+            ->where("phone='{$phone}'")
+            ->queryRow();
+        return $row;
+    }
 
     public static function GetBoxAr(){
 

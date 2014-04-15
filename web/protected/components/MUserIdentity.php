@@ -24,7 +24,7 @@ class MUserIdentity extends CUserIdentity
     private function auth()
     {
         $user=User::model()->find('phone=:phone ', array(':phone' => $this->username));
-
+        //var_dump($user);
         //var_dump($operator);exit;
         if ($user == null) {
             $this->errorCode = self::ERROR_USERNAME_INVALID;

@@ -13,21 +13,6 @@ class CMDBaseController extends CController
         );
     }
 
-    public function accessRules() {
-        return array(
-            array('allow',
-                'users' => array('*'),
-            ),
-            array('allow',
-                'actions' => array('u'),
-                'users' => array('@'),
-            ),
-            array('deny',
-                'actions' => array(),
-            ),
-        );
-    }
-
      public function init()
      {
 
