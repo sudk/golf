@@ -4,3 +4,9 @@ web/.idea/*
 web/assets/3360bef8/pager.css
 
 web/protected/runtime/application.log
+
+web/assets/*
+
+web/protected/config/main.php
+
+技术文档/移动端接口文档1.0.xls
