@@ -9,6 +9,7 @@ class Command
     public $cmd=false;
     public function init(){
         $pd=file_get_contents("php://input");
+        Yii::log($pd,'info','application.firebuglog');
         $cmd=json_decode(trim($pd));
         if($cmd){
             $this->cmdObj=$cmd;

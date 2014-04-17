@@ -8,3 +8,5 @@ web/protected/runtime/application.log
 web/assets/*
 
 web/protected/config/main.php
+
+web/protected/runtime/*
