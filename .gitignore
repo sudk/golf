@@ -10,3 +10,5 @@ web/assets/*
 web/protected/config/main.php
 
 web/protected/runtime/*
+
+web/protected/runtime/application.log
