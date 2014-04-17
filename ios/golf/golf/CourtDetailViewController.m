@@ -9,6 +9,9 @@
 #import "CourtDetailViewController.h"
 #import "UIImageView+WebCache.h"
 #import "CourtDetailInfoViewController.h"
+#import "UIButton+WebCache.h"
+#import "AHPreviewController.h"
+#import "EvaluateViewController.h"
 
 @interface CourtDetailViewController ()
 
@@ -31,6 +34,7 @@
 	// Do any additional setup after loading the view.
     self.title=@"球场详情";
     self.navigationItem.leftBarButtonItem=[self topBarButtonItem:@"" andHighlightedName:@""];
+    self.evaluateArray=@[@"80",@"80",@"80",@"80"];
 
     self.timeArray=@[@"04:00",@"04:30",@"05:00",@"05:30",@"06:00",@"06:30",@"07:00",@"07:30",@"08:00",@"08:30",@"09:00",@"09:30",@"10:00",@"10:30",@"11:00",@"11:30",@"12:00",@"12:30",@"13:00",@"13:30",@"14:00",@"14:30",@"15:00",@"15:30",@"16:00",@"16:30",@"17:00",@"17:30",@"18:00",@"18:30",@"19:00",@"19:30",@"20:00"];
     NSString *dateAndTimeStr=[[_dateStr stringByAppendingString:@"&"] stringByAppendingString:_timeStr];
@@ -100,9 +104,25 @@
                 }
                 case 1:
                 {
-                    UIImageView *courtLargeImgv=[[UIImageView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 165)];
-                    [courtLargeImgv setImageWithURL:[NSURL URLWithString:@"http://www.5aihuan.com/images/n_tjian/pp_11.jpg"] placeholderImage:[UIImage imageNamed:@"defaultImg"]];
-                    [cell.contentView addSubview:courtLargeImgv];
+                    UIView *courtView=[[UIView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 165)];
+                    UIButton *courtLargeBtn=[[UIButton alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 165)];
+                    [courtLargeBtn setImageWithURL:[NSURL URLWithString:@"http://www.5aihuan.com/images/n_tjian/pp_11.jpg"] forState:UIControlStateNormal];
+                    [courtLargeBtn addTarget:self action:@selector(showImg) forControlEvents:UIControlEventTouchUpInside];
+                    [courtView addSubview:courtLargeBtn];
+                    UIButton *evaluateBtn=[[UIButton alloc]initWithFrame:CGRectMake(0, 125, SCREEN_WIDTH, 40)];
+                    NSString *btnTitle=[[[[[[[@"设计" stringByAppendingString:[_evaluateArray objectAtIndex:0]] stringByAppendingString:@" 草坪"] stringByAppendingString:[_evaluateArray objectAtIndex:1]]stringByAppendingString:@" 设施"] stringByAppendingString:[_evaluateArray objectAtIndex:2]]stringByAppendingString:@" 服务"] stringByAppendingString:[_evaluateArray objectAtIndex:2]];
+                    evaluateBtn.titleLabel.font=[UIFont systemFontOfSize:14];
+                    evaluateBtn.titleLabel.textAlignment=NSTextAlignmentLeft;
+                    [evaluateBtn setTitle:btnTitle forState:UIControlStateNormal];
+                    evaluateBtn.alpha=0.5;
+                    [evaluateBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+                    [evaluateBtn setBackgroundColor:[UIColor blackColor]];
+                    [evaluateBtn addTarget:self action:@selector(evaluateMethod) forControlEvents:UIControlEventTouchUpInside];
+                    [courtView addSubview:evaluateBtn];
+                    UIImageView *imgv=[[UIImageView alloc]initWithFrame:CGRectMake(270, 127, 36, 36)];
+                    imgv.image=[UIImage imageNamed:@"setting_arrow_normal"];
+                    [courtView addSubview:imgv];
+                    [cell.contentView addSubview:courtView];
                     break;
                 }
                 case 2:
@@ -149,9 +169,6 @@
             }
             break;
         }
-
-            
-            
         default:
             break;
     }
@@ -331,6 +348,16 @@
 - (BOOL)day:(NSDateComponents*)day1 isBeforeDay:(NSDateComponents*)day2 {
     return ([day1.date compare:day2.date] == NSOrderedAscending);
 }
-
-
+-(void)showImg
+{
+    AHPreviewController *preview=[[AHPreviewController alloc]init];
+    preview.previewImgArray=@[@"http://www.5aihuan.com/images/n_tjian/pp_11.jpg",@"http://www.5aihuan.com/images/n_tjian/pp_11.jpg",@"http://www.5aihuan.com/images/n_tjian/pp_11.jpg",@"http://www.5aihuan.com/images/n_tjian/pp_11.jpg",@"http://www.5aihuan.com/images/n_tjian/pp_11.jpg"];
+    preview.previewTitle=@"图片浏览";
+    [self.navigationController pushViewController:preview animated:YES];
+}
+-(void)evaluateMethod
+{
+    EvaluateViewController *evaluate=[[EvaluateViewController alloc]init];
+    [self.navigationController pushViewController:evaluate animated:YES];
+}
 @end

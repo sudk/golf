@@ -130,7 +130,6 @@
 {
     NSArray *viewcontrols=[self.navigationController viewControllers];
     SearchCourtHomeViewController *searchVc=(SearchCourtHomeViewController*)[viewcontrols objectAtIndex:[viewcontrols count]-2];
-    searchVc.isFromCourtList=YES;
     [self.navigationController popToViewController:searchVc animated:YES];
 }
 -(void)sgAction:(ITTSegement *)sg

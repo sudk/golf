@@ -43,6 +43,9 @@
 		71996A5918EBA3730050D3EF /* tab_contact_pressed.png in Resources */ = {isa = PBXBuildFile; fileRef = 71996A4918EBA3730050D3EF /* tab_contact_pressed.png */; };
 		71996A5A18EBA3730050D3EF /* tab_contact_normal@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 71996A4A18EBA3730050D3EF /* tab_contact_normal@2x.png */; };
 		71996A5B18EBA3730050D3EF /* tab_contact_pressed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 71996A4B18EBA3730050D3EF /* tab_contact_pressed@2x.png */; };
+		71A9EF2518FD671C001B26EF /* AHPreviewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 71A9EF2418FD671C001B26EF /* AHPreviewController.m */; };
+		71A9EF2818FD7C12001B26EF /* EvaluateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 71A9EF2718FD7C12001B26EF /* EvaluateViewController.m */; };
+		71A9EF2B18FD7DC1001B26EF /* EvaluateCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 71A9EF2A18FD7DC1001B26EF /* EvaluateCell.m */; };
 		71B5845718EB0B140070A650 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 71B5845618EB0B140070A650 /* Foundation.framework */; };
 		71B5845918EB0B140070A650 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 71B5845818EB0B140070A650 /* CoreGraphics.framework */; };
 		71B5845B18EB0B140070A650 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 71B5845A18EB0B140070A650 /* UIKit.framework */; };
@@ -183,6 +186,12 @@
 		71996A4918EBA3730050D3EF /* tab_contact_pressed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tab_contact_pressed.png; sourceTree = "<group>"; };
 		71996A4A18EBA3730050D3EF /* tab_contact_normal@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tab_contact_normal@2x.png"; sourceTree = "<group>"; };
 		71996A4B18EBA3730050D3EF /* tab_contact_pressed@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tab_contact_pressed@2x.png"; sourceTree = "<group>"; };
+		71A9EF2318FD671C001B26EF /* AHPreviewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AHPreviewController.h; sourceTree = "<group>"; };
+		71A9EF2418FD671C001B26EF /* AHPreviewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AHPreviewController.m; sourceTree = "<group>"; };
+		71A9EF2618FD7C12001B26EF /* EvaluateViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EvaluateViewController.h; sourceTree = "<group>"; };
+		71A9EF2718FD7C12001B26EF /* EvaluateViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EvaluateViewController.m; sourceTree = "<group>"; };
+		71A9EF2918FD7DC1001B26EF /* EvaluateCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EvaluateCell.h; sourceTree = "<group>"; };
+		71A9EF2A18FD7DC1001B26EF /* EvaluateCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EvaluateCell.m; sourceTree = "<group>"; };
 		71B5845318EB0B140070A650 /* golf.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = golf.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		71B5845618EB0B140070A650 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		71B5845818EB0B140070A650 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -347,6 +356,8 @@
 				71EDF1E418F6CC3200F740A3 /* customCell */,
 				71996A2918EB9DFB0050D3EF /* SearchCourtHomeViewController.h */,
 				71996A2A18EB9DFB0050D3EF /* SearchCourtHomeViewController.m */,
+				71A9EF2318FD671C001B26EF /* AHPreviewController.h */,
+				71A9EF2418FD671C001B26EF /* AHPreviewController.m */,
 				71D4C20418F24AFE002AC06F /* ListInfoViewController.h */,
 				71D4C20518F24AFE002AC06F /* ListInfoViewController.m */,
 				71D4C20B18F27A09002AC06F /* KeyWordViewController.h */,
@@ -363,6 +374,8 @@
 				71EDF20018F6DB8000F740A3 /* CourtDetailViewController.m */,
 				717637E018F9936000B8BC6E /* CourtDetailInfoViewController.h */,
 				717637E118F9936000B8BC6E /* CourtDetailInfoViewController.m */,
+				71A9EF2618FD7C12001B26EF /* EvaluateViewController.h */,
+				71A9EF2718FD7C12001B26EF /* EvaluateViewController.m */,
 			);
 			name = searchCourt;
 			sourceTree = "<group>";
@@ -556,6 +569,8 @@
 			children = (
 				71EDF1E518F6CC4F00F740A3 /* ListCourtCell.h */,
 				71EDF1E618F6CC4F00F740A3 /* ListCourtCell.m */,
+				71A9EF2918FD7DC1001B26EF /* EvaluateCell.h */,
+				71A9EF2A18FD7DC1001B26EF /* EvaluateCell.m */,
 			);
 			name = customCell;
 			sourceTree = "<group>";
@@ -777,6 +792,7 @@
 				71D4C21B18F27AA0002AC06F /* Array.mm in Sources */,
 				71D4C21D18F27AA0002AC06F /* SearchCoreManager.mm in Sources */,
 				71996A3A18EBA2EA0050D3EF /* Utils.m in Sources */,
+				71A9EF2818FD7C12001B26EF /* EvaluateViewController.m in Sources */,
 				7103AA4418F599CB00E3F32E /* SDWebImageDownloaderOperation.m in Sources */,
 				7103AA4618F599CB00E3F32E /* SDWebImagePrefetcher.m in Sources */,
 				7103AA4818F599CB00E3F32E /* UIImageView+WebCache.m in Sources */,
@@ -787,8 +803,10 @@
 				71FD86FB18ECFDE80071C88F /* NSDate+DSLCalendarView.m in Sources */,
 				71996A2E18EB9E360050D3EF /* SpecialHomeViewController.m in Sources */,
 				71E18A3F18F6265700998978 /* ChineseString.m in Sources */,
+				71A9EF2B18FD7DC1001B26EF /* EvaluateCell.m in Sources */,
 				7103AA4718F599CB00E3F32E /* UIButton+WebCache.m in Sources */,
 				71996A2118EB98CC0050D3EF /* GolfMainViewController.m in Sources */,
+				71A9EF2518FD671C001B26EF /* AHPreviewController.m in Sources */,
 				71B5849E18EB0BC90070A650 /* GolfNavgationBarAdd.m in Sources */,
 				717637E218F9936000B8BC6E /* CourtDetailInfoViewController.m in Sources */,
 				71D4C21A18F27AA0002AC06F /* pinyin.c in Sources */,

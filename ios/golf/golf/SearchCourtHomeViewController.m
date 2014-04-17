@@ -33,15 +33,11 @@
     }
     else
     {
-        if (_isFromCourtList==YES) {
-            _isFromCourtList=NO;
-        }
-        else
-        {
+        if (_isFromUpdate==YES) {
+            _isFromUpdate=NO;
             NSLog(@"_contentArray====%@",_contentArray);
             [_contentArray replaceObjectAtIndex:[[[_changeDic allKeys]objectAtIndex:0] intValue] withObject:[[_changeDic allValues]objectAtIndex:0]];
             [_conditionTable reloadData];
-
         }
 }
 }
@@ -211,7 +207,7 @@
 -(void)selectDateCustomMethod:(int)tag
 {
     self.changeDic=[NSDictionary dictionaryWithObject:[_contentArray objectAtIndex:tag] forKey:[NSString stringWithFormat:@"%d",tag]];
-    self.calendarView=[[DSLCalendarView alloc]initWithFrame:CGRectMake(0, SCREEN_HEIGHT-49-20-330, SCREEN_WIDTH, 330)];
+    self.calendarView=[[DSLCalendarView alloc]initWithFrame:CGRectMake(0, SCREEN_HEIGHT-20-330, SCREEN_WIDTH, 330)];
     _calendarView.delegate = self;
     _calendarView.backgroundColor=[UIColor whiteColor];
     [self.view addSubview:_calendarView];

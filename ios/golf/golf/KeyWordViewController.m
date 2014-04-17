@@ -31,7 +31,9 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    self.navigationItem.leftBarButtonItem=[self topBarButtonItem:@"" andHighlightedName:@""];
+    UIButton *keywordBackBtn=[self leftButton:@"" andHighlightedName:@""];
+    [keywordBackBtn addTarget:self action:@selector(keywordBackMethod) forControlEvents:UIControlEventTouchUpInside];
+//    self.navigationItem.leftBarButtonItem=[self topBarButtonItem:@"" andHighlightedName:@""];
     _searchByName=[NSMutableArray array];
     _searchByPhone=[NSMutableArray array];
     self.resultDic=[NSMutableDictionary dictionary];
@@ -118,7 +120,8 @@
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if ([indexPath row]%2!=0) {
-        cell.backgroundColor=[Utils  colorWithHexString:@"#f0f1f3"];
+//        cell.backgroundColor=[Utils  colorWithHexString:@"#f0f1f3"];
+        cell.backgroundColor=[UIColor whiteColor];
     }
 }
 - (void)tableView:(UITableView *)_tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -150,6 +153,7 @@
     NSDictionary *tmpDic=[NSDictionary dictionaryWithObject:courtName forKey:[[_changeDic allKeys] objectAtIndex:0]];
     NSArray *viewcontrols=[self.navigationController viewControllers];
     SearchCourtHomeViewController *courtVc=(SearchCourtHomeViewController*)[viewcontrols objectAtIndex:[viewcontrols count]-2];
+    courtVc.isFromUpdate=YES;
     courtVc.changeDic=tmpDic;
     [self.navigationController popToViewController:courtVc animated:YES];
     NSLog(@"courtName=====%@",courtName);
@@ -160,6 +164,12 @@
     [_courtNameTable reloadData];
 }
 
-
+-(void)keywordBackMethod
+{
+    NSArray *viewControls=[self.navigationController viewControllers];
+    SearchCourtHomeViewController *searchVc=(SearchCourtHomeViewController *)[viewControls objectAtIndex:[viewControls count]-2];
+    searchVc.isFromUpdate=YES;
+    [self.navigationController popToViewController:searchVc animated:YES];
+}
 
 @end

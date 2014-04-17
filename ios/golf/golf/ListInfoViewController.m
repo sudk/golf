@@ -29,7 +29,10 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     self.title=_infoTitle;
-    self.navigationItem.leftBarButtonItem=[self topBarButtonItem:@"" andHighlightedName:@""];
+//    self.navigationItem.leftBarButtonItem=[self topBarButtonItem:@"" andHighlightedName:@""];
+    UIButton *cityBackBtn=[self leftButton:@"" andHighlightedName:@""];
+    [cityBackBtn addTarget:self action:@selector(cityBackMethod) forControlEvents:UIControlEventTouchUpInside];
+    self.navigationItem.leftBarButtonItem=[[UIBarButtonItem alloc]initWithCustomView:cityBackBtn];
     if ([_infoTitle isEqualToString:@"城市"]) {
         self.infoArray=@[@"青岛",@"上海",@"昆明",@"北京",@"济南",@"深圳"];
     }
@@ -77,7 +80,15 @@
     NSDictionary *tmpDic=[NSDictionary dictionaryWithObject:[_infoArray objectAtIndex:[indexPath row]] forKey:[[_changeDic allKeys]objectAtIndex:0]];
     NSArray *viewControls=[self.navigationController viewControllers];
     SearchCourtHomeViewController *searchVc=(SearchCourtHomeViewController *)[viewControls objectAtIndex:[viewControls count]-2];
+    searchVc.isFromUpdate=YES;
     searchVc.changeDic=tmpDic;
+    [self.navigationController popToViewController:searchVc animated:YES];
+}
+-(void)cityBackMethod
+{
+    NSArray *viewControls=[self.navigationController viewControllers];
+    SearchCourtHomeViewController *searchVc=(SearchCourtHomeViewController *)[viewControls objectAtIndex:[viewControls count]-2];
+    searchVc.isFromUpdate=YES;
     [self.navigationController popToViewController:searchVc animated:YES];
 }
 @end

@@ -4,7 +4,7 @@
 //
 //  Created by zkjc on 11-10-25.
 //  Copyright 2011年 __MyCompanyName__. All rights reserved.
-//
+//[Utils colorWithHexString:@"#f0f1f3"]
 
 #import "GolfTabBarController.h"
 
@@ -37,7 +37,7 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:YES];
-    self.view.backgroundColor=[Utils colorWithHexString:@"#f0f1f3"];
+    self.view.backgroundColor=[UIColor whiteColor];
     
     if ([self.tabBar viewWithTag:1]) {
         return;
@@ -75,7 +75,6 @@
     [(UIButton *)[self.tabBar viewWithTag:1] setBackgroundImage:[UIImage imageNamed:@"tab_kx_pressed.png"] forState:UIControlStateNormal];
     [(UIButton *)[self.tabBar viewWithTag:2] setBackgroundImage:[UIImage imageNamed:@"tab_contact_normal.png"] forState:UIControlStateNormal];
     [(UIButton *)[self.tabBar viewWithTag:3] setBackgroundImage:[UIImage imageNamed:@"tab_setting_normal.png"] forState:UIControlStateNormal];
-    
     [(UIButton *)[self.tabBar viewWithTag:4] setBackgroundImage:[UIImage imageNamed:@"tab_num_normal.png"] forState:UIControlStateNormal];
     self.selectedIndex=0;
 }
