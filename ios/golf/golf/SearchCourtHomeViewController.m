@@ -307,12 +307,31 @@
 }
 -(void)searchMethod
 {
+    _httpUtils=[[HttpUtils alloc]init];
+    
+    NSMutableDictionary *dic=[NSMutableDictionary dictionary];
+    [dic setObject:@"user/login" forKey:@"cmd"];
+    [dic setObject:@"13335130151" forKey:@"phone"];
+    [dic setObject:@"123" forKey:@"passwd"]
+    ;
+
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(defaultLoginMethod:) name:@"com.5aihuan.ahLoginMethod" object:nil];
+    [_httpUtils startRequest:dic andUrl:baseUrlStr andRequestField:@"user/login" andNotificationName:@"com.5aihuan.ahLoginMethod"];
+    return;
     ListCourtViewController *courtVc=[[ListCourtViewController alloc]init];
     courtVc.courtTitle=[[[_contentArray objectAtIndex:0] stringByAppendingString:[_contentArray objectAtIndex:1]] stringByAppendingString:[_contentArray objectAtIndex:2]];
     courtVc.dateStr=[_contentArray objectAtIndex:1];
     courtVc.timeStr=[_contentArray objectAtIndex:2];
     self.hidesBottomBarWhenPushed=YES;
     [self.navigationController pushViewController:courtVc animated:YES];
+}
+-(void)defaultLoginMethod:(NSNotification *)notification
+{
+    NSDictionary *loginDic=[notification object];
+    UILabel *l=[[UILabel alloc] initWithFrame:CGRectMake(50, 50, 250, 100)];
+    l.text=[loginDic objectForKey:@"desc"];
+    l.backgroundColor=[UIColor clearColor];
+    [self.view addSubview:l];
 }
 #pragma mark - DSLCalendarViewDelegate methods
 
