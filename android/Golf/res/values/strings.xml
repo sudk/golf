@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">青之鸟高尔夫</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    
+    <!-- MainActivity -->
+    <string name="court">球场</string>
+    <string name="account">账户</string>
+    <string name="find">发现</string>
+    
+    <!-- 用户信息 -->
+    <string name="account_manager">账户管理</string>
+    <string name="register">注册</string>
+    <string name="register_title">用户注册</string>
+    <string name="login">登录</string>
+    <string name="login_title">用户登录</string>
+    <string name="phone">手机号</string>
+    <string name="password">密码</string>
+    <string name="recommender">推荐人</string>
+    <string name="email">Email</string>
+    <string name="vipcard">VIP卡</string>
+    <string name="order_to_pay">待支付订单</string>
+    <string name="order_manager">订单管理</string>
+    <string name="hint_input_phone_number">请输入手机号码</string>
+    <string name="hint_password_length">6至16位密码</string>
+    <string name="hint_recommand_code">验证码，没有可不填</string>
+    <string name="hint_email">请输入电子邮箱地址</string>
+    <string name="hint_vip">VIP卡号，没有可不填</string>
+    
+    <string name="account_recharge">账户充值</string>
+    <string name="account_transfer">转账</string>
+    <string name="account_withdraw">余额提现</string>
+    <string name="consumption_details">消费明细</string>
+    <string name="account_changpwd">修改密码</string>
+    <string name="account_logout">退出账户</string>
+    
+    <!-- 球场搜索 -->
+    <string name="city">城市</string>
+	<string name="playdate">打球日期</string>
+	<string name="playtime">打球时间</string>
+	<string name="keyword">关键字</string>
+	<string name="name_of_court">球场名称</string>
+	<string name="current_position">当前位置</string>
+
+	
+	<!-- 通用 -->
+	<string name="note">提示</string>
+    <string name="cancel">取消</string>
+    <string name="no_sd_card">找不到SD卡</string>
+    <string name="confirm">确定</string>
+    <string name="search">搜索</string>
+    
+    
+</resources>

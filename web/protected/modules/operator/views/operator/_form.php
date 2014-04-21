@@ -61,6 +61,22 @@ echo $form->activeHiddenField($model, 'cities', array(), '');
         <td class="mivalue"><?php echo $form->activePasswordField($model, 'passwordc', array('title' => '本项必填', 'class' => 'input_text', 'maxlength' => 16), $pass_r); ?></td>
     </tr>
     <tr>
+         <td class="maxname">操作员类型：</td>
+        <td class="mivalue">
+            <?php 
+            if($__model__ == 'edit'){
+                echo Operator::GetType($model->type);
+                echo $form->activeHiddenField($model,'type',array());
+            }else{
+                echo $form->activeDropDownList($model, 'type', Operator::GetType(), array('title' => '本项必选', 'class' => 'input_text','id'=>'operator_type'), 'required'); 
+            }
+            ?>
+        </td>
+        <td class="maxname" id="oper_agent_id1" style="display: none;">所属代理商：</td>
+        <td class="mivalue" id="oper_agent_id" style="display: none;">
+            <?php 
+            echo $form->activeDropDownList($model, 'agent_id',Agent::getAgentList(), array('title' => '本项必填','class' => 'input_text'), ''); 
+            ?></td>
     </tr>
     <tr>
         <td class="maxname">状态：</td>
@@ -83,6 +99,23 @@ echo $form->activeHiddenField($model, 'cities', array(), '');
 </table>
 <?php $this->endWidget();?>
 <script type="text/javascript">
+    jQuery(document).ready(function(){
+        <?php
+        if($__model__=='edit' && $model->type == '2'){
+            ?>
+                jQuery("#oper_agent_id").show();
+                jQuery("#oper_agent_id1").show();
+                <?php
+        }
+        ?>
+        jQuery("#operator_type").click(function(){
+            var v = jQuery(this).val();
+            if(v == '2'){
+                jQuery("#oper_agent_id").show();
+                jQuery("#oper_agent_id1").show();
+            }
+        });
+    });
     var flag = true;
     function formSubmit() {
         checkMyForm();

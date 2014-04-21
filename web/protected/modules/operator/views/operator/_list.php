@@ -3,6 +3,7 @@ $t->echo_grid_header();
 if (is_array($rows))
 {
 	$j = 1;
+        $type_list = Operator::GetType();
     foreach ($rows as $i => $row)
     {
         $t->begin_row("onclick","getDetail(this,'{$row['id']}');");
@@ -11,7 +12,9 @@ if (is_array($rows))
         $link .= CHtml::link('权限',"javascript:authEdit('{$row['id']}','{$row['name']}')", array());
         $link .= CHtml::link('删除',"javascript:itemDelete('{$row['id']}','{$row['name']}')", array());
 		$t->echo_td($num);
+                $t->echo_td($type_list[$row['type']]); //
         $t->echo_td($row['id']);
+        
         $t->echo_td($row['name']); //
         $t->echo_td($row['tel']);
         $t->echo_td($row['jobtitle']);

@@ -22,8 +22,8 @@ class MsgListener extends CActiveRecord {
     public function rules(){
         return array(
             //安全性
-            array('msgid,listener,listenerid,sender,senderid,type,title,recordtime,isread', 'safe', 'on' => 'create'),
-            array('msgid,listener,listenerid,sender,senderid,type,title,recordtime,isread', 'safe', 'on' => 'modify'),
+            array('msgid,listener,listenerid,sender,senderid,type,title,record_time,isread', 'safe', 'on' => 'create'),
+            array('msgid,listener,listenerid,sender,senderid,type,title,record_time,isread', 'safe', 'on' => 'modify'),
 
             //array('password', 'compare', 'compareAttribute'=>'passwordc', 'on'=>'create,modify'),
         );
@@ -128,7 +128,7 @@ class MsgListener extends CActiveRecord {
         return $rs;
     }
 
-    public static function GetByCd($condition,$params=array(),$limit=20,$offset=0,$order='recordtime DESC'){
+    public static function GetByCd($condition,$params=array(),$limit=20,$offset=0,$order='record_time DESC'){
         $total_num = MsgListener::model()->count($condition, $params);
         $rows= Yii::app()->db->createCommand()
             ->select("*")

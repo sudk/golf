@@ -1,11 +1,11 @@
 <?php
 
 /**
- * 学校报表
+ * 充值记录报表
  *
  * @author sudk
  */
-class RechargeController extends AuthBaseController
+class RechargeController extends BaseController
 {
 
     public $defaultAction = 'list';
@@ -19,7 +19,7 @@ class RechargeController extends AuthBaseController
     private function genDataGrid()
     {
         $t = new SimpleGrid($this->gridId);
-        $t->url = 'index.php?r=log/translog/grid';
+        $t->url = 'index.php?r=rpt/recharge/grid';
         $t->updateDom = 'datagrid';
         $t->set_header('序号', '30', '');
         $t->set_header('商户编号', '60', 'posid');
@@ -56,7 +56,7 @@ class RechargeController extends AuthBaseController
         $t = $this->genDataGrid();
         $this->saveUrl();
 
-        $list = Translog::queryList($page, $this->pageSize, $args);
+        $list = Systemlog::queryList($page, $this->pageSize, $args);
 
         $this->renderPartial('_list', array('t' => $t, 'rows' => $list['rows'], 'cnt' => $list['total_num'], 'curpage' => $list['page_num']));
     }
@@ -67,7 +67,7 @@ class RechargeController extends AuthBaseController
     private function saveUrl()
     {
         $a = Yii::app()->session['list_url'];
-        $a['rpt/school'] = str_replace("r=log/translog/grid", "r=log/translog/list", $_SERVER["QUERY_STRING"]);
+        $a['rpt/school'] = str_replace("r=rpt/recharge/grid", "r=rpt/recharge/list", $_SERVER["QUERY_STRING"]);
         Yii::app()->session['list_url'] = $a;
     }
 

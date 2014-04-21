@@ -81,7 +81,7 @@ class OutboxController extends BaseController
     public function actionNew(){
         $model=new MsgBox('create');
         $op_ar=Operator::GetBoxAr();
-        //print_r($staff_ar);
+        print_r($op_ar);
         if($_POST['MsgBox']){
             $model->attributes=$_POST['MsgBox'];
             $title=$_POST['MsgBox']['title'];
@@ -132,7 +132,7 @@ class OutboxController extends BaseController
         $msg['status'] = true;
         $rs=Yii::app()->db->createCommand()
             ->select("listener")
-            ->from("msg_listener")
+            ->from("g_msg_listener")
             ->where("msgid='{$id}'")
             ->queryAll();
         if ($rs) {

@@ -18,8 +18,8 @@
         tipsWindown(
             "编辑订单信息", // title：窗口标题
             "iframe:index.php?r=order/edit&id=" + id, // Url：弹窗所加截的页面路径
-            "900", // width：窗体宽度
-            "520", // height：窗体高度
+            "400", // width：窗体宽度
+            "200", // height：窗体高度
             "true", // drag：是否可以拖动（ture为是,false为否）
             "", // time：自动关闭等待的时间，为空代表不会自动关闭
             "true", // showbg：设置是否显示遮罩层（false为不显示,true为显示）

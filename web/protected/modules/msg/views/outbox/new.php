@@ -6,7 +6,7 @@
             <li class="current"><a href="./?r=msg/outbox/new">新建消息</a></li>
         </ul>
         <ul class="sift">
-            <?php $this->renderPartial('_form',array('model' => $model, 'msg' => $msg,'staff_ar'=>$staff_ar));?>
+            <?php $this->renderPartial('_form',array('model' => $model, 'msg' => $msg,'op_ar'=>$op_ar));?>
         </ul>
     </div>
 </div>

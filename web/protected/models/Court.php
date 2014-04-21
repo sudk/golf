@@ -82,8 +82,11 @@ class Court extends CActiveRecord {
             $condition.= ' AND court_id=:court_id';
             $params['court_id'] = $args['court_id'];
         }
-
+        
+        
+        
         $total_num = Court::model()->count($condition, $params); //总记录数
+
         $criteria = new CDbCriteria();
         
     	if($_REQUEST['q_order']==''){
@@ -95,7 +98,6 @@ class Court extends CActiveRecord {
                 $criteria->order = $_REQUEST['q_order'].' ASC';
         }
 
-
         $criteria->condition = $condition;
         $criteria->params = $params;
 
@@ -103,6 +105,7 @@ class Court extends CActiveRecord {
         $pages->pageSize = $pageSize;
         $pages->setCurrentPage($page);
         $pages->applyLimit($criteria);
+
         $rows = Court::model()->findAll($criteria);
 
         $rs['status'] = 0;
@@ -114,25 +117,6 @@ class Court extends CActiveRecord {
         $rs['rows'] = $rows;
 
         return $rs;
-    }
-
-    public static function Search($args = array()){
-
-        $condition = ' 1=1 ';
-        $params = array();
-
-        if ($args['city'] != ''){
-            $condition.= ' AND city=:city';
-            $params['city'] = $args['city'];
-        }
-
-        $row = Yii::app()->db->createCommand()
-            ->select("user_id,user_name,phone,card_no,email,sex,remark,record_time,status,balance,point")
-            ->from("g_court")
-            ->where($condition,$params)
-            ->queryAll();
-        return $row;
-
     }
 }
 

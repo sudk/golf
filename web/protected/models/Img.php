@@ -7,6 +7,15 @@
  */
 class Img extends CActiveRecord {
 
+    
+    
+    const TYPE_COURT_FACILITIES = '2';
+    CONST TYPE_COURT_LOGO = '8';
+    CONST TYPE_ADV = '7';
+    const TYPE_TRIP = '6';
+    
+    
+    
     public static function model($className=__CLASS__){
         return parent::model($className);
     }
@@ -18,6 +27,7 @@ class Img extends CActiveRecord {
     public static function  getType($type=null)
     {
         $rs = array(
+            '8'=>'球场标志',
             '0'=>'球场风景',
             '1'=>'球道',
             '2'=>'球场附近设施',
@@ -71,6 +81,79 @@ class Img extends CActiveRecord {
         $rs['num_of_page'] = $pages->pageSize;
         $rs['rows'] = $rows;
 
+        return $rs;
+    }
+    
+    /**
+     * 上传图片到服务器上
+     * @param type $tmp_name
+     * @param type $file_name
+     * @return string
+     */
+    public static function uploadImg($tmp_file,$tmp_name,$relation_id,$type){
+        $upload_dir = Yii::app()->params['upload_dir'];
+        //路径是以目录/日期/时间+rand(100,999).png
+        $upload_dir .= date('Ymd');
+        if(!is_dir($upload_dir))
+        {
+            @mkdir($upload_dir."/",0777); 
+        }
+        
+        $name_a = explode(".", $tmp_name);
+        $suffix =  $name_a[count($name_a)-1];
+        
+        $file = date('His').  rand(100, 9999);
+        $new_file_path = $upload_dir."/".$file;
+        $new_file_name = $new_file_path.".".$suffix;
+        
+        $rs['status'] = 0;
+        $rs['url'] = date('Ymd')."/".$file.".".$suffix;
+        if(!move_uploaded_file($tmp_file, $new_file_name))
+        {
+            $rs['status'] = -1;
+            $rs['msg'] = "上传图片到服务器失败";
+        }
+        
+        //add data into db
+        $model = new Img();
+        $model->relation_id = $relation_id;
+        $model->type = $type;
+        $model->img_url = $rs['url'];
+        $model->save();
+        
+        return $rs;
+    }
+    
+    
+    public static function delImg($relation_id,$type)
+    {
+        $upload_dir = Yii::app()->params['upload_dir'];
+        
+        $rs['status'] = 0;
+        $rs['msg'] = "";
+        $rows = Img::model()->findAll("relation_id='".$relation_id."' and type='".$type."'");
+        if($rows)
+        {
+            foreach($rows as $row)
+            {
+                $img_url = $row['img_url'];
+                $id = $row['id'];
+                
+                if(Img::model()->deleteByPk($id))
+                {
+                    @unlink($upload_dir.$img_url);
+                }else{
+                    $rs['msg'] .= "编号为".$id."的图片删除失败";
+                }
+                
+            }
+        }
+        if($rs['msg']!="")
+        {
+            $rs['status'] = -1;
+            
+        }
+        
         return $rs;
     }
 }

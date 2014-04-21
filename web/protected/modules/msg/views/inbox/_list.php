@@ -9,10 +9,10 @@ if (is_array($rows))
 		$num = ($curpage-1)*$this->pageSize + $j++;
         $t->begin_row("onclick","getDetail(this,'{$row['msgid']}');");
 		$t->echo_td($num); 
-        $t->echo_td(PosmUtils::DF_MsgTitle($row['title'])); //学校编号
+        $t->echo_td(htmlspecialchars($row['title'])); //学校编号
         $t->echo_td(MsgListener::GetType($row['type']));
         $t->echo_td($row['sender']);
-        $t->echo_td($row['recordtime']);
+        $t->echo_td($row['record_time']);
         $t->echo_td(CHtml::link('详细',"javascript:itemDetail('{$row['msgid']}')", array()));
         $t->end_row();
     }

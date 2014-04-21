@@ -9,9 +9,10 @@ class MsgBox extends CActiveRecord {
 
     const TYPE_NOTICE=1;
     const TYPE_MSG=2;
-    const TYPE_ALA=3;
-    const TYPE_VISIT=4;
-    const TYPE_WORK=5;
+    
+//    const TYPE_ALA=3;
+//    const TYPE_VISIT=4;
+//    const TYPE_WORK=5;
     //1)通知，2）消息，3）提醒 ，4）回访提醒，5）审核提醒
     public static function model($className=__CLASS__){
         return parent::model($className);
@@ -36,7 +37,7 @@ class MsgBox extends CActiveRecord {
         $ar=array(
             self::TYPE_NOTICE=>"公告",
             self::TYPE_MSG=>"消息",
-            self::TYPE_ALA=>"提醒",
+            //self::TYPE_ALA=>"提醒",
         );
         return trim($s)?$ar[$s]:$ar;
     }

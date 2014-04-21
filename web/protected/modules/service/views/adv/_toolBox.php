@@ -1,18 +1,38 @@
 <form name="_query_form" id="_query_form" action="javascript:itemQuery(0);">
     <li>
         <span class="sift-title">搜索：</span>
-        <span style="float:left; margin:0 3px; margin-top:-3px;">操作日期从</span>
-        <input id="startdate" class="Wdate" type="text" name="q[startdate]" size="14" value="<?php echo date("Y-m-d")?>" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',skin:'whyGreen',errDealMode:0})" >
-        <span style="float:left; margin:0 5px; margin-top:-3px;">到</span>
-        <input id="enddate" class="Wdate" type="text" name="q[enddate]"  size="14"  value="<?php echo date("Y-m-d")?>" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',skin:'whyGreen',errDealMode:0})" >
-        <span style="float:left; margin:0 5px; margin-top:-3px;">&nbsp;</span>
-        <select name="q_by">
-            <option value="userid">账号</option>
-            <option value="username">用户名</option>
-            <option value="operation">操作</option>
-            <option value="ip">IP地址</option>
+        <select name="q[type]" >
+            <option value="">--选择广告类型--</option>
+            <?php
+            $type_list = Adv::getType();
+            foreach($type_list as $k=>$v)
+            {
+                echo '<option value="',$k,'">',$v,'</option>';
+            }
+            ?>
         </select>
-        <input name="q_value" type="text" class="grayTips" />
+        <span style="float:left; margin:0 5px; margin-top:-3px;">&nbsp;</span>
+        <select name="q[order]" >
+            <option value="">--选择广告权重--</option>
+            <?php
+            $order_list = Adv::getOrder();
+            foreach($order_list as $k=>$v)
+            {
+                echo '<option value="',$k,'">',$v,'</option>';
+            }
+            ?>
+        </select>
+        <span style="float:left; margin:0 5px; margin-top:-3px;">&nbsp;</span>
+        <select name="q[status]" >
+            <option value="">--选择广告状态--</option>
+            <?php
+            $status_list = Adv::getStatus();
+            foreach($status_list as $k=>$v)
+            {
+                echo '<option value="',$k,'">',$v,'</option>';
+            }
+            ?>
+        </select>
         <input type="submit" value="" class="search_btn" />
     </li>
 </form>

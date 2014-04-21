@@ -27,7 +27,7 @@ $form = $this->beginWidget('SimpleForm', array(
     <tr>
         <td class="name">接收人：</td>
         <td>
-            <?php if (!empty($staff_ar)) :?>
+            <?php if (!empty($op_ar)) :?>
             <table style="width: 90%;" cellpadding="0" cellspacing="0">
                 <?php $i=0;
                 echo "<tr><td colspan='2'><label><input type='checkbox' name='checkall[]' value='1' onclick='checkall(this)' />所有</label></td></tr>";
