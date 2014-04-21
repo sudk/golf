@@ -1,11 +1,21 @@
 <form name="_query_form" id="_query_form" action="javascript:itemQuery(0);">
     <li>
         <span class="sift-title">搜索：</span>
+        <select name="q[type]">
+            <option value="">--选择操作员类型--</option>
+            <?php
+            $type_list = Operator::GetType();
+            foreach($type_list as $k=>$v)
+            {
+                echo '<option value="',$k,'">',$v,'</option>';
+            }
+            ?>
+        </select>
         <select name="q_by">
-            <option value="id">编号</option>
+            <option value="operator_id">账号</option>
             <option value="name">姓名</option>
         </select>
-        <input type="hidden" name="q[type]" id="qtype" value=''/>
+        
         <input type="hidden" name="q[pin]" id="qpin" value=''/>
         <input name="q_value" type="text" class="grayTips" />
         <input type="submit" value="" class="search_btn"/>
@@ -46,18 +56,7 @@
 <script type="text/javascript" src="js/JQdate/WdatePicker.js"></script>
 <script type="text/javascript">
  		jQuery(document).ready(function(){
-             //当前月份
-             jQuery($("a[name='qtype[]']")).click(function () {
-                 var qvalue = jQuery(this).attr("qvalue");
-                 if (qvalue != '') {
-                     jQuery("#qtype").attr("value", qvalue);
-                 } else {
-                     jQuery("#qtype").attr("value", "");
-                 }
-                 jQuery($("a[name='qtype[]']")).removeClass('air');
-                 jQuery(this).addClass('air');
-                 itemQuery(0);
-             });
+             
              //当前月份
              jQuery($("a[name='qpin[]']")).click(function () {
                  var qvalue = jQuery(this).attr("qvalue");

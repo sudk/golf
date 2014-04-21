@@ -1,20 +1,23 @@
 <?php
 $t->echo_grid_header();
-if (is_array($rows))
-{
-	$j = 1;
-    foreach ($rows as $i => $row)
-    {
+if (is_array($rows)) {
+    $j = 1;
+    $stutus_list = Flea::GetStatus();
+    $city_list = CityCode::getCity();
+    foreach ($rows as $i => $row) {
 
-		$num = ($curpage-1)*$this->pageSize + $j++;	
-		$type = $row['type']?Translog::GetType($row['type']):'';	
-		
-		$t->echo_td($num); 
-        $t->echo_td($row['mchtid']); //学校编号
-        $t->echo_td($row['settdate']);
-        $t->echo_td($row['desc']);
-        $t->echo_td($type);
-        $t->echo_td($row['recordtime']);
+        $num = ($curpage - 1) * $this->pageSize + $j++;
+
+        $link = CHtml::link('详细',"javascript:itemEdit('{$row['id']}')", array());
+        
+        $t->echo_td($num);
+        $t->echo_td(htmlspecialchars($row['title'])); //学校编号
+        $t->echo_td($row['price']);
+        
+        $t->echo_td($row['city']?$city_list[$row['city']]:"");
+        $t->echo_td($row['record_time']);
+        $t->echo_td($stutus_list[$row['status']]);
+        $t->echo_td($link);
         $t->end_row();
     }
 }

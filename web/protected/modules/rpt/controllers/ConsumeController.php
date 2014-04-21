@@ -1,9 +1,9 @@
 <?php
 
 /**
- * 学校报表
+ * 消费记录报表
  *
- * @author sudk
+ * @author guohao
  */
 class ConsumeController extends BaseController
 {
@@ -19,7 +19,7 @@ class ConsumeController extends BaseController
     private function genDataGrid()
     {
         $t = new SimpleGrid($this->gridId);
-        $t->url = 'index.php?r=log/systemlog/grid';
+        $t->url = 'index.php?r=rpt/consume/grid';
         $t->updateDom = 'datagrid';
         $t->set_header('序号', '30', '');
         $t->set_header('账号', '100', 'userid');

@@ -628,7 +628,7 @@ class CourtController extends BaseController
             $args['court_id'] = $cur_court_id;
         }
         $t = $this->genCDataGrid();
-        var_dump($args);
+        //var_dump($args);
         $list = Comment::queryList($page, $this->pageSize, $args);
         
         if($list['rows'])

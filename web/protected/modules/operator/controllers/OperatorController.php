@@ -22,7 +22,8 @@ class OperatorController extends BaseController
         $t->url = 'index.php?r=operator/operator/grid';
         $t->updateDom = 'datagrid';
         $t->set_header('序号', '30', '');
-        $t->set_header('账号', '40', '','id');
+        $t->set_header('类型', '60', '');
+        $t->set_header('账号', '60', '','id');
         $t->set_header('姓名', '40', '');
         $t->set_header('电话', '60', '');
         $t->set_header('职称', '60', '');
@@ -69,7 +70,7 @@ class OperatorController extends BaseController
             $model->attributes=$_POST['Operator'];
             $model->creator=Yii::app()->user->id;
             $model->record_time=date("Y-m-d H:i:s");
-            $model->remark=htmlspecialchars($_POST['Staff']['remark']);
+            $model->remark=htmlspecialchars($_POST['Operator']['remark']);
             if(!trim($model->abbreviation)){//姓名拼音
                $model->abbreviation=Utils::Pinyin($model->staffname);
             }
@@ -221,6 +222,11 @@ class OperatorController extends BaseController
                 '创建人'=>$model['creator'],
                 '备注'=>$model['remark'],
             );
+            if($model['type'] == Operator::TYPE_AGENT)
+            {
+                $agent_info = Agent::getAgentInfo($model['agent_id']);
+                $detail['代理商名称'] = $agent_info['agent_name'];
+            }
             $msg['detail']=Utils::MakeDetailTable($detail);
         } else {
             $msg['status'] = false;

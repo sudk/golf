@@ -1,18 +1,29 @@
 <form name="_query_form" id="_query_form" action="javascript:itemQuery(0);">
     <li>
         <span class="sift-title">搜索：</span>
-        <span style="float:left; margin:0 3px; margin-top:-3px;">操作日期从</span>
-        <input id="startdate" class="Wdate" type="text" name="q[startdate]" size="14" value="<?php echo date("Y-m-d")?>" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',skin:'whyGreen',errDealMode:0})" >
-        <span style="float:left; margin:0 5px; margin-top:-3px;">到</span>
-        <input id="enddate" class="Wdate" type="text" name="q[enddate]"  size="14"  value="<?php echo date("Y-m-d")?>" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',skin:'whyGreen',errDealMode:0})" >
-        <span style="float:left; margin:0 5px; margin-top:-3px;">&nbsp;</span>
-        <select name="q_by">
-            <option value="userid">账号</option>
-            <option value="username">用户名</option>
-            <option value="operation">操作</option>
-            <option value="ip">IP地址</option>
+        <select name="q[type]" >
+            <option value="">--选择商户类型--</option>
+            <?php
+            $type_list = CourtFacilities::getType();
+            foreach($type_list as $k=>$v)
+            {
+                echo '<option value="',$k,'">',$v,'</option>';
+            }
+            ?>
         </select>
-        <input name="q_value" type="text" class="grayTips" />
+        <span style="float:left; margin:0 5px; margin-top:-3px;">&nbsp;</span>
+        <select name="q[court_id]" >
+            <option value="">--选择附近的球场--</option>
+            <?php
+            $court_list = Court::getCourtArray();
+            foreach($court_list as $k=>$v)
+            {
+                echo '<option value="',$k,'">',$v,'</option>';
+            }
+            ?>
+        </select>
+        <span style="float:left; margin:0 5px; margin-top:-3px;">&nbsp;</span>
+        <input name="q[facilite_name]" type="text" class="grayTips" value="商户名称"/>
         <input type="submit" value="" class="search_btn" />
     </li>
 </form>

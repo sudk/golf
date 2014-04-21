@@ -55,7 +55,7 @@ if($__model__!="edit"){
         <td class="maxname">球场面积：</td>
         <td class="mivalue">
            <?php
-                echo $form->activeTextField($model, 'area', array('title' => '本项必填', 'class' => 'input_text', 'maxlength' => 20,'onblur'=>$checkId), 'required');         
+                echo $form->activeTextField($model, 'area', array('title' => '本项必填', 'class' => 'input_text', 'maxlength' => 20), 'required');         
             ?>
         </td>
         <td class="maxname">果岭草种：</td>
@@ -65,7 +65,7 @@ if($__model__!="edit"){
         <td class="maxname">球场数据：</td>
         <td class="mivalue">
            <?php
-                echo $form->activeTextField($model, 'court_data', array('title' => '本项必填', 'class' => 'input_text', 'maxlength' => 20,'onblur'=>$checkId), 'required');         
+                echo $form->activeTextField($model, 'court_data', array('title' => '本项必填', 'class' => 'input_text', 'maxlength' => 20), 'required');         
             ?>
         </td>
         <td class="maxname">设计师：</td>
@@ -75,7 +75,7 @@ if($__model__!="edit"){
         <td class="maxname">球道长度：</td>
         <td class="mivalue">
            <?php
-                echo $form->activeTextField($model, 'fairway_length', array('title' => '本项必填', 'class' => 'input_text', 'maxlength' => 20,'onblur'=>$checkId), 'required');         
+                echo $form->activeTextField($model, 'fairway_length', array('title' => '本项必填', 'class' => 'input_text', 'maxlength' => 20), 'required');         
             ?>
         </td>
         <td class="maxname">球道草种：</td>
@@ -85,7 +85,7 @@ if($__model__!="edit"){
         <td class="maxname">球场电话：</td>
         <td class="mivalue">
            <?php
-                echo $form->activeTextField($model, 'phone', array('title' => '本项必填', 'class' => 'input_text', 'maxlength' => 20,'onblur'=>$checkId), 'required&phone');         
+                echo $form->activeTextField($model, 'phone', array('title' => '本项必填', 'class' => 'input_text', 'maxlength' => 20), 'required&phone');         
             ?>
         </td>
         <td class="maxname">球场地址：</td>

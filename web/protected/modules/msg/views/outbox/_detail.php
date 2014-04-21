@@ -12,7 +12,7 @@
     <tfoot>
     <tr>
         <td>
-            <p><span>发布人：<?php echo $model->creator;?></span>   <span>发布时间：<?php echo $model->recordtime;?></span></p>
+            <p><span>发布人：<?php echo $model->creator;?></span>   <span>发布时间：<?php echo $model->record_time;?></span></p>
         </td>
     </tr>
     </tfoot>

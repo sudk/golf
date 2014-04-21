@@ -1,6 +1,6 @@
 <div id="content">
     <div class="title-box">
-        <h1>系统操作日志
+        <h1>消费记录
         </h1>
         <ul class="sift">
             <?php $this->renderPartial('_toolBox'); ?>
@@ -53,7 +53,7 @@
             var detail="";
             $.ajax({
                 data:{id:objid,recordtime:objtime},
-                url:"index.php?r=log/systemlog/detail",
+                url:"index.php?r=rpt/consume/detail",
                 type:"POST",
                 dataType:"json",
                 beforeSend:function(){

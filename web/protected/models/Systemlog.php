@@ -71,7 +71,7 @@ class Systemlog extends CActiveRecord {
 
         
     	if($_REQUEST['q_order']==''||!isset($_REQUEST['q_order'])){
-            $order = 'record_time DESC ';
+            $order = 'recordtime DESC ';
         }else{
             if(substr($_REQUEST['q_order'],-1)=='~')
                 $order = substr($_REQUEST['q_order'],0,-1).' DESC';

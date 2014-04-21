@@ -29,12 +29,21 @@ return array(
         'authManager' => array(
             'class' => 'CPhpAuthManager',
         ),
+//        'db' => array(
+//            'connectionString' => 'mysql:host=115.29.150.98;port=3306; dbname=golf',
+//            'emulatePrepare' => true,
+//            'enableProfiling'=>true,
+//            'username' => 'root',
+//            'password' => '123456',
+//            'charset' => 'utf8',
+//        ),
+        
         'db' => array(
-            'connectionString' => 'mysql:host=115.29.150.98;port=3306; dbname=golf',
+            'connectionString' => 'mysql:host=127.0.0.1;port=3306; dbname=golf',
             'emulatePrepare' => true,
             'enableProfiling'=>true,
             'username' => 'root',
-            'password' => '123456',
+            'password' => '',
             'charset' => 'utf8',
         ),
         // uncomment the following to use a MySQL database

@@ -12,6 +12,10 @@ class Operator extends CActiveRecord {
 
     const SEX_MEN=0;
     const SEX_WOMEN=1;
+    
+    
+    const TYPE_SYS = 1;
+    const TYPE_AGENT = 2;
 
     public $passwordc;
 
@@ -50,6 +54,16 @@ class Operator extends CActiveRecord {
         $ar=array(
             self::STATUS_NORMAL=>"正常",
             self::STATUS_DISABLE=>"禁用",
+        );
+        return trim($s)!=""?$ar[$s]:$ar;
+    }
+    
+    
+    public static function  GetType($s = "")
+    {
+        $ar=array(
+            self::TYPE_SYS=>"系统管理员",
+            self::TYPE_AGENT=>"代理商",
         );
         return trim($s)!=""?$ar[$s]:$ar;
     }
@@ -125,6 +139,10 @@ class Operator extends CActiveRecord {
             $condition.=' AND status=:status';
             $params['status'] = $args['status'];
         }
+        if ($args['type'] != ''){
+            $condition.=' AND type=:type';
+            $params['type'] = $args['type'];
+        }
         $total_num = Operator::model()->count($condition, $params); //总记录数
 
         $criteria = new CDbCriteria();
@@ -197,6 +215,7 @@ class Operator extends CActiveRecord {
     			$ar[$row['id']]=$row['name'];
     		}
     	}
+        var_dump($ar);
     	return $ar;
     }
 }

@@ -36,7 +36,7 @@ class SysMenu extends CWidget
 
         //球场管理
         $sub_menu = array();
-        $sub_menu[] = array("title" => "球场管理", "url" => "./?r=court/list", "match" => array('court\/list','court\/new','court\/showpic','court\/addpic','court\/mycomment'));
+        $sub_menu[] = array("title" => "球场管理", "url" => "./?r=court/list", "match" => array('court\/list','court\/new','court\/showpic','court\/newPic','court\/mycomment'));
         $sub_menu[] = array("title" => "球场评论管理", "url" => "./?r=court/comment", "match" => array('court\/comment'));
         if(count($sub_menu))
         $menus['court'] = array("title" => "球场管理", "url" => "./?r=court/list", "child" => $sub_menu);
@@ -44,20 +44,19 @@ class SysMenu extends CWidget
 
         //价格设置
         $sub_menu = array();
-        $sub_menu[] = array("title" => "价格设置", "url" => "./?r=price/list", "match" => array('price\/list'));
+        $sub_menu[] = array("title" => "报价单管理", "url" => "./?r=price/list", "match" => array('price\/list','price\/new','price\/policydetail','price\/policy','price\/custom','price\/special'));
        
         if(count($sub_menu))
-        $menus['price'] = array("title" => "价格设置", "url" => "./?r=price/list", "child" => $sub_menu);
+        $menus['price'] = array("title" => "报价单管理", "url" => "./?r=price/list", "child" => $sub_menu);
 
         //服务管理
         $sub_menu = array();
-        $sub_menu[] = array("title" => "推荐行程", "url" => "./?r=service/route/list", "match" => array('service\/route\/list'));    
-        $sub_menu[] = array("title" => "定制行程", "url" => "./?r=service/route/custom", "match" => 'service\/route\/custom');
-  
-        $sub_menu[] = array("title" => "每日推荐商品", "url" => "./?r=service/goods/list", "match" => array('service\/goods\/list'));    
-        $sub_menu[] = array("title" => "特约商户管理", "url" => "./?r=service/mcht/list", "match" => 'service\/mcht\/list');
-        $sub_menu[] = array("title" => "商户评论管理", "url" => "./?r=service/mcht/comment", "match" => array('service\/mcht\/comment'));    
-        $sub_menu[] = array("title" => "广告管理", "url" => "./?r=service/adv/list", "match" => 'service\/adv\/list');
+        $sub_menu[] = array("title" => "套餐", "url" => "./?r=service/route/list", "match" => array('service\/route\/list','service\/route\/new','service\/route\/detail'));    
+        
+        $sub_menu[] = array("title" => "寄卖", "url" => "./?r=service/goods/list", "match" => array('service\/goods\/list','service\/goods\/detail'));    
+        $sub_menu[] = array("title" => "特约商户管理", "url" => "./?r=service/mcht/list", "match" => array('service\/mcht\/list','service\/mcht\/new','service\/mcht\/detail'));
+        //$sub_menu[] = array("title" => "商户评论管理", "url" => "./?r=service/mcht/comment", "match" => array('service\/mcht\/comment'));    
+        $sub_menu[] = array("title" => "广告管理", "url" => "./?r=service/adv/list", "match" => array('service\/adv\/list','service\/adv\/new','service\/adv\/detail'));
   
         if(count($sub_menu))
         $menus['service'] = array("title" => "特色服务", "url" => "./?r=service/route/list", "child" => $sub_menu);
@@ -79,8 +78,8 @@ class SysMenu extends CWidget
         $sub_menu[] = array("title" => "系统操作日志", "url" => "./?r=log/systemlog/list", "match" => 'log\/systemlog\/list');
 
         $sub_menu[] = array("title" => "系统设置", "url" => "./?r=operator/set/list", "match" => array('operator\/set\/list'));
-        $sub_menu[] = array("title" => "消息管理", "url" => "./?r=msg/msg/list", "match" => array('msg\/msg\/list','msg\/news\/list','msg\/notice\/list'));
-        $sub_menu[] = array("title" => "代理商管理", "url" => "./?r=operator/agent/list", "match" => array('operator\/agent\/list'));
+        $sub_menu[] = array("title" => "消息管理", "url" => "./?r=msg/inbox/list", "match" => array('msg\/inbox\/list','msg\/news\/list','msg\/outbox\/list','msg\/outbox\/new'));
+        $sub_menu[] = array("title" => "代理商管理", "url" => "./?r=operator/agent/list", "match" => array('operator\/agent\/list','operator\/agent\/new'));
         
         if(count($sub_menu))
         $menus['system'] = array("title" => "系统管理", "url" => "./?r=operator/operator/list", "child" => $sub_menu);

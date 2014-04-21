@@ -12,11 +12,15 @@ class Order extends CActiveRecord {
     const TYPE_TRIP = '1';
     const TYPE_COMPETITION = '2';
     
-    //0、待确认；1、待付款；2、完成；3、撤销
+    //0、待确认；1、待付款；2、完成预约；3、撤销 ，4-未到场  5-订单完成
     const STATUS_TOBE_CONFIRM = '0';
     const STATUS_TOBE_PAID = '1';
     const STATUS_TOBE_SUCCESS = '2';
     const STATUS_TOBE_CANCEL = '3';
+    const STATUS_NOT_PRESENT = '4';
+    const STATUS_ORDER_OVER = '5';
+    
+    public $court_phone;
 
     public static function model($className=__CLASS__){
         return parent::model($className);
@@ -53,7 +57,10 @@ class Order extends CActiveRecord {
             self::STATUS_TOBE_CONFIRM=>'等待确认',
             self::STATUS_TOBE_PAID=>'等待支付',
             self::STATUS_TOBE_SUCCESS=>'预约成功',
-            self::STATUS_TOBE_CANCEL=>'订单撤销'
+            self::STATUS_TOBE_CANCEL=>'订单撤销',
+            self::STATUS_NOT_PRESENT=>'未到场',
+            self::STATUS_ORDER_OVER=>'订单完成'
+                
         );
         
         return $status? $rs[$status]:$rs;

@@ -44,7 +44,7 @@ class UserController extends CMDBaseController
             case UserIdentity::ERROR_NONE:
                 $duration = isset($form['rememberMe']) ? 3600 * 24 * 1 : 0; // 1 day
                 Yii::app()->user->login($identity);
-                //echo Yii::app()->user->id;
+                echo Yii::app()->user->id;
                 if ($duration !== 0) {
                     setcookie('golf', trim($form['username']), time() + $duration, Yii::app()->request->baseUrl);
                 } else {
@@ -53,7 +53,6 @@ class UserController extends CMDBaseController
                 }
                 $message = '成功！';
                 $status=0;
-                $msg['data']=User::FindOneByPhone(Yii::app()->user->id);
                 break;
             case UserIdentity::ERROR_USERNAME_INVALID:
                 $message = '用户名错误！';
@@ -83,23 +82,12 @@ class UserController extends CMDBaseController
         $model->sex=Yii::app()->command->cmdObj->sex;
         $model->record_time=date("Y-m-d H:i:s");
         $model->passwd=crypt(Yii::app()->command->cmdObj->passwd);
-        if($model->validate()){
-            try{
-                $model->save();
-                $msg['status']=0;
-                $msg['desc']="成功";
-                $msg['data']=User::FindOneByPhone(Yii::app()->command->cmdObj->phone);
-            }catch (Exception $e){
-                $msg['status']=$e->getCode();
-                if($e->getCode()==23000){
-                    $msg['desc']='账号已经存在！';
-                }else{
-                    $msg['desc']=$e->getMessage();
-                }
-            }
+        if($model->validate()&&$model->save()){
+            $msg['status']=0;
+            $msg['desc']="成功";
         }else{
             $msg['status']=1;
-            $msg['desc']="缺少参数";
+            $msg['desc']="失败1";
         }
         echo json_encode($msg);
     }
