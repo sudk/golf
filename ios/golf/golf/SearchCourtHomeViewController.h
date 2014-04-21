@@ -8,6 +8,7 @@
 
 #import "BaseViewController.h"
 #import "DSLCalendarView.h"
+#import "HttpUtils.h"
 
 @interface SearchCourtHomeViewController : BaseViewController<UITableViewDelegate,UITableViewDataSource,DSLCalendarViewDelegate,UIPickerViewDataSource,UIPickerViewDelegate>
 {
@@ -25,5 +26,6 @@
 @property(nonatomic,strong)NSArray *timeArray;
 @property(nonatomic,strong)UIView *timePickView;
 @property(nonatomic,strong)NSString *selectTime;
-@property(nonatomic,assign)BOOL isFromCourtList;
+@property(nonatomic,assign)BOOL isFromUpdate;
+@property(nonatomic,strong)HttpUtils *httpUtils;
 @end

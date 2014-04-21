@@ -25,4 +25,5 @@
 @property(nonatomic,strong)DSLCalendarView *calendarView;
 @property(nonatomic,strong)UIView *timePickView;
 @property(nonatomic,strong)NSArray *timeArray;
+@property(nonatomic,strong)NSArray *evaluateArray;//设计草坪设施服务
 @end

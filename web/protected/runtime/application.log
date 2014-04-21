@@ -2033,3 +2033,11 @@ Stack trace:
 #22 {main}
 REQUEST_URI=/golf_root/web/?r=court/comment
 ---
+2014/04/17 23:27:32 [info] [application.firebuglog] {"phone":"13335130151","passwd":"123","cmd":"user/login"}
+in /Applications/XAMPP/xamppfiles/htdocs/golf/web/protected/components/Command.php (12)
+in /Applications/XAMPP/xamppfiles/htdocs/golf/web/protected/components/MBaseController.php (51)
+in /Applications/XAMPP/xamppfiles/htdocs/golf/web/index.php (20)
+2014/04/17 23:28:32 [info] [application.firebuglog] {"phone":"13335130151","passwd":"123","cmd":"user/login"}
+in /Applications/XAMPP/xamppfiles/htdocs/golf/web/protected/components/Command.php (12)
+in /Applications/XAMPP/xamppfiles/htdocs/golf/web/protected/components/MBaseController.php (51)
+in /Applications/XAMPP/xamppfiles/htdocs/golf/web/index.php (20)

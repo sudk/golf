@@ -4,7 +4,7 @@
 //
 //  Created by mahh on 14-2-17.
 //  Copyright (c) 2014年 mahh. All rights reserved.
-//
+//[Utils colorWithHexString:@"#237fca"]
 
 #import "BaseViewController.h"
 #import "Utils.h"
@@ -28,7 +28,7 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    self.view.backgroundColor=[Utils colorWithHexString:@"#237fca"];
+    self.view.backgroundColor=[UIColor whiteColor];
     if ([self respondsToSelector:@selector(setEdgesForExtendedLayout:)])
     {
         [self setEdgesForExtendedLayout:UIRectEdgeNone];

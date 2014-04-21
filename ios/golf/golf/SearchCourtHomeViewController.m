@@ -33,15 +33,11 @@
     }
     else
     {
-        if (_isFromCourtList==YES) {
-            _isFromCourtList=NO;
-        }
-        else
-        {
+        if (_isFromUpdate==YES) {
+            _isFromUpdate=NO;
             NSLog(@"_contentArray====%@",_contentArray);
             [_contentArray replaceObjectAtIndex:[[[_changeDic allKeys]objectAtIndex:0] intValue] withObject:[[_changeDic allValues]objectAtIndex:0]];
             [_conditionTable reloadData];
-
         }
 }
 }
@@ -211,7 +207,7 @@
 -(void)selectDateCustomMethod:(int)tag
 {
     self.changeDic=[NSDictionary dictionaryWithObject:[_contentArray objectAtIndex:tag] forKey:[NSString stringWithFormat:@"%d",tag]];
-    self.calendarView=[[DSLCalendarView alloc]initWithFrame:CGRectMake(0, SCREEN_HEIGHT-49-20-330, SCREEN_WIDTH, 330)];
+    self.calendarView=[[DSLCalendarView alloc]initWithFrame:CGRectMake(0, SCREEN_HEIGHT-20-330, SCREEN_WIDTH, 330)];
     _calendarView.delegate = self;
     _calendarView.backgroundColor=[UIColor whiteColor];
     [self.view addSubview:_calendarView];
@@ -311,12 +307,31 @@
 }
 -(void)searchMethod
 {
+    _httpUtils=[[HttpUtils alloc]init];
+    
+    NSMutableDictionary *dic=[NSMutableDictionary dictionary];
+    [dic setObject:@"user/login" forKey:@"cmd"];
+    [dic setObject:@"13335130151" forKey:@"phone"];
+    [dic setObject:@"123" forKey:@"passwd"]
+    ;
+
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(defaultLoginMethod:) name:@"com.5aihuan.ahLoginMethod" object:nil];
+    [_httpUtils startRequest:dic andUrl:baseUrlStr andRequestField:@"user/login" andNotificationName:@"com.5aihuan.ahLoginMethod"];
+    return;
     ListCourtViewController *courtVc=[[ListCourtViewController alloc]init];
     courtVc.courtTitle=[[[_contentArray objectAtIndex:0] stringByAppendingString:[_contentArray objectAtIndex:1]] stringByAppendingString:[_contentArray objectAtIndex:2]];
     courtVc.dateStr=[_contentArray objectAtIndex:1];
     courtVc.timeStr=[_contentArray objectAtIndex:2];
     self.hidesBottomBarWhenPushed=YES;
     [self.navigationController pushViewController:courtVc animated:YES];
+}
+-(void)defaultLoginMethod:(NSNotification *)notification
+{
+    NSDictionary *loginDic=[notification object];
+    UILabel *l=[[UILabel alloc] initWithFrame:CGRectMake(50, 50, 250, 100)];
+    l.text=[loginDic objectForKey:@"desc"];
+    l.backgroundColor=[UIColor clearColor];
+    [self.view addSubview:l];
 }
 #pragma mark - DSLCalendarViewDelegate methods
 
