@@ -11,6 +11,7 @@
 #import "ListInfoViewController.h"
 #import "KeyWordViewController.h"
 #import "ListCourtViewController.h"
+#import "FSSysConfig.h"
 
 @interface SearchCourtHomeViewController ()
 
@@ -39,12 +40,30 @@
             [_contentArray replaceObjectAtIndex:[[[_changeDic allKeys]objectAtIndex:0] intValue] withObject:[[_changeDic allValues]objectAtIndex:0]];
             [_conditionTable reloadData];
         }
-}
+    }
 }
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    _httpUtils=[[HttpUtils alloc]init];
+    //默认登录
+    _sqlUtils=[[SQLUtilsObject alloc]init];
+    NSArray *loginInfo=[_sqlUtils query_loginInfo_tab];
+    NSLog(@"loginInfo====%@",loginInfo);
+    if ([loginInfo count]>0) {
+        NSString *account=[[loginInfo objectAtIndex:0]objectForKey:@"phone"];
+        NSString *pswd=[[loginInfo objectAtIndex:0]objectForKey:@"pswd"];
+        
+        NSMutableDictionary *dic=[NSMutableDictionary dictionary];
+        [dic setObject:@"user/login" forKey:@"cmd"];
+        [dic setObject:account forKey:@"phone"];
+        [dic setObject:pswd forKey:@"passwd"]
+        ;
+        [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(defaultLoginMethod:) name:@"com.golf.ahLoginMethod" object:nil];
+        [_httpUtils startRequest:dic andUrl:baseUrlStr andRequestField:@"user/login" andNotificationName:@"com.golf.ahLoginMethod" andViewControler:nil];
+    }
+    //
     _isCurrentView=YES;
     self.title=@"球场搜索";
     self.timeArray=@[@"04:00",@"04:30",@"05:00",@"05:30",@"06:00",@"06:30",@"07:00",@"07:30",@"08:00",@"08:30",@"09:00",@"09:30",@"10:00",@"10:30",@"11:00",@"11:30",@"12:00",@"12:30",@"13:00",@"13:30",@"14:00",@"14:30",@"15:00",@"15:30",@"16:00",@"16:30",@"17:00",@"17:30",@"18:00",@"18:30",@"19:00",@"19:30",@"20:00"];
@@ -307,17 +326,6 @@
 }
 -(void)searchMethod
 {
-    _httpUtils=[[HttpUtils alloc]init];
-    
-    NSMutableDictionary *dic=[NSMutableDictionary dictionary];
-    [dic setObject:@"user/login" forKey:@"cmd"];
-    [dic setObject:@"13335130151" forKey:@"phone"];
-    [dic setObject:@"123" forKey:@"passwd"]
-    ;
-
-    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(defaultLoginMethod:) name:@"com.5aihuan.ahLoginMethod" object:nil];
-    [_httpUtils startRequest:dic andUrl:baseUrlStr andRequestField:@"user/login" andNotificationName:@"com.5aihuan.ahLoginMethod"];
-    return;
     ListCourtViewController *courtVc=[[ListCourtViewController alloc]init];
     courtVc.courtTitle=[[[_contentArray objectAtIndex:0] stringByAppendingString:[_contentArray objectAtIndex:1]] stringByAppendingString:[_contentArray objectAtIndex:2]];
     courtVc.dateStr=[_contentArray objectAtIndex:1];
@@ -325,14 +333,7 @@
     self.hidesBottomBarWhenPushed=YES;
     [self.navigationController pushViewController:courtVc animated:YES];
 }
--(void)defaultLoginMethod:(NSNotification *)notification
-{
-    NSDictionary *loginDic=[notification object];
-    UILabel *l=[[UILabel alloc] initWithFrame:CGRectMake(50, 50, 250, 100)];
-    l.text=[loginDic objectForKey:@"desc"];
-    l.backgroundColor=[UIColor clearColor];
-    [self.view addSubview:l];
-}
+
 #pragma mark - DSLCalendarViewDelegate methods
 
 - (void)calendarView:(DSLCalendarView *)calendarView didSelectRange:(DSLCalendarRange *)range {
@@ -416,4 +417,36 @@
 {
     _selectTime=[_timeArray objectAtIndex:row];
 }
+-(void)defaultLoginMethod:(NSNotification *)notification
+{
+    NSDictionary *loginDic=[notification object];
+    NSLog(@"默认自动登录完成数据====%@",loginDic);
+    NSNumber *codeNum=[loginDic objectForKey:@"status"];
+    if ([codeNum intValue]==0) {
+        [[FSSysConfig getInstance]setIsLogin:YES];
+        [[FSSysConfig getInstance]setLoginAccount:[loginDic objectForKey:@"user_name"]];
+    }
+    else
+    {
+        self.notificationText=@"登录失败";
+        [self displayNotification];
+    }
+    [[NSNotificationCenter defaultCenter]removeObserver:self name:@"com.golf.ahLoginMethod" object:nil];
+}
+- (void)displayNotification {
+    if (self.notify.isAnimating) return;
+    [self.view addSubview:self.notify];
+    //    [[[UIApplication sharedApplication]keyWindow] addSubview:self.notify];
+    [self.notify presentWithDuration:1.5f speed:1.0f inView:self.view completion:^{
+        [self.notify removeFromSuperview];
+    }];
+}
+
+- (BDKNotifyHUD *)notify {
+    if (_notify != nil) return _notify;
+    _notify = [BDKNotifyHUD notifyHUDWithImage:[UIImage imageNamed:@""] text:_notificationText];
+    _notify.center = CGPointMake(73, self.view.center.y - 20);
+    return _notify;
+}
+
 @end

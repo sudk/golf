@@ -10,12 +10,14 @@
 #import "ASIFormDataRequest.h"
 #import "Utils.h"
 #import "FSSysConfig.h"
+#import "NewLoadingView.h"
 
 @implementation HttpUtils
 
--(void)startRequest:(NSDictionary *)postDic andUrl:(NSString *)urlStr andRequestField:(NSString *)field andNotificationName:(NSString *)notificationName
+-(void)startRequest:(NSDictionary *)postDic andUrl:(NSString *)urlStr andRequestField:(NSString *)field andNotificationName:(NSString *)notificationName andViewControler:(UIView *)view
 {
     self.requestField=field;
+    self.errorView=view;
     NSString * encodedURLStr = [urlStr stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     NSURL *url = [NSURL URLWithString:encodedURLStr];
     NSLog(@"url====%@",url);
@@ -23,6 +25,7 @@
     NSError *error = nil;
     NSMutableData *jsonData =(NSMutableData*) [NSJSONSerialization dataWithJSONObject:postDic options:NSJSONWritingPrettyPrinted error:&error];
     [request setPostBody:jsonData];
+    [request setTimeOutSeconds:6];
 	request.delegate = self;
     [request setRequestMethod:@"POST"];
     [request setUserInfo:[NSDictionary dictionaryWithObjectsAndKeys:notificationName,@"notificationName",nil]];
@@ -40,8 +43,11 @@
 - (void)requestFailed:(ASIHTTPRequest *)request {
     NSError *error=[request error];
     NSLog(@"请求方法%@的error======%@",_requestField,error);
-    NSString *theNotificationName=[request.userInfo objectForKey:@"notificationName"];
-    [[NSNotificationCenter defaultCenter]postNotificationName:theNotificationName object:nil];
+    if (_errorView!=nil) {
+        [NewLoadingView hideHUDForView:_errorView animated:YES];
+    }
+//    NSString *theNotificationName=[request.userInfo objectForKey:@"notificationName"];
+//    [[NSNotificationCenter defaultCenter]postNotificationName:theNotificationName object:nil];
     self.notificationText=networkAbnormalInfo;
     [self displayNotification];
 }

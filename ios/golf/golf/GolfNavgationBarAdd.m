@@ -12,11 +12,11 @@
 @implementation  UINavigationBar(addColor)
 -(void)needMyDisplay{
     float sysVesion=[[[UIDevice currentDevice] systemVersion] floatValue];
-//    UIImage *UINavigationBarImg=[UIImage imageNamed:@"title_bg2.png"];
-    UIImage *UINavigationBarImg=[self buttonImageFromColor:[Utils colorWithHexString:@"#237fca"]];
+    UIImage *UINavigationBarImg=[UIImage imageNamed:@"title_bg2.png"];
+//    UIImage *UINavigationBarImg=[self buttonImageFromColor:[Utils colorWithHexString:@"#237fca"]];
     
     if (sysVesion>=7.0) {
-//        UINavigationBarImg=[UIImage imageNamed:@"title_bg27.png"];
+        UINavigationBarImg=[UIImage imageNamed:@"title_bg27.png"];
     }
     if (sysVesion>=5.0) {
         
@@ -28,10 +28,10 @@
 }
 -(void)drawRect:(CGRect)rect{
     float sysVesion=[[[UIDevice currentDevice] systemVersion] doubleValue];
-//    UIImage *UINavigationBarImg=[UIImage imageNamed:@"title_bg2.png"];
-    UIImage *UINavigationBarImg=[self buttonImageFromColor:[Utils colorWithHexString:@"#237fca"]];
+    UIImage *UINavigationBarImg=[UIImage imageNamed:@"title_bg2.png"];
+//    UIImage *UINavigationBarImg=[self buttonImageFromColor:[Utils colorWithHexString:@"#237fca"]];
     if (sysVesion>=7.0) {
-//        UINavigationBarImg=[UIImage imageNamed:@"title_bg27.png"];
+        UINavigationBarImg=[UIImage imageNamed:@"title_bg27.png"];
     }
     [super drawRect:rect];
     UIImage * image=UINavigationBarImg;

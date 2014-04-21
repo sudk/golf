@@ -9,6 +9,8 @@
 #import "BaseViewController.h"
 #import "DSLCalendarView.h"
 #import "HttpUtils.h"
+#import "SQLUtilsObject.h"
+#import "BDKNotifyHUD.h"
 
 @interface SearchCourtHomeViewController : BaseViewController<UITableViewDelegate,UITableViewDataSource,DSLCalendarViewDelegate,UIPickerViewDataSource,UIPickerViewDelegate>
 {
@@ -28,4 +30,7 @@
 @property(nonatomic,strong)NSString *selectTime;
 @property(nonatomic,assign)BOOL isFromUpdate;
 @property(nonatomic,strong)HttpUtils *httpUtils;
+@property(nonatomic,strong)SQLUtilsObject *sqlUtils;
+@property(nonatomic,strong)BDKNotifyHUD *notify;
+@property(nonatomic,strong)NSString *notificationText;
 @end

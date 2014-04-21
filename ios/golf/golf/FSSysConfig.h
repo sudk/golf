@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 
 @interface FSSysConfig : NSObject
-@property(nonatomic,strong)NSString* uid;//用户uid
+@property(nonatomic,assign)BOOL isLogin;//用户isLogin
 @property(nonatomic,strong)NSString *loginAccount;//登录帐号
 @property(nonatomic,strong)NSDictionary *keyDic;//value:key key:keyid
 @property(nonatomic,strong)NSString *os;

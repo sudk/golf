@@ -13,6 +13,7 @@
 @property(nonatomic,strong)NSString *requestField;
 @property(nonatomic,strong)BDKNotifyHUD *notify;
 @property(nonatomic,strong)NSString *notificationText;
--(void)startRequest:(NSDictionary *)postDic andUrl:(NSString *)urlStr andRequestField:(NSString *)field andNotificationName:(NSString *)notificationName;
+@property(nonatomic,strong)UIView *errorView;
+-(void)startRequest:(NSDictionary *)postDic andUrl:(NSString *)urlStr andRequestField:(NSString *)field andNotificationName:(NSString *)notificationName andViewControler:(UIView *)view;
 
 @end

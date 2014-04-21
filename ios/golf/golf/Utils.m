@@ -9,6 +9,16 @@
 #import "Utils.h"
 
 @implementation Utils
++(Utils*)getInstance
+{
+    static Utils *utils;
+    @synchronized(self) {
+        if (utils==nil) {
+            utils=[[Utils alloc]init];
+        }
+    }
+    return utils;
+}
 /**
  图片大小自适应
  */
@@ -67,20 +77,26 @@
                             blue:((float) b / 255.0f)
                            alpha:1.0f];
 }
-/**
- 创建对应的文件目录,subdirectories指document对应的下一级子目录
- */
-+(NSString *)fileDirectory:(NSString *)subdirectories
+//返回文件目录
+-(NSString *)fileDirectory:(NSString *)subdirectories
 {
-    
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths objectAtIndex:0];
     NSFileManager *fileManager = [NSFileManager defaultManager];
-    NSString *subDirectory = [documentsDirectory stringByAppendingPathComponent:subdirectories];
+    NSString *subDirectory=[NSString stringWithFormat:@"%@/%@",documentsDirectory,subdirectories];
     // 创建目录
     if (![fileManager fileExistsAtPath:subDirectory]) {
         [fileManager createDirectoryAtPath:subDirectory withIntermediateDirectories:YES attributes:nil error:nil];
     }
     return subDirectory;
+}
+
+/**
+ 返回对应文件目录下的文件路径
+ */
+-(NSString *)fileDirectory:(NSString *)subdirectories withFileName:(NSString *)fileName
+{
+    NSString *subDirectory=[self fileDirectory:subdirectories];
+    return [subDirectory stringByAppendingPathComponent:fileName];
 }
 @end

@@ -12,5 +12,5 @@
 @interface GolfTabBarController : UITabBarController {
     
 }
-
+-(void)_butttonActionWithtag4;
 @end

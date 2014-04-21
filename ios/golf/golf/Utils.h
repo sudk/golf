@@ -10,7 +10,9 @@
 #define DEFAULT_VOID_COLOR [UIColor whiteColor]
 
 @interface Utils : NSObject
++(Utils*)getInstance;
 +(UIImage*)scaleToSize:(UIImage*)img size:(CGSize)size;
 +(UIColor *) colorWithHexString: (NSString *) stringToConvert;
-+(NSString *)fileDirectory:(NSString *)subdirectories;
+//返回对应文件目录下的文件路径
+-(NSString *)fileDirectory:(NSString *)subdirectories withFileName:(NSString *)fileName;
 @end

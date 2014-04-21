@@ -7,6 +7,8 @@
 //[Utils colorWithHexString:@"#f0f1f3"]
 
 #import "GolfTabBarController.h"
+#import "FSSysConfig.h"
+#import "LoginUtilViewController.h"
 
 @implementation GolfTabBarController
 
@@ -97,6 +99,13 @@
 }
 -(void)_butttonActionWithtag4{
     
+    if ([[FSSysConfig getInstance]isLogin]==NO) {
+        LoginUtilViewController *login=[[LoginUtilViewController alloc] initWithRootViewController:nil];
+        [self presentViewController:login animated:YES completion:nil];
+        [login setTarget:self Selector:@selector(_butttonActionWithtag4)];
+        [login release];
+        return;
+    }
     [(UIButton *)[self.tabBar viewWithTag:1] setBackgroundImage:[UIImage imageNamed:@"tab_kx_normal.png"] forState:UIControlStateNormal];
     [(UIButton *)[self.tabBar viewWithTag:2] setBackgroundImage:[UIImage imageNamed:@"tab_contact_normal.png"] forState:UIControlStateNormal];
     [(UIButton *)[self.tabBar viewWithTag:3] setBackgroundImage:[UIImage imageNamed:@"tab_setting_normal.png"] forState:UIControlStateNormal];
