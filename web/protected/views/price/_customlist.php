@@ -73,7 +73,7 @@ if (is_array($rows))
         $price_text = $mon_price.",".$tun_price.",".$wed_price.",".$thu_price.",".$fri_price.",".$sat_price.",".$sun_price;
         
         $link = "";
-        $link .= CHtml::link('编辑',"javascript:itemEdit('{$row['id']}','0');", array());
+        $link .= CHtml::link('编辑',"javascript:itemEdit('{$row['id']}','1');", array());
         $link .= CHtml::link('删除',"javascript:itemDelete('{$row['id']}');", array());
         
         $t->echo_td($row['start_date']);

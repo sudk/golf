@@ -236,6 +236,7 @@ class PriceController extends BaseController
         $model->pay_type = '1';
         
         $model->court_id = $court_id;
+        $model->id = "";
         
             
         $this->layout = '//layouts/base';
@@ -375,6 +376,8 @@ class PriceController extends BaseController
                         'record_time'=>date('Y-m-d H:i:s')
                     );
                    
+                    //得到所有Policy的内容
+                    $policy = $_POST['Policy'];
                     //var_dump($week_day);var_dump($policy);
                     $msg = Policy::updateRecord($policy, $week_day);
                     //$model = new Policy('create');
@@ -555,7 +558,7 @@ class PriceController extends BaseController
         $args = $_GET['q']; //查询条件
 
         $args['agent_id'] = Yii::app()->user->agent_id;
-        $args['type'] = Policy::TYPE_NORMAL;
+        $args['type'] = Policy::TYPE_FOVERABLE;
         $args['court_id'] = $id;
         $args['month'] = $month;
         
@@ -589,11 +592,10 @@ class PriceController extends BaseController
         $t->updateDom = 'datagrid';
         $t->set_header('开始日期', '100', '');
         $t->set_header('结束日期', '100', '');
-        //$t->set_header('', '70', '');
         $t->set_header('服务项目', '70', '');
         $t->set_header('预订须知', '100', '');
         $t->set_header('取消规则', '100', '');
-        $t->set_header('周一至周日', '150', ''); 
+        $t->set_header('默认价格', '150', ''); 
         $t->set_header('操作', '150', '');
 
         return $t;
@@ -609,7 +611,7 @@ class PriceController extends BaseController
         $args = $_GET['q']; //查询条件
 
         $args['agent_id'] = Yii::app()->user->agent_id;
-        $args['type'] = Policy::TYPE_NORMAL;
+        $args['type'] = Policy::TYPE_SPECIAL;
         $args['court_id'] = $id;
         $args['month'] = $month;
         

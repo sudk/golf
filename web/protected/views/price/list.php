@@ -45,11 +45,20 @@
             "text"    // cssName：附加class名称
         );
     }
-    
+    //普通报价
     var itemDetail=function(id,month){
         window.location.href = 'index.php?r=price/policy&id='+id+'&month='+month;
     }
-    
+    //优惠报价
+    var itemFoverDetail = function(id,month)
+    {
+        window.location.href = 'index.php?r=price/custom&id='+id+'&month='+month;
+    }
+    //特殊报价
+    var itemCustomDetail = function(id,month)
+    {
+        window.location.href = 'index.php?r=price/special&id='+id+'&month='+month;
+    }
    
     var itemDelete = function(id,name){
         if(!confirm("确认要删除报价单吗？")){return ;}

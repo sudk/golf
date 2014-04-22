@@ -191,16 +191,24 @@ class Policy extends CActiveRecord {
     
     public static function insertRecord($args,$week_day)
     {
-        $rs['status']=false;
+        $rs['status']=-1;
         $rs['msg']="新增成功！";
         if(!isset($args)||@count($args) == 0){
            $rs['msg']="内容不能为空！";
+           $rs['msg'] = -1;
            return $rs;
         }
         
         $connection = Yii::app()->db;
         $transaction = $connection->beginTransaction();
         try {
+            if($args['type']==""||$args['court_id'] == "")
+            {
+                $connection->rollBack();
+                $rs['status'] = -1;
+                $rs['msg'] = "报价单提交失败，请选择报价球场。";
+                return $rs;
+            }
             //判断同一个场地，同一个代理商，同一个月不能报价两次
             $start_date = $args['start_date'];
             $month = substr($start_date,0,7);
@@ -210,7 +218,7 @@ class Policy extends CActiveRecord {
             if($valid_row==null||$valid_row['cnt']!=0)
             {
                 $connection->rollBack();
-                $rs['status'] = false;
+                $rs['status'] = -1;
                 $rs['msg'] = "本月的报价单已经提交，不能重复提交";
                 return $rs;
             }
@@ -241,7 +249,7 @@ class Policy extends CActiveRecord {
             }
             
             $transaction->commit();
-            $rs['status']=true;
+            $rs['status']= 1;
             return $rs;
         }
         catch (Exception $e)

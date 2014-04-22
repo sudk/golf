@@ -60,11 +60,11 @@ if($__model__=="edit"){
         <td class="maxname">起始日期：</td>
         <td class="mivalue">
            <?php
-                echo $form->activeTextField($model, 'start_date', array('title' => '本项必填','value'=>date('Y-m-01'), 'class' => 'Wdate input_text',"onfocus"=>"WdatePicker({dateFmt:'yyyy-MM-dd',skin:'whyGreen',errDealMode:0})"), '');         
+                echo $form->activeTextField($model, 'start_date', array('title' => '本项必填','value'=>($model->start_date?$model->start_date:date('Y-m-01')), 'class' => 'Wdate input_text',"onfocus"=>"WdatePicker({dateFmt:'yyyy-MM-dd',skin:'whyGreen',errDealMode:0})"), '');         
             ?>
         </td>
         <td class="maxname">截止日期：</td>
-        <td class="mivalue"><?php echo $form->activeTextField($model, 'end_date', array('title' => '本项必填','value'=>date('Y-m-t'), 'class' => 'Wdate input_text',"onfocus"=>"WdatePicker({dateFmt:'yyyy-MM-dd',skin:'whyGreen',errDealMode:0})"), ''); ?></td>  
+        <td class="mivalue"><?php echo $form->activeTextField($model, 'end_date', array('title' => '本项必填','value'=>($model->end_date?$model->end_date:date('Y-m-t')), 'class' => 'Wdate input_text',"onfocus"=>"WdatePicker({dateFmt:'yyyy-MM-dd',skin:'whyGreen',errDealMode:0})"), ''); ?></td>  
     </tr>
     <tr>
         <td class="maxname">球场名称：</td>
@@ -216,15 +216,16 @@ if($__model__=="edit"){
     }
     if($type == Policy::TYPE_SPECIAL)
     {
+        
         ?>
     <tr>
         <td class="maxname">默认价：</td>
         <td class="mivalue">
-           <input type="text" name="default_price" value="" class="input_text"/>
+           <input type="text" name="default_price" value="<?php echo $price_row['-1_default'];?>" class="input_text"/>
         </td> 
         <td class="maxname">
-            <input type="checkbox" name="default_disable" value="1" onclick="javascript:check(this,'default');"/><label>禁止预订</label>
-            <input type="hidden" name="default_status" id="default_status" value="0"/>
+            <input type="checkbox" name="default_disable" value="1" onclick="javascript:check(this,'default');" <?php echo $status_row['-1_default']=='1'?" checked":"";?>/><label>禁止预订</label>
+            <input type="hidden" name="default_status" id="default_status" value="<?php $status_row['-1_default']?$status_row['-1_default']:0;?>"/>
         </td>
         <td class="mivalue">
 <!--            

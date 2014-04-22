@@ -1,11 +1,11 @@
 <div class="title-box">
-    <h1><span style="float:left;">默认价格设置</span><a href="./?r=price/list" style="float:right;"><span class="ing_ico"></span><span>返回报价单列表</span></a><?php if($month == ""){?><a href="javascript:void(0);" onclick="javascript:itemNew('<?php echo $relation_id;?>','0');" style="float:right;"><span class="add_ico"></span><span>报价单添加</span></a><?php } ?></h1>
+    <h1><span style="float:left;">优惠价格设置</span><a href="./?r=price/list" style="float:right;"><span class="ing_ico"></span><span>返回报价单列表</span></a><a href="javascript:void(0);" onclick="javascript:itemNew('<?php echo $relation_id;?>','2');" style="float:right;"><span class="add_ico"></span><span>报价单添加</span></a></h1>
     <ul class="sift">
         <?php //$this->renderPartial('_pic_toolBox'); ?>
     </ul>
 </div>
 <div id="datagrid">
-    <?php $this->actionPolicyGrid($relation_id,$month); ?>
+    <?php $this->actionSpecialGrid($relation_id,$month); ?>
 </div>
 <style type="text/css">
     #row_desc span{
