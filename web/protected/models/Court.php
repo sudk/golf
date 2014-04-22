@@ -124,45 +124,43 @@ class Court extends CActiveRecord {
         $condition = ' 1=1 ';
         $params = array();
 
-        if ($args['city'] != ''){
+        if (isset($args->city)&&$args->city != ''){
             $condition.= ' AND g_court.city=:city ';
-            $params['city'] = $args['city'];
+            $params['city'] = $args->city;
         }
 
-        if ($args['court_id'] != ''){
+        if (isset($args->court_id)&&$args->court_id != ''){
             $condition.= ' AND g_policy.court_id=:court_id ';
-            $params['court_id'] = $args['court_id'];
+            $params['court_id'] = $args->court_id;
         }
 
-        if ($args['key_word'] != ''){
+        if (isset($args->key_word)&&$args->key_word != ''){
             $condition.= ' AND g_court.name like :key_word ';
-            $params['key_word'] = "%".$args['key_word']."%";
+            $params['key_word'] = "%".$args->key_word."%";
         }
 
-        if ($args['date'] != ''){
+        if (isset($args->date)&&$args->date != ''){
             $condition.= ' AND g_policy.start_date >= :start_date ';
-            $params['start_date'] = $args['date'];
+            $params['start_date'] = $args->date;
 
             $condition.= ' AND g_policy.end_date >= :end_date ';
-            $params['end_date'] = $args['date'];
-        }
+            $params['end_date'] = $args->date;
 
-        if ($args['time'] != ''){
-            $condition.= ' AND ( g_policy_detail.end_time is null or ( g_policy_detail.start_time >= :start_time  AND g_policy_detail.end_time >= :end_time ))';
-            $params['start_time'] = $args['time'];
-            $params['end_time'] = $args['time'];
-        }
-
-        if ($args['date'] != ''){
-            $day=date("w",$args['date']);
+            $day=date("w",$args->date);
             $condition.= ' AND ( g_policy_detail.day < 0 or g_policy_detail.day = :day))';
             $params['day'] = $day;
         }
 
+        if (isset($args->time)&&$args->time != ''){
+            $condition.= ' AND ( g_policy_detail.end_time is null or ( g_policy_detail.start_time >= :start_time  AND g_policy_detail.end_time >= :end_time ))';
+            $params['start_time'] = $args->time;
+            $params['end_time'] = $args->time;
+        }
+
         $condition.= ' AND g_policy.status=0 ';
         $condition.= ' AND g_policy_detail.status=1 ';
-        if($args['long_lat']){
-            list($u_lon,$u_lat)=explode(",",$args['long_lat']);
+        if(isset($args->long_lat)){
+            list($u_lon,$u_lat)=explode(",",$args->long_lat);
         }
 
 

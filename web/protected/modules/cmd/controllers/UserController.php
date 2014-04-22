@@ -82,7 +82,7 @@ class UserController extends CMDBaseController
         $model->email=Yii::app()->command->cmdObj->email;
         $model->sex=Yii::app()->command->cmdObj->sex;
         $model->record_time=date("Y-m-d H:i:s");
-        $model->passwd=crypt(Yii::app()->command->cmdObj->passwd);
+        $model->passwd=crypt(trim(Yii::app()->command->cmdObj->passwd));
         if($model->validate()){
             try{
                 $model->save();
