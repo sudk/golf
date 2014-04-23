@@ -124,7 +124,9 @@ class Competition extends CActiveRecord {
             ->leftJoin("g_agent","g_agent.agent_id=g_competition.id")
             ->where($condition,$params)
             ->queryRow();
-
+        if($row){
+            $row['imgs']=Img::GetImgs($competition_id,Img::TYPE_COMPETITION);
+        }
         return $row;
 
     }

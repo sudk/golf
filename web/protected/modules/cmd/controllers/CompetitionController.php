@@ -21,18 +21,24 @@ class CompetitionController extends CMDBaseController
         );
     }
 
-    public function actionInfo(){
-        if(!Yii::app()->command->cmdObj->court_id){
+    public function actionList(){
+        if(!Yii::app()->command->cmdObj->city){
             $msg['status']=1;
-            $msg['desc']="球场ID不能为空！";
+            $msg['desc']="城市不能为空！";
             echo json_encode($msg);
             return;
+        }else{
+            $args['city']=Yii::app()->command->cmdObj->city;
         }
-        $row=Court::Info(Yii::app()->command->cmdObj->court_id);
-        if($row){
+        if(Yii::app()->command->cmdObj->name){
+            $args['name']=Yii::app()->command->cmdObj->name;
+        }
+
+        $rows=Competition::queryList(0,100,$args);
+        if($rows){
             $msg['status']=0;
             $msg['desc']="成功";
-            $msg['data']=$row;
+            $msg['data']=$rows;
         }else{
             $msg['status']=4;
             $msg['desc']="没有数据";
@@ -42,24 +48,18 @@ class CompetitionController extends CMDBaseController
 
     }
 
-    public function actionPrice(){
-        if(!Yii::app()->command->cmdObj->court_id){
+    public function actionInfo(){
+        if(!Yii::app()->command->cmdObj->id){
             $msg['status']=1;
-            $msg['desc']="球场ID不能为空！";
+            $msg['desc']="赛事ID不能为空！";
             echo json_encode($msg);
             return;
         }
-        if(!Yii::app()->command->cmdObj->date_time){
-            $msg['status']=1;
-            $msg['desc']="打球日期时间不能为空！";
-            echo json_encode($msg);
-            return;
-        }
-        $rows=Court::Price(Yii::app()->command->cmdObj);
-        if($rows){
+        $row=Competition::Info(Yii::app()->command->cmdObj->id);
+        if($row){
             $msg['status']=0;
             $msg['desc']="成功";
-            $msg['data']=$rows;
+            $msg['data']=$row;
         }else{
             $msg['status']=4;
             $msg['desc']="没有数据";
