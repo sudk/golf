@@ -213,6 +213,99 @@ class Court extends CActiveRecord {
         return $rows_tmp;
 
     }
+
+    public static function Info($court_id){
+        $condition="court_id=:court_id";
+        $row = Yii::app()->db->createCommand()
+            ->select("*")
+            ->from("g_court")
+            ->where($condition,array(":court_id"=>$court_id))
+            ->queryRow();
+        if($row){
+            $fairway_imgs=array();
+            $court_imgs=array();
+            $condition="relation_id=:relation_id and type in (0,1)";
+            $rows = Yii::app()->db->createCommand()
+                ->select("type,img_url")
+                ->from("g_img")
+                ->where($condition,array(":relation_id"=>$court_id))
+                ->queryRow();
+            if($rows){
+                foreach($rows as $row){
+                    if($row['type']==1){
+                        $fairway_imgs[]=$row['img_url'];
+                    }else{
+                        $court_imgs[]=$row['img_url'];
+                    }
+                }
+            }
+            $row['court_imgs']=$court_imgs;
+            $row['fairway_imgs']=$fairway_imgs;
+            return $row;
+        }else{
+            return false;
+        }
+    }
+
+    public static function Price($court_id,$type,$date_time){
+        $condition = ' 1=1 ';
+        $params = array();
+
+        if (isset($args->date)&&$args->date != ''){
+            $condition.= ' AND g_policy.start_date >= :start_date ';
+            $params['start_date'] = $args->date;
+
+            $condition.= ' AND g_policy.end_date >= :end_date ';
+            $params['end_date'] = $args->date;
+
+            $day=date("w",$args->date);
+            $condition.= ' AND ( g_policy_detail.day < 0 or g_policy_detail.day = :day))';
+            $params['day'] = $day;
+        }
+
+        if (isset($args->time)&&$args->time != ''){
+            $condition.= ' AND ( g_policy_detail.end_time is null or ( g_policy_detail.start_time >= :start_time  AND g_policy_detail.end_time >= :end_time ))';
+            $params['start_time'] = $args->time;
+            $params['end_time'] = $args->time;
+        }
+
+        $condition.= ' AND g_policy.status=0 ';
+        $condition.= ' AND g_policy_detail.status=1 ';
+
+        $rows = Yii::app()->db->createCommand()
+            ->select("g_policy.*,g_court.name name,g_court.addr,g_court.lon lon,g_court.lat lat,g_policy_detail.price,g_policy_detail.day,g_policy_detail.start_time,g_policy_detail.end_time,g_agent.agent_name,g_img.img_url ico_img")
+            ->from("g_policy_detail")
+            ->leftJoin("g_policy","g_policy_detail.policy_id=g_policy.id")
+            ->leftJoin("g_court","g_policy.court_id=g_court.court_id")
+            ->leftJoin("g_agent","g_agent.id=g_policy.agent_id")
+            ->leftJoin("g_img","g_img.type=8 and g_img.relation_id=g_court.court_id")
+            ->where($condition,$params)
+            ->queryAll();
+        //return $row;
+        $rows_tmp=array();
+
+        if($rows){
+            foreach($rows as $row){
+                $court_id=$row['court_id'];
+                if(isset($rows_tmp[$court_id])){
+                    $row_tmp=$rows_tmp[$court_id];
+
+                    if($row_tmp['type']==$row['type']&&$row_tmp['price']>$row['price']){
+                        $rows_tmp[$court_id]=$row;
+                        continue;
+                    }
+
+                    if($row_tmp['type']<$row['type']){
+                        $rows_tmp[$court_id]=$row;
+                        continue;
+                    }
+                }else{
+                    $rows_tmp[$court_id]=$row;
+                }
+            }
+        }
+        return $rows;
+    }
 }
 
 
