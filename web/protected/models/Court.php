@@ -177,7 +177,7 @@ class Court extends CActiveRecord {
         //return $row;
         $rows_tmp=array();
 
-        if($rows){
+        if($rows){//先出球场中的最低有效报价
             foreach($rows as $row){
                 $court_id=$row['court_id'];
                 if(isset($rows_tmp[$court_id])){
@@ -198,6 +198,8 @@ class Court extends CActiveRecord {
             }
         }
 
+        $rows=array();
+
         if($rows_tmp){
             foreach($rows_tmp as $row){
                 if(trim($row['lon'])&&trim($row['lat'])&&trim($u_lon)&&trim($u_lat)){
@@ -207,10 +209,11 @@ class Court extends CActiveRecord {
                 }else{
                     $row['distance']="未知";
                 }
+                $rows[]=$row;
             }
         }
 
-        return $rows_tmp;
+        return $rows;
 
     }
 
@@ -241,66 +244,93 @@ class Court extends CActiveRecord {
             }
             $row['court_imgs']=$court_imgs;
             $row['fairway_imgs']=$fairway_imgs;
-            return $row;
-        }else{
-            return false;
+            $comment_total=Comment::ComAvg($court_id);
+            if($comment_total){
+                $row['comment']=$comment_total;
+            }else{
+                $row['comment']=array("comment_count"=>0,"service_total"=>0,"design_total"=>0,"facilitie_total"=>0,"lawn_total"=>0);
+            }
+
         }
+        return $row;
     }
 
-    public static function Price($court_id,$type,$date_time){
+    public static function Price($args){
+        //$court_id,$type,$date_time
         $condition = ' 1=1 ';
         $params = array();
 
-        if (isset($args->date)&&$args->date != ''){
-            $condition.= ' AND g_policy.start_date >= :start_date ';
-            $params['start_date'] = $args->date;
-
-            $condition.= ' AND g_policy.end_date >= :end_date ';
-            $params['end_date'] = $args->date;
-
-            $day=date("w",$args->date);
-            $condition.= ' AND ( g_policy_detail.day < 0 or g_policy_detail.day = :day))';
-            $params['day'] = $day;
+        if (isset($args->court_id)&&$args->court_id != ''){
+            $condition.= ' AND g_policy.court_id=:court_id ';
+            $params['court_id'] = $args->court_id;
         }
 
-        if (isset($args->time)&&$args->time != ''){
+        if (isset($args->date_time)&&$args->date_time != ''){
+            $d=date("Y-m-d",strtotime($args->date_time));
+            $condition.= ' AND g_policy.start_date >= :start_date ';
+            $params['start_date'] = $d;
+
+            $condition.= ' AND g_policy.end_date >= :end_date ';
+            $params['end_date'] = $d;
+
+            $day=date("w",strtotime($args->date_time));
+            $condition.= ' AND ( g_policy_detail.day < 0 or g_policy_detail.day = :day))';
+            $params['day'] = $day;
+
+            $t=date("H:i:s",strtotime($args->date_time));
             $condition.= ' AND ( g_policy_detail.end_time is null or ( g_policy_detail.start_time >= :start_time  AND g_policy_detail.end_time >= :end_time ))';
-            $params['start_time'] = $args->time;
-            $params['end_time'] = $args->time;
+            $params['start_time'] = $t;
+            $params['end_time'] = $t;
+        }
+
+        if (isset($args->type)&&$args->type != ''){
+            $condition.= ' AND g_policy.type >= :type ';
+            $params['type'] = $args->type;
         }
 
         $condition.= ' AND g_policy.status=0 ';
         $condition.= ' AND g_policy_detail.status=1 ';
 
         $rows = Yii::app()->db->createCommand()
-            ->select("g_policy.*,g_court.name name,g_court.addr,g_court.lon lon,g_court.lat lat,g_policy_detail.price,g_policy_detail.day,g_policy_detail.start_time,g_policy_detail.end_time,g_agent.agent_name,g_img.img_url ico_img")
+            ->select("g_policy.*,g_court.name court_name,g_policy_detail.price,g_policy_detail.day,g_policy_detail.start_time,g_policy_detail.end_time,g_agent.agent_name")
             ->from("g_policy_detail")
             ->leftJoin("g_policy","g_policy_detail.policy_id=g_policy.id")
             ->leftJoin("g_court","g_policy.court_id=g_court.court_id")
             ->leftJoin("g_agent","g_agent.id=g_policy.agent_id")
-            ->leftJoin("g_img","g_img.type=8 and g_img.relation_id=g_court.court_id")
             ->where($condition,$params)
             ->queryAll();
-        //return $row;
+
         $rows_tmp=array();
 
         if($rows){
-            foreach($rows as $row){
-                $court_id=$row['court_id'];
-                if(isset($rows_tmp[$court_id])){
-                    $row_tmp=$rows_tmp[$court_id];
-
+            foreach($rows as $row){//筛选每个代理商在这一时段的有效报价
+                $agent_id=$row['agent_id'];
+                if(isset($rows_tmp[$agent_id])){
+                    $row_tmp=$rows_tmp[$agent_id];
                     if($row_tmp['type']==$row['type']&&$row_tmp['price']>$row['price']){
-                        $rows_tmp[$court_id]=$row;
+                        $rows_tmp[$agent_id]=$row;
                         continue;
                     }
-
                     if($row_tmp['type']<$row['type']){
-                        $rows_tmp[$court_id]=$row;
+                        $rows_tmp[$agent_id]=$row;
                         continue;
                     }
                 }else{
-                    $rows_tmp[$court_id]=$row;
+                    $rows_tmp[$agent_id]=$row;
+                }
+            }
+        }
+        $rows=array();
+        if($rows_tmp){
+            if($args->type==Policy::TYPE_FOVERABLE){//如果是只查询优惠报价的话那么，要把特殊报价去掉
+                foreach($rows_tmp as $row){
+                    if($row['type']!=Policy::TYPE_SPECIAL){
+                        $rows[]=$row;
+                    }
+                }
+            }else{
+                foreach($rows_tmp as $row){
+                    $rows[]=$row;
                 }
             }
         }

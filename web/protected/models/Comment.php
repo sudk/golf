@@ -87,6 +87,15 @@ class Comment extends CActiveRecord {
 
         return $rs;
     }
+
+    public static function ComAvg($court_id){
+        $row=Yii::app()->db->createCommand()
+            ->select("count(1) comment_count,sum(service)/count(1) service_total,sum(design)/count(1) design_total,sum(facilitie)/count(1) facilitie_total,sum(lawn)/count(1) lawn_total")
+            ->from("g_comment")
+            ->where("court_id=:court_id",array("court_id"=>$court_id))
+            ->queryRow();
+        return $row;
+    }
 }
 
 
