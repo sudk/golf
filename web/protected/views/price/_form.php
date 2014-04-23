@@ -148,7 +148,7 @@ if($__model__=="edit"){
         </td> 
         <td class="maxname">
             <input type="checkbox" name="<?php echo $key;?>_disable" value="1" onclick="javascript:check(this,'<?php echo $key;?>');" <?php echo $status_row[$key.'_default']=='1'?" checked":"";?>/><label>禁止预订</label>
-            <input type="text" name="<?php echo $key;?>_status" id="<?php echo $key;?>_status" value="<?php echo $status_row[$key.'_default']?$status_row[$key.'_default']:0;?>"/>
+            <input type="hidden" name="<?php echo $key;?>_status" id="<?php echo $key;?>_status" value="<?php echo $status_row[$key.'_default']?$status_row[$key.'_default']:0;?>"/>
         </td>
         <td class="mivalue">
             <?php

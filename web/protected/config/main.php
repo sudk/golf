@@ -16,7 +16,10 @@ return array(
         'application.models.*',
         'application.components.*',
         'application.components.widgets.*',
-		'ext.PHPExcel.*',
+	'ext.PHPExcel.*',
+        'ext.phpexcelr.*',
+        'ext.redis.*',
+        'ext.phpexcelreader.*'
     ),
 	//配置模块信息
     // application components
