@@ -4,15 +4,16 @@ import java.util.ArrayList;
 
 /*
  * 
- * Çò³¡Àà
+ * ï¿½ï¿½ï¿½ï¿½
  * 
  */
 public class GCourt {
 	
 	private String _id;
+	private String _name;
 	private String _city;
 	private String _price;
-	private String _point; //»ý·Ö
+	private String _point; //ï¿½ï¿½ï¿½
 	private String _description;
 	private String _address;
 	private String _createYear;
@@ -29,13 +30,14 @@ public class GCourt {
 
 	
 	
-	public GCourt(String id, String city, String price, String point,
+	public GCourt(String id, String name, String city, String price, String point,
 			String description, String address, String createYear,
 			String greenGrass, String designer, String fairwayLength,
 			String fairwayGrass, String phone, String remark,
 			String facilities, String data) {
 		super();
 		this._id = id;
+		this._name = name;
 		this._city = city;
 		this._price = price;
 		this._point = point;
@@ -58,6 +60,14 @@ public class GCourt {
 
 	public void setId(String id) {
 		this._id = id;
+	}
+	
+	public String getName(){
+		return this._name;
+	}
+	
+	public void setName(String name){
+		this._name = name ;
 	}
 
 	public String getCity() {

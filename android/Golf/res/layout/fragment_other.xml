@@ -1,16 +1,79 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res/com.jsaon.golf"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.jason.golf.MainActivity$PlaceholderFragment" >
+    android:orientation="vertical" >
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="other" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="120dip" >
 
-</RelativeLayout>
+        <android.support.v4.view.ViewPager
+            android:id="@+id/advertisements"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+        </android.support.v4.view.ViewPager>
+
+        <LinearLayout
+            android:id="@+id/dotcontainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal" />
+    </RelativeLayout>
+
+    <android.support.v7.widget.GridLayout
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/grid_buttons"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:paddingBottom="@dimen/button_grid_vertical_margin"
+        android:paddingLeft="@dimen/button_grid_horizontal_margin"
+        android:paddingRight="@dimen/button_grid_horizontal_margin"
+        android:paddingTop="@dimen/button_grid_vertical_margin"
+        app:alignmentMode="alignMargins"
+        app:columnCount="3"
+        app:columnOrderPreserved="false"
+        app:useDefaultMargins="false" >
+
+       <TextView
+            android:id="@+id/grid_preference"
+            android:layout_margin="2dip"
+            android:background="#00a0ea"
+            android:gravity="center"
+            android:text="@string/preference"
+            android:textColor="@android:color/white"
+            android:textSize="32sp" />
+
+        <TextView
+            android:id="@+id/grid_combo"
+            android:layout_margin="2dip"
+            android:background="#8587c0"
+            android:gravity="center"
+            android:text="@string/combo"
+            android:textColor="@android:color/white"
+            android:textSize="32sp" />
+
+        <TextView
+            android:id="@+id/grid_sale"
+            android:layout_margin="2dip"
+            android:gravity="center"
+            android:background="#2454a6"
+            android:text="@string/sale"
+            android:textColor="@android:color/white"
+            android:textSize="32sp" />
+
+        <TextView
+            android:id="@+id/grid_ranking"
+            android:layout_margin="2dip"
+            android:background="#0ba29b"
+            android:gravity="center"
+            android:text="@string/ranking"
+            android:textColor="@android:color/white"
+            android:textSize="28sp" />
+    </android.support.v7.widget.GridLayout>
+
+</LinearLayout>

@@ -30,8 +30,6 @@ public class GCourtInfoActivity extends ActionBarActivity {
 		// Commit the transaction
 		transaction.commit();
 		
-		
-		
 	}
 	
 

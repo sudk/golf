@@ -7,17 +7,32 @@ public class GAdver {
 	private int _state;
 	
 	private String _url;
+	private String _imgUrl;
 	private long _startDate;
 	private long _endDate;
 	
-	public GAdver(int order, int type, String url, long startDate, long endDate) {
-		super();
+	public GAdver(int order, int type,String imgUrl, String url, long startDate, long endDate) {
 		this._order = order;
 		this._type = type;
+		this._imgUrl = imgUrl;
 		this._url = url;
 		this._startDate = startDate;
 		this._endDate = endDate;
 	}
+	
+	
+
+	public String getImgUrl() {
+		return _imgUrl;
+	}
+
+
+
+	public void setImgUrl(String imgUrl) {
+		this._imgUrl = imgUrl;
+	}
+
+
 
 	public int getOrder() {
 		return _order;

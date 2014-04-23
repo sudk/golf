@@ -10,6 +10,12 @@
     <string name="account">账户</string>
     <string name="find">发现</string>
     
+    <!-- other -->
+    <string name="preference">特惠</string>
+    <string name="combo">套餐</string>
+    <string name="sale">寄卖</string>
+    <string name="ranking">排行榜</string>
+    
     <!-- 用户信息 -->
     <string name="account_manager">账户管理</string>
     <string name="register">注册</string>
