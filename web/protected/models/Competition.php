@@ -56,48 +56,35 @@ class Competition extends CActiveRecord {
         $params = array();
 
         
-        if ($args['facilite_name'] != ''){
-            $condition.=' AND facilite_name like :facilite_name';
-            $params['facilite_name'] = "%".$args['facilite_name']."%";
+        if ($args['city'] != ''){
+            $condition.=' AND g_court.city = :city';
+            $params['city'] = $args['city'];
         }
-        
-        
-        if ($args['type'] != ''){
-            $condition.=' AND type=:type';
-            $params['type'] = $args['type'];
-        }
-        
-        if ($args['court_id'] != ''){
-            $condition.=' AND court_id=:court_id';
-            $params['court_id'] = $args['court_id'];
+
+        if ($args['name'] != ''){
+            $condition.=' AND g_competition.name like :name';
+            $params['name'] = "%".$args['name']."%";
         }
         
         
         //$total_num = CourtFacilities::model()->count($condition, $params); //总记录数
         $total_num = Yii::app()->db->createCommand()
             ->select("count(1)")
-            ->from("g_court_facilities")
+            ->from("g_competition")
+            ->leftJoin("g_court","g_court.court_id=g_competition.court_id")
+            ->leftJoin("g_agent","g_agent.agent_id=g_competition.id")
             ->where($condition,$params)
             ->queryScalar();
-
-        $criteria = new CDbCriteria();
         
     	
         $order = 'record_time  DESC';
-        
-
-        $criteria->condition = $condition;
-        $criteria->params = $params;
-
-        $pages = new CPagination($total_num);
-        $pages->pageSize = $pageSize;
-        $pages->setCurrentPage($page);
-        $pages->applyLimit($criteria);
 
         //$rows = CourtFacilities::model()->findAll($criteria);
         $rows=Yii::app()->db->createCommand()
-            ->select("*")
-            ->from("g_court_facilities")
+            ->select("g_competition.*,g_court.name court_name,g_agent.agent_name")
+            ->from("g_competition")
+            ->leftJoin("g_court","g_court.court_id=g_competition.court_id")
+            ->leftJoin("g_agent","g_agent.agent_id=g_competition.id")
             ->where($condition,$params)
             ->order($order)
             ->limit($pageSize)
@@ -106,17 +93,41 @@ class Competition extends CActiveRecord {
 
         $rs['status'] = 0;
         $rs['desc'] = '成功';
-        $rs['page_num'] = ($pages->currentPage + 1);
+        $rs['page_num'] = ($page + 1);
         $rs['total_num'] = $total_num;
-        $rs['total_page'] = ceil($rs['total_num'] / $rs['page_num']);
-        $rs['num_of_page'] = $pages->pageSize;
+        $rs['total_page'] = ceil($rs['total_num'] / $pageSize);
+        $rs['num_of_page'] = $pageSize;
         $rs['rows'] = $rows;
 
         return $rs;
     }
 
 
-    
+    public static function Info($competition_id) {
+
+        $condition = ' 1=1 ';
+        $params = array();
+
+
+        if ($competition_id != ''){
+            $condition.=' AND g_competition.id = :id';
+            $params['id'] =$competition_id;
+        }else{
+            return false;
+        }
+
+        //$rows = CourtFacilities::model()->findAll($criteria);
+        $row=Yii::app()->db->createCommand()
+            ->select("g_competition.*,g_court.name court_name,g_agent.agent_name")
+            ->from("g_competition")
+            ->leftJoin("g_court","g_court.court_id=g_competition.court_id")
+            ->leftJoin("g_agent","g_agent.agent_id=g_competition.id")
+            ->where($condition,$params)
+            ->queryRow();
+
+        return $row;
+
+    }
     
     
     
