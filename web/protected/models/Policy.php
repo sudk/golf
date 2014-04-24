@@ -362,6 +362,7 @@ class Policy extends CActiveRecord {
                 //检验当前球场的报价单，在本月是不是已经有了
                 $valid_sql = "select count(1) as cnt from g_policy where agent_id='{$agent_id}' and date_format(start_date,'%Y-%m')='{$now_month}' and court_id='{$court_id}'";
                 $valid_row = $connection->createCommand($valid_sql)->queryRow();
+                
                 //var_dump($valid_row);
                 if($valid_row!=null && intval($valid_row['cnt']) != 0)
                 {
@@ -387,13 +388,13 @@ class Policy extends CActiveRecord {
                             is_green,is_caddie,is_car,is_wardrobe,is_meal,is_insurance,is_tip,pay_type,type,status,
                             record_time,creatorid) 
                             select '{$id}','{$start_date}','{$end_date}',
-                            'agent_id','court_id','remark','cancel_remark','is_green',
-                            'is_caddie','is_car','is_wardrobe','is_meal','is_insurance',
-                            'is_tip','pay_type','type','status','{$record_time}','{$creatorid}' from g_policy where id ='{$old_id}'";
+                            agent_id,court_id,remark,cancel_remark,is_green,
+                            is_caddie,is_car,is_wardrobe,is_meal,is_insurance,
+                            is_tip,pay_type,type,status,'{$record_time}','{$creatorid}' from g_policy where id ='{$old_id}'";
                         $connection->createCommand($sql)->execute();
                         //insert Plicy Detail
                         $sql = "insert into g_policy_detail(policy_id,day,start_time,end_time,price,record_time,status)
-                                select '{$id}','day','start_time','end_time','price','{$record_time}','status' from g_policy_detail where policy_id='{$old_id}'";
+                                select '{$id}',day,start_time,end_time,price,'{$record_time}',status from g_policy_detail where policy_id='{$old_id}'";
                             //var_dump($sql);
                         $connection->createCommand($sql)->execute();
                         
