@@ -1,5 +1,6 @@
 package com.jason.golf;
 
+import com.jason.golf.classes.GAccount;
 import com.jsaon.golf.R;
 
 import android.content.Intent;
@@ -16,7 +17,9 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 
 public class GAccountFragment extends Fragment implements OnClickListener {
-	
+
+	GAccount _account;
+
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -31,47 +34,75 @@ public class GAccountFragment extends Fragment implements OnClickListener {
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
-		
+
 		View v = inflater.inflate(R.layout.fragment_account, container, false);
 		v.findViewById(R.id.account_login).setOnClickListener(this);
 		v.findViewById(R.id.account_register).setOnClickListener(this);
-		
+		v.findViewById(R.id.account_change_pwd).setOnClickListener(this);
+
 		ActionBarActivity activity = (ActionBarActivity) getActivity();
 		ActionBar bar = activity.getSupportActionBar();
 		bar.setTitle(R.string.account_manager);
-//		int change = bar.getDisplayOptions() ^ ActionBar.DISPLAY_HOME_AS_UP;
-//	    bar.setDisplayOptions(change, ActionBar.DISPLAY_HOME_AS_UP);
-		
-		return v ; 
+		// int change = bar.getDisplayOptions() ^ ActionBar.DISPLAY_HOME_AS_UP;
+		// bar.setDisplayOptions(change, ActionBar.DISPLAY_HOME_AS_UP);
+
+		return v;
 	}
-	
-	
-	 @Override
-     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-         MenuItemCompat.setShowAsAction(menu.add("Menu 1a"), MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);
-         MenuItemCompat.setShowAsAction(menu.add("Menu 1b"), MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);
-         super.onCreateOptionsMenu(menu, inflater);
-     }
+
+	@Override
+	public void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		GolfAppliaction app = (GolfAppliaction) getActivity().getApplication();
+		_account = app.getAccount();
+
+		System.out.println(_account.toString());
+		
+		if (_account.hasLogin()) {
+
+		} else {
+
+		}
+	}
+
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		MenuItemCompat.setShowAsAction(menu.add("Menu 1a"),	MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);
+		MenuItemCompat.setShowAsAction(menu.add("Menu 1b"),	MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);
+		super.onCreateOptionsMenu(menu, inflater);
+	}
 
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
-		switch(v.getId()){
+		switch (v.getId()) {
 		case R.id.account_login:
 			Intent itLogin = new Intent(getActivity(), GAccountActivity.class);
 			itLogin.putExtra(GAccountActivity.FRAGMENT, GAccountActivity.LOGIN);
 			startActivity(itLogin);
 			break;
 		case R.id.account_register:
-			Intent itRegister = new Intent(getActivity(), GAccountActivity.class);
-			itRegister.putExtra(GAccountActivity.FRAGMENT, GAccountActivity.REGISTER);
+			Intent itRegister = new Intent(getActivity(),
+					GAccountActivity.class);
+			itRegister.putExtra(GAccountActivity.FRAGMENT,
+					GAccountActivity.REGISTER);
 			startActivity(itRegister);
 			break;
 		case R.id.account_logout:
+			
+			
+			break;
+			
+		case R.id.account_change_pwd:
+			startActivity(new Intent(getActivity(), GChangePwdActivity.class));
 			break;
 		}
+
+		
+
 	}
 
 }

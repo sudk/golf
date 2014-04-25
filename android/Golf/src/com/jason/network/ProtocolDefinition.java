@@ -1,11 +1,10 @@
 package com.jason.network;
 
-import java.util.HashMap;
-
 public class ProtocolDefinition {
 	
 	
-	public static final String COMMANDURL = "http://115.29.150.98/gl/index.php?r=command"; //
+	public static final String COMMANDURL = "http://115.28.77.119/?r=command"; //
+	
 	
 //	public class ResponseCode {
 //		

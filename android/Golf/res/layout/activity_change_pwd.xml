@@ -20,27 +20,31 @@
         <!-- 账号 -->
 
         <LinearLayout
+            android:id="@+id/linearLayout1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dip"
             android:gravity="center_vertical" >
 
             <TextView
-                style="@style/AccountRegisterTextView"
+                style="@style/AccountLoginTextView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:drawableLeft="@drawable/login_input_id"
                 android:text="@string/phone" />
 
             <EditText
-                android:id="@+id/loginid_edit"
+                
+                android:id="@+id/phone_edit"
                 style="@style/AccountLoginEditText"
                 android:layout_width="0dip"
                 android:layout_height="match_parent"
-                android:layout_weight="3"
+                android:layout_weight="2"
                 android:hint="@string/hint_input_phone_number"
                 android:inputType="phone"
-                android:maxLength="20" >
+                android:maxLength="20"
+                android:text="13335130151" >
 
                 <requestFocus />
             </EditText>
@@ -52,58 +56,30 @@
             android:background="@drawable/block_divider" />
 
         <LinearLayout
+            android:id="@+id/linearLayout2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dip"
             android:gravity="center_vertical" >
 
             <TextView
-                style="@style/AccountRegisterTextView"
+                style="@style/AccountLoginTextView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/password" />
+                android:drawableLeft="@drawable/login_input_password"
+                android:text="@string/newpassword" />
 
             <EditText
-                android:id="@+id/password_edit"
+                android:id="@+id/new_pwd_edit"
                 style="@style/AccountLoginEditText"
                 android:layout_width="0dip"
                 android:layout_height="match_parent"
-                android:layout_weight="3"
+                android:layout_weight="2"
                 android:hint="@string/hint_password_length"
                 android:inputType="textPassword"
-                android:maxLength="20" />
-        </LinearLayout>
-        
-        
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dip"
-            android:background="@drawable/block_divider" />
-        
-        
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dip"
-            android:gravity="center_vertical" >
-
-            <TextView
-                style="@style/AccountRegisterTextView"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/username" />
-
-            <EditText
-                android:id="@+id/username_edit"
-                style="@style/AccountLoginEditText"
-                android:layout_width="0dip"
-                android:layout_height="match_parent"
-                android:layout_weight="3"
-                android:hint="@string/hint_username"
-                android:inputType="textPassword"
-                android:maxLength="20" />
+                android:maxLength="20"
+                android:text="123456" />
         </LinearLayout>
 
         <View
@@ -118,69 +94,55 @@
             android:gravity="center_vertical" >
 
             <TextView
-                style="@style/AccountRegisterTextView"
+                style="@style/AccountLoginTextView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/email" />
+                android:drawableLeft="@drawable/login_input_password"
+                android:text="@string/sms_code" />
 
-            <EditText
-                android:id="@+id/email_edit"
-                style="@style/AccountLoginEditText"
+            <LinearLayout
                 android:layout_width="0dip"
                 android:layout_height="match_parent"
-                android:layout_weight="3"
-                android:hint="@string/hint_email"
-                android:inputType="textPassword"
-                android:maxLength="20" />
+                android:layout_weight="2" 
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/code_edit"
+                    style="@style/AccountLoginEditText"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"
+                    android:inputType="number"
+                    android:maxLength="20" />
+                
+                <Button 
+                    android:id="@+id/get_sms_code"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:textSize="15sp"
+                    android:textColor="#9fa1a3"
+                    android:text="@string/obtain"
+                    style="@style/WhiteButton"/>
+            </LinearLayout>
         </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dip"
-            android:background="@drawable/block_divider" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dip"
-            android:gravity="center_vertical" >
-
-            <TextView
-                style="@style/AccountRegisterTextView"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/vipcard" />
-
-            <EditText
-                android:id="@+id/vip_edit"
-                style="@style/AccountLoginEditText"
-                android:layout_width="0dip"
-                android:layout_height="match_parent"
-                android:layout_weight="3"
-                android:hint="@string/hint_vip"
-                android:inputType="textPassword"
-                android:maxLength="20" />
-        </LinearLayout>
-
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dip"
-        android:padding="10dip"
         android:orientation="horizontal" >
 
         <Button
             style="@style/OrangeButton"
-            android:id="@+id/register_submit"
-            android:layout_width="match_parent"
+            android:id="@+id/submit_chgpwd"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/register"/>
-        
+            android:layout_margin="5dip"
+            android:layout_weight="1"
+            android:text="@string/confirm"/>
     </LinearLayout>
 
 </LinearLayout>

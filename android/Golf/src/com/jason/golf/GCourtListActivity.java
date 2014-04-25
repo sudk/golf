@@ -7,7 +7,7 @@ import org.json.JSONObject;
 
 import com.jason.controller.GThreadExecutor;
 import com.jason.controller.HttpCallback;
-import com.jason.controller.RunnabLogin;
+import com.jason.controller.HttpRequest;
 import com.jason.golf.classes.GCourt;
 import com.jason.golf.classes.SearchCourtListAdapter;
 import com.jsaon.golf.R;
@@ -86,12 +86,13 @@ public class GCourtListActivity extends ActionBarActivity implements OnItemClick
 			params.put("_pg_", "");
 			params.put("order_type", "");
 			
-			RunnabLogin request = new RunnabLogin(this, params, new HttpCallback() {
+			HttpRequest request = new HttpRequest(this, params, new HttpCallback() {
 
 				@Override
 				public void sucess(String res) {
 					// TODO Auto-generated method stub
-					System.out.println(res);
+					super.sucess(res);
+					
 				}
 				
 			});

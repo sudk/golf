@@ -1339,30 +1339,35 @@ containing a value of this type.
         public static final int block_divider=0x7f020058;
         public static final int brif_img=0x7f020059;
         public static final int button_background=0x7f02005a;
-        public static final int button_background_normal=0x7f02005b;
-        public static final int button_background_selected=0x7f02005c;
-        public static final int ic_37_address_icon=0x7f02005d;
-        public static final int ic_37_calendar=0x7f02005e;
-        public static final int ic_37_city=0x7f02005f;
-        public static final int ic_37_keyword=0x7f020060;
-        public static final int ic_37_time=0x7f020061;
-        public static final int ic_37_triange=0x7f020062;
-        public static final int ic_date=0x7f020063;
-        public static final int ic_launcher=0x7f020064;
-        public static final int ic_location=0x7f020065;
-        public static final int ic_note=0x7f020066;
-        public static final int ic_time=0x7f020067;
-        public static final int iv_3_6_detail=0x7f020068;
-        public static final int login_input_id=0x7f020069;
-        public static final int login_input_password=0x7f02006a;
-        public static final int page_indicator_focused=0x7f02006b;
-        public static final int page_indicator_unfocused=0x7f02006c;
-        public static final int test_golf=0x7f02006d;
+        public static final int button_background_disable=0x7f02005b;
+        public static final int button_background_normal=0x7f02005c;
+        public static final int button_background_selected=0x7f02005d;
+        public static final int ic_37_address_icon=0x7f02005e;
+        public static final int ic_37_calendar=0x7f02005f;
+        public static final int ic_37_city=0x7f020060;
+        public static final int ic_37_keyword=0x7f020061;
+        public static final int ic_37_time=0x7f020062;
+        public static final int ic_37_triange=0x7f020063;
+        public static final int ic_date=0x7f020064;
+        public static final int ic_launcher=0x7f020065;
+        public static final int ic_location=0x7f020066;
+        public static final int ic_note=0x7f020067;
+        public static final int ic_time=0x7f020068;
+        public static final int iv_3_6_detail=0x7f020069;
+        public static final int login_input_id=0x7f02006a;
+        public static final int login_input_password=0x7f02006b;
+        public static final int page_indicator_focused=0x7f02006c;
+        public static final int page_indicator_unfocused=0x7f02006d;
+        public static final int small_button_background=0x7f02006e;
+        public static final int small_button_background_normal=0x7f02006f;
+        public static final int small_button_background_selected=0x7f020070;
+        public static final int test_golf=0x7f020071;
     }
     public static final class id {
-        public static final int account_login=0x7f050061;
-        public static final int account_logout=0x7f050063;
-        public static final int account_register=0x7f050062;
+        public static final int account_change_pwd=0x7f05006b;
+        public static final int account_login=0x7f050069;
+        public static final int account_logout=0x7f05006c;
+        public static final int account_register=0x7f05006a;
         public static final int action_bar=0x7f05002d;
         public static final int action_bar_activity_content=0x7f050026;
         public static final int action_bar_container=0x7f05002c;
@@ -1374,114 +1379,117 @@ containing a value of this type.
         public static final int action_menu_divider=0x7f050027;
         public static final int action_menu_presenter=0x7f050028;
         public static final int action_mode_close_button=0x7f050035;
-        public static final int action_settings=0x7f05008c;
+        public static final int action_settings=0x7f050092;
         public static final int activity_chooser_view_content=0x7f050036;
-        public static final int advertisements=0x7f050074;
-        public static final int agent_brief=0x7f050056;
-        public static final int agent_name=0x7f050055;
-        public static final int agent_price=0x7f050057;
+        public static final int advertisements=0x7f05007a;
+        public static final int agent_brief=0x7f05005e;
+        public static final int agent_name=0x7f05005d;
+        public static final int agent_price=0x7f05005f;
         public static final int alignBounds=0x7f050002;
         public static final int alignMargins=0x7f050003;
         public static final int always=0x7f05001d;
-        public static final int ampm_hitspace=0x7f050086;
-        public static final int ampm_label=0x7f050087;
-        public static final int animator=0x7f050060;
+        public static final int ampm_hitspace=0x7f05008c;
+        public static final int ampm_label=0x7f05008d;
+        public static final int animator=0x7f050068;
         public static final int beginning=0x7f050023;
         public static final int bottom=0x7f050005;
         public static final int center=0x7f05000c;
         public static final int center_horizontal=0x7f05000a;
         public static final int center_vertical=0x7f050008;
-        public static final int center_view=0x7f050080;
+        public static final int center_view=0x7f050086;
         public static final int checkbox=0x7f05003e;
-        public static final int city=0x7f050058;
-        public static final int citys=0x7f050054;
+        public static final int city=0x7f050060;
+        public static final int citys=0x7f05005c;
         public static final int clip_horizontal=0x7f05000f;
         public static final int clip_vertical=0x7f05000e;
+        public static final int code_edit=0x7f050053;
         public static final int collapseActionView=0x7f05001f;
         public static final int container=0x7f05004d;
-        public static final int court_agents=0x7f050072;
-        public static final int court_list=0x7f05004f;
-        public static final int court_list_distance=0x7f050052;
-        public static final int court_list_image=0x7f050050;
-        public static final int court_list_name=0x7f050051;
-        public static final int court_list_price=0x7f050053;
-        public static final int date=0x7f050070;
-        public static final int date_picker_day=0x7f05005e;
-        public static final int date_picker_header=0x7f05005a;
-        public static final int date_picker_month=0x7f05005d;
-        public static final int date_picker_month_and_day=0x7f05005c;
-        public static final int date_picker_year=0x7f05005f;
-        public static final int day_picker_selected_date_layout=0x7f05005b;
+        public static final int court_agents=0x7f050078;
+        public static final int court_list=0x7f050057;
+        public static final int court_list_distance=0x7f05005a;
+        public static final int court_list_image=0x7f050058;
+        public static final int court_list_name=0x7f050059;
+        public static final int court_list_price=0x7f05005b;
+        public static final int date=0x7f050076;
+        public static final int date_picker_day=0x7f050066;
+        public static final int date_picker_header=0x7f050062;
+        public static final int date_picker_month=0x7f050065;
+        public static final int date_picker_month_and_day=0x7f050064;
+        public static final int date_picker_year=0x7f050067;
+        public static final int day_picker_selected_date_layout=0x7f050063;
         public static final int default_activity_button=0x7f050039;
         public static final int dialog=0x7f050020;
         public static final int disableHome=0x7f05001a;
-        public static final int done=0x7f050059;
-        public static final int done_button=0x7f05008a;
-        public static final int dotcontainer=0x7f050075;
+        public static final int done=0x7f050061;
+        public static final int done_button=0x7f050090;
+        public static final int dotcontainer=0x7f05007b;
         public static final int dropdown=0x7f050021;
         public static final int edit_query=0x7f050041;
-        public static final int email_edit=0x7f05006b;
+        public static final int email_edit=0x7f050072;
         public static final int end=0x7f050011;
         public static final int expand_activities_button=0x7f050037;
         public static final int expanded_menu=0x7f05003d;
         public static final int fill=0x7f05000d;
         public static final int fill_horizontal=0x7f05000b;
         public static final int fill_vertical=0x7f050009;
-        public static final int grid_buttons=0x7f050076;
-        public static final int grid_combo=0x7f050078;
-        public static final int grid_preference=0x7f050077;
-        public static final int grid_ranking=0x7f05007a;
-        public static final int grid_sale=0x7f050079;
+        public static final int get_sms_code=0x7f050054;
+        public static final int grid_buttons=0x7f05007c;
+        public static final int grid_combo=0x7f05007e;
+        public static final int grid_preference=0x7f05007d;
+        public static final int grid_ranking=0x7f050080;
+        public static final int grid_sale=0x7f05007f;
         public static final int home=0x7f050025;
         public static final int homeAsUp=0x7f050017;
         public static final int horizontal=0x7f050000;
-        public static final int hour_space=0x7f050081;
-        public static final int hours=0x7f050083;
+        public static final int hour_space=0x7f050087;
+        public static final int hours=0x7f050089;
         public static final int icon=0x7f05003b;
         public static final int ifRoom=0x7f05001c;
         public static final int image=0x7f050038;
         public static final int left=0x7f050006;
-        public static final int linearLayout1=0x7f050065;
-        public static final int linearLayout2=0x7f050067;
+        public static final int linearLayout1=0x7f05004f;
+        public static final int linearLayout2=0x7f050051;
         public static final int listMode=0x7f050013;
         public static final int list_item=0x7f05003a;
-        public static final int login_button=0x7f05006a;
-        public static final int login_div=0x7f050064;
-        public static final int loginid_edit=0x7f050066;
-        public static final int main_real_content=0x7f05004e;
+        public static final int login_button=0x7f050070;
+        public static final int login_div=0x7f05004e;
+        public static final int loginid_edit=0x7f05006d;
+        public static final int main_real_content=0x7f050056;
         public static final int middle=0x7f050024;
-        public static final int minutes=0x7f050085;
-        public static final int minutes_space=0x7f050084;
-        public static final int month_text_view=0x7f05008b;
+        public static final int minutes=0x7f05008b;
+        public static final int minutes_space=0x7f05008a;
+        public static final int month_text_view=0x7f050091;
         public static final int never=0x7f05001b;
+        public static final int new_pwd_edit=0x7f050052;
         public static final int none=0x7f050022;
         public static final int normal=0x7f050012;
-        public static final int pager=0x7f050073;
-        public static final int password_edit=0x7f050068;
+        public static final int pager=0x7f050079;
+        public static final int password_edit=0x7f05006e;
+        public static final int phone_edit=0x7f050050;
         public static final int progress_circular=0x7f050029;
         public static final int progress_horizontal=0x7f05002a;
-        public static final int province=0x7f05007f;
+        public static final int province=0x7f050085;
         public static final int radio=0x7f050040;
-        public static final int recommander_edit=0x7f05006d;
-        public static final int register_button=0x7f050069;
-        public static final int register_submit=0x7f05006e;
+        public static final int register_button=0x7f05006f;
+        public static final int register_submit=0x7f050074;
         public static final int right=0x7f050007;
-        public static final int scroller_solution=0x7f05006f;
+        public static final int scroller_solution=0x7f050075;
         public static final int search_badge=0x7f050043;
         public static final int search_bar=0x7f050042;
         public static final int search_button=0x7f050044;
         public static final int search_close_btn=0x7f050049;
-        public static final int search_court=0x7f05007e;
+        public static final int search_court=0x7f050084;
         public static final int search_edit_frame=0x7f050045;
         public static final int search_go_btn=0x7f05004b;
         public static final int search_mag_icon=0x7f050046;
         public static final int search_plate=0x7f050047;
         public static final int search_src_text=0x7f050048;
         public static final int search_voice_btn=0x7f05004c;
-        public static final int select_city=0x7f05007b;
-        public static final int select_date=0x7f05007c;
-        public static final int select_time=0x7f05007d;
-        public static final int separator=0x7f050082;
+        public static final int select_city=0x7f050081;
+        public static final int select_date=0x7f050082;
+        public static final int select_time=0x7f050083;
+        public static final int separator=0x7f050088;
         public static final int shortcut=0x7f05003f;
         public static final int showCustom=0x7f050019;
         public static final int showHome=0x7f050016;
@@ -1489,17 +1497,19 @@ containing a value of this type.
         public static final int split_action_bar=0x7f05002f;
         public static final int start=0x7f050010;
         public static final int submit_area=0x7f05004a;
+        public static final int submit_chgpwd=0x7f050055;
         public static final int tabMode=0x7f050014;
-        public static final int time=0x7f050071;
-        public static final int time_picker=0x7f050089;
-        public static final int time_picker_dialog=0x7f050088;
+        public static final int time=0x7f050077;
+        public static final int time_picker=0x7f05008f;
+        public static final int time_picker_dialog=0x7f05008e;
         public static final int title=0x7f05003c;
         public static final int top=0x7f050004;
         public static final int top_action_bar=0x7f050031;
         public static final int up=0x7f050032;
         public static final int useLogo=0x7f050015;
+        public static final int username_edit=0x7f050071;
         public static final int vertical=0x7f050001;
-        public static final int vip_edit=0x7f05006c;
+        public static final int vip_edit=0x7f050073;
         public static final int withText=0x7f05001e;
     }
     public static final class integer {
@@ -1553,35 +1563,36 @@ containing a value of this type.
         public static final int abc_search_view=0x7f030016;
         public static final int abc_simple_decor=0x7f030017;
         public static final int activity_account=0x7f030018;
-        public static final int activity_court_info=0x7f030019;
-        public static final int activity_main=0x7f03001a;
-        public static final int activity_search_court_list=0x7f03001b;
-        public static final int activity_search_court_list_item=0x7f03001c;
-        public static final int activity_selectcity=0x7f03001d;
-        public static final int agent_list_item=0x7f03001e;
-        public static final int city_item=0x7f03001f;
-        public static final int date_picker_dialog=0x7f030020;
-        public static final int date_picker_done_button=0x7f030021;
-        public static final int date_picker_header_view=0x7f030022;
-        public static final int date_picker_selected_date=0x7f030023;
-        public static final int date_picker_view_animator=0x7f030024;
-        public static final int fragment_account=0x7f030025;
-        public static final int fragment_account_login=0x7f030026;
-        public static final int fragment_account_register=0x7f030027;
-        public static final int fragment_court_info_brief=0x7f030028;
-        public static final int fragment_court_info_details=0x7f030029;
-        public static final int fragment_curse=0x7f03002a;
-        public static final int fragment_main=0x7f03002b;
-        public static final int fragment_other=0x7f03002c;
-        public static final int fragment_preferential=0x7f03002d;
-        public static final int fragment_search_court=0x7f03002e;
-        public static final int one_fragment=0x7f03002f;
-        public static final int province_item=0x7f030030;
-        public static final int support_simple_spinner_dropdown_item=0x7f030031;
-        public static final int time_header_label=0x7f030032;
-        public static final int time_picker_dialog=0x7f030033;
-        public static final int two_fragment=0x7f030034;
-        public static final int year_label_text_view=0x7f030035;
+        public static final int activity_change_pwd=0x7f030019;
+        public static final int activity_court_info=0x7f03001a;
+        public static final int activity_main=0x7f03001b;
+        public static final int activity_search_court_list=0x7f03001c;
+        public static final int activity_search_court_list_item=0x7f03001d;
+        public static final int activity_selectcity=0x7f03001e;
+        public static final int agent_list_item=0x7f03001f;
+        public static final int city_item=0x7f030020;
+        public static final int date_picker_dialog=0x7f030021;
+        public static final int date_picker_done_button=0x7f030022;
+        public static final int date_picker_header_view=0x7f030023;
+        public static final int date_picker_selected_date=0x7f030024;
+        public static final int date_picker_view_animator=0x7f030025;
+        public static final int fragment_account=0x7f030026;
+        public static final int fragment_account_login=0x7f030027;
+        public static final int fragment_account_register=0x7f030028;
+        public static final int fragment_court_info_brief=0x7f030029;
+        public static final int fragment_court_info_details=0x7f03002a;
+        public static final int fragment_curse=0x7f03002b;
+        public static final int fragment_main=0x7f03002c;
+        public static final int fragment_other=0x7f03002d;
+        public static final int fragment_preferential=0x7f03002e;
+        public static final int fragment_search_court=0x7f03002f;
+        public static final int one_fragment=0x7f030030;
+        public static final int province_item=0x7f030031;
+        public static final int support_simple_spinner_dropdown_item=0x7f030032;
+        public static final int time_header_label=0x7f030033;
+        public static final int time_picker_dialog=0x7f030034;
+        public static final int two_fragment=0x7f030035;
+        public static final int year_label_text_view=0x7f030036;
     }
     public static final class menu {
         public static final int main=0x7f0c0000;
@@ -1628,30 +1639,30 @@ containing a value of this type.
          */
         public static final int abc_shareactionprovider_share_with_application=0x7f080028;
         public static final int account=0x7f08002b;
-        public static final int account_changpwd=0x7f080046;
-        public static final int account_logout=0x7f080047;
+        public static final int account_changepwd=0x7f080048;
+        public static final int account_logout=0x7f080049;
         /**  用户信息 
          */
         public static final int account_manager=0x7f080031;
-        public static final int account_recharge=0x7f080042;
-        public static final int account_transfer=0x7f080043;
-        public static final int account_withdraw=0x7f080044;
+        public static final int account_recharge=0x7f080044;
+        public static final int account_transfer=0x7f080045;
+        public static final int account_withdraw=0x7f080046;
         public static final int action_settings=0x7f08001b;
         public static final int ampm_circle_radius_multiplier=0x7f080003;
         public static final int app_name=0x7f08001a;
-        public static final int cancel=0x7f08004f;
+        public static final int cancel=0x7f080051;
         public static final int circle_radius_multiplier=0x7f080000;
         public static final int circle_radius_multiplier_24HourMode=0x7f080001;
         /**  球场搜索 
          */
-        public static final int city=0x7f080048;
+        public static final int city=0x7f08004a;
         public static final int combo=0x7f08002e;
-        public static final int confirm=0x7f080051;
-        public static final int consumption_details=0x7f080045;
+        public static final int confirm=0x7f080053;
+        public static final int consumption_details=0x7f080047;
         /**  MainActivity 
          */
         public static final int court=0x7f08002a;
-        public static final int current_position=0x7f08004d;
+        public static final int current_position=0x7f08004f;
         /**  DO NOT TRANSLATE 
          */
         public static final int day_of_week_label_typeface=0x7f080019;
@@ -1668,14 +1679,15 @@ containing a value of this type.
         /**  Label for button to confirm chosen date or time [CHAR LIMIT=30] 
          */
         public static final int done_label=0x7f08000a;
-        public static final int email=0x7f080039;
+        public static final int email=0x7f08003a;
+        public static final int exit=0x7f080055;
         public static final int find=0x7f08002c;
         public static final int hello_world=0x7f08001c;
-        public static final int hint_email=0x7f080040;
-        public static final int hint_input_phone_number=0x7f08003d;
-        public static final int hint_password_length=0x7f08003e;
-        public static final int hint_recommand_code=0x7f08003f;
-        public static final int hint_vip=0x7f080041;
+        public static final int hint_email=0x7f080041;
+        public static final int hint_input_phone_number=0x7f08003e;
+        public static final int hint_password_length=0x7f08003f;
+        public static final int hint_username=0x7f080040;
+        public static final int hint_vip=0x7f080042;
         /** 
          Content description for the hour selector in the time picker, which displays
          selectable hours of the day along the inside edge of a circle, as in an analog clock.
@@ -1683,10 +1695,11 @@ containing a value of this type.
     
          */
         public static final int hour_picker_description=0x7f08000b;
+        public static final int is_exit=0x7f080056;
         /**  Accessibility description for the item that is currently selected. 
          */
         public static final int item_is_selected=0x7f080013;
-        public static final int keyword=0x7f08004b;
+        public static final int keyword=0x7f08004d;
         public static final int login=0x7f080034;
         public static final int login_title=0x7f080035;
         /** 
@@ -1696,20 +1709,22 @@ containing a value of this type.
     
          */
         public static final int minute_picker_description=0x7f08000c;
-        public static final int name_of_court=0x7f08004c;
-        public static final int no_sd_card=0x7f080050;
+        public static final int name_of_court=0x7f08004e;
+        public static final int newpassword=0x7f080038;
+        public static final int no_sd_card=0x7f080052;
         /**  通用 
          */
-        public static final int note=0x7f08004e;
+        public static final int note=0x7f080050;
         public static final int numbers_radius_multiplier_inner=0x7f080005;
         public static final int numbers_radius_multiplier_normal=0x7f080004;
         public static final int numbers_radius_multiplier_outer=0x7f080006;
-        public static final int order_manager=0x7f08003c;
-        public static final int order_to_pay=0x7f08003b;
+        public static final int obtain=0x7f080057;
+        public static final int order_manager=0x7f08003d;
+        public static final int order_to_pay=0x7f08003c;
         public static final int password=0x7f080037;
         public static final int phone=0x7f080036;
-        public static final int playdate=0x7f080049;
-        public static final int playtime=0x7f08004a;
+        public static final int playdate=0x7f08004b;
+        public static final int playtime=0x7f08004c;
         /**  other 
          */
         public static final int preference=0x7f08002d;
@@ -1717,14 +1732,13 @@ containing a value of this type.
          */
         public static final int radial_numbers_typeface=0x7f080017;
         public static final int ranking=0x7f080030;
-        public static final int recommender=0x7f080038;
         public static final int register=0x7f080032;
         public static final int register_title=0x7f080033;
         public static final int sale=0x7f08002f;
         /**  DO NOT TRANSLATE 
          */
         public static final int sans_serif=0x7f080018;
-        public static final int search=0x7f080052;
+        public static final int search=0x7f080054;
         /**  Accessibility announcement for the day picker [CHAR LIMIT=NONE] 
          */
         public static final int select_day=0x7f080011;
@@ -1738,6 +1752,7 @@ containing a value of this type.
          */
         public static final int select_year=0x7f080012;
         public static final int selection_radius_multiplier=0x7f080002;
+        public static final int sms_code=0x7f080043;
         public static final int text_size_multiplier_inner=0x7f080008;
         public static final int text_size_multiplier_normal=0x7f080007;
         public static final int text_size_multiplier_outer=0x7f080009;
@@ -1747,7 +1762,8 @@ containing a value of this type.
         /**  DO NOT TRANSLATE 
          */
         public static final int time_separator=0x7f080016;
-        public static final int vipcard=0x7f08003a;
+        public static final int username=0x7f080039;
+        public static final int vipcard=0x7f08003b;
         /** 
         Content description for the year selector in the date picker, which displays
         a scrolling, vertical list of years.
@@ -1757,10 +1773,10 @@ containing a value of this type.
         public static final int year_picker_description=0x7f080010;
     }
     public static final class style {
-        public static final int AccountLoginEditText=0x7f090098;
-        public static final int AccountLoginTextView=0x7f090097;
-        public static final int AccountRegisterTextView=0x7f090099;
-        public static final int AccountTextView=0x7f090096;
+        public static final int AccountLoginEditText=0x7f090099;
+        public static final int AccountLoginTextView=0x7f090098;
+        public static final int AccountRegisterTextView=0x7f09009a;
+        public static final int AccountTextView=0x7f090097;
         /** 
         Base application theme, dependent on API level. This theme is replaced
         by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
@@ -1816,9 +1832,9 @@ containing a value of this type.
         /**  ActionBar title text 
          */
         public static final int MyActionBarTitleText=0x7f090092;
-        public static final int SearchCourtButton=0x7f090093;
-        public static final int SearchCourtEditText=0x7f090095;
-        public static final int SearchCourtText=0x7f090094;
+        public static final int OrangeButton=0x7f090093;
+        public static final int SearchCourtEditText=0x7f090096;
+        public static final int SearchCourtText=0x7f090095;
         /**  Mimic text appearance in select_dialog_item.xml 
          */
         public static final int TextAppearance_AppCompat_Base_CompactMenu_Dialog=0x7f090068;
@@ -1927,6 +1943,7 @@ containing a value of this type.
         /**  Base platform-dependent theme providing a light-themed activity. 
          */
         public static final int Theme_Base_Light=0x7f090084;
+        public static final int WhiteButton=0x7f090094;
         /**  Styles in here can be extended for customisation in your application. Each utilises
          one of the Base styles. If Holo themes are available on the current platform version
          they will be used instead of the compat styles. 

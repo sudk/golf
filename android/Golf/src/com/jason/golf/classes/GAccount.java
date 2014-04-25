@@ -11,17 +11,23 @@ public class GAccount {
 	private String _city;
 	private String _name;
 	
-	private String _balance; //Óà¶î
+	private String _balance; //ï¿½ï¿½ï¿½
 	
-	private String _type; // ÊÇ·ñVIP¿Í»§
-	private String _vipCardNo; //VIP¿¨ºÅ
-	private String _point; // »ı·Ö
+	private String _type; // ï¿½Ç·ï¿½VIPï¿½Í»ï¿½
+	private String _vipCardNo; //VIPï¿½ï¿½ï¿½ï¿½
+	private String _point; // ï¿½ï¿½ï¿½
 	
 
 	public void initilization(String id, String session){
 		_id = id;
 		_session = session;
 	}
+	
+	/*
+	 * 
+	 * åˆ¤æ–­ç”¨æˆ·æ˜¯å¦å·²ç»ç™»å½•
+	 * 
+	 */
 	
 	public boolean hasLogin(){
 		if(TextUtils.isEmpty(_id) || TextUtils.isEmpty(_session))
@@ -42,7 +48,7 @@ public class GAccount {
 		return _phone;
 	}
 
-	public void set_phone(String phone) {
+	public void setPhone(String phone) {
 		this._phone = phone;
 	}
 
@@ -58,7 +64,7 @@ public class GAccount {
 		return _name;
 	}
 
-	public void set_name(String name) {
+	public void setName(String name) {
 		this._name = name;
 	}
 
@@ -99,6 +105,15 @@ public class GAccount {
 		_id = null;
 		_session = null;
 	}
+
+	@Override
+	public String toString() {
+		return "GAccount [_id=" + _id + ", _session=" + _session + ", _phone="
+				+ _phone + ", _city=" + _city + ", _name=" + _name
+				+ ", _balance=" + _balance + ", _type=" + _type
+				+ ", _vipCardNo=" + _vipCardNo + ", _point=" + _point + "]";
+	}
+	
 	
 
 }
