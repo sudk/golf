@@ -144,7 +144,7 @@ class Court extends CActiveRecord {
             $condition.= ' AND g_policy.end_date >= :date ';
             $params['date'] = $args->date;
 
-            $day=date("w",$args->date);
+            $day=date("w",strtotime($args->date));
             $condition.= ' AND ( g_policy_detail.day < 0 or g_policy_detail.day = :day )';
             $params['day'] = $day;
         }
@@ -161,8 +161,8 @@ class Court extends CActiveRecord {
         }
 
 
-        //print_r($condition);
-        //print_r($params);
+        print_r($condition);
+        print_r($params);
         $rows = Yii::app()->db->createCommand()
             ->select("g_policy.*,g_court.name name,g_court.addr,g_court.lon lon,g_court.lat lat,g_policy_detail.price,g_policy_detail.day,g_policy_detail.start_time,g_policy_detail.end_time,g_agent.agent_name,g_img.img_url ico_img")
             ->from("g_policy_detail")
@@ -266,18 +266,16 @@ class Court extends CActiveRecord {
 
         if (isset($args->date_time)&&$args->date_time != ''){
             $d=date("Y-m-d",strtotime($args->date_time));
-            $condition.= ' AND g_policy.start_date >= :start_date ';
-            $params['start_date'] = $d;
-
-            $condition.= ' AND g_policy.end_date >= :end_date ';
-            $params['end_date'] = $d;
+            $condition.= ' AND g_policy.start_date <= :date ';
+            $condition.= ' AND g_policy.end_date >= :date ';
+            $params['date'] = $d;
 
             $day=date("w",strtotime($args->date_time));
-            $condition.= ' AND ( g_policy_detail.day < 0 or g_policy_detail.day = :day))';
+            $condition.= ' AND ( g_policy_detail.day < 0 or g_policy_detail.day = :day)';
             $params['day'] = $day;
 
-            $t=date("H:i:s",strtotime($args->date_time));
-            $condition.= ' AND ( g_policy_detail.end_time is null or ( g_policy_detail.start_time >= :start_time  AND g_policy_detail.end_time >= :end_time ))';
+            $t=date("H:i",strtotime($args->date_time));
+            $condition.= ' AND ( g_policy_detail.end_time = \'\' or ( g_policy_detail.start_time <= :start_time  AND g_policy_detail.end_time >= :end_time ))';
             $params['start_time'] = $t;
             $params['end_time'] = $t;
         }
