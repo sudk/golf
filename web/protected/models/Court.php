@@ -143,18 +143,17 @@ class Court extends CActiveRecord {
             $condition.= ' AND g_policy.start_date >= :start_date ';
             $params['start_date'] = $args->date;
 
-            $condition.= ' AND g_policy.end_date >= :end_date ';
+            $condition.= ' AND g_policy.end_date <= :end_date ';
             $params['end_date'] = $args->date;
 
             $day=date("w",$args->date);
-            $condition.= ' AND ( g_policy_detail.day < 0 or g_policy_detail.day = :day))';
+            $condition.= ' AND ( g_policy_detail.day < 0 or g_policy_detail.day = :day )';
             $params['day'] = $day;
         }
 
         if (isset($args->time)&&$args->time != ''){
-            $condition.= ' AND ( g_policy_detail.end_time is null or ( g_policy_detail.start_time >= :start_time  AND g_policy_detail.end_time >= :end_time ))';
-            $params['start_time'] = $args->time;
-            $params['end_time'] = $args->time;
+            $condition.= ' AND ( g_policy_detail.end_time is null or ( g_policy_detail.start_time >= :time  AND g_policy_detail.end_time <= :time ))';
+            $params['time'] = $args->time;
         }
 
         $condition.= ' AND g_policy.status=0 ';
