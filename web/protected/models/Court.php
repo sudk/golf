@@ -140,11 +140,9 @@ class Court extends CActiveRecord {
         }
 
         if (isset($args->date)&&$args->date != ''){
-            $condition.= ' AND g_policy.start_date >= :start_date ';
-            $params['start_date'] = $args->date;
-
-            $condition.= ' AND g_policy.end_date <= :end_date ';
-            $params['end_date'] = $args->date;
+            $condition.= ' AND g_policy.start_date <= :date ';
+            $condition.= ' AND g_policy.end_date >= :date ';
+            $params['date'] = $args->date;
 
             $day=date("w",$args->date);
             $condition.= ' AND ( g_policy_detail.day < 0 or g_policy_detail.day = :day )';
@@ -152,7 +150,7 @@ class Court extends CActiveRecord {
         }
 
         if (isset($args->time)&&$args->time != ''){
-            $condition.= ' AND ( g_policy_detail.end_time is null or ( g_policy_detail.start_time >= :time  AND g_policy_detail.end_time <= :time ))';
+            $condition.= ' AND ( g_policy_detail.end_time = \'\' or ( g_policy_detail.start_time <= :time  AND g_policy_detail.end_time >= :time ))';
             $params['time'] = $args->time;
         }
 
@@ -163,7 +161,8 @@ class Court extends CActiveRecord {
         }
 
 
-
+        //print_r($condition);
+        //print_r($params);
         $rows = Yii::app()->db->createCommand()
             ->select("g_policy.*,g_court.name name,g_court.addr,g_court.lon lon,g_court.lat lat,g_policy_detail.price,g_policy_detail.day,g_policy_detail.start_time,g_policy_detail.end_time,g_agent.agent_name,g_img.img_url ico_img")
             ->from("g_policy_detail")
@@ -173,6 +172,7 @@ class Court extends CActiveRecord {
             ->leftJoin("g_img","g_img.type=8 and g_img.relation_id=g_court.court_id")
             ->where($condition,$params)
             ->queryAll();
+        //print_r($rows);
         //return $row;
         $rows_tmp=array();
 
