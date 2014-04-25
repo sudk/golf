@@ -17,6 +17,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.format.Time;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -91,6 +92,16 @@ public class GSearchCourtFragment extends Fragment implements OnClickListener {
 		mSelectTime.setOnClickListener(this);
 		mSelectCity = (TextView) v.findViewById(R.id.select_city);
 		mSelectCity.setOnClickListener(this);
+		
+		Time t = new Time();
+		t.setToNow();
+		
+		String date = String.format("%d月%d日", t.month, t.monthDay + 1);
+		mSelectDate.setText(date);
+		
+		mSelectTime.setText(String.format("9点30分"));
+		
+		
 		return v;
 	}
 
@@ -170,8 +181,8 @@ public class GSearchCourtFragment extends Fragment implements OnClickListener {
 					
 				}
 
-			}, mCalendar.get(Calendar.YEAR), mCalendar.get(Calendar.MONTH),
-			mCalendar.get(Calendar.DAY_OF_MONTH));
+			}, mCalendar.get(Calendar.YEAR), mCalendar.get(Calendar.MONTH) + 1,
+			mCalendar.get(Calendar.DAY_OF_MONTH) + 1  );
 	
 	final TimePickerDialog timePickerDialog12h = TimePickerDialog.newInstance(new OnTimeSetListener() {
 
@@ -188,5 +199,5 @@ public class GSearchCourtFragment extends Fragment implements OnClickListener {
 			mSelectTime.setText(String.format("%d点%d分", hourOfDay, minute));
 			
 		}
-	}, mCalendar.get(Calendar.HOUR_OF_DAY), mCalendar.get(Calendar.MINUTE), false);
+	}, 9, 30, false);
 }

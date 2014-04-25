@@ -35,8 +35,13 @@
         <item name="android:textSize">18sp</item>
     </style>
 
-    <style name="SearchCourtButton">
+    <style name="OrangeButton">
         <item name="android:background">@drawable/button_background</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+    
+    <style name="WhiteButton">
+        <item name="android:background">@drawable/small_button_background</item>
         <item name="android:textColor">@android:color/white</item>
     </style>
 

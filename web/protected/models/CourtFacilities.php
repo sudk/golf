@@ -77,12 +77,17 @@ class CourtFacilities extends CActiveRecord {
         }
         
         
-        $total_num = CourtFacilities::model()->count($condition, $params); //总记录数
+        //$total_num = CourtFacilities::model()->count($condition, $params); //总记录数
+        $total_num = Yii::app()->db->createCommand()
+            ->select("count(1)")
+            ->from("g_court_facilities")
+            ->where($condition,$params)
+            ->queryScalar();
 
         $criteria = new CDbCriteria();
         
     	
-        $criteria->order = 'record_time  DESC';
+        $order = 'record_time  DESC';
         
 
         $criteria->condition = $condition;
@@ -93,7 +98,15 @@ class CourtFacilities extends CActiveRecord {
         $pages->setCurrentPage($page);
         $pages->applyLimit($criteria);
 
-        $rows = CourtFacilities::model()->findAll($criteria);
+        //$rows = CourtFacilities::model()->findAll($criteria);
+        $rows=Yii::app()->db->createCommand()
+            ->select("*")
+            ->from("g_court_facilities")
+            ->where($condition,$params)
+            ->order($order)
+            ->limit($pageSize)
+            ->offset($page * $pageSize)
+            ->queryAll();
 
         $rs['status'] = 0;
         $rs['desc'] = '成功';

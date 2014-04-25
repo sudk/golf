@@ -44,8 +44,8 @@ public class GCourseFragment extends Fragment {
 		mViewPager = (ViewPager) v.findViewById(R.id.pager);
 
 		mTabsAdapter = new TabsAdapter(this, mTabHost, mViewPager);
-		mTabsAdapter.addTab(mTabHost.newTabSpec("One").setIndicator("One"), TabOneFragment.class, null);
-		mTabsAdapter.addTab(mTabHost.newTabSpec("Two").setIndicator("Two"), TabTwoFragment.class, null);
+//		mTabsAdapter.addTab(mTabHost.newTabSpec("One").setIndicator("One"), TabOneFragment.class, null);
+//		mTabsAdapter.addTab(mTabHost.newTabSpec("Two").setIndicator("Two"), TabTwoFragment.class, null);
 		
 		mViewPager.setCurrentItem(0);
 		

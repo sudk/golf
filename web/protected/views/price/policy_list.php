@@ -1,5 +1,5 @@
 <div class="title-box">
-    <h1><span style="float:left;">默认价格设置</span><a href="./?r=price/list" style="float:right;"><span class="ing_ico"></span><span>返回报价单列表</span></a><a href="javascript:void(0);" onclick="javascript:itemNew('<?php echo $relation_id;?>');" style="float:right;"><span class="add_ico"></span><span>报价单添加</span></a></h1>
+    <h1><span style="float:left;">默认价格设置</span><a href="./?r=price/list" style="float:right;"><span class="ing_ico"></span><span>返回报价单列表</span></a><?php if($month == ""){?><a href="javascript:void(0);" onclick="javascript:itemNew('<?php echo $relation_id;?>','0');" style="float:right;"><span class="add_ico"></span><span>报价单添加</span></a><?php } ?></h1>
     <ul class="sift">
         <?php //$this->renderPartial('_pic_toolBox'); ?>
     </ul>
@@ -14,10 +14,10 @@
 </style>
 <script type="text/javascript">
     //为一个球场提交报价
-    var itemNew = function (id) {
+    var itemNew = function (id,tag) {
         tipsWindown(
             "编辑报价单信息", // title：窗口标题
-            "iframe:index.php?r=price/newPolicy&id=" + id, // Url：弹窗所加截的页面路径
+            "iframe:index.php?r=price/newPolicy&id=" + id+'&tag='+tag, // Url：弹窗所加截的页面路径
             "900", // width：窗体宽度
             "720", // height：窗体高度
             "true", // drag：是否可以拖动（ture为是,false为否）
@@ -26,10 +26,10 @@
             "text"    // cssName：附加class名称
         );
     }
-    var itemEdit = function (id) {
+    var itemEdit = function (id,tag) {
         tipsWindown(
             "编辑报价单信息", // title：窗口标题
-            "iframe:index.php?r=price/edit&id=" + id, // Url：弹窗所加截的页面路径
+            "iframe:index.php?r=price/edit&id=" + id+'&tag='+tag, // Url：弹窗所加截的页面路径
             "900", // width：窗体宽度
             "520", // height：窗体高度
             "true", // drag：是否可以拖动（ture为是,false为否）

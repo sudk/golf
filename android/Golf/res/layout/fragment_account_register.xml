@@ -74,6 +74,37 @@
                 android:inputType="textPassword"
                 android:maxLength="20" />
         </LinearLayout>
+        
+        
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dip"
+            android:background="@drawable/block_divider" />
+        
+        
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dip"
+            android:gravity="center_vertical" >
+
+            <TextView
+                style="@style/AccountRegisterTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/username" />
+
+            <EditText
+                android:id="@+id/username_edit"
+                style="@style/AccountLoginEditText"
+                android:layout_width="0dip"
+                android:layout_height="match_parent"
+                android:layout_weight="3"
+                android:hint="@string/hint_username"
+                android:inputType="textPassword"
+                android:maxLength="20" />
+        </LinearLayout>
 
         <View
             android:layout_width="match_parent"
@@ -133,34 +164,6 @@
                 android:maxLength="20" />
         </LinearLayout>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dip"
-            android:background="@drawable/block_divider" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dip"
-            android:gravity="center_vertical" >
-
-            <TextView
-                style="@style/AccountRegisterTextView"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/recommender" />
-
-            <EditText
-                android:id="@+id/recommander_edit"
-                style="@style/AccountLoginEditText"
-                android:layout_width="0dip"
-                android:layout_height="match_parent"
-                android:layout_weight="3"
-                android:hint="@string/hint_recommand_code"
-                android:inputType="textPassword"
-                android:maxLength="20" />
-        </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
@@ -171,7 +174,7 @@
         android:orientation="horizontal" >
 
         <Button
-            style="@style/SearchCourtButton"
+            style="@style/OrangeButton"
             android:id="@+id/register_submit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

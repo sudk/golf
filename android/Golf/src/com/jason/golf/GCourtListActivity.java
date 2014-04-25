@@ -1,11 +1,13 @@
 package com.jason.golf;
 
+import java.util.ArrayList;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.jason.controller.GThreadExecutor;
 import com.jason.controller.HttpCallback;
-import com.jason.controller.RunnabLogin;
+import com.jason.controller.HttpRequest;
 import com.jason.golf.classes.GCourt;
 import com.jason.golf.classes.SearchCourtListAdapter;
 import com.jsaon.golf.R;
@@ -40,7 +42,17 @@ public class GCourtListActivity extends ActionBarActivity implements OnItemClick
 		
 		setContentView(R.layout.activity_search_court_list);
 		
-		mAdapter = new SearchCourtListAdapter(this, null);
+		ArrayList<GCourt> _courts = new ArrayList<GCourt>();
+		_courts.add(new GCourt("1001", "青之鸟高尔夫", "青岛", "340", "0", "描述", "青岛", "2010", "果岭", "老苏", "1024", "Grass", "13305311011", "remark", "设施", "data"));
+		_courts.add(new GCourt("1002", "青之鸟高尔夫","青岛", "350", "0", "描述", "青岛", "2010", "果岭", "老苏", "1024", "Grass", "13305311011", "remark", "设施", "data"));
+		_courts.add(new GCourt("1003", "青之鸟高尔夫","青岛", "360", "0", "描述", "青岛", "2010", "果岭", "老苏", "1024", "Grass", "13305311011", "remark", "设施", "data"));
+		_courts.add(new GCourt("1004", "青之鸟高尔夫","青岛", "370", "0", "描述", "青岛", "2010", "果岭", "老苏", "1024", "Grass", "13305311011", "remark", "设施", "data"));
+		_courts.add(new GCourt("1005", "青之鸟高尔夫","青岛", "580", "0", "描述", "青岛", "2010", "果岭", "老苏", "1024", "Grass", "13305311011", "remark", "设施", "data"));
+		_courts.add(new GCourt("1006", "青之鸟高尔夫","青岛", "390", "0", "描述", "青岛", "2010", "果岭", "老苏", "1024", "Grass", "13305311011", "remark", "设施", "data"));
+		_courts.add(new GCourt("1007", "青之鸟高尔夫","青岛", "400", "0", "描述", "青岛", "2010", "果岭", "老苏", "1024", "Grass", "13305311011", "remark", "设施", "data"));
+		_courts.add(new GCourt("1008", "青之鸟高尔夫","青岛", "410", "0", "描述", "青岛", "2010", "果岭", "老苏", "1024", "Grass", "13305311011", "remark", "设施", "data"));
+		
+		mAdapter = new SearchCourtListAdapter(this, _courts);
 		
 		mCourt = (ListView) findViewById(R.id.court_list);
 		mCourt.setAdapter(mAdapter);
@@ -74,12 +86,13 @@ public class GCourtListActivity extends ActionBarActivity implements OnItemClick
 			params.put("_pg_", "");
 			params.put("order_type", "");
 			
-			RunnabLogin request = new RunnabLogin(this, params, new HttpCallback() {
+			HttpRequest request = new HttpRequest(this, params, new HttpCallback() {
 
 				@Override
 				public void sucess(String res) {
 					// TODO Auto-generated method stub
-					System.out.println(res);
+					super.sucess(res);
+					
 				}
 				
 			});
@@ -133,12 +146,8 @@ public class GCourtListActivity extends ActionBarActivity implements OnItemClick
 		
 		Adapter a = parent.getAdapter();
 		GCourt court = (GCourt) a.getItem(position);
-		
 		Intent it = new Intent(this, GCourtInfoActivity.class);
-		
 		startActivity(it);
-		
-		
 		
 	}
 

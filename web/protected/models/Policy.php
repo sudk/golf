@@ -191,16 +191,24 @@ class Policy extends CActiveRecord {
     
     public static function insertRecord($args,$week_day)
     {
-        $rs['status']=false;
+        $rs['status']=-1;
         $rs['msg']="新增成功！";
         if(!isset($args)||@count($args) == 0){
            $rs['msg']="内容不能为空！";
+           $rs['msg'] = -1;
            return $rs;
         }
         
         $connection = Yii::app()->db;
         $transaction = $connection->beginTransaction();
         try {
+            if($args['type']==""||$args['court_id'] == "")
+            {
+                $connection->rollBack();
+                $rs['status'] = -1;
+                $rs['msg'] = "报价单提交失败，请选择报价球场。";
+                return $rs;
+            }
             //判断同一个场地，同一个代理商，同一个月不能报价两次
             $start_date = $args['start_date'];
             $month = substr($start_date,0,7);
@@ -210,7 +218,7 @@ class Policy extends CActiveRecord {
             if($valid_row==null||$valid_row['cnt']!=0)
             {
                 $connection->rollBack();
-                $rs['status'] = false;
+                $rs['status'] = -1;
                 $rs['msg'] = "本月的报价单已经提交，不能重复提交";
                 return $rs;
             }
@@ -241,7 +249,7 @@ class Policy extends CActiveRecord {
             }
             
             $transaction->commit();
-            $rs['status']=true;
+            $rs['status']= 1;
             return $rs;
         }
         catch (Exception $e)
@@ -310,7 +318,128 @@ class Policy extends CActiveRecord {
             return $rs;
         }
     }
+    
+    
+    /**
+     * //判断  当前月有没有报价信息。如果没有，可以复制，有，则不能复制
+        //首先 得到本代理商 上个月的 报价信息。
+        //然后 复制一份，存为当前月的报价信息。
+     */
+    public static function copyLastMonthPolicy()
+    {
+        $now_month = date('Y-m');
+        $last_month = self::GetMonth("1");
+        
+        $rs['status']=-1;
+        $rs['msg']="复制失败！";
+        
+        
+        $connection = Yii::app()->db;
+        $transaction = $connection->beginTransaction();
+        try {
+            
+            $agent_id = Yii::app()->user->agent_id;
+            $sql = "select court_id,count(1) as cnt from g_policy where agent_id='{$agent_id}'  and date_format(start_date,'%Y-%m')='{$last_month}' group by court_id";
+            //var_dump($sql);
+            $last_rows = $connection->createCommand($sql)->queryAll();
+            //var_dump($last_rows);
+            
+            if(@count($last_rows) == 0)
+            {
+                //$connection->rollBack();
+                $rs['status'] = -1;
+                $rs['msg'] = "上月的没有报价单";
+                return $rs;
+            }
+            foreach($last_rows as $last_row)
+            {
+                $court_id = $last_row['court_id'];
+                $cnt = $last_row['cnt'];
+                if(intval($cnt) == 0)
+                {
+                    continue;
+                }
+                //检验当前球场的报价单，在本月是不是已经有了
+                $valid_sql = "select count(1) as cnt from g_policy where agent_id='{$agent_id}' and date_format(start_date,'%Y-%m')='{$now_month}' and court_id='{$court_id}'";
+                $valid_row = $connection->createCommand($valid_sql)->queryRow();
+                
+                //var_dump($valid_row);
+                if($valid_row!=null && intval($valid_row['cnt']) != 0)
+                {
+                    continue;
+                }
+                //复制上个月这个球场的报价单，到本月
+                $sql = "select id from g_policy where  agent_id='{$agent_id}' and date_format(start_date,'%Y-%m')='{$last_month}' and court_id='{$court_id}'";
+                $id_rows = $connection->createCommand($sql)->queryAll();
+                //var_dump($id_rows);
+                if($id_rows){
+                    $start_date = date('Y-m-01');
+                    $end_date = date('Y-m-t');
+                    $record_time = date('Y-m-d H:i:s');
+                    $creatorid = Yii::app()->user->id;
+                    
+                    foreach($id_rows as $id_row)
+                    {
+                        $old_id = $id_row['id'];                 
+                        //insert Policy
+                        $id = $agent_id.date("YmdHis").rand(1000,9999);
 
+                        $sql = "insert into g_policy(id,start_date,end_date,agent_id,court_id,remark,cancel_remark,
+                            is_green,is_caddie,is_car,is_wardrobe,is_meal,is_insurance,is_tip,pay_type,type,status,
+                            record_time,creatorid) 
+                            select '{$id}','{$start_date}','{$end_date}',
+                            agent_id,court_id,remark,cancel_remark,is_green,
+                            is_caddie,is_car,is_wardrobe,is_meal,is_insurance,
+                            is_tip,pay_type,type,status,'{$record_time}','{$creatorid}' from g_policy where id ='{$old_id}'";
+                        $connection->createCommand($sql)->execute();
+                        //insert Plicy Detail
+                        $sql = "insert into g_policy_detail(policy_id,day,start_time,end_time,price,record_time,status)
+                                select '{$id}',day,start_time,end_time,price,'{$record_time}',status from g_policy_detail where policy_id='{$old_id}'";
+                            //var_dump($sql);
+                        $connection->createCommand($sql)->execute();
+                        
+                    }
+                }
+                
+            }
+            
+            
+            $transaction->commit();
+            $rs['status']= 1;
+            $rs['msg'] = "复制成功";
+            return $rs;
+        }
+        catch (Exception $e)
+        {
+            //print_r($e->getMessage());
+            $transaction->rollBack();
+            $rs['msg']="复制失败！";
+            return $rs;
+        }
+            
+        
+    }
+
+    public static function  GetMonth($sign="1")
+    {
+        //得到系统的年月
+        $tmp_date=date("Ym");
+        //切割出年份
+        $tmp_year=substr($tmp_date,0,4);
+        //切割出月份
+        $tmp_mon =substr($tmp_date,4,2);
+        $tmp_nextmonth=mktime(0,0,0,$tmp_mon+1,1,$tmp_year);
+        $tmp_forwardmonth=mktime(0,0,0,$tmp_mon-1,1,$tmp_year);
+        if($sign==0){
+            //得到当前月的下一个月 
+            return $fm_next_month=date("Y-m",$tmp_nextmonth);        
+        }else{
+            //得到当前月的上一个月 
+            return $fm_forward_month=date("Y-m",$tmp_forwardmonth);         
+        }
+        
+        
+    }
 
     
 }

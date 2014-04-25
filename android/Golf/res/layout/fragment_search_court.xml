@@ -94,7 +94,7 @@
 
     <Button
         android:id="@+id/search_court"
-        style="@style/SearchCourtButton"
+        style="@style/OrangeButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dip"

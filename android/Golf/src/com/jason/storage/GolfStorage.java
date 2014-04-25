@@ -30,7 +30,7 @@ public class GolfStorage {
 
 	/*
 	 * 
-	 * Èç¹û²ÎÊýfilepathÊÇ null/"" , ÔòÉú³ÉÒ»¸öÐÂÎÄ¼þÃû£» Èç¹û²ÎÊýfilepath²»ÊÇ null/"", ÔòÔÚÄ¬ÈÏÄ¿Â¼²éÕÒÎÄ¼þ²¢´ò¿ª¡£
+	 * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½filepathï¿½ï¿½ null/"" , ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½filepathï¿½ï¿½ï¿½ï¿½ null/"", ï¿½ï¿½ï¿½ï¿½Ä¬ï¿½ï¿½Ä¿Â¼ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½ò¿ª¡ï¿½
 	 */
 	public static File getFile(String filename) throws GolfStorageNoSDCardExctption {
 
@@ -40,17 +40,17 @@ public class GolfStorage {
 		if (!TextUtils.isEmpty(filename)) {
 
 			if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-				// »ñÈ¡SD¿¨µÄÄ¿Â¼
+				// ï¿½ï¿½È¡SDï¿½ï¿½ï¿½ï¿½Ä¿Â¼
 				File sdCardDir = Environment.getExternalStorageDirectory();
 
 				appDir = new File(sdCardDir.toString(), AppPath);
 				if (!appDir.exists()) {
-					System.out.println("ÐÂ½¨Ä¿Â¼:" + appDir.getAbsolutePath());
+					System.out.println("ï¿½Â½ï¿½Ä¿Â¼:" + appDir.getAbsolutePath());
 					appDir.mkdirs();
 				}
 
 			} else {
-				System.out.println("ÕÒ²»µ½SD¿¨");
+				System.out.println("ï¿½Ò²ï¿½ï¿½ï¿½SDï¿½ï¿½");
 				throw new GolfStorageNoSDCardExctption("NO SD CARD");
 			}
 
@@ -68,17 +68,17 @@ public class GolfStorage {
 
 		if (Environment.getExternalStorageState().equals(
 				Environment.MEDIA_MOUNTED)) {
-			// »ñÈ¡SD¿¨µÄÄ¿Â¼
+			// ï¿½ï¿½È¡SDï¿½ï¿½ï¿½ï¿½Ä¿Â¼
 			File sdCardDir = Environment.getExternalStorageDirectory();
 
 			appDir = new File(sdCardDir.toString(), AppPath);
 			if (!appDir.exists()) {
-				System.out.println("ÐÂ½¨Ä¿Â¼:" + appDir.getAbsolutePath());
+				System.out.println("ï¿½Â½ï¿½Ä¿Â¼:" + appDir.getAbsolutePath());
 				appDir.mkdirs();
 			}
 
 		} else {
-			System.out.println("ÕÒ²»µ½SD¿¨");
+			System.out.println("ï¿½Ò²ï¿½ï¿½ï¿½SDï¿½ï¿½");
 			return null;
 		}
 
@@ -97,17 +97,17 @@ public class GolfStorage {
 		File appDir;
 		
 		if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-			// »ñÈ¡SD¿¨µÄÄ¿Â¼
+			// ï¿½ï¿½È¡SDï¿½ï¿½ï¿½ï¿½Ä¿Â¼
 			File sdCardDir = Environment.getExternalStorageDirectory();
 
 			appDir = new File(sdCardDir.toString(), AppPath);
 			if (!appDir.exists()) {
-				System.out.println("ÐÂ½¨Ä¿Â¼:" + appDir.getAbsolutePath());
+				System.out.println("ï¿½Â½ï¿½Ä¿Â¼:" + appDir.getAbsolutePath());
 				appDir.mkdirs();
 			}
 
 		} else {
-			System.out.println("ÕÒ²»µ½SD¿¨");
+			System.out.println("ï¿½Ò²ï¿½ï¿½ï¿½SDï¿½ï¿½");
 			return false ;
 		}
 		
@@ -126,12 +126,12 @@ public class GolfStorage {
 		File appDir;
 		
 		if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-			// »ñÈ¡SD¿¨µÄÄ¿Â¼
+			// ï¿½ï¿½È¡SDï¿½ï¿½ï¿½ï¿½Ä¿Â¼
 			File sdCardDir = Environment.getExternalStorageDirectory();
 
 			appDir = new File(sdCardDir.toString(), AppPath);
 			if (!appDir.exists()) {
-				System.out.println("ÐÂ½¨Ä¿Â¼:" + appDir.getAbsolutePath());
+				System.out.println("ï¿½Â½ï¿½Ä¿Â¼:" + appDir.getAbsolutePath());
 				appDir.mkdirs();
 			}
 			
@@ -147,7 +147,7 @@ public class GolfStorage {
 			return true;
 			
 		} else {
-			System.out.println("ÕÒ²»µ½SD¿¨");
+			System.out.println("ï¿½Ò²ï¿½ï¿½ï¿½SDï¿½ï¿½");
 			return false ;
 		}
 		
@@ -155,14 +155,14 @@ public class GolfStorage {
 	}
 	
 	public static String savaPhotoToLocal(Bitmap btp){
-	    // Èç¹ûÎÄ¼þ¼Ð²»´æÔÚÔò´´½¨ÎÄ¼þ¼Ð£¬²¢½«bitmapÍ¼ÏñÎÄ¼þ±£´æ
+	    // ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½Ð²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ò´´½ï¿½ï¿½Ä¼ï¿½ï¿½Ð£ï¿½ï¿½ï¿½ï¿½ï¿½bitmapÍ¼ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½ï¿½
 		
 		File f = null ;
 		
 		/*
 		 * 
 		 * 
-		 *   ÈçºÎÊÊÓ¦¸÷ÖÖ·Ö±æÂÊ
+		 *   ï¿½ï¿½ï¿½ï¿½ï¿½Ó¦ï¿½ï¿½ï¿½Ö·Ö±ï¿½ï¿½ï¿½
 		 * 
 		 * 
 		 * 
@@ -175,7 +175,7 @@ public class GolfStorage {
 		
 	   
 	    try {
-	      // ½«bitmap×ªÎªjpgÎÄ¼þ±£´æ
+	      // ï¿½ï¿½bitmap×ªÎªjpgï¿½Ä¼ï¿½ï¿½ï¿½ï¿½ï¿½
 	      FileOutputStream fileOut = new FileOutputStream(f);
 	      btp.compress(CompressFormat.JPEG, 100, fileOut);
 	    } catch (FileNotFoundException e) {
@@ -198,7 +198,6 @@ public class GolfStorage {
 			/*
 			 * (non-Javadoc)
 			 * 
-			 * @see android.support.v4.app.DialogFragment#getDialog()
 			 */
 			@Override
 			public Dialog onCreateDialog(Bundle savedInstanceState) {

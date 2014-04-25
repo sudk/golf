@@ -64,7 +64,7 @@ public class SearchCourtListAdapter extends BaseAdapter {
 			holder.name = (TextView) v.findViewById(R.id.court_list_name);
 			holder.distance = (TextView) v.findViewById(R.id.court_list_distance);
 			holder.price = (TextView) v.findViewById(R.id.court_list_price);
-			v.setTag(v);
+			v.setTag(holder);
 		}else{
 			v = convertView;
 			holder = (ViewHolder) v.getTag();
@@ -73,12 +73,8 @@ public class SearchCourtListAdapter extends BaseAdapter {
 		GCourt court = _courts.get(position);
 //		holder.image
 		
-		
-		
-		
-		
-		
-		
+		holder.name.setText(court.getName());
+		holder.price.setText(String.format("￥ %s", court.getPrice()));
 		
 		
 		
