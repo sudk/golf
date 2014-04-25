@@ -9,10 +9,12 @@
 #import <UIKit/UIKit.h>
 #import "GolfMainViewController.h"
 #import "GolfNavigationController.h"
+#import "SQLUtilsObject.h"
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
 @property(strong,nonatomic)GolfMainViewController *golfMainViewController;
 @property(strong,nonatomic)GolfNavigationController *golfNavigationController;
+@property(strong,nonatomic)SQLUtilsObject *sqlUtils;
 @end

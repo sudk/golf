@@ -96,8 +96,10 @@
     }
     [NewLoadingView showHUDAddedTo:self.view animated:YES].labelText=@"提交中，请稍候...";
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(ahChangePwdResponseMethod:) name:@"com.golf.ahChangePwdMethod" object:nil];
+    NSString *phone=[[[_sqlUtils query_loginInfo_tab]objectAtIndex:0] objectForKey:@"phone"];
     NSMutableDictionary *dic=[NSMutableDictionary dictionary];
     [dic setObject:@"user/changepwd" forKey:@"cmd"];
+    [dic setObject:phone forKey:@"phone"];
     [dic setObject:_smsTokenField.textField.text forKey:@"smstoken"];
     [dic setObject:_pswdField.textField.text forKey:@"passwd"];
     
@@ -113,7 +115,7 @@
     }
     else
     {
-        UIAlertView *failAlert=[[UIAlertView alloc]initWithTitle:nil message:@"修改密码失败" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+        UIAlertView *failAlert=[[UIAlertView alloc]initWithTitle:nil message:[[notification object]objectForKey:@"desc"] delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
         [failAlert show];
     }
     [NewLoadingView hideHUDForView:self.view animated:YES];

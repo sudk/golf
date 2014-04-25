@@ -34,17 +34,17 @@
     NSLog(@"self.navigationController=====%@",self.navigationController);
 
     _searchCourtHomeViewController=[[SearchCourtHomeViewController alloc]init];
-    _specialHomeViewController=[[SpecialHomeViewController alloc]init];
-    _recommendHomeViewController=[[RecommendHomeViewController alloc]init];
+    _findHomeViewController=[[FindHomeViewController alloc]init];
+//    _recommendHomeViewController=[[RecommendHomeViewController alloc]init];
     _myAccountHomeViewController=[[MyAccountHomeViewController alloc]init];
 
     GolfNavigationController *searchCourtNavc=[[GolfNavigationController alloc]initWithRootViewController:_searchCourtHomeViewController];
-    GolfNavigationController *specialNavc=[[GolfNavigationController alloc]initWithRootViewController:_specialHomeViewController];
-    GolfNavigationController *recommendNavc=[[GolfNavigationController alloc]initWithRootViewController:_recommendHomeViewController];
+    GolfNavigationController *findNavc=[[GolfNavigationController alloc]initWithRootViewController:_findHomeViewController];
+//    GolfNavigationController *recommendNavc=[[GolfNavigationController alloc]initWithRootViewController:_recommendHomeViewController];
     GolfNavigationController *myAccountNavc=[[GolfNavigationController alloc]initWithRootViewController:_myAccountHomeViewController];
     _golfTabBarController=[[GolfTabBarController alloc]init];
     
-    _golfTabBarController.viewControllers=[NSArray arrayWithObjects:searchCourtNavc,specialNavc,recommendNavc,myAccountNavc,nil];
+    _golfTabBarController.viewControllers=[NSArray arrayWithObjects:searchCourtNavc,findNavc,myAccountNavc,nil];
     [self.navigationController pushViewController:_golfTabBarController animated:YES];
 
 }

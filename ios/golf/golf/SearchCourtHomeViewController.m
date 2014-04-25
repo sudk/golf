@@ -12,6 +12,7 @@
 #import "KeyWordViewController.h"
 #import "ListCourtViewController.h"
 #import "FSSysConfig.h"
+#import "CityViewController.h"
 
 @interface SearchCourtHomeViewController ()
 
@@ -66,6 +67,7 @@
     //
     _isCurrentView=YES;
     self.title=@"球场搜索";
+    self.iconArray=@[[UIImage imageNamed:@"direction"],[UIImage imageNamed:@"date"],[UIImage imageNamed:@"time"],[UIImage imageNamed:@"caculate"],[UIImage imageNamed:@"note"]];
     self.timeArray=@[@"04:00",@"04:30",@"05:00",@"05:30",@"06:00",@"06:30",@"07:00",@"07:30",@"08:00",@"08:30",@"09:00",@"09:30",@"10:00",@"10:30",@"11:00",@"11:30",@"12:00",@"12:30",@"13:00",@"13:30",@"14:00",@"14:30",@"15:00",@"15:30",@"16:00",@"16:30",@"17:00",@"17:30",@"18:00",@"18:30",@"19:00",@"19:30",@"20:00"];
     self.titleArray=@[@"城市",@"打球日期",@"打球时间",@"价格",@"关键字"];
     self.contentArray=[NSMutableArray array];
@@ -92,6 +94,7 @@
     UIButton  *searchBtn=[[UIButton alloc]initWithFrame:CGRectMake(10, _conditionTable.frame.origin.y+_conditionTable.frame.size.height+20, SCREEN_WIDTH-20, 40)];
     [searchBtn setTitle:@"搜索" forState:UIControlStateNormal];
     [searchBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [searchBtn setBackgroundColor:[Utils colorWithHexString:@"#fc701f"]];
     [searchBtn addTarget:self action:@selector(searchMethod) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:searchBtn];
 }
@@ -110,7 +113,10 @@
 {
     static NSString *cellIdentifier=@"conditionCellIdentifier";
     UITableViewCell *cell=[[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
-    UILabel *cityLabel=[[UILabel alloc]initWithFrame:CGRectMake(40, 2, 80, 36)];
+    UIImageView *imgv=[[UIImageView alloc]initWithFrame:CGRectMake(4, 2, 30, 30)];
+    imgv.image=[_iconArray objectAtIndex:[indexPath row]];
+    [cell.contentView addSubview:imgv];
+    UILabel *cityLabel=[[UILabel alloc]initWithFrame:CGRectMake(42, 2, 80, 36)];
     cityLabel.text=[_titleArray objectAtIndex:[indexPath row]];
     cityLabel.backgroundColor=[UIColor clearColor];
     [cell.contentView addSubview:cityLabel];
@@ -196,7 +202,6 @@
 {
     UIButton *customBtn=[[UIButton alloc]initWithFrame:CGRectMake(250, 2, 44, 31)];
     [customBtn setImage:[UIImage imageNamed:@"setting_arrow_normal"] forState:UIControlStateNormal];
-    [customBtn setImage:[UIImage imageNamed:@"setting_arrow_pressed"] forState:UIControlStateNormal];
     [customBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     return customBtn;
 }
@@ -204,15 +209,20 @@
 {
     int tag=(int)[sender tag];
     [self cityNameCustomMethod:tag];
+    
 }
 -(void)scityNameMethod:(int)tag
 {
     [self cityNameCustomMethod:tag];
+    
 }
 -(void)cityNameCustomMethod:(int)tag
 {
     _changeDic=[NSDictionary dictionaryWithObject:[_contentArray objectAtIndex:tag] forKey:[NSString stringWithFormat:@"%d",tag]];
-    [self selectCustomMethod:@"城市"];
+    CityViewController *city=[[CityViewController alloc]init];
+    city.changeDic=_changeDic;
+    [self.navigationController pushViewController:city animated:YES];
+//    [self selectCustomMethod:@"城市"];
 }
 -(void)selectDateMethod:(id)sender
 {
@@ -226,10 +236,28 @@
 -(void)selectDateCustomMethod:(int)tag
 {
     self.changeDic=[NSDictionary dictionaryWithObject:[_contentArray objectAtIndex:tag] forKey:[NSString stringWithFormat:@"%d",tag]];
-    self.calendarView=[[DSLCalendarView alloc]initWithFrame:CGRectMake(0, SCREEN_HEIGHT-20-330, SCREEN_WIDTH, 330)];
+    self.allCalendarView=[[UIView alloc]initWithFrame:CGRectMake(0, SCREEN_HEIGHT-20-374, SCREEN_WIDTH, 374)];
+    self.calendarView=[[DSLCalendarView alloc]initWithFrame:CGRectMake(0,44 , SCREEN_WIDTH, 330)];//SCREEN_HEIGHT-20-330
+    UIToolbar *toolBar=[[UIToolbar alloc]initWithFrame:CGRectMake(0,0, SCREEN_WIDTH, 44)];
+    UIImageView *imgv=[[UIImageView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 44)];
+    imgv.image=[UIImage imageNamed:@"title_bg2"];
+    [toolBar insertSubview:imgv atIndex:1];
+    NSMutableArray *itemArray=[NSMutableArray array];
+    UIButton *cancelBtn=[[UIButton alloc]initWithFrame:CGRectMake(10, 2, 60, 40)];
+    [cancelBtn setTitle:@"取消" forState:UIControlStateNormal];
+    [cancelBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [cancelBtn addTarget:self action:@selector(datePickCancelMethod) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem *cancelItem=[[UIBarButtonItem alloc]initWithCustomView:cancelBtn];
+    [itemArray addObject:cancelItem];
+    UIBarButtonItem *spaceItem=[[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+    [itemArray addObject:spaceItem];
+    
+    [toolBar setItems:itemArray];
+    [_allCalendarView addSubview:toolBar];
     _calendarView.delegate = self;
     _calendarView.backgroundColor=[UIColor whiteColor];
-    [self.view addSubview:_calendarView];
+    [_allCalendarView addSubview:_calendarView];
+    [self.view addSubview:_allCalendarView];
 }
 -(void)selectTimeMethod:(id)sender
 {
@@ -309,6 +337,12 @@
     listInfoVc.changeDic=_changeDic;
     [self.navigationController pushViewController:listInfoVc animated:YES];
 }
+-(void)datePickCancelMethod
+{
+    if (_allCalendarView!=nil) {
+        [_allCalendarView removeFromSuperview];
+    }
+}
 -(void)timePickCancelMethod
 {
     if (_timePickView!=nil) {
@@ -345,9 +379,9 @@
         NSDictionary *tmpDic=[NSDictionary dictionaryWithObject:str forKey:[[self.changeDic allKeys] objectAtIndex:0]];
         [_contentArray replaceObjectAtIndex:[[[tmpDic allKeys]objectAtIndex:0] intValue] withObject:[[tmpDic allValues]objectAtIndex:0]];
         [_conditionTable reloadData];
-        if (_calendarView!=nil) {
-            [_calendarView removeFromSuperview];
-        }
+//        if (_calendarView!=nil) {
+            [_allCalendarView removeFromSuperview];
+//        }
     }
     else {
         NSLog( @"No selection" );

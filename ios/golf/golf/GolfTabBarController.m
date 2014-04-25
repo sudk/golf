@@ -48,24 +48,20 @@
     for (int i=1; i<=4; i++) {
         
         UIButton *button=[UIButton buttonWithType:UIButtonTypeCustom];
-        button.frame=CGRectMake((i-1)*320/4, 0, 320/4, 49);
+        button.frame=CGRectMake((i-1)*320/3.0, 0, 320/3.0, 49);
         button.tag=i;
         [self.tabBar addSubview:button];
         [button addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
         switch (i) {
             case 1:
-                [button setBackgroundImage:[UIImage imageNamed:@"tab_kx_pressed.png"] forState:UIControlStateNormal];
+                [button setBackgroundImage:[UIImage imageNamed:@"tab_1_pressed.png"] forState:UIControlStateNormal];
                 break;
             case 2:
-                [button setBackgroundImage:[UIImage imageNamed:@"tab_contact_normal.png"] forState:UIControlStateNormal];
+                [button setBackgroundImage:[UIImage imageNamed:@"tab_2_normal.png"] forState:UIControlStateNormal];
                 break;
             case 3:
-                [button setBackgroundImage:[UIImage imageNamed:@"tab_setting_normal.png"] forState:UIControlStateNormal];
+                [button setBackgroundImage:[UIImage imageNamed:@"tab_3_normal.png"] forState:UIControlStateNormal];
                 break;
-            case 4:
-                [button setBackgroundImage:[UIImage imageNamed:@"tab_num_normal.png"] forState:UIControlStateNormal];
-                break;
-                
             default:
                 break;
         }
@@ -74,44 +70,31 @@
 }
 
 -(void)_butttonActionWithtag1{
-    [(UIButton *)[self.tabBar viewWithTag:1] setBackgroundImage:[UIImage imageNamed:@"tab_kx_pressed.png"] forState:UIControlStateNormal];
-    [(UIButton *)[self.tabBar viewWithTag:2] setBackgroundImage:[UIImage imageNamed:@"tab_contact_normal.png"] forState:UIControlStateNormal];
-    [(UIButton *)[self.tabBar viewWithTag:3] setBackgroundImage:[UIImage imageNamed:@"tab_setting_normal.png"] forState:UIControlStateNormal];
-    [(UIButton *)[self.tabBar viewWithTag:4] setBackgroundImage:[UIImage imageNamed:@"tab_num_normal.png"] forState:UIControlStateNormal];
+    [(UIButton *)[self.tabBar viewWithTag:1] setBackgroundImage:[UIImage imageNamed:@"tab_1_pressed.png"] forState:UIControlStateNormal];
+    [(UIButton *)[self.tabBar viewWithTag:2] setBackgroundImage:[UIImage imageNamed:@"tab_2_normal.png"] forState:UIControlStateNormal];
+    [(UIButton *)[self.tabBar viewWithTag:3] setBackgroundImage:[UIImage imageNamed:@"tab_3_normal.png"] forState:UIControlStateNormal];
     self.selectedIndex=0;
 }
 -(void)_butttonActionWithtag2{
-   [(UIButton *)[self.tabBar viewWithTag:1] setBackgroundImage:[UIImage imageNamed:@"tab_kx_normal.png"] forState:UIControlStateNormal];
-    [(UIButton *)[self.tabBar viewWithTag:2] setBackgroundImage:[UIImage imageNamed:@"tab_contact_pressed.png"] forState:UIControlStateNormal];
-    [(UIButton *)[self.tabBar viewWithTag:3] setBackgroundImage:[UIImage imageNamed:@"tab_setting_normal.png"] forState:UIControlStateNormal];
+   [(UIButton *)[self.tabBar viewWithTag:1] setBackgroundImage:[UIImage imageNamed:@"tab_1_normal.png"] forState:UIControlStateNormal];
+    [(UIButton *)[self.tabBar viewWithTag:2] setBackgroundImage:[UIImage imageNamed:@"tab_2_pressed.png"] forState:UIControlStateNormal];
+    [(UIButton *)[self.tabBar viewWithTag:3] setBackgroundImage:[UIImage imageNamed:@"tab_3_normal.png"] forState:UIControlStateNormal];
     
-    [(UIButton *)[self.tabBar viewWithTag:4] setBackgroundImage:[UIImage imageNamed:@"tab_num_normal.png"] forState:UIControlStateNormal];
     self.selectedIndex=1;
 }
 -(void)_butttonActionWithtag3{
     
-    [(UIButton *)[self.tabBar viewWithTag:1] setBackgroundImage:[UIImage imageNamed:@"tab_kx_normal.png"] forState:UIControlStateNormal];
-    [(UIButton *)[self.tabBar viewWithTag:2] setBackgroundImage:[UIImage imageNamed:@"tab_contact_normal.png"] forState:UIControlStateNormal];
-    [(UIButton *)[self.tabBar viewWithTag:3] setBackgroundImage:[UIImage imageNamed:@"tab_setting_pressed.png"] forState:UIControlStateNormal];
-    
-    [(UIButton *)[self.tabBar viewWithTag:4] setBackgroundImage:[UIImage imageNamed:@"tab_num_normal.png"] forState:UIControlStateNormal];
-    self.selectedIndex=2;
-}
--(void)_butttonActionWithtag4{
-    
     if ([[FSSysConfig getInstance]isLogin]==NO) {
         LoginUtilViewController *login=[[LoginUtilViewController alloc] initWithRootViewController:nil];
         [self presentViewController:login animated:YES completion:nil];
-        [login setTarget:self Selector:@selector(_butttonActionWithtag4)];
+        [login setTarget:self Selector:@selector(_butttonActionWithtag3)];
         [login release];
         return;
     }
-    [(UIButton *)[self.tabBar viewWithTag:1] setBackgroundImage:[UIImage imageNamed:@"tab_kx_normal.png"] forState:UIControlStateNormal];
-    [(UIButton *)[self.tabBar viewWithTag:2] setBackgroundImage:[UIImage imageNamed:@"tab_contact_normal.png"] forState:UIControlStateNormal];
-    [(UIButton *)[self.tabBar viewWithTag:3] setBackgroundImage:[UIImage imageNamed:@"tab_setting_normal.png"] forState:UIControlStateNormal];
-    
-    [(UIButton *)[self.tabBar viewWithTag:4] setBackgroundImage:[UIImage imageNamed:@"tab_num_pressed.png"] forState:UIControlStateNormal];
-    self.selectedIndex=3;
+    [(UIButton *)[self.tabBar viewWithTag:1] setBackgroundImage:[UIImage imageNamed:@"tab_1_normal.png"] forState:UIControlStateNormal];
+    [(UIButton *)[self.tabBar viewWithTag:2] setBackgroundImage:[UIImage imageNamed:@"tab_2_normal.png"] forState:UIControlStateNormal];
+    [(UIButton *)[self.tabBar viewWithTag:4] setBackgroundImage:[UIImage imageNamed:@"tab_3_pressed.png"] forState:UIControlStateNormal];
+    self.selectedIndex=2;
 }
 -(void)buttonAction:(UIButton *)button{
     if (button.tag==self.selectedIndex+1) {
@@ -127,10 +110,6 @@
         case 3:
             [self _butttonActionWithtag3];
             break;
-        case 4:
-            [self _butttonActionWithtag4];
-            break;
-            
         default:
             break;
     }

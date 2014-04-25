@@ -181,6 +181,175 @@
     }
     [customDic setObject:customStr forKey:customKey];
 }
+////地区
+//-(BOOL)create_area_tab
+//{
+//    }
+//-(void)insert_area_tab:(NSString *)areaID andArea:(NSString *)area andFatherID:(NSString *)fatherID;
+//-(NSMutableArray*)query_area_tab;
+//城市
+-(BOOL)create_city_tab
+{
+    char *sql = "CREATE TABLE IF NOT EXISTS cityInfoTb (ROW INTEGER PRIMARY KEY,cityID TEXT,city TEXT,fatherID TEXT)";
+    return [self create_customInfo_tab:sql andTableName:@"城市列表"];
+}
+-(void)insert_city_tab:(NSArray *)cityArray
+{
+    if ([self create_city_tab]==YES)
+    {
+        char* errmsg;
+        if ([self openDB:NO]) {
+            sqlite3_exec(_database, "begin transaction", 0, 0, &errmsg);
+            for (int i=0; i<[cityArray count]; i++) {
+                sqlite3_stmt *stmt;
+                NSString *cityIDStr=[[cityArray objectAtIndex:i] objectForKey:@"cityID"];
+                NSString *cityStr=[[cityArray objectAtIndex:i] objectForKey:@"city"];
+                NSString *fatherIDStr=[[cityArray objectAtIndex:i] objectForKey:@"fatherID"];
+                char *update = "INSERT OR REPLACE INTO cityInfoTb (cityID,city,fatherID) VALUES (?,?,?);";
+                if (sqlite3_prepare_v2(_database, update, -1, &stmt, nil) == SQLITE_OK) {
+                    sqlite3_bind_text(stmt, 1, [cityIDStr UTF8String], -1, SQLITE_TRANSIENT);
+                    sqlite3_bind_text(stmt, 2, [cityStr UTF8String], -1, SQLITE_TRANSIENT);
+                    sqlite3_bind_text(stmt, 3, [fatherIDStr UTF8String], -1, SQLITE_TRANSIENT);
+                }
+                NSLog(@"sqlite3_step(stmt)====%d",sqlite3_step(stmt));
+                if (sqlite3_step(stmt) != SQLITE_DONE)
+                {
+                    sqlite3_close(_database);
+                }
+                sqlite3_finalize(stmt);// 这个sql语句的利用结束了，就调用这个函数
+            }
+            sqlite3_exec(_database, "commit transaction", 0, 0, &errmsg);
+            sqlite3_close(_database);
+        }
+    }
+
+}
+-(NSMutableArray*)query_city_tab
+{
+    NSMutableArray *cityInfoArray=[[NSMutableArray alloc] init];
+	//判断数据库是否打开
+	if ([self create_city_tab]) {
+        sqlite3_stmt *statement = nil;
+        //sql语句
+        char *sql = "SELECT cityID,city,fatherID FROM cityInfoTb";
+        
+        if (sqlite3_prepare_v2(_database, sql, -1, &statement, NULL) != SQLITE_OK) {
+            NSLog(@"Error: failed to prepare statement with cityInfoTb.");
+        }
+        else {
+            //查询结果集中一条一条的遍历所有的记录，这里的数字对应的是列值。
+            while (sqlite3_step(statement) == SQLITE_ROW) {
+                NSMutableDictionary *cityInfoDic=[NSMutableDictionary dictionary];
+                char *cityIdChar = (char *)sqlite3_column_text(statement, 0);
+                [self queryCustomField:cityIdChar andCustomDic:cityInfoDic andCustomKey:@"cityId"];
+                char *cityChar = (char *)sqlite3_column_text(statement, 1);
+                [self queryCustomField:cityChar andCustomDic:cityInfoDic andCustomKey:@"city"];
+                
+                char *fatherIDChar = (char *)sqlite3_column_text(statement, 2);
+                [self queryCustomField:fatherIDChar andCustomDic:cityInfoDic andCustomKey:@"fatherID"];
+                [cityInfoArray addObject:cityInfoDic];
+            }
+        }
+        sqlite3_finalize(statement);
+        sqlite3_close(_database);
+    }
+	return cityInfoArray;
+}
+-(NSMutableArray*)query_city_tab:(NSString *)fatherId
+{
+    NSMutableArray *cityInfoArray=[[NSMutableArray alloc] init];
+	//判断数据库是否打开
+	if ([self create_city_tab]) {
+        sqlite3_stmt *statement = nil;
+        //sql语句
+        char *sql = "SELECT cityID,city,fatherID FROM cityInfoTb where fatherID=?";
+        
+        if (sqlite3_prepare_v2(_database, sql, -1, &statement, NULL) != SQLITE_OK) {
+            NSLog(@"Error: failed to prepare statement with cityInfoTb.");
+        }
+        else {
+            //查询结果集中一条一条的遍历所有的记录，这里的数字对应的是列值。
+            sqlite3_bind_text(statement, 1, [fatherId UTF8String], -1, SQLITE_TRANSIENT);
+            while (sqlite3_step(statement) == SQLITE_ROW) {
+                NSMutableDictionary *cityInfoDic=[NSMutableDictionary dictionary];
+                char *cityIdChar = (char *)sqlite3_column_text(statement, 0);
+                [self queryCustomField:cityIdChar andCustomDic:cityInfoDic andCustomKey:@"cityId"];
+                char *cityChar = (char *)sqlite3_column_text(statement, 1);
+                [self queryCustomField:cityChar andCustomDic:cityInfoDic andCustomKey:@"city"];
+                
+                char *fatherIDChar = (char *)sqlite3_column_text(statement, 2);
+                [self queryCustomField:fatherIDChar andCustomDic:cityInfoDic andCustomKey:@"fatherID"];
+                [cityInfoArray addObject:cityInfoDic];
+            }
+        }
+        sqlite3_finalize(statement);
+        sqlite3_close(_database);
+    }
+	return cityInfoArray;
+}
+
+//省
+-(BOOL)create_province_tab
+{
+    char *sql = "CREATE TABLE IF NOT EXISTS provinceInfoTb (ROW INTEGER PRIMARY KEY, provinceId TEXT,province TEXT)";
+    return [self create_customInfo_tab:sql andTableName:@"省列表"];
+
+}
+-(void)insert_province_tab:(NSDictionary *)provinceDic
+{
+        if ([self create_province_tab]==YES)
+    {
+        char* errmsg;
+        if ([self openDB:NO]) {
+            sqlite3_exec(_database, "begin transaction", 0, 0, &errmsg);
+            for (int i=0; i<[[provinceDic allValues] count]; i++) {
+                sqlite3_stmt *stmt;
+                NSString *provinceIdStr=[[provinceDic allKeys] objectAtIndex:i];
+                NSString *provinceStr=[[provinceDic allValues] objectAtIndex:i];
+                char *update = "INSERT OR REPLACE INTO provinceInfoTb (provinceId,province) VALUES (?,?);";
+                if (sqlite3_prepare_v2(_database, update, -1, &stmt, nil) == SQLITE_OK) {
+                    sqlite3_bind_text(stmt, 1, [provinceIdStr UTF8String], -1, SQLITE_TRANSIENT);
+                    sqlite3_bind_text(stmt, 2, [provinceStr UTF8String], -1, SQLITE_TRANSIENT);
+                }
+                if (sqlite3_step(stmt) != SQLITE_DONE)
+                {
+                    sqlite3_close(_database);
+                }
+                sqlite3_finalize(stmt);// 这个sql语句的利用结束了，就调用这个函数
+            }
+            sqlite3_exec(_database, "commit transaction", 0, 0, &errmsg);
+            sqlite3_close(_database);
+        }
+    }
+}
+-(NSMutableArray*)query_province_tab
+{
+    NSMutableArray *provinceInfoArray=[[NSMutableArray alloc] init];
+	//判断数据库是否打开
+	if ([self create_province_tab]) {
+        sqlite3_stmt *statement = nil;
+        //sql语句
+        char *sql = "SELECT provinceId,province FROM provinceInfoTb";
+        
+        if (sqlite3_prepare_v2(_database, sql, -1, &statement, NULL) != SQLITE_OK) {
+            NSLog(@"Error: failed to prepare statement with provinceInfoTb.");
+        }
+        else {
+            //查询结果集中一条一条的遍历所有的记录，这里的数字对应的是列值。
+            while (sqlite3_step(statement) == SQLITE_ROW) {
+                NSMutableDictionary *provinceInfoDic=[NSMutableDictionary dictionary];
+                char *provinceIdChar = (char *)sqlite3_column_text(statement, 0);
+                [self queryCustomField:provinceIdChar andCustomDic:provinceInfoDic andCustomKey:@"provinceId"];
+                char *provinceChar = (char *)sqlite3_column_text(statement, 1);
+                [self queryCustomField:provinceChar andCustomDic:provinceInfoDic andCustomKey:@"province"];
+                [provinceInfoArray addObject:provinceInfoDic];
+            }
+        }
+        sqlite3_finalize(statement);
+        sqlite3_close(_database);
+    }
+	return provinceInfoArray;
+}
 /**
  共通类
  */

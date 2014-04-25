@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "GolfTabBarController.h"
 #import "SearchCourtHomeViewController.h"
-#import "SpecialHomeViewController.h"
+#import "FindHomeViewController.h"
 #import "RecommendHomeViewController.h"
 #import "MyAccountHomeViewController.h"
 
@@ -20,14 +20,14 @@
 {
     GolfTabBarController *_golfTabBarController;
     SearchCourtHomeViewController *_searchCourtHomeViewController;
-    SpecialHomeViewController *_specialHomeViewController;
+    FindHomeViewController *_findHomeViewController;
     RecommendHomeViewController *_recommendHomeViewController;
     MyAccountHomeViewController *_myAccountHomeViewController;
     
 }
 @property(nonatomic,retain)GolfTabBarController *golfTabBarController;
 @property(nonatomic,retain)SearchCourtHomeViewController *searchCourtHomeViewController;
-@property(nonatomic,retain)SpecialHomeViewController *specialHomeViewController;
+@property(nonatomic,retain)FindHomeViewController *findHomeViewController;;
 @property(nonatomic,retain)RecommendHomeViewController *recommendHomeViewController;
 @property(nonatomic,retain)MyAccountHomeViewController *myAccountHomeViewController;
 
