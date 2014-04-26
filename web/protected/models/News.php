@@ -64,7 +64,7 @@ class News extends CActiveRecord {
         $rs['desc'] = '成功';
         $rs['page_num'] = ($page + 1);
         $rs['total_num'] = $total_num;
-        $rs['total_page'] = ceil($rs['total_num'] / $pageSize);
+        $rs['total_page'] = ceil($total_num/$pageSize);
         $rs['num_of_page'] = $pageSize;
         $rs['rows'] = $rows;
 
@@ -84,7 +84,7 @@ class News extends CActiveRecord {
         }else{
             return false;
         }
-        
+
         $row=Yii::app()->db->createCommand()
             ->select("*")
             ->from("g_news")

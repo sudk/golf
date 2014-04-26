@@ -5225,3 +5225,24 @@ in /Applications/XAMPP/xamppfiles/htdocs/golf/web/index.php (20)
 in /Applications/XAMPP/xamppfiles/htdocs/golf/web/protected/components/Command.php (12)
 in /Applications/XAMPP/xamppfiles/htdocs/golf/web/protected/components/MBaseController.php (51)
 in /Applications/XAMPP/xamppfiles/htdocs/golf/web/index.php (20)
+2014/04/26 14:57:30 [info] [application.firebuglog] {
+  "cmd" : "news\/list",
+  "_pg_" : [0,10]
+}
+in /Applications/XAMPP/xamppfiles/htdocs/golf/web/protected/components/Command.php (12)
+in /Applications/XAMPP/xamppfiles/htdocs/golf/web/protected/components/MBaseController.php (51)
+in /Applications/XAMPP/xamppfiles/htdocs/golf/web/index.php (20)
+2014/04/26 15:02:58 [info] [application.firebuglog] {
+  "cmd" : "news\/list",
+  "_pg_" : [0,10]
+}
+in /Applications/XAMPP/xamppfiles/htdocs/golf/web/protected/components/Command.php (12)
+in /Applications/XAMPP/xamppfiles/htdocs/golf/web/protected/components/MBaseController.php (51)
+in /Applications/XAMPP/xamppfiles/htdocs/golf/web/index.php (20)
+2014/04/26 15:03:31 [info] [application.firebuglog] {
+  "cmd" : "news\/list",
+  "_pg_" : [0,10]
+}
+in /Applications/XAMPP/xamppfiles/htdocs/golf/web/protected/components/Command.php (12)
+in /Applications/XAMPP/xamppfiles/htdocs/golf/web/protected/components/MBaseController.php (51)
+in /Applications/XAMPP/xamppfiles/htdocs/golf/web/index.php (20)
