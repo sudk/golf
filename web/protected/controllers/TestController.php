@@ -32,11 +32,11 @@ class TestController extends BaseController
 //            }
 //            echo $cookie;
             $tuCurl = curl_init();
-            $url="http://localhost/golf/web/index.php?r=command";
+            $url="http://115.28.77.119/index.php?r=command";
             curl_setopt($tuCurl, CURLOPT_URL,$url);
             //curl_setopt($tuCurl, CURLOPT_VERBOSE, 0);
             curl_setopt($tuCurl, CURLOPT_TIMEOUT,5);
-            curl_setopt($tuCurl, CURLOPT_HEADER,true);
+            curl_setopt($tuCurl, CURLOPT_HEADER,false);
             curl_setopt($tuCurl, CURLOPT_RETURNTRANSFER,true);
             curl_setopt($tuCurl, CURLOPT_POST,true);
             curl_setopt($tuCurl, CURLOPT_POSTFIELDS,$_POST['content']);
