@@ -14,6 +14,7 @@ class Img extends CActiveRecord {
     CONST TYPE_ADV = '7';
     CONST TYPE_TRIP = '6';
     CONST TYPE_COMPETITION = '3';
+    CONST TYPE_NEWS = '9';
     
     
     

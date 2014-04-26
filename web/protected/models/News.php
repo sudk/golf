@@ -19,8 +19,8 @@ class News extends CActiveRecord {
 
     public function rules(){
         return array(
-            array('id,agent_id,name,desc,fee,start_date,end_date,plan,fee_include,fee_not_include,record_time,fee_type,creatorid', 'safe', 'on' => 'create'),
-            array('id,agent_id,name,desc,fee,start_date,end_date,plan,fee_include,fee_not_include,record_time,fee_type,creatorid', 'safe', 'on' => 'modify'),
+            array('id,title,content,creatorid,creator,record_time,status', 'safe', 'on' => 'create'),
+            array('id,title,content,creatorid,creator,record_time,status', 'safe', 'on' => 'modify'),
          );
     }
 
@@ -36,36 +36,24 @@ class News extends CActiveRecord {
         $condition = ' 1=1 ';
         $params = array();
 
-        
-        if ($args['city'] != ''){
-            $condition.=' AND g_court.city = :city';
-            $params['city'] = $args['city'];
+        if ($args['title'] != ''){
+            $condition.=' AND title like :title';
+            $params['title'] = "%".$args['title']."%";
         }
 
-        if ($args['name'] != ''){
-            $condition.=' AND g_competition.name like :name';
-            $params['name'] = "%".$args['name']."%";
-        }
-        
-        
-        //$total_num = CourtFacilities::model()->count($condition, $params); //总记录数
+
         $total_num = Yii::app()->db->createCommand()
             ->select("count(1)")
-            ->from("g_competition")
-            ->leftJoin("g_court","g_court.court_id=g_competition.court_id")
-            ->leftJoin("g_agent","g_agent.agent_id=g_competition.id")
+            ->from("g_news")
             ->where($condition,$params)
             ->queryScalar();
         
     	
         $order = 'record_time  DESC';
 
-        //$rows = CourtFacilities::model()->findAll($criteria);
         $rows=Yii::app()->db->createCommand()
-            ->select("g_competition.*,g_court.name court_name,g_agent.agent_name")
-            ->from("g_competition")
-            ->leftJoin("g_court","g_court.court_id=g_competition.court_id")
-            ->leftJoin("g_agent","g_agent.agent_id=g_competition.id")
+            ->select("*")
+            ->from("g_news")
             ->where($condition,$params)
             ->order($order)
             ->limit($pageSize)
@@ -84,29 +72,26 @@ class News extends CActiveRecord {
     }
 
 
-    public static function Info($competition_id) {
+    public static function Info($id) {
 
         $condition = ' 1=1 ';
         $params = array();
 
 
-        if ($competition_id != ''){
-            $condition.=' AND g_competition.id = :id';
-            $params['id'] =$competition_id;
+        if ($id != ''){
+            $condition.=' AND id = :id';
+            $params['id'] =$id;
         }else{
             return false;
         }
-
-        //$rows = CourtFacilities::model()->findAll($criteria);
+        
         $row=Yii::app()->db->createCommand()
-            ->select("g_competition.*,g_court.name court_name,g_agent.agent_name")
-            ->from("g_competition")
-            ->leftJoin("g_court","g_court.court_id=g_competition.court_id")
-            ->leftJoin("g_agent","g_agent.agent_id=g_competition.id")
+            ->select("*")
+            ->from("g_news")
             ->where($condition,$params)
             ->queryRow();
         if($row){
-            $row['imgs']=Img::GetImgs($competition_id,Img::TYPE_COMPETITION);
+            $row['imgs']=Img::GetImgs($id,Img::TYPE_NEWS);
         }
         return $row;
 
