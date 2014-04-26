@@ -6,12 +6,12 @@
  * Time: 下午11:18
  */
 
-class BaiduDistance {
+const DEF_PI = 3.14159265359; // PI
+const DEF_2PI= 6.28318530712; // 2*PI
+const DEF_PI180= 0.01745329252; // PI/180.0
+const DEF_R =6370693.5;
 
-    const DEF_PI = 3.14159265359; // PI
-    const DEF_2PI= 6.28318530712; // 2*PI
-    const DEF_PI180= 0.01745329252; // PI/180.0
-    const DEF_R =6370693.5;
+class BaiduDistance {
 
     public static function GetShortDistance($lon1,$lat1,$lon2,$lat2)
     {

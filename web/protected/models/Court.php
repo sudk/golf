@@ -202,9 +202,7 @@ class Court extends CActiveRecord {
         if($rows_tmp){
             foreach($rows_tmp as $row){
                 if(trim($row['lon'])&&trim($row['lat'])&&trim($u_lon)&&trim($u_lat)){
-
                     $row['distance']=BaiduDistance::GetLongDistance($row['lon'],$row['lat'],$u_lon,$u_lat);
-
                 }else{
                     $row['distance']="未知";
                 }
