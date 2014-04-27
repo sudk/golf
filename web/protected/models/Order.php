@@ -136,7 +136,7 @@ class Order extends CActiveRecord {
 
         $conn=Yii::app()->db;
         $transaction = $conn->beginTransaction();
-        $r=rand(1000009,9999999);
+        $r=rand(1000000,9999999);
         $d=date("YmdHis");
         $order_id=$d.$args->type.$r;
         $record_time=date("Y-m-d H:i:s");
@@ -205,7 +205,6 @@ class Order extends CActiveRecord {
             return false;
         }
     }
-
 
 }
 
