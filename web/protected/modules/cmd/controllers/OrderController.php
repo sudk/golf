@@ -69,9 +69,69 @@ class OrderController extends CMDBaseController
     }
 
     public function actionCreate(){
-        if(!Yii::app()->command->cmdObj->id){
+        if(!Yii::app()->command->cmdObj->type){
             $msg['status']=1;
-            $msg['desc']="ID不能为空！";
+            $msg['desc']="订单类型不能为空！";
+            echo json_encode($msg);
+            return;
+        }
+        if(!Yii::app()->command->cmdObj->relation_id){
+            $msg['status']=2;
+            $msg['desc']="关联ID不能为空！";
+            echo json_encode($msg);
+            return;
+        }
+        if(!Yii::app()->command->cmdObj->relation_name){
+            $msg['status']=3;
+            $msg['desc']="项目名称不能为空！";
+            echo json_encode($msg);
+            return;
+        }
+        if(!Yii::app()->command->cmdObj->tee_time){
+            $msg['status']=5;
+            $msg['desc']="打球时间不能为空！";
+            echo json_encode($msg);
+            return;
+        }
+        if(!Yii::app()->command->cmdObj->count){
+            $msg['status']=6;
+            $msg['desc']="数量不能为空！";
+            echo json_encode($msg);
+            return;
+        }
+        if(!Yii::app()->command->cmdObj->unitprice){
+            $msg['status']=7;
+            $msg['desc']="单价不能为空！";
+            echo json_encode($msg);
+            return;
+        }
+        if(!Yii::app()->command->cmdObj->amount){
+            $msg['status']=8;
+            $msg['desc']="购买数量不能为空！";
+            echo json_encode($msg);
+            return;
+        }
+        if(!Yii::app()->command->cmdObj->pay_type){
+            $msg['status']=9;
+            $msg['desc']="支付类型不能为空！";
+            echo json_encode($msg);
+            return;
+        }
+        if(!Yii::app()->command->cmdObj->contact){
+            $msg['status']=10;
+            $msg['desc']="联系人不能为空！";
+            echo json_encode($msg);
+            return;
+        }
+        if(!Yii::app()->command->cmdObj->phone){
+            $msg['status']=11;
+            $msg['desc']="电话不能为空！";
+            echo json_encode($msg);
+            return;
+        }
+        if(!Yii::app()->command->cmdObj->agent_id){
+            $msg['status']=12;
+            $msg['desc']="代理商ID不能为空！";
             echo json_encode($msg);
             return;
         }
