@@ -11,6 +11,7 @@
 #import "AccountCell.h"
 #import "GolfTabBarController.h"
 #import "AccountInfoViewController.h"
+#import "CardNoViewController.h"
 
 @interface MyAccountHomeViewController ()
 
@@ -39,7 +40,7 @@
     if (IOS_VERSION>=7.0) {
         self.automaticallyAdjustsScrollViewInsets=NO;
     }
-    _accountTable=[[UITableView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT-64-49) style:UITableViewStyleGrouped];
+    _accountTable=[[UITableView alloc]initWithFrame:CGRectMake(10, 0, SCREEN_WIDTH-20, SCREEN_HEIGHT-64-49) style:UITableViewStyleGrouped];
     _accountTable.backgroundColor=[UIColor clearColor];
     _accountTable.delegate=self;
     _accountTable.dataSource=self;
@@ -132,10 +133,11 @@
         [cell setBackgroundView:tempView];
         [cell setBackgroundColor:[UIColor clearColor]];
         UIButton  *exitLoginBtn=[UIButton buttonWithType:UIButtonTypeCustom];
-        exitLoginBtn.frame=CGRectMake(20, 0, SCREEN_WIDTH-40, 40);
+        exitLoginBtn.frame=CGRectMake(0, 0, SCREEN_WIDTH-20, 40);
         [exitLoginBtn setTitle:@"退出帐户" forState:UIControlStateNormal];
         [exitLoginBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        [exitLoginBtn setBackgroundImage:[UIImage imageNamed:@"btn_logout"] forState:UIControlStateNormal];
+//        [exitLoginBtn setBackgroundImage:[UIImage imageNamed:@"btn_logout"] forState:UIControlStateNormal];
+        [exitLoginBtn setBackgroundColor:[UIColor orangeColor]];
         [exitLoginBtn addTarget:self action:@selector(exitAction) forControlEvents:UIControlEventTouchUpInside];
         cell.accessoryType=UITableViewCellAccessoryNone;
         [cell.contentView addSubview:exitLoginBtn];
@@ -158,6 +160,9 @@
                 }
                 case 1:
                 {
+                    CardNoViewController *cardInfo=[[CardNoViewController alloc]init];
+                    self.navigationController.hidesBottomBarWhenPushed=YES;
+                    [self.navigationController pushViewController:cardInfo animated:YES];
                     break;
                 }
                 case 2:

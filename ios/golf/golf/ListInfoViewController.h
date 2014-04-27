@@ -7,6 +7,7 @@
 //
 
 #import "BaseViewController.h"
+#import "SQLUtilsObject.h"
 #define infoLabelTag 1001
 
 @interface ListInfoViewController : BaseViewController<UITableViewDataSource,UITableViewDelegate>
@@ -14,4 +15,5 @@
 @property(nonatomic,strong)UITableView *listTable;
 @property(nonatomic,strong)NSArray *infoArray;
 @property(nonatomic,strong)NSDictionary *changeDic;
+@property(nonatomic,strong)SQLUtilsObject *sqlUtils;
 @end

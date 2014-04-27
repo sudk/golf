@@ -1,12 +1,18 @@
 package com.jason.golf;
 
+import com.jason.golf.classes.GAccount;
 import com.jason.golf.dialog.WarnDialog;
 import com.jsaon.golf.R;
 
 import android.support.v4.app.FragmentTabHost;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.text.TextUtils;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 
 public class MainActivity extends ActionBarActivity {
@@ -35,6 +41,30 @@ public class MainActivity extends ActionBarActivity {
             mTabHost.setCurrentTabByTag(savedInstanceState.getString("tab"));
         }
         
+        LocationManager locMan = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        Criteria criteria=new Criteria(); 
+        criteria.setAccuracy(Criteria.ACCURACY_FINE);    //精度要求：ACCURACY_FINE(高)ACCURACY_COARSE(低)
+        criteria.setAltitudeRequired(false);             // 不要求海拔信息
+        criteria.setBearingAccuracy(Criteria.ACCURACY_HIGH); //方位信息的精度要求：ACCURACY_HIGH(高)ACCURACY_LOW(低)
+        criteria.setBearingRequired(false);              // 不要求方位信息
+        criteria.setCostAllowed(false);                  // 是否允许付费
+        criteria.setPowerRequirement(Criteria.POWER_LOW);// 对电量的要求  (HIGH、MEDIUM)
+        
+        String provider = locMan.getBestProvider(criteria,true);
+        
+        if(!TextUtils.isEmpty(provider) ){
+        
+        	System.out.println("Provider is "+provider);
+            Location loc = locMan.getLastKnownLocation(provider);
+            
+            System.out.println(String.format("纬度:%f, 精度：%f", loc.getLatitude(), loc.getLongitude()));
+            
+            if(loc != null){
+            	GolfAppliaction app = (GolfAppliaction) getApplication();
+            	GAccount acc = app.getAccount();
+            	acc.setLoc(loc);;
+            }
+        }
 	}
 	
 	@Override

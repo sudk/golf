@@ -22,6 +22,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -33,7 +34,8 @@ public class GSearchCourtFragment extends Fragment implements OnClickListener {
 
 	private TextView mSelectDate, mSelectTime, mSelectCity;
 	
-	private String _cityId;
+	private String _cityId, _date, _time;
+	
 
 	private static String pad(int c) {
 		if (c >= 10)
@@ -80,10 +82,8 @@ public class GSearchCourtFragment extends Fragment implements OnClickListener {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
-		View v = inflater.inflate(R.layout.fragment_search_court, container,
-				false);
+		View v = inflater.inflate(R.layout.fragment_search_court, container, false);
 		v.findViewById(R.id.select_date).setOnClickListener(this);
-		
 		v.findViewById(R.id.search_court).setOnClickListener(this);
 
 		mSelectDate = (TextView) v.findViewById(R.id.select_date);
@@ -96,11 +96,12 @@ public class GSearchCourtFragment extends Fragment implements OnClickListener {
 		Time t = new Time();
 		t.setToNow();
 		
-		String date = String.format("%d月%d日", t.month, t.monthDay + 1);
+		String date = String.format("%d月%d日", t.month+1, t.monthDay + 1);
 		mSelectDate.setText(date);
+		_date = String.format("%d-%02d-%02d", t.year, t.month+1, t.monthDay+1 );
 		
 		mSelectTime.setText(String.format("9点30分"));
-		
+		_time = "09:30";
 		
 		return v;
 	}
@@ -128,9 +129,9 @@ public class GSearchCourtFragment extends Fragment implements OnClickListener {
 			Intent it = new Intent(getActivity(), GCourtListActivity.class);
 			
 			Bundle args = new Bundle();
-			args.putString(GCourtListActivity.ARG_CITY, "370200");
-			args.putString(GCourtListActivity.ARG_DATE, "2014-05-01");
-			args.putString(GCourtListActivity.ARG_TIME, "09-30");
+			args.putString(GCourtListActivity.ARG_CITY, _cityId);
+			args.putString(GCourtListActivity.ARG_DATE, _date);
+			args.putString(GCourtListActivity.ARG_TIME, _time);
 			args.putString(GCourtListActivity.ARG_KEYWORD, "");
 			it.putExtras(args);
 			
@@ -177,11 +178,11 @@ public class GSearchCourtFragment extends Fragment implements OnClickListener {
 //							.append(" ").append(pad(month + 1)).append(" ")
 //							.append(pad(year)));
 					
-					mSelectDate.setText(String.format("%d月%d日", month, day));
-					
+					mSelectDate.setText(String.format("%d月%d日", month+1, day));
+					_date = String.format("%d-%02d-%02d", year, month+1, day );
 				}
 
-			}, mCalendar.get(Calendar.YEAR), mCalendar.get(Calendar.MONTH) + 1,
+			}, mCalendar.get(Calendar.YEAR), mCalendar.get(Calendar.MONTH),
 			mCalendar.get(Calendar.DAY_OF_MONTH) + 1  );
 	
 	final TimePickerDialog timePickerDialog12h = TimePickerDialog.newInstance(new OnTimeSetListener() {
@@ -190,13 +191,13 @@ public class GSearchCourtFragment extends Fragment implements OnClickListener {
 		public void onTimeSet(RadialPickerLayout view, int hourOfDay,
 				int minute) {
 
-			Object c = pad3(hourOfDay);
-
+//			Object c = pad3(hourOfDay);
 //			mSelectTime.setText(
 //					new StringBuilder().append(pad2(hourOfDay))
 //					.append(":").append(pad(minute)).append(c));
 			
 			mSelectTime.setText(String.format("%d点%d分", hourOfDay, minute));
+			_time = String.format("%02d:%02d", hourOfDay, minute);
 			
 		}
 	}, 9, 30, false);

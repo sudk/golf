@@ -33,4 +33,6 @@
 @property(nonatomic,strong)SQLUtilsObject *sqlUtils;
 @property(nonatomic,strong)BDKNotifyHUD *notify;
 @property(nonatomic,strong)NSString *notificationText;
+@property(nonatomic,strong)NSArray *iconArray;
+@property(nonatomic,strong)UIView *allCalendarView;
 @end

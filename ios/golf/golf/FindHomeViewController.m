@@ -1,18 +1,18 @@
 //
-//  SpecialHomeViewController.m
+//  FindHomeViewController.m
 //  golf
 //
 //  Created by mahh on 14-4-2.
 //  Copyright (c) 2014年 mahh. All rights reserved.
 //
 
-#import "SpecialHomeViewController.h"
+#import "FindHomeViewController.h"
 
-@interface SpecialHomeViewController ()
+@interface FindHomeViewController ()
 
 @end
 
-@implementation SpecialHomeViewController
+@implementation FindHomeViewController
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -27,7 +27,7 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    self.title=@"特惠";
+    self.title=@"发现";
 }
 
 - (void)didReceiveMemoryWarning

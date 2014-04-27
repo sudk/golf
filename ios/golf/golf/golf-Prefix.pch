@@ -23,4 +23,7 @@
 #define SCREEN_WIDTH [UIScreen mainScreen].bounds.size.width
 #define IOS_VERSION [[[UIDevice currentDevice]systemVersion]floatValue]
 #define networkAbnormalInfo @"网络异常，请检查网络连接"
-#define baseUrlStr @"http://115.29.150.98/gl/index.php?r=command"
+#define baseUrlStr @"http://115.28.77.119/?r=command"
+
+//@"http://115.29.150.98/gl/index.php?r=command"
+

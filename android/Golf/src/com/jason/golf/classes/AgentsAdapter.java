@@ -10,7 +10,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class AgentsAdapter extends BaseAdapter {
 	
@@ -22,10 +24,11 @@ public class AgentsAdapter extends BaseAdapter {
 		// TODO Auto-generated constructor stub
 		_context = ctx;
 		_inflater = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		if(agents == null){
-			_agents = new ArrayList<GAgent>();
-		}else{
-			_agents = agents;
+		
+		_agents = new ArrayList<GAgent>();
+		
+		if(agents != null){
+			_agents.addAll(agents);
 		}
 		
 	}
@@ -59,6 +62,8 @@ public class AgentsAdapter extends BaseAdapter {
 			holder._name = (TextView) v.findViewById(R.id.agent_name);
 			holder._brief = (TextView) v.findViewById(R.id.agent_brief);
 			holder._price = (TextView) v.findViewById(R.id.agent_price);
+			holder._payType = (TextView) v.findViewById(R.id.agent_paytype);
+			holder._reserve = (Button) v.findViewById(R.id.agent_reserve);
 			
 			v.setTag(holder);
 		}else{
@@ -68,16 +73,39 @@ public class AgentsAdapter extends BaseAdapter {
 		
 		GAgent agent = _agents.get(position);
 		holder._name.setText(agent.getName());
-		holder._brief.setText(agent.getBrief());
+//		holder._brief.setText(agent.getBrief());
+		
+		
+		holder._reserve.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				Toast.makeText(_context, "Generate Order", Toast.LENGTH_SHORT).show();
+			}
+			
+		});
+		
+		
+		
+		
 		holder._price.setText(String.format("￥ %s", agent.getPrice()));
 		
 		return v;
+	}
+	
+	public void swapData(ArrayList<GAgent> data){
+		_agents.clear();
+		_agents.addAll(data);
+		notifyDataSetChanged();
 	}
 	
 	private class ViewHolder{
 		public TextView _name;
 		public TextView _brief;
 		public TextView _price;
+		public TextView _payType;
+		public Button _reserve;
 	}
 
 }

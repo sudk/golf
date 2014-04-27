@@ -5126,3 +5126,123 @@ Stack trace:
 REQUEST_URI=/golf_root/web/?r=operator/set/list
 HTTP_REFERER=http://localhost/golf_root/web/?r=log/systemlog/list
 ---
+2014/04/26 13:31:29 [info] [application.firebuglog] {
+  "key_word" : "",
+  "city" : "440400",
+  "time" : "9:00",
+  "long_lat" : "117.069278,36.704413",
+  "cmd" : "court\/search",
+  "date" : "2014-05-01"
+}
+in /Applications/XAMPP/xamppfiles/htdocs/golf/web/protected/components/Command.php (12)
+in /Applications/XAMPP/xamppfiles/htdocs/golf/web/protected/components/MBaseController.php (51)
+in /Applications/XAMPP/xamppfiles/htdocs/golf/web/index.php (20)
+2014/04/26 13:32:02 [info] [application.firebuglog] {
+  "key_word" : "",
+  "city" : "440400",
+  "time" : "9:00",
+  "long_lat" : "117.069278,36.704413",
+  "cmd" : "court\/search",
+  "date" : "2014-05-01"
+}
+in /Applications/XAMPP/xamppfiles/htdocs/golf/web/protected/components/Command.php (12)
+in /Applications/XAMPP/xamppfiles/htdocs/golf/web/protected/components/MBaseController.php (51)
+in /Applications/XAMPP/xamppfiles/htdocs/golf/web/index.php (20)
+2014/04/26 13:33:08 [info] [application.firebuglog] {
+  "key_word" : "",
+  "city" : "440400",
+  "time" : "9:00",
+  "long_lat" : "117.069278,36.704413",
+  "cmd" : "court\/search",
+  "date" : "2014-05-01"
+}
+in /Applications/XAMPP/xamppfiles/htdocs/golf/web/protected/components/Command.php (12)
+in /Applications/XAMPP/xamppfiles/htdocs/golf/web/protected/components/MBaseController.php (51)
+in /Applications/XAMPP/xamppfiles/htdocs/golf/web/index.php (20)
+2014/04/26 13:33:41 [info] [application.firebuglog] {
+  "key_word" : "",
+  "city" : "440400",
+  "time" : "9:00",
+  "long_lat" : "117.069278,36.704413",
+  "cmd" : "court\/search",
+  "date" : "2014-05-01"
+}
+in /Applications/XAMPP/xamppfiles/htdocs/golf/web/protected/components/Command.php (12)
+in /Applications/XAMPP/xamppfiles/htdocs/golf/web/protected/components/MBaseController.php (51)
+in /Applications/XAMPP/xamppfiles/htdocs/golf/web/index.php (20)
+2014/04/26 13:34:47 [info] [application.firebuglog] {
+  "key_word" : "",
+  "city" : "440400",
+  "time" : "9:00",
+  "long_lat" : "117.069278,36.704413",
+  "cmd" : "court\/search",
+  "date" : "2014-05-01"
+}
+in /Applications/XAMPP/xamppfiles/htdocs/golf/web/protected/components/Command.php (12)
+in /Applications/XAMPP/xamppfiles/htdocs/golf/web/protected/components/MBaseController.php (51)
+in /Applications/XAMPP/xamppfiles/htdocs/golf/web/index.php (20)
+2014/04/26 13:35:53 [info] [application.firebuglog] {
+  "key_word" : "",
+  "city" : "440400",
+  "time" : "9:00",
+  "long_lat" : "112.3743384389,22.110753742981",
+  "cmd" : "court\/search",
+  "date" : "2014-05-01"
+}
+in /Applications/XAMPP/xamppfiles/htdocs/golf/web/protected/components/Command.php (12)
+in /Applications/XAMPP/xamppfiles/htdocs/golf/web/protected/components/MBaseController.php (51)
+in /Applications/XAMPP/xamppfiles/htdocs/golf/web/index.php (20)
+2014/04/26 13:39:09 [info] [application.firebuglog] {
+  "key_word" : "",
+  "city" : "440400",
+  "time" : "9:00",
+  "long_lat" : "112.3743384389,22.110753742981",
+  "cmd" : "court\/search",
+  "date" : "2014-05-01"
+}
+in /Applications/XAMPP/xamppfiles/htdocs/golf/web/protected/components/Command.php (12)
+in /Applications/XAMPP/xamppfiles/htdocs/golf/web/protected/components/MBaseController.php (51)
+in /Applications/XAMPP/xamppfiles/htdocs/golf/web/index.php (20)
+2014/04/26 13:39:42 [info] [application.firebuglog] {
+  "key_word" : "",
+  "city" : "440400",
+  "time" : "9:00",
+  "long_lat" : "117.069278,36.704413",
+  "cmd" : "court\/search",
+  "date" : "2014-05-01"
+}
+in /Applications/XAMPP/xamppfiles/htdocs/golf/web/protected/components/Command.php (12)
+in /Applications/XAMPP/xamppfiles/htdocs/golf/web/protected/components/MBaseController.php (51)
+in /Applications/XAMPP/xamppfiles/htdocs/golf/web/index.php (20)
+2014/04/26 13:40:48 [info] [application.firebuglog] {
+  "key_word" : "",
+  "city" : "440400",
+  "time" : "9:00",
+  "long_lat" : "117.069278,36.704413",
+  "cmd" : "court\/search",
+  "date" : "2014-05-01"
+}
+in /Applications/XAMPP/xamppfiles/htdocs/golf/web/protected/components/Command.php (12)
+in /Applications/XAMPP/xamppfiles/htdocs/golf/web/protected/components/MBaseController.php (51)
+in /Applications/XAMPP/xamppfiles/htdocs/golf/web/index.php (20)
+2014/04/26 14:57:30 [info] [application.firebuglog] {
+  "cmd" : "news\/list",
+  "_pg_" : [0,10]
+}
+in /Applications/XAMPP/xamppfiles/htdocs/golf/web/protected/components/Command.php (12)
+in /Applications/XAMPP/xamppfiles/htdocs/golf/web/protected/components/MBaseController.php (51)
+in /Applications/XAMPP/xamppfiles/htdocs/golf/web/index.php (20)
+2014/04/26 15:02:58 [info] [application.firebuglog] {
+  "cmd" : "news\/list",
+  "_pg_" : [0,10]
+}
+in /Applications/XAMPP/xamppfiles/htdocs/golf/web/protected/components/Command.php (12)
+in /Applications/XAMPP/xamppfiles/htdocs/golf/web/protected/components/MBaseController.php (51)
+in /Applications/XAMPP/xamppfiles/htdocs/golf/web/index.php (20)
+2014/04/26 15:03:31 [info] [application.firebuglog] {
+  "cmd" : "news\/list",
+  "_pg_" : [0,10]
+}
+in /Applications/XAMPP/xamppfiles/htdocs/golf/web/protected/components/Command.php (12)
+in /Applications/XAMPP/xamppfiles/htdocs/golf/web/protected/components/MBaseController.php (51)
+in /Applications/XAMPP/xamppfiles/htdocs/golf/web/index.php (20)

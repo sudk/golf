@@ -1,5 +1,5 @@
 //
-//  SpecialHomeViewController.h
+//  FindHomeViewController.h
 //  golf
 //
 //  Created by mahh on 14-4-2.
@@ -8,6 +8,6 @@
 
 #import "BaseViewController.h"
 
-@interface SpecialHomeViewController : BaseViewController
+@interface FindHomeViewController : BaseViewController
 
 @end

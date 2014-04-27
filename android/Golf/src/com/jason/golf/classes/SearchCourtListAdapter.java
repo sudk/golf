@@ -17,17 +17,16 @@ public class SearchCourtListAdapter extends BaseAdapter {
 	
 	private LayoutInflater _inflater ;
 	private Context _context;
-	private ArrayList<GCourt> _courts;
+	private ArrayList<SearchCourtBean> _courts;
 
-	public SearchCourtListAdapter(Context ctx, ArrayList<GCourt> courts) {
+	public SearchCourtListAdapter(Context ctx, ArrayList<SearchCourtBean> courts) {
 		super();
 		// TODO Auto-generated constructor stub
 		_context = ctx;
 		_inflater = (LayoutInflater) _context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		if(courts == null){
-			_courts = new ArrayList<GCourt>();
-		}else{
-			_courts = courts;
+		_courts = new ArrayList<SearchCourtBean>();
+		if(courts != null){
+			_courts.addAll(courts);
 		}
 	}
 
@@ -42,7 +41,7 @@ public class SearchCourtListAdapter extends BaseAdapter {
 		// TODO Auto-generated method stub
 		if( position > getCount() || position < 0)
 			return null;
-		GCourt court = _courts.get(position);
+		SearchCourtBean court = _courts.get(position);
 		return court;
 	}
 
@@ -70,13 +69,20 @@ public class SearchCourtListAdapter extends BaseAdapter {
 			holder = (ViewHolder) v.getTag();
 		}
 		
-		GCourt court = _courts.get(position);
-//		holder.image
+		SearchCourtBean court = _courts.get(position);
 		
 		holder.name.setText(court.getName());
-		holder.price.setText(String.format("￥ %s", court.getPrice()));
-		
-		
+		holder.price.setText(String.format("￥ %d", court.getPrice() / 100));
+		 
+		long distance = court.getDistance();
+		if(distance < -0){
+			holder.distance.setText("未知");
+		}else{
+			if(distance > 1000)
+				holder.distance.setText(String.format("%.1f公里", distance/1000));
+			else
+				holder.distance.setText(String.format("%d米", distance));
+		}
 		
 		return v;
 	}
@@ -86,6 +92,13 @@ public class SearchCourtListAdapter extends BaseAdapter {
 		public TextView name;
 		public TextView distance;
 		public TextView price;
+	}
+
+	public void swapData(ArrayList<SearchCourtBean> array) {
+		// TODO Auto-generated method stub
+		_courts.clear();
+		_courts.addAll(array);
+		notifyDataSetChanged();
 	}
 
 }

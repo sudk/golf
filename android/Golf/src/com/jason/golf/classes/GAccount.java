@@ -1,5 +1,6 @@
 package com.jason.golf.classes;
 
+import android.location.Location;
 import android.text.TextUtils;
 
 public class GAccount {
@@ -17,6 +18,7 @@ public class GAccount {
 	private String _vipCardNo; //VIP����
 	private String _point; // ���
 	
+	private Location _loc;
 
 	public void initilization(String id, String session){
 		_id = id;
@@ -28,7 +30,6 @@ public class GAccount {
 	 * 判断用户是否已经登录
 	 * 
 	 */
-	
 	public boolean hasLogin(){
 		if(TextUtils.isEmpty(_id) || TextUtils.isEmpty(_session))
 			return false;
@@ -36,6 +37,14 @@ public class GAccount {
 			return true;
 	}
 	
+	public Location getLoc() {
+		return _loc;
+	}
+
+	public void setLoc(Location loc) {
+		this._loc = loc;
+	}
+
 	public String getId(){
 		return _id;
 	}

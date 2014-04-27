@@ -8,6 +8,12 @@
         android:minSdkVersion="11"
         android:targetSdkVersion="19" />
 
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+
     <application
         android:name="com.jason.golf.GolfAppliaction"
         android:allowBackup="true"
@@ -29,16 +35,17 @@
             android:name="com.jason.golf.provider.GolfProvider"
             android:authorities="com.jason.golf.provider" >
         </provider>
-        <activity android:name="com.jason.golf.SelectCityActivity"></activity>
-        <activity android:name="com.jason.golf.GCourtListActivity"></activity>
-        <activity android:name="com.jason.golf.GAccountActivity"></activity>
-        <activity android:name="com.jason.golf.GCourtInfoActivity"></activity>
-        <activity android:name="com.jason.golf.GChangePwdActivity"></activity>
-        
-    </application>
 
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.VIBRATE" />
+        <activity android:name="com.jason.golf.SelectCityActivity" >
+        </activity>
+        <activity android:name="com.jason.golf.GCourtListActivity" >
+        </activity>
+        <activity android:name="com.jason.golf.GAccountActivity" >
+        </activity>
+        <activity android:name="com.jason.golf.GCourtInfoActivity" >
+        </activity>
+        <activity android:name="com.jason.golf.GChangePwdActivity" >
+        </activity>
+    </application>
 
 </manifest>

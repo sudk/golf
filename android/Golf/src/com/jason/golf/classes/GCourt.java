@@ -12,7 +12,7 @@ public class GCourt {
 	private String _id;
 	private String _name;
 	private String _city;
-	private String _price;
+	private int _price;
 	private String _point; //���
 	private String _description;
 	private String _address;
@@ -25,12 +25,13 @@ public class GCourt {
 	private String _remark;
 	private String _facilities;
 	private String _data;
+	private long _distance; // 距离
 	
 	private ArrayList<GPhoto> _photos;
 
 	
 	
-	public GCourt(String id, String name, String city, String price, String point,
+	public GCourt(String id, String name, String city, int price, String point,
 			String description, String address, String createYear,
 			String greenGrass, String designer, String fairwayLength,
 			String fairwayGrass, String phone, String remark,
@@ -78,11 +79,11 @@ public class GCourt {
 		this._city = city;
 	}
 
-	public String getPrice() {
+	public int getPrice() {
 		return _price;
 	}
 
-	public void setPrice(String price) {
+	public void setPrice(int price) {
 		this._price = price;
 	}
 
@@ -182,4 +183,12 @@ public class GCourt {
 		this._data = data;
 	}
 
+	public long getDistance() {
+		return _distance;
+	}
+
+	public void setDistance(long distance) {
+		this._distance = distance;
+	}
+	
 }
