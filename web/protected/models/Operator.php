@@ -215,7 +215,7 @@ class Operator extends CActiveRecord {
     			$ar[$row['id']]=$row['name'];
     		}
     	}
-        var_dump($ar);
+        //var_dump($ar);
     	return $ar;
     }
 }

@@ -7,7 +7,7 @@
  */
 class News extends CActiveRecord {
 
-    
+    public $imgs;
 
     public static function model($className=__CLASS__){
         return parent::model($className);
@@ -36,6 +36,11 @@ class News extends CActiveRecord {
         $condition = ' 1=1 ';
         $params = array();
 
+        if ($args['status'] != ''){
+            $condition.=' AND status = :status';
+            $params['status'] = $args['status'];
+        }
+        
         if ($args['title'] != ''){
             $condition.=' AND title like :title';
             $params['title'] = "%".$args['title']."%";
@@ -49,7 +54,7 @@ class News extends CActiveRecord {
             ->queryScalar();
         
     	
-        $order = 'record_time  DESC';
+        $order = 'record_time  DESC,status asc';
 
         $rows=Yii::app()->db->createCommand()
             ->select("*")

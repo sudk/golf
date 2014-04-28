@@ -12,7 +12,7 @@ class CityCode extends CActiveRecord {
     }
 
     public function tableName(){
-        return 'district_code_full';
+        return 'g_district_code_full';
     }
     
     public static function getProvince()

@@ -90,9 +90,27 @@ class Order extends CActiveRecord {
         $condition = ' 1=1 ';
         $params = array();
 
+        
         if ($args['court_id'] != ''){
             $condition.= ' AND court_id=:court_id';
             $params['court_id'] = $args['court_id'];
+        }
+        
+        if ($args['agent_id'] != ''){
+            $condition.= ' AND  agent_id=:agent_id';
+            $params['agent_id'] = $args['agent_id'];
+        }
+        
+        if($args['status'] != "")
+        {
+            $condition .= ' AND status=:status';
+            $params['status'] = $args['status'];
+        }
+        
+        if($args['pre_deal'] != "")
+        {
+            $condition .= ' AND status in (0,1)';
+            
         }
         
         if($args['begin_date']!="" && $args['end_date']!="")
