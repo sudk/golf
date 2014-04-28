@@ -9,7 +9,6 @@ class OrderController extends CMDBaseController
     public function accessRules() {
         return array(
             array('allow',
-                'actions' => array('info','Bandcard'),
                 'users' => array('@'),
             ),
             array('allow',
@@ -28,12 +27,8 @@ class OrderController extends CMDBaseController
             echo json_encode($msg);
             return;
         }
-        $args=array();
-        if(Yii::app()->command->cmdObj->tile){
-            $args['tile']=Yii::app()->command->cmdObj->tile;
-        }
         //echo Yii::app()->command->cmdObj->_pg_[1];
-        $rs=News::queryList(Yii::app()->command->cmdObj->_pg_[0],Yii::app()->command->cmdObj->_pg_[1],$args);
+        $rs=Order::Order_list(Yii::app()->command->cmdObj->_pg_[0],Yii::app()->command->cmdObj->_pg_[1],Yii::app()->command->cmdObj);
         if($rs['rows']){
             $msg['status']=0;
             $msg['desc']="成功";
@@ -54,7 +49,7 @@ class OrderController extends CMDBaseController
             echo json_encode($msg);
             return;
         }
-        $row=News::Info(Yii::app()->command->cmdObj->id);
+        $row=Order::Info(Yii::app()->command->cmdObj->id);
         if($row){
             $msg['status']=0;
             $msg['desc']="成功";

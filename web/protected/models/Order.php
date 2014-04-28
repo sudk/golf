@@ -210,19 +210,19 @@ class Order extends CActiveRecord {
         $condition = ' 1=1 ';
         $params = array();
 
-        if ($args['relation_name'] != ''){
+        if ($args->relation_name != ''){
             $condition.=' AND relation_name like :relation_name';
-            $params['relation_name'] = "%".$args['relation_name']."%";
+            $params['relation_name'] = "%".$args->relation_name."%";
         }
 
-        if ($args['start_time'] != ''){
+        if ($args->start_time != ''){
             $condition.=' AND record_time >= :start_time';
-            $params['start_time'] = $args['start_time'];
+            $params['start_time'] = $args->start_time;
         }
 
-        if ($args['end_time'] != ''){
+        if ($args->end_time != ''){
             $condition.=' AND record_time <= :end_time';
-            $params['end_time'] = $args['end_time'];
+            $params['end_time'] = $args->end_time;
         }
 
 
