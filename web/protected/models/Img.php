@@ -15,7 +15,7 @@ class Img extends CActiveRecord {
     CONST TYPE_TRIP = '6';
     CONST TYPE_COMPETITION = '3';
     CONST TYPE_NEWS = '9';
-    
+    const IMG_PATH="http://115.28.77.119/images/picture/";
     
     
     public static function model($className=__CLASS__){
@@ -172,7 +172,7 @@ class Img extends CActiveRecord {
         if($rows){
             $rows_tmp=array();
             foreach($rows as $row){
-                $rows_tmp[]=$row['img_url'];
+                $rows_tmp[]=Img::IMG_PATH.$row['img_url'];
             }
         }
         return $rows_tmp;
