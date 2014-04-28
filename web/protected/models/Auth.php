@@ -125,7 +125,7 @@ class Auth extends CActiveRecord {
     public static function GetAuth($operator_id){
         $rows = Yii::app()->db->createCommand()
             ->select("auth_id")
-            ->from("auth")
+            ->from("g_auth")
             ->where("operator_id='{$operator_id}'")
             ->queryAll();
         $ar=array();
@@ -134,17 +134,11 @@ class Auth extends CActiveRecord {
                $ar[]=$row['auth_id'];
             }
         }else{
-            $ar[]="custom_m";
+            //$ar[]="default";
         }
 
-        $ar[]="normaltask";//默认权限
-
-//        if(Yii::app()->user->type==Staff::TYPE_MANAGE && array_search("custom_m",$ar)===false){ //如果是客户经理则默认给于客户经理权限
-//            $ar[]="custom_m";
-//        }elseif(Yii::app()->user->type==Staff::TYPE_MAINTAIN && array_search("maintain_nor",$ar)===false){  //如果维护人员则默认给于维护人员权限
-//            $ar[]="maintain_nor";
-//        }
-// 		print_r($ar);exit;
+        $ar[]="default";//默认权限
+        $ar[] = "msg";
         return $ar;
     }
     
@@ -176,7 +170,7 @@ class Auth extends CActiveRecord {
             }
         }
         if(!$data){
-            $data['auth']='custom_m';//默认数据权限
+            $data['auth']='default';//默认数据权限
             $data['managerid']=Yii::app()->user->id;
         }
         return $data;
@@ -201,7 +195,8 @@ class Auth extends CActiveRecord {
             $data_range=$role_data;
         }
         if($data==false){
-            $data['auth']['custom_m']=true;//默认数据权限
+            $data['auth']['default']=true;//默认数据权限
+            $data['auth']['msg']=true;//默认数据权限
         }
         return $data;
     }
