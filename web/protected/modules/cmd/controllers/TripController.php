@@ -4,7 +4,7 @@
  * 赛事
  * @author sudk
  */
-class CompetitionController extends CMDBaseController
+class TripController extends CMDBaseController
 {
     public function accessRules() {
         return array(
@@ -22,23 +22,39 @@ class CompetitionController extends CMDBaseController
     }
 
     public function actionList(){
-        if(Yii::app()->command->cmdObj->name){
-            $args['name']=Yii::app()->command->cmdObj->name;
-        }
-
+        $args=array();
         if(!Yii::app()->command->cmdObj->_pg_){
             $msg['status']=1;
             $msg['desc']="分页参数不能为空！";
             echo json_encode($msg);
             return;
         }
+        if(!Yii::app()->command->cmdObj->city){
+            $msg['status']=2;
+            $msg['desc']="搜索城市不能为空！";
+            echo json_encode($msg);
+            return;
+        }else{
+            $args['city']=Yii::app()->command->cmdObj->city;
+        }
+        if(Yii::app()->command->cmdObj->trip_name){
+            $args['trip_name']=Yii::app()->command->cmdObj->trip_name;
+        }
 
-        $rows=Competition::queryList(Yii::app()->command->cmdObj->_pg_[0],Yii::app()->command->cmdObj->_pg_[1],$args);
-        if($rows){
+        if(Yii::app()->command->cmdObj->start_date){
+            $args['start_date']=Yii::app()->command->cmdObj->start_date;
+        }
+
+        if(Yii::app()->command->cmdObj->end_date){
+            $args['end_date']=Yii::app()->command->cmdObj->end_date;
+        }
+        //echo Yii::app()->command->cmdObj->_pg_[1];
+        $rs=Trip::queryList(Yii::app()->command->cmdObj->_pg_[0],Yii::app()->command->cmdObj->_pg_[1],$args);
+        if($rs['rows']){
             $msg['status']=0;
             $msg['desc']="成功";
             $msg['_pg_']=array(Yii::app()->command->cmdObj->_pg_[0],Yii::app()->command->cmdObj->_pg_[1],$rs['total_page'],$rs['total_num']);
-            $msg['data']=$rows;
+            $msg['data']=$rs['rows'];
         }else{
             $msg['status']=4;
             $msg['desc']="没有数据";
@@ -51,11 +67,11 @@ class CompetitionController extends CMDBaseController
     public function actionInfo(){
         if(!Yii::app()->command->cmdObj->id){
             $msg['status']=1;
-            $msg['desc']="赛事ID不能为空！";
+            $msg['desc']="ID不能为空！";
             echo json_encode($msg);
             return;
         }
-        $row=Competition::Info(Yii::app()->command->cmdObj->id);
+        $row=Trip::Info(Yii::app()->command->cmdObj->id);
         if($row){
             $msg['status']=0;
             $msg['desc']="成功";
@@ -66,7 +82,6 @@ class CompetitionController extends CMDBaseController
         }
         echo json_encode($msg);
         return;
-
     }
 
 

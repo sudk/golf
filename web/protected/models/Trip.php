@@ -91,42 +91,58 @@ class Trip extends CActiveRecord {
             $condition.=' AND trip_name like :trip_name';
             $params['trip_name'] = "%".$args['trip_name']."%";
         }
-        
-        
-        $total_num = Trip::model()->count($condition, $params); //总记录数
 
-        $criteria = new CDbCriteria();
-        
-    	
-        $criteria->order = 'record_time  DESC';
-        
 
-        $criteria->condition = $condition;
-        $criteria->params = $params;
-
-        $pages = new CPagination($total_num);
-        $pages->pageSize = $pageSize;
-        $pages->setCurrentPage($page);
-        $pages->applyLimit($criteria);
-
-        $rows = Trip::model()->findAll($criteria);
+        $total_num = Yii::app()->db->createCommand()
+            ->select("count(1)")
+            ->from("g_trip")
+            ->where($condition,$params)
+            ->queryScalar();
+        $order = 'record_time  DESC';
+        $rows=Yii::app()->db->createCommand()
+            ->select("*")
+            ->from("g_trip")
+            ->where($condition,$params)
+            ->order($order)
+            ->limit($pageSize)
+            ->offset($page * $pageSize)
+            ->queryAll();
 
         $rs['status'] = 0;
         $rs['desc'] = '成功';
         $rs['page_num'] = ($pages->currentPage + 1);
         $rs['total_num'] = $total_num;
-        $rs['total_page'] = ceil($rs['total_num'] / $rs['page_num']);
-        $rs['num_of_page'] = $pages->pageSize;
+        $rs['total_page'] = ceil($total_num/ $pageSize);
+        $rs['num_of_page'] = $pageSize;
         $rs['rows'] = $rows;
 
         return $rs;
     }
 
+    public static function Info($id) {
 
-    
-    
-    
-    
+        $condition = ' 1=1 ';
+        $params = array();
+
+
+        if ($id != ''){
+            $condition.=' AND id = :id';
+            $params['id'] =$id;
+        }else{
+            return false;
+        }
+
+        $row=Yii::app()->db->createCommand()
+            ->select("*")
+            ->from("g_trip")
+            ->where($condition,$params)
+            ->queryRow();
+        if($row){
+            $row['imgs']=Img::GetImgs($id,Img::TYPE_TRIP);
+        }
+        return $row;
+
+    }
     
 }
 
