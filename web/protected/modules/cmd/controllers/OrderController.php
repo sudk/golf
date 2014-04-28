@@ -19,6 +19,16 @@ class OrderController extends CMDBaseController
             ),
         );
     }
+    public function init()
+    {
+        parent::init();
+        if(Yii::app()->user->isGuest){
+            $msg['status']=-1;
+            $msg['desc']="用户未登陆！";
+            echo json_encode($msg);
+            return;
+        }
+    }
 
     public function actionList(){
         if(!Yii::app()->command->cmdObj->_pg_){
@@ -43,13 +53,13 @@ class OrderController extends CMDBaseController
     }
 
     public function actionInfo(){
-        if(!Yii::app()->command->cmdObj->id){
+        if(!Yii::app()->command->cmdObj->order_id){
             $msg['status']=1;
             $msg['desc']="ID不能为空！";
             echo json_encode($msg);
             return;
         }
-        $row=Order::Info(Yii::app()->command->cmdObj->id);
+        $row=Order::Info(Yii::app()->command->cmdObj->order_id);
         if($row){
             $msg['status']=0;
             $msg['desc']="成功";
@@ -129,7 +139,7 @@ class OrderController extends CMDBaseController
             echo json_encode($msg);
             return;
         }
-        $row=News::Info(Yii::app()->command->cmdObj->id);
+        $row=Order::Create(Yii::app()->command->cmdObj);
         if($row){
             $msg['status']=0;
             $msg['desc']="成功";
@@ -141,4 +151,25 @@ class OrderController extends CMDBaseController
         echo json_encode($msg);
         return;
     }
+
+    public function actionCancel(){
+        if(!Yii::app()->command->cmdObj->order_id){
+            $msg['status']=1;
+            $msg['desc']="ID不能为空！";
+            echo json_encode($msg);
+            return;
+        }
+        $row=Order::Cancel(Yii::app()->command->cmdObj->order_id);
+        if($row){
+            $msg['status']=0;
+            $msg['desc']="成功";
+            $msg['data']=$row;
+        }else{
+            $msg['status']=4;
+            $msg['desc']="没有数据";
+        }
+        echo json_encode($msg);
+        return;
+    }
+
 }
