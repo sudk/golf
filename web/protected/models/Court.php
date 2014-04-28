@@ -229,13 +229,13 @@ class Court extends CActiveRecord {
                 ->select("type,img_url")
                 ->from("g_img")
                 ->where($condition,array(":relation_id"=>$court_id))
-                ->queryRow();
+                ->queryAll();
             if($rows){
-                foreach($rows as $row){
-                    if($row['type']==1){
-                        $fairway_imgs[]=$row['img_url'];
+                foreach($rows as $row_img){
+                    if(intval($row_img['type'])==1){
+                        $fairway_imgs[]=$row_img['img_url'];
                     }else{
-                        $court_imgs[]=$row['img_url'];
+                        $court_imgs[]=$row_img['img_url'];
                     }
                 }
             }
