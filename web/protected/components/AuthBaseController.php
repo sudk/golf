@@ -23,8 +23,8 @@ class AuthBaseController extends CController
 
 		if(isset(Yii::app()->user->auths) && count(Yii::app()->user->auths)>0)
 		{
-            $authManager=Yii::app()->authManager;
-            $userId=Yii::app()->user->id;
+                    $authManager=Yii::app()->authManager;
+                    $userId=Yii::app()->user->id;
 			foreach(Yii::app()->user->auths as $authid)
 			{
                 try{

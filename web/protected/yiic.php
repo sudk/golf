@@ -1,7 +1,7 @@
 <?php
 date_default_timezone_set('Asia/Shanghai');
 // change the following paths if necessary
-$yiic=dirname(__FILE__).'/../../yii-1.1.8/yiic.php';
+$yiic=dirname(__FILE__).'/../framework/yiic.php';
 //$yiic='/usr/local/webapp/libs/yii-1.1.8/yiic.php';
 $config=dirname(__FILE__).'/config/console.php';
 //$config='/usr/local/webapp/1430/config/console.php';

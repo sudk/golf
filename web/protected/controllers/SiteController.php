@@ -277,8 +277,9 @@ class SiteController extends BaseController {
 
         if (count($config['modules']) > 0) {
             foreach ($config['modules'] as $module_name => $module) {
-                if ($module_name == p)
-                    continue;
+                //print_r($module_name);
+//                if ($module_name == p)
+//                    continue;
                 //$actions = Utils::getControllersActions($module_name);
                 $actions = array();
                 exec(Yii::app()->basePath . '/yiic reflect run --m=' . $module_name, $actions);

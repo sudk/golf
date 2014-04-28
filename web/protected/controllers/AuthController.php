@@ -32,11 +32,11 @@ class AuthController extends BaseController
             $args = $_GET['q'];
             $model->role = require(dirname(__FILE__) . '/../data/role.php');
             $model->task = require(dirname(__FILE__) . '/../data/task.php');
-            $args['operator_id'] = $args['staffid'];
+            $args['operator_id'] = $args['id'];
             $list = Auth::queryList(0, $this->pageSize, $args);
             $model->list = $list['rows'];
             $model->name = $args['name'];
-            $model->operator_id = $args['staffid'];
+            $model->operator_id = $args['id'];
             $this->layout = '//layouts/base';
             $this->render('edit', array('id' => $id, 'model' => $model, 'result' => $r));
         }

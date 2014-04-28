@@ -3,23 +3,72 @@
     <div class="index_c">
         <div class="index_c_top"></div>
         <div class="index_c_main">
-            <h1><img src="images/icons/index_1.png" />消息中心</h1>
+            <h1 style="width: 470px;"><img src="images/icons/index_1.png" />消息中心 <span style="margin-left: 130px;"><a href="index.php?r=msg/inbox/list">更多...</a></span></h1>
+            <div class="clear"></div>
+            <ul class="list" style="overflow-y:auto;height:181px;">
+                <?php
+                $args['listenerid']=Yii::app()->user->id;
+                $args['type'] = MsgListener::TYPE_MSG;
+                $list = MsgListener::queryList(1, 5, $args);
+                if($list['rows'])
+                {
+                    foreach($list['rows'] as $row)
+                    {
+                        echo '<li>',$row['title'],'</li>';
+                    }
+                }
+                ?>
+                    
+            </ul>
+        </div>
+                <div class="index_c_bottom"></div>
+    </div>
+    
+    <div class="index_c ml10">
+        <div class="index_c_top"></div>
+        <div class="index_c_main">
+            <h1 style="width: 470px;"><img src="images/icons/index_3.png" />公告中心 <span style="margin-left: 130px;"><a href="index.php?r=msg/inbox/list">更多...</a></span></h1>
+            <div class="clear"></div>
+            <ul class="list" style="overflow-y:auto;height:181px;">
+                <?php
+                $args['listenerid']=Yii::app()->user->id;
+                $args['type'] = MsgListener::TYPE_NOTICE;
+                $list = MsgListener::queryList(1, 5, $args);
+                if($list['rows'])
+                {
+                    foreach($list['rows'] as $row)
+                    {
+                        echo '<li><a href="index.php?r=msg/inbox/list">',$row['title'],'</a></li>';
+                    }
+                }
+                ?>
+            </ul>
         </div>
         <div class="index_c_bottom"></div>
     </div>
     <div class="index_c ml10">
         <div class="index_c_top"></div>
         <div class="index_c_main">
-            <h1><img src="images/icons/index_2.png" />客户回访</h1>
+            
+            <h1 style="width: 470px;"><img src="images/icons/index_2.png" />订单 <span style="margin-left: 130px;"><a href="index.php?r=order/list">更多...</a></span></h1>
+            <div class="clear"></div>
+            <ul class="list" style="overflow-y:auto;height:181px;">
+                <?php
+                $args['agent_id']=Yii::app()->user->agent_id;
+                $args['pre_deal'] = "pre_deal";
+                $list = Order::queryList(1, 5, $args);
+                if($list['rows'])
+                {
+                    $type_list = Order::getOrderType();
+                    foreach($list['rows'] as $row)
+                    {
+                        echo '<li><a href="index.php?r=order/list">',$type_list[$row['type']],":",$row['record_time'],'</a></li>';
+                    }
+                }
+                ?>
+            </ul>
         </div>
-        <div class="index_c_bottom"></div>
-    </div>
-    <div class="index_c ml10">
-        <div class="index_c_top"></div>
-        <div class="index_c_main">
-            <h1><img src="images/icons/index_3.png" />商户审核</h1>
-        </div>
-        <div class="index_c_bottom"></div>
+                <div class="index_c_bottom"></div>
     </div>
 </div>
 <div class="index_c_big">
@@ -28,8 +77,15 @@
 		<ul>
             <li>
                 <img src="images/48/01.png" />
-                <h1><a href="./?r=posrpt/poseff/list">POS交易报表</a></h1>
+                <h1><a href="./?r=service/route/list">套餐管理</a></h1>
             </li>
+            
+            
+            <li>
+                <img src="images/48/01.png" />
+                <h1><a href="./?r=service/competition/list">赛事管理</a></h1>
+            </li>
+        
         </ul>
     </div>
 	<div class="index_c_big_bottom"></div>

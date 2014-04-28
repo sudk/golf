@@ -5,7 +5,7 @@
  *实体卡管理
  * @author guohao
  */
-class CardController extends BaseController
+class CardController extends AuthBaseController
 {
 
     public $defaultAction = 'list';

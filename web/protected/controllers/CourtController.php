@@ -2,7 +2,7 @@
 /*
  * 球场管理
  */
-class CourtController extends BaseController
+class CourtController extends AuthBaseController
 {
 
     public $defaultAction = 'list';
@@ -326,6 +326,8 @@ class CourtController extends BaseController
         }
 
         $t = $this->genPicDataGrid();
+        
+        $args['from'] = 'court';
 
         $list = Img::queryList($page, $this->pageSize, $args);
 

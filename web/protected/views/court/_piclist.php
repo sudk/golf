@@ -8,7 +8,10 @@ if (is_array($rows))
         //$t->begin_row("onclick","getDetail(this,'{$row['court_id']}');");
 	
         $link = "";
-        $link .= CHtml::link('删除',"javascript:itemDelete('{$row['id']}');", array());
+        if(Yii::app()->user->type == Operator::TYPE_SYS)
+        {
+            $link .= CHtml::link('删除',"javascript:itemDelete('{$row['id']}');", array());
+        }
         $url = "index.php?r=court/loadpic&name=".$row['img_url'];
         $img = '<img src="'.$url.'" style="width:50px;height:50px;"/>';
         $t->echo_td($type_list[$row['type']]);

@@ -5,7 +5,7 @@
  *
  * @author sudk
  */
-class OutboxController extends BaseController
+class OutboxController extends AuthBaseController
 {
 
     public $defaultAction = 'list';
@@ -81,7 +81,7 @@ class OutboxController extends BaseController
     public function actionNew(){
         $model=new MsgBox('create');
         $op_ar=Operator::GetBoxAr();
-        print_r($op_ar);
+        //print_r($op_ar);
         if($_POST['MsgBox']){
             $model->attributes=$_POST['MsgBox'];
             $title=$_POST['MsgBox']['title'];

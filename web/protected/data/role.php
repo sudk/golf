@@ -10,139 +10,39 @@ return array(
         'description' => '超级管理员',
         'display'=>true,
         'children' => array(
-            'posrpt',
-            'mchtm',
-            'posm',
-            'staffm',
-            'log',
-            'riskc',
-            'busirpt',
-            'normaltask',
-        	'workflow',
+            'user',
+            'order_r',
+            'court',
+            //'price',
+            'service_comp',
+            'service_goods',
+            'service_mcht',
+            'service_route',
+            'service_news',
+            'consume_log',
             'msg',
             'systemlog',
-            'maintain_man',
-            'visit_checker',
+            'agent',
+            'operator',
+            'default',
         ),
         'bizRules' => '',
         'data' => '0'
     ),
-    'riskc_m' => array(
+    'agentmanager' => array(
         'type' => CAuthItem::TYPE_ROLE,
-        'description' => '风险监控员',
+        'description' => '代理商',
         'display'=>true,
         'children' => array(
-            'riskc','posrpt_detail',
+            'order',
+            'court_r',
+            'price',
+            'service_comp',
+            'service_route',
+            'default',
+            'msg',
         ),
         'bizRules' => '',
         'data' => '1'
     ),
-    'maintain_man' => array(
-        'type' => CAuthItem::TYPE_ROLE,
-        'description' => '终端经理',
-        'display'=>true,
-        'children' => array(
-            'mchtm_r',
-            'posm_r',
-            'visit_r',
-            'visit_visit',
-            'visit_check',
-            'visit_cancel',
-            'visit_change',
-        ),
-        'bizRules' => '',
-        'data' => '1'
-    ),
-    'visit_checker' => array(
-        'type' => CAuthItem::TYPE_ROLE,
-        'description' => '回访确认人',
-        'display'=>true,
-        'children' => array(
-            'mchtm_r',
-            'posm_r',
-            'visit_r',
-            'visit_check',
-            'visit_cancel',
-        ),
-        'bizRules' => '',
-        'data' => '1'
-    ),
-    'pre_verify' => array(
-        'type' => CAuthItem::TYPE_ROLE,
-        'description' => '初审员',
-        'display'=>true,
-        'children' => array(
-            'posrpt_eff',
-            'mchtm',
-            'posm',
-            'workflow',
-        ),
-        'bizRules' => '',
-        'data' => '1'
-    ),
-    're_verify' => array(
-        'type' => CAuthItem::TYPE_ROLE,
-        'description' => '复审员',
-        'display'=>true,
-        'children' => array(
-            'posrpt_eff',
-            'mchtm',
-            'posm',
-            'workflow',
-        ),
-        'bizRules' => '',
-        'data' => '1'
-    ),
-    'fin_verify' => array(
-        'type' => CAuthItem::TYPE_ROLE,
-        'description' => '终审员',
-        'display'=>true,
-        'children' => array(
-            'posrpt_eff',
-            'mchtm',
-            'posm',
-            'workflow',
-        ),
-        'bizRules' => '',
-        'data' => '1'
-    ),
-    'custom_m' => array(
-        'type' => CAuthItem::TYPE_ROLE,
-        'description' => '客户经理',
-        'display'=>true,
-        'children' => array(
-            'posrpt_eff',
-            'mchtm',
-            'posm',
-            'workflow',
-            'visit_r',
-            'visit_visit',
-        ),
-        'bizRules' => '',
-        'data' => '2'
-    ),
-    'maintain_nor' => array(
-        'type' => CAuthItem::TYPE_ROLE,
-        'description' => '终端维护人员',
-        'display'=>true,
-        'children' => array(
-            'posm_r',
-            'visit_r',
-            'visit_visit',
-            'workflow_m',
-        ),
-        'bizRules' => '',
-        'data' => '2'
-    ),
-		
-	'mchtinfo' => array(
-			'type' => CAuthItem::TYPE_ROLE,
-			'description' => '商户',
-			'display'=>true,
-			'children' => array(
-					'mcht_reconcile',
-				),
-			'bizRules' => '',
-			'data' => '2'
-	),
 );

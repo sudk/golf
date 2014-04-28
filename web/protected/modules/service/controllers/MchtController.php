@@ -5,7 +5,7 @@
  *
  * @author sudk
  */
-class MchtController extends BaseController
+class MchtController extends AuthBaseController
 {
 
     public $defaultAction = 'list';

@@ -5,7 +5,7 @@
  *
  * @author guohao
  */
-class GoodsController extends BaseController
+class GoodsController extends AuthBaseController
 {
 
     public $defaultAction = 'list';

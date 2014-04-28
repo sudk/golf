@@ -2,7 +2,7 @@
 
 return array(
     //图片上传路径
-    'upload_dir'=>dirname(__FILE__)."/../runtime/picture/",
+    'upload_dir'=>dirname(__FILE__)."/../../images/picture/",
     'cmd_status'=>array(
         0=>'成功',
         -1=>"命令格式错误",

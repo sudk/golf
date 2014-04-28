@@ -5,12 +5,12 @@
  *
  * @author guohao
  */
-class ConsumeController extends BaseController
+class ConsumeController extends AuthBaseController
 {
 
     public $defaultAction = 'list';
     public $gridId = 'list';
-    public $pageSize = 100;
+    public $pageSize = 20;
 
     /**
      * 表头
@@ -22,11 +22,13 @@ class ConsumeController extends BaseController
         $t->url = 'index.php?r=rpt/consume/grid';
         $t->updateDom = 'datagrid';
         $t->set_header('序号', '30', '');
-        $t->set_header('账号', '100', 'userid');
-        $t->set_header('用户名', '100', '');
-        $t->set_header('操作', '230', 'operation');
-        $t->set_header('IP地址', '100', '');
-        $t->set_header('记录时间', '80', '');
+        $t->set_header('交易类型', '60', '');
+        $t->set_header('流水号', '100', '');
+        $t->set_header('交易金额', '60', '');
+        $t->set_header('关联流水号', '100', '');
+        $t->set_header('客户编号', '80', '');
+        $t->set_header('交易状态', '80', '');
+        $t->set_header('记录时间', '100', '');
         return $t;
     }
 
@@ -52,11 +54,15 @@ class ConsumeController extends BaseController
         if(!$args['enddate']){
             $args['enddate']=date("Y-m-d");
         }
-
+        
+        if($args['user_isdn'] == '用户手机号'){
+            $args['user_isdn'] = "";
+        }
+        //print_r($args);
         $t = $this->genDataGrid();
         $this->saveUrl();
 
-        $list = Systemlog::queryList($page, $this->pageSize, $args);
+        $list = TransRecord::queryList($page, $this->pageSize, $args);
 
         $this->renderPartial('_list', array('t' => $t, 'rows' => $list['rows'], 'cnt' => $list['total_num'], 'curpage' => $list['page_num']));
     }
@@ -67,7 +73,7 @@ class ConsumeController extends BaseController
     private function saveUrl()
     {
         $a = Yii::app()->session['list_url'];
-        $a['rpt/school'] = str_replace("r=log/systemlog/grid", "r=log/systemlog/list", $_SERVER["QUERY_STRING"]);
+        $a['rpt/school'] = str_replace("r=rpt/consume/grid", "r=rpt/consume/list", $_SERVER["QUERY_STRING"]);
         Yii::app()->session['list_url'] = $a;
     }
 

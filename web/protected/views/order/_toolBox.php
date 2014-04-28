@@ -1,7 +1,26 @@
 <form name="_query_form" id="_query_form" action="javascript:itemQuery(0);">
     <li>
         <span class="sift-title">搜索：</span>
-        
+        <?php
+        if(Yii::app()->user->type == Operator::TYPE_SYS){
+            ?>
+            <span style="float:left; margin:0 3px; margin-top:-3px;">代理商</span>
+        <select name="q[agent_id]">
+            <option value="">--选择--</option>
+            <?php
+            $agent_list = Agent::getAgentList();
+            if(@count($agent_list) > 0 )
+            {
+                foreach($agent_list as $key=>$value)
+                {
+                    echo '<option value="'.$key.'">'.$value.'</option>';
+                }
+            }
+            ?>
+        </select>    
+            <?php
+        }
+        ?>
         <span style="float:left; margin:0 3px; margin-top:-3px;">订单类型</span>
         <select name="q[order_type]">
             <option value="">--选择--</option>

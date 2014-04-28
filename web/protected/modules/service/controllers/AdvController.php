@@ -5,7 +5,7 @@
  *
  * @author sudk
  */
-class advController extends BaseController {
+class advController extends AuthBaseController {
 
     public $defaultAction = 'list';
     public $gridId = 'list';

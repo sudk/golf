@@ -9,9 +9,11 @@ if (is_array($rows))
 		$num = ($curpage-1)*$this->pageSize + $j++;
         $link = CHtml::link('球场图片',"javascript:itemPic('{$row['court_id']}','{$row['name']}')", array());
         $link .= CHtml::link('球场评价',"javascript:itemComment('{$row['court_id']}','{$row['name']}')", array());
-        $link .= CHtml::link('编辑',"javascript:itemEdit('{$row['court_id']}')", array());
-        $link .= CHtml::link('删除',"javascript:itemDelete('{$row['court_id']}','{$row['name']}')", array());
-        
+        if(Yii::app()->user->type == Operator::TYPE_SYS)
+        {
+            $link .= CHtml::link('编辑',"javascript:itemEdit('{$row['court_id']}')", array());
+            $link .= CHtml::link('删除',"javascript:itemDelete('{$row['court_id']}','{$row['name']}')", array());
+        }
         $t->echo_td($row['name']);
         $t->echo_td($row['model']); //
         $t->echo_td($row['phone']); //

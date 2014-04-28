@@ -5,7 +5,7 @@
  *
  * @author sudk
  */
-class InboxController extends BaseController
+class InboxController extends AuthBaseController
 {
 
     public $defaultAction = 'list';

@@ -1,5 +1,14 @@
 <div class="title-box">
-    <h1><span style="float:left;">球场列表</span><a href="./?r=court/new" style="float:right;"><span class="add_ico"></span><span>球场添加</span></a></h1>
+    <h1><span style="float:left;">球场列表</span>
+        <?php
+        if(Yii::app()->user->type == Operator::TYPE_SYS)
+        {
+        ?>
+        <a href="./?r=court/new" style="float:right;"><span class="add_ico"></span><span>球场添加</span></a>
+        <?php
+        }
+        ?>
+    </h1>
     <ul class="sift">
         <?php $this->renderPartial('_toolBox'); ?>
     </ul>

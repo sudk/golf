@@ -6,13 +6,20 @@
         <span style="float:left; margin:0 5px; margin-top:-3px;">到</span>
         <input id="enddate" class="Wdate" type="text" name="q[enddate]"  size="14"  value="<?php echo date("Y-m-d")?>" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',skin:'whyGreen',errDealMode:0})" >
         <span style="float:left; margin:0 5px; margin-top:-3px;">&nbsp;</span>
-        <select name="q_by">
-            <option value="userid">账号</option>
-            <option value="username">用户名</option>
-            <option value="operation">操作</option>
-            <option value="ip">IP地址</option>
+        
+        <select name="q[trans_type]">
+            
+            <option value="">--选择交易类型--</option>
+            <?php
+            $trans_type = TransRecord::getTransType();
+            foreach($trans_type as $key=>$value)
+            {
+                echo '<option value="',$key,'">',$value,'</option>';
+            }
+            ?>
+           
         </select>
-        <input name="q_value" type="text" class="grayTips" />
+        <input name="q[user_isdn]" type="text" class="grayTips" value="用户手机号"/>
         <input type="submit" value="" class="search_btn" />
     </li>
 </form>

@@ -1,9 +1,9 @@
 <div class="title-box">
     <h1><span style="float:left;">报价单管理</span>
-        <a href="javascript:void(0);" onclick="javascript:copyPolicy();" style="float:right;"><span class="add_ico"></span><span>一键复制上月报价</span></a>
-        <a href="javascript:void(0);" onclick="javascript:loadTemplate('2');"  style="float:right;"><span class="add_ico"></span><span>特殊日报价批量导入</span></a>
-        <a href="javascript:void(0);" onclick="javascript:loadTemplate('0');"  style="float:right;"><span class="add_ico"></span><span>普通报价批量导入</span></a>
-        <a href="javascript:void(0);" onclick="javascript:downTemplate();"  style="float:right;"><span class="add_ico"></span><span>报价模板下载</span></a>
+        <a href="javascript:void(0);" onclick="javascript:copyPolicy();" style="float:right;margin-left: 15px;"><span class="mover_ico"></span><span>一键复制上月报价</span></a>
+        <a href="javascript:void(0);" onclick="javascript:loadTemplate('2');"  style="float:right;margin-left: 15px;"><span class="add_ico"></span><span>特殊报价批量导入</span></a>
+        <a href="javascript:void(0);" onclick="javascript:loadTemplate('0');"  style="float:right;margin-left: 15px;"><span class="add_ico"></span><span>普通报价批量导入</span></a>
+        <a href="javascript:void(0);" onclick="javascript:downTemplate();"  style="float:right;margin-left: 15px;"><span class="file_ico"></span><span>报价模板下载</span></a>
         
     </h1>
     <ul class="sift">

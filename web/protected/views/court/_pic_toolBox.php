@@ -6,7 +6,12 @@
         <select name="q[type]">
             <option value="">--选择--</option>
             <?php
-            $type_list = Img::getType();
+            $type_list = array(
+                    '8'=>'球场标志',
+                    '0'=>'球场风景',
+                    '1'=>'球道',
+                   
+                );
             if(@count($type_list) > 0 )
             {
                 foreach($type_list as $key=>$value)
