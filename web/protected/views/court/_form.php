@@ -45,6 +45,7 @@ if($__model__!="edit"){
            <?php
                 $province_list = CityCode::getProvince();
                 echo $form->activeDropDownList($model, 'province',$province_list, array('title' => '本项必填', 'class' => 'input_text','id'=>'province_code'), 'required');  
+                echo "<p style='height:5px;'>&nbsp;</p>";
                 echo $form->activeDropDownList($model, 'city',array(''=>'--选择--'), array('title' => '本项必填', 'class' => 'input_text','id'=>'city_code'), 'required'); 
             ?>
         </td>
