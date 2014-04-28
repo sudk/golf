@@ -20,7 +20,7 @@ $form = $this->beginWidget('SimpleForm', array(
     'enableAjaxSubmit' => false,
     'ajaxUpdateId' => 'form-container',
      'htmlOptions'=>array('enctype'=>'multipart/form-data'),
-    'focus' => array($model,'name'),
+    'focus' => array($model,'trip_name'),
 ));
 if($__model__!="edit"){
     $checkId="checkId(this);";
@@ -47,6 +47,7 @@ if($__model__!="edit"){
            <?php
                 $province_list = CityCode::getProvince();
                 echo $form->activeDropDownList($model, 'province',$province_list, array('title' => '本项必填', 'class' => 'input_text','id'=>'province_code'), 'required');  
+                echo "<p style='height:5px;'>&nbsp;</p>";
                 echo $form->activeDropDownList($model, 'city',array(''=>'--选择--'), array('title' => '本项必填', 'class' => 'input_text','id'=>'city_code'), 'required'); 
             ?>
         </td>
@@ -142,9 +143,20 @@ if($__model__!="edit"){
                 jQuery("#city_code").html(data);
             });
             <?php
+    }else{
+    ?>
+    var province = jQuery("#province_code").val();
+    if(province!=""){
+        var url = "index.php?r=court/getcity&pid="+province;
+        //alert(url);
+        jQuery.post(url,function(data){
+            jQuery("#city_code").html(data);
+        });
+    }
+    <?php
     }
     ?>
-    jQuery("#province_code").click(function(){
+    jQuery("#province_code").change(function(){
         var v = jQuery(this).val();
         var url = "index.php?r=court/getcity&pid="+v;
         //alert(url);

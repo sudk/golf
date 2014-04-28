@@ -108,7 +108,7 @@ echo $form->activeHiddenField($model, 'cities', array(), '');
                 <?php
         }
         ?>
-        jQuery("#operator_type").click(function(){
+        jQuery("#operator_type").change(function(){
             var v = jQuery(this).val();
             //alert(v);
             if(v == '2'){

@@ -128,9 +128,21 @@ if($__model__!="edit"){
                 jQuery("#city_code").html(data);
             });
             <?php
+    }else{
+    ?>
+    var province = jQuery("#province_code").val();
+    //alert(province);
+    if(province!=""){
+        var url = "index.php?r=court/getcity&pid="+province;
+        //alert(url);
+        jQuery.post(url,function(data){
+            jQuery("#city_code").html(data);
+        });
+    }
+    <?php
     }
     ?>
-    jQuery("#province_code").click(function(){
+    jQuery("#province_code").change(function(){
         var v = jQuery(this).val();
         var url = "index.php?r=court/getcity&pid="+v;
         //alert(url);
