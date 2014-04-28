@@ -45,7 +45,6 @@ class OrderController extends CMDBaseController
         }
         echo json_encode($msg);
         return;
-
     }
 
     public function actionInfo(){
