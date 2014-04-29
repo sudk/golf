@@ -170,7 +170,7 @@ if($__model__=="edit"){
     }
     //var_dump($num);
     ?>
-    <tr style="<?if($num==0){?>display:none;<?php }?>" id="<?php echo $key;?>_tr">
+    <tr style="<?php if($num==0){?>display:none;<?php }?>" id="<?php echo $key;?>_tr">
         <td class="maxname"></td>
         <td class="mivalue" colspan="3"  id="<?php echo $key;?>_td">
             <?php
