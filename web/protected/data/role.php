@@ -19,6 +19,7 @@ return array(
             'service_mcht',
             'service_route',
             'service_news',
+            'service_adv',
             'consume_log',
             'msg',
             'systemlog',

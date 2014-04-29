@@ -199,6 +199,20 @@ return array(
         'bizRules' => '',
         'data' => ''
     ),
+    'service_adv' => array(
+        'type' => CAuthItem::TYPE_TASK,
+        'display'=>true,
+        'description' => '特色服务-广告管理',
+        'children' => array(
+           'service/adv/grid' ,
+            'service/adv/list' ,
+            'service/adv/new' ,
+             'service/adv/edit' ,
+             'service/adv/del',
+        ),
+        'bizRules' => '',
+        'data' => ''
+    ),
     'service_goods' => array(
         'type' => CAuthItem::TYPE_TASK,
         'display'=>true,
