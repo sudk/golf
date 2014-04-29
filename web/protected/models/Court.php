@@ -206,6 +206,9 @@ class Court extends CActiveRecord {
                 }else{
                     $row['distance']="未知";
                 }
+                if($row['ico_img']){
+                    $row['ico_img']=Img::IMG_PATH.$row['ico_img'];
+                }
                 $rows[]=$row;
             }
         }
@@ -233,9 +236,9 @@ class Court extends CActiveRecord {
             if($rows){
                 foreach($rows as $row_img){
                     if(intval($row_img['type'])==1){
-                        $fairway_imgs[]=$row_img['img_url'];
+                        $fairway_imgs[]=Img::IMG_PATH.$row_img['img_url'];
                     }else{
-                        $court_imgs[]=$row_img['img_url'];
+                        $court_imgs[]=Img::IMG_PATH.$row_img['img_url'];
                     }
                 }
             }
