@@ -8,6 +8,10 @@
 
 #import "BaseViewController.h"
 #import "DSLCalendarView.h"
+#import "LMapViewController.h"
+#import "CourtDetailInfoViewController.h"
+#import "AHPreviewController.h"
+#import "EvaluateViewController.h"
 #define courtNameLabelTag 1001
 #define addressLabelTag   1002
 #define raidersLabelTag   1003
@@ -26,4 +30,10 @@
 @property(nonatomic,strong)UIView *timePickView;
 @property(nonatomic,strong)NSArray *timeArray;
 @property(nonatomic,strong)NSArray *evaluateArray;//设计草坪设施服务
+@property(nonatomic,strong)NSString *courtAddress;
+@property(nonatomic,strong)NSString *courtId;
+@property(nonatomic,strong)LMapViewController *lMap;
+@property(nonatomic,strong)CourtDetailInfoViewController *detailInfo;
+@property(nonatomic,strong)AHPreviewController *preview;
+@property(nonatomic,strong)EvaluateViewController *evaluate;
 @end

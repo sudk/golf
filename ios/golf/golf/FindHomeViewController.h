@@ -7,7 +7,12 @@
 //
 
 #import "BaseViewController.h"
+#import "StyledPageControl.h"
 
-@interface FindHomeViewController : BaseViewController
-
+@interface FindHomeViewController : BaseViewController<UIScrollViewDelegate>
+@property(nonatomic,strong)NSArray *adImgArray;
+@property(nonatomic,strong)UIScrollView *adScrollView;
+@property(nonatomic,strong)StyledPageControl *adPageControl;
+@property(strong,nonatomic)NSMutableArray *adImgvArray;
+@property(nonatomic,assign)int timeCount;
 @end

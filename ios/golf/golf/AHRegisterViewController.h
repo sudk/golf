@@ -7,7 +7,6 @@
 //
 
 #import "BaseViewController.h"
-#import "HttpUtils.h"
 #import "BDKNotifyHUD.h"
 #import "NMTextField.h"
 #import "SQLUtilsObject.h"

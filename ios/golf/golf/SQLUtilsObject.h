@@ -33,6 +33,7 @@
 -(void)insert_city_tab:(NSArray *)cityArray;
 -(NSMutableArray*)query_city_tab;
 -(NSMutableArray*)query_city_tab:(NSString *)fatherId;
+-(NSString*)query_city_tab_cityId:(NSString *)cityName;
 //省
 -(BOOL)create_province_tab;
 -(void)insert_province_tab:(NSDictionary *)provinceDic;

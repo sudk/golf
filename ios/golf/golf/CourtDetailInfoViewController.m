@@ -9,7 +9,6 @@
 #import "CourtDetailInfoViewController.h"
 #import "UIButton+WebCache.h"
 #import "UIImageView+WebCache.h"
-#import "AHPreviewController.h"
 
 @interface CourtDetailInfoViewController ()
 
@@ -32,6 +31,8 @@
 	// Do any additional setup after loading the view.
     self.title=@"球场信息";
     self.navigationItem.leftBarButtonItem=[self topBarButtonItem:@"" andHighlightedName:@""];
+    _httpUtils=[[HttpUtils alloc]init];
+    self.courtInfoArray=[NSMutableArray array];
     _courtInfoScroll=[[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT-64)];
     _courtInfoScroll.contentSize=CGSizeMake(SCREEN_WIDTH, SCREEN_HEIGHT*1.8);
     [self.view addSubview:_courtInfoScroll];
@@ -42,19 +43,22 @@
     _courtInfoTable.rowHeight=30;
     [_courtInfoScroll addSubview:_courtInfoTable];
     self.courtInfoTitleArray=@[@"球场模式",@"建立时间",@"球场面积",@"果岭草种",@"球场数据",@"设计师",@"球道长度",@"球道草种"];
-    
+    for (int i=0; i<8; i++) {
+        [_courtInfoArray addObject:@""];
+    }
+    [self courtDetailInfo];
     UIView *phnView=[[UIView alloc]initWithFrame:CGRectMake(0, _courtInfoTable.frame.origin.y+_courtInfoTable.frame.size.height+10, SCREEN_WIDTH, 40)];
     phnView.backgroundColor=[UIColor whiteColor];
     UILabel *phnLabel=[[UILabel alloc]initWithFrame:CGRectMake(10, 0, 80, 40)];
     phnLabel.backgroundColor=[UIColor clearColor];
     phnLabel.text=@"球场电话";
     
-    UIButton *phnBtn=[[UIButton alloc]initWithFrame:CGRectMake(phnLabel.frame.origin.x+phnLabel.frame.size.width, 0, 180, 40)];
-    [phnBtn setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
-    [phnBtn setTitle:@"0531888888" forState:UIControlStateNormal];
-    [phnBtn addTarget:self action:@selector(callMethod:) forControlEvents:UIControlEventTouchUpInside];
+    self.phnBtn=[[UIButton alloc]initWithFrame:CGRectMake(phnLabel.frame.origin.x+phnLabel.frame.size.width, 0, 180, 40)];
+    [_phnBtn setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
+    [_phnBtn setTitle:@"" forState:UIControlStateNormal];
+    [_phnBtn addTarget:self action:@selector(callMethod:) forControlEvents:UIControlEventTouchUpInside];
     [phnView addSubview:phnLabel];
-    [phnView addSubview:phnBtn];
+    [phnView addSubview:_phnBtn];
     [_courtInfoScroll addSubview:phnView];
     
     
@@ -90,13 +94,13 @@
     
     UIView *descView=[[UIView alloc]initWithFrame:CGRectMake(0, desclabel.frame.origin.y+desclabel.frame.size.height, SCREEN_WIDTH, 100)];
     descView.backgroundColor=[UIColor whiteColor];
-    UILabel *descInfo=[[UILabel alloc]initWithFrame:CGRectMake(0, 0, descView.frame.size.width, descView.frame.size.height)];
-    descInfo.backgroundColor=[UIColor clearColor];
-    descInfo.text=@"澳门凯撒高尔夫也叫东方澳门高尔夫球场，事东方拉斯维加斯的球场，澳门凯撒高尔夫也叫东方澳门高尔夫球场，事东方拉斯维加斯的球场，澳门凯撒高尔夫也叫东方澳门高尔夫球场，事东方拉斯维加斯的球场，澳门凯撒高尔夫也叫东方澳门高尔夫球场，事东方拉斯维加斯的球场。";
-    descInfo.numberOfLines=7;
-    descInfo.lineBreakMode=NSLineBreakByWordWrapping;
-    descInfo.font=[UIFont systemFontOfSize:14];
-    [descView addSubview:descInfo];
+    self.descInfo=[[UILabel alloc]initWithFrame:CGRectMake(0, 0, descView.frame.size.width, descView.frame.size.height)];
+    _descInfo.backgroundColor=[UIColor clearColor];
+    _descInfo.text=@"澳门凯撒高尔夫也叫东方澳门高尔夫球场，事东方拉斯维加斯的球场，澳门凯撒高尔夫也叫东方澳门高尔夫球场，事东方拉斯维加斯的球场，澳门凯撒高尔夫也叫东方澳门高尔夫球场，事东方拉斯维加斯的球场，澳门凯撒高尔夫也叫东方澳门高尔夫球场，事东方拉斯维加斯的球场。";
+    _descInfo.numberOfLines=7;
+    _descInfo.lineBreakMode=NSLineBreakByWordWrapping;
+    _descInfo.font=[UIFont systemFontOfSize:14];
+    [descView addSubview:_descInfo];
     [_courtInfoScroll addSubview:descView];
     
     UILabel *facilitylabel=[[UILabel alloc]initWithFrame:CGRectMake(10, descView.frame.origin.y+descView.frame.size.height+10, 100, 40)];
@@ -106,13 +110,13 @@
     
     UIView *facilityView=[[UIView alloc]initWithFrame:CGRectMake(0, facilitylabel.frame.origin.y+facilitylabel.frame.size.height, SCREEN_WIDTH, 40)];
     facilityView.backgroundColor=[UIColor whiteColor];
-    UILabel *facilityInfo=[[UILabel alloc]initWithFrame:CGRectMake(0, 0, facilityView.frame.size.width, facilityView.frame.size.height)];
-    facilityInfo.backgroundColor=[UIColor clearColor];
-    facilityInfo.text=@"西餐厅，会所，酒店，专卖店，西餐厅，会所，酒店，专卖店，西餐厅，会所，酒店，专卖店";
-    facilityInfo.numberOfLines=2;
-    facilityInfo.lineBreakMode=NSLineBreakByWordWrapping;
-    facilityInfo.font=[UIFont systemFontOfSize:14];
-    [facilityView addSubview:facilityInfo];
+    self.facilityInfo=[[UILabel alloc]initWithFrame:CGRectMake(0, 0, facilityView.frame.size.width, facilityView.frame.size.height)];
+    _facilityInfo.backgroundColor=[UIColor clearColor];
+    _facilityInfo.text=@"";
+    _facilityInfo.numberOfLines=2;
+    _facilityInfo.lineBreakMode=NSLineBreakByWordWrapping;
+    _facilityInfo.font=[UIFont systemFontOfSize:14];
+    [facilityView addSubview:_facilityInfo];
     [_courtInfoScroll addSubview:facilityView];
     
     UILabel *evaluationlabel=[[UILabel alloc]initWithFrame:CGRectMake(10, facilityView.frame.origin.y+facilityView.frame.size.height+10, 100, 40)];
@@ -166,15 +170,78 @@
     nearbyInfo3.font=[UIFont systemFontOfSize:14];
     [nearbyView addSubview:nearbyInfo3];
     [_courtInfoScroll addSubview:nearbyView];
-    
-    
-    
+
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+-(void)courtDetailInfo
+{
+    NSMutableDictionary *dic=[NSMutableDictionary dictionary];
+    [dic setObject:@"court/info" forKey:@"cmd"];
+    [dic setObject:_courtId forKey:@"court_id"];
+    
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(courtDetailInfoMethod:) name:@"com.golf.ahCourtDetailInfoMethod" object:nil];
+    [_httpUtils startRequest:dic andUrl:baseUrlStr andRequestField:@"court/info" andNotificationName:@"com.golf.ahCourtDetailInfoMethod" andViewControler:nil];
+}
+-(void)courtDetailInfoMethod:(NSNotification *)notification
+{
+    NSLog(@"球场详情====%@",[notification object]);
+    NSDictionary *dataArray=[[notification object]objectForKey:@"data"];
+    NSString *modelStr=[dataArray  objectForKey:@"model"];
+    if (modelStr==nil) {
+        modelStr=@"";
+    }
+    NSString *create_yearStr=[dataArray  objectForKey:@"create_year"];
+    if (create_yearStr==nil) {
+        create_yearStr=@"";
+    }
+    NSString *areaStr=[dataArray  objectForKey:@"area"];
+    if (areaStr==nil) {
+        areaStr=@"";
+    }
+    NSString *green_grassStr=[dataArray  objectForKey:@"green_grass"];
+    if (green_grassStr==nil) {
+        green_grassStr=@"";
+    }
+    NSString *court_dataStr=[dataArray objectForKey:@"court_data"];
+    if (court_dataStr==nil) {
+        court_dataStr=@"";
+    }
+    NSString *designerStr=[dataArray objectForKey:@"designer"];
+    if (designerStr==nil) {
+        designerStr=@"";
+    }
+    NSString *fairway_lengthStr=[dataArray  objectForKey:@"fairway_length"];
+    if (fairway_lengthStr==nil) {
+        fairway_lengthStr=@"";
+    }
+    NSString *fairway_grassStr=[dataArray  objectForKey:@"fairway_grass"];
+    if (fairway_grassStr==nil) {
+        fairway_grassStr=@"";
+    }
+    if ([_courtInfoArray count]!=0) {
+        [_courtInfoArray removeAllObjects];
+    }
+    self.courtInfoArray=[NSMutableArray array];
+    [_courtInfoArray addObject:modelStr];
+    [_courtInfoArray addObject:create_yearStr];
+    [_courtInfoArray addObject:areaStr];
+    [_courtInfoArray addObject:green_grassStr];
+    [_courtInfoArray addObject:court_dataStr];
+    [_courtInfoArray addObject:designerStr];
+    [_courtInfoArray addObject:fairway_lengthStr];
+    [_courtInfoArray addObject:fairway_grassStr];
+    [_courtInfoTable reloadData];
+    [_phnBtn setTitle:[dataArray  objectForKey:@"phone"] forState:UIControlStateNormal];
+    _descInfo.text=[dataArray  objectForKey:@"remark"];
+    _facilityInfo.text=[dataArray  objectForKey:@"facilities"];
+    _preview.previewImgArray=[dataArray  objectForKey:@"fairway_imgs"];
+    //http://115.28.77.119/images/picture/20140410/230742147.png
+    [[NSNotificationCenter defaultCenter]removeObserver:self name:@"com.golf.ahCourtDetailInfoMethod" object:nil];
 }
 #pragma mark -TableViewDataSource
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -187,6 +254,10 @@
     UILabel *titleLabel=[[UILabel alloc]initWithFrame:CGRectMake(10, 5, 80, 20)];
     titleLabel.text=[_courtInfoTitleArray objectAtIndex:[indexPath row]];
     [cell.contentView addSubview:titleLabel];
+    
+    UILabel *contentLabel=[[UILabel alloc]initWithFrame:CGRectMake(95, 5, 205, 20)];
+    contentLabel.text=[_courtInfoArray objectAtIndex:[indexPath row]];
+    [cell.contentView addSubview:contentLabel];
     tableView.separatorColor=[UIColor clearColor];
     return cell;
 }
@@ -208,9 +279,9 @@
 }
 -(void)showCourtWayImgs
 {
-    AHPreviewController *preview=[[AHPreviewController alloc]init];
-    preview.previewImgArray=@[@"http://www.5aihuan.com/images/n_tjian/pp_11.jpg",@"http://www.5aihuan.com/images/n_tjian/pp_11.jpg",@"http://www.5aihuan.com/images/n_tjian/pp_11.jpg",@"http://www.5aihuan.com/images/n_tjian/pp_11.jpg",@"http://www.5aihuan.com/images/n_tjian/pp_11.jpg"];
-    preview.previewTitle=@"球道详情";
-    [self.navigationController pushViewController:preview animated:YES];
+    _preview=[[AHPreviewController alloc]init];
+    _preview.previewImgArray=@[@"http://www.5aihuan.com/images/n_tjian/pp_11.jpg",@"http://www.5aihuan.com/images/n_tjian/pp_11.jpg",@"http://www.5aihuan.com/images/n_tjian/pp_11.jpg",@"http://www.5aihuan.com/images/n_tjian/pp_11.jpg",@"http://www.5aihuan.com/images/n_tjian/pp_11.jpg"];
+    _preview.previewTitle=@"球道详情";
+    [self.navigationController pushViewController:_preview animated:YES];
 }
 @end

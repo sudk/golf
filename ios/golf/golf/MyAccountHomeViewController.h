@@ -7,7 +7,6 @@
 //
 
 #import "BaseViewController.h"
-#import "HttpUtils.h"
 #import "SQLUtilsObject.h"
 
 @interface MyAccountHomeViewController : BaseViewController<UITableViewDataSource,UITableViewDelegate>
