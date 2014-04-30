@@ -1,7 +1,6 @@
 package com.jason.golf.classes;
 
 import java.util.ArrayList;
-import java.util.zip.Inflater;
 
 import com.jsaon.golf.R;
 

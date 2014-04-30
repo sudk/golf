@@ -101,4 +101,14 @@ public class MainActivity extends ActionBarActivity {
 		
 	}
 
+	@Override
+	protected void onDestroy() {
+		// TODO Auto-generated method stub
+		GolfAppliaction app = (GolfAppliaction) getApplication();
+		app.getAccount().clear();
+		super.onDestroy();
+	}
+	
+	
+
 }

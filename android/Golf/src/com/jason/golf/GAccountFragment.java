@@ -15,10 +15,15 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.LinearLayout;
 
 public class GAccountFragment extends Fragment implements OnClickListener {
 
 	GAccount _account;
+	Button mLogout;
+
+	LinearLayout mButtons, mUserInfo;
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
@@ -43,6 +48,12 @@ public class GAccountFragment extends Fragment implements OnClickListener {
 		v.findViewById(R.id.account_register).setOnClickListener(this);
 		v.findViewById(R.id.account_change_pwd).setOnClickListener(this);
 
+		mButtons = (LinearLayout) v.findViewById(R.id.account_buttons);
+		mUserInfo = (LinearLayout) v.findViewById(R.id.account_info);
+
+		mLogout = (Button) v.findViewById(R.id.account_logout);
+		mLogout.setOnClickListener(this);
+
 		ActionBarActivity activity = (ActionBarActivity) getActivity();
 		ActionBar bar = activity.getSupportActionBar();
 		bar.setTitle(R.string.account_manager);
@@ -60,18 +71,26 @@ public class GAccountFragment extends Fragment implements OnClickListener {
 		_account = app.getAccount();
 
 		System.out.println(_account.toString());
-		
-		if (_account.hasLogin()) {
+
+		if (_account.isLogin()) {
+			mLogout.setEnabled(true);
+			mButtons.setVisibility(ViewGroup.GONE);
+			mUserInfo.setVisibility(ViewGroup.VISIBLE);
 
 		} else {
+			mLogout.setEnabled(false);
+			mButtons.setVisibility(ViewGroup.VISIBLE);
+			mUserInfo.setVisibility(ViewGroup.GONE);
 
 		}
 	}
 
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-		MenuItemCompat.setShowAsAction(menu.add("Menu 1a"),	MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);
-		MenuItemCompat.setShowAsAction(menu.add("Menu 1b"),	MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);
+		MenuItemCompat.setShowAsAction(menu.add("Menu 1a"),
+				MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);
+		MenuItemCompat.setShowAsAction(menu.add("Menu 1b"),
+				MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);
 		super.onCreateOptionsMenu(menu, inflater);
 	}
 
@@ -92,16 +111,18 @@ public class GAccountFragment extends Fragment implements OnClickListener {
 			startActivity(itRegister);
 			break;
 		case R.id.account_logout:
-			
+
+			GolfAppliaction app = (GolfAppliaction) getActivity().getApplication();
+			_account = app.getAccount();
+			_account.clear();
+			onResume();
 			
 			break;
-			
+
 		case R.id.account_change_pwd:
 			startActivity(new Intent(getActivity(), GChangePwdActivity.class));
 			break;
 		}
-
-		
 
 	}
 

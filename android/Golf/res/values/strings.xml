@@ -51,7 +51,19 @@
 	<string name="keyword">关键字</string>
 	<string name="name_of_court">球场名称</string>
 	<string name="current_position">当前位置</string>
-
+	<string name="court_info">球场详情</string>
+	<string name="court_model">球场模式</string>
+	<string name="court_creat_date">建立时间</string>
+	<string name="court_area">球场面积</string>
+	<string name="court_greengrass">果岭草种</string>
+	<string name="court_data">球场数据</string>
+	<string name="court_designer">设计师</string>
+	<string name="court_fairway_length">球道长度</string>
+	<string name="court_fairway_grass">球场草种</string>
+	<string name="court_facilities">球场设施</string>
+	<string name="court_phone">球场电话</string>
+	<string name="court_brief">球场简介</string>
+	<string name="court_fairway_imags">球道图片</string>
 	
 	<!-- 通用 -->
 	<string name="note">提示</string>

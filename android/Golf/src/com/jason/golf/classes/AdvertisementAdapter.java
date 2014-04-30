@@ -51,6 +51,7 @@ public class AdvertisementAdapter extends PagerAdapter {
 						_context.startActivity(it);
 					}
 				});
+				
 				LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(
 						LinearLayout.LayoutParams.MATCH_PARENT,
 						LinearLayout.LayoutParams.MATCH_PARENT);

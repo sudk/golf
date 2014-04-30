@@ -11,9 +11,12 @@ import java.net.MalformedURLException;
 import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import android.os.Handler;
 import android.os.Message;
+import android.text.TextUtils;
 
 public class HttpConnection {
 
@@ -27,7 +30,7 @@ public class HttpConnection {
 
 	}
 
-	public HttpResponse sendRequestInPost(String command_url, String req, Handler handler) {
+	public HttpResponse sendRequestInPost(String command_url, String req, String session, Handler handler) {
 
 		HttpResponse res = new HttpResponse();
 		HttpURLConnection urlConnection = null;
@@ -40,6 +43,9 @@ public class HttpConnection {
 			urlConnection.setConnectTimeout(10000); // ���ӳ�ʱ 10 ��
 			urlConnection.setReadTimeout(10000); // ��ȡ��ʱ 10 ��
 			urlConnection.setDoOutput(true);
+			if(!TextUtils.isEmpty(session)){
+				urlConnection.setRequestProperty("Cookie", session);
+			}
 			urlConnection.setFixedLengthStreamingMode(reqArray.length);
 
 			OutputStream out = new BufferedOutputStream(urlConnection.getOutputStream());
@@ -58,6 +64,14 @@ public class HttpConnection {
 					baos.write(buffer, 0, read);
 				}
 				res.content = new String(baos.toByteArray());
+				
+				String s = urlConnection.getHeaderField("Set-Cookie");
+				
+				if(handler != null){
+					Message msg = handler.obtainMessage(9004, s);
+					handler.sendMessage(msg);
+				}
+				
 			} else {
 				res.content = "NetWork ERROR";
 			}

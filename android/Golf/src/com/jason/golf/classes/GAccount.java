@@ -19,22 +19,11 @@ public class GAccount {
 	private String _point; // ���
 	
 	private Location _loc;
+	private boolean _login;
 
-	public void initilization(String id, String session){
+	public void initilization(String id){
 		_id = id;
-		_session = session;
-	}
-	
-	/*
-	 * 
-	 * 判断用户是否已经登录
-	 * 
-	 */
-	public boolean hasLogin(){
-		if(TextUtils.isEmpty(_id) || TextUtils.isEmpty(_session))
-			return false;
-		else
-			return true;
+		_login = true;
 	}
 	
 	public Location getLoc() {
@@ -52,6 +41,14 @@ public class GAccount {
 	public String getSession(){
 		return _session;
 	}
+	
+	public void setSession(String session) {
+		// TODO Auto-generated method stub
+		if(!TextUtils.isEmpty(session)){
+			_session = session.substring(0, session.indexOf(";"));
+		}
+	}
+	
 
 	public String getPhone() {
 		return _phone;
@@ -108,11 +105,21 @@ public class GAccount {
 	public void setPoint(String point) {
 		this._point = point;
 	}
+	
+	/*
+	 * 
+	 * 判断用户是否已经登录
+	 * 
+	 */
+	public boolean isLogin(){
+		return _login;
+	}
 
 	public void clear() {
 		// TODO Auto-generated method stub
 		_id = null;
 		_session = null;
+		_login = false;
 	}
 
 	@Override
@@ -122,7 +129,5 @@ public class GAccount {
 				+ ", _balance=" + _balance + ", _type=" + _type
 				+ ", _vipCardNo=" + _vipCardNo + ", _point=" + _point + "]";
 	}
-	
-	
 
 }

@@ -67,11 +67,11 @@ public class GAccountRegisterFragment extends Fragment implements OnClickListene
 		mRegisterSubmit = (Button) v.findViewById(R.id.register_submit);
 		mRegisterSubmit.setOnClickListener(this);
 		
-		ActionBarActivity activity = (ActionBarActivity) getActivity();
-		ActionBar bar = activity.getSupportActionBar();
-		bar.setTitle(R.string.register_title);
-		int change = bar.getDisplayOptions() ^ ActionBar.DISPLAY_HOME_AS_UP;
-	    bar.setDisplayOptions(change, ActionBar.DISPLAY_HOME_AS_UP);
+//		ActionBarActivity activity = (ActionBarActivity) getActivity();
+//		ActionBar bar = activity.getSupportActionBar();
+//		bar.setTitle(R.string.register_title);
+//		int change = bar.getDisplayOptions() ^ ActionBar.DISPLAY_HOME_AS_UP;
+//	    bar.setDisplayOptions(change, ActionBar.DISPLAY_HOME_AS_UP);
 		
 		return v;
 	}
@@ -106,38 +106,55 @@ public class GAccountRegisterFragment extends Fragment implements OnClickListene
 					new HttpCallback() {
 
 						@Override
-						public void sucess(String res) {
+						public void sucessData(String res) {
 							// TODO Auto-generated method stub
-							super.sucess(res);
+							
 							// {"status":0,"desc":"\u6210\u529f","data":{"user_id":"6","user_name":"","phone":"18653157591","card_no":"","email":"","sex":null,"remark":null,"record_time":"2014-04-24 17:21:17","status":null,"balance":null,"point":null}}
+							
 							try {
-								JSONObject resObj = new JSONObject(res);
-								int status = resObj.getInt("status");
-								if(status == 0){
+								JSONObject data = new JSONObject(res);
 								
-									JSONObject data = resObj.getJSONObject("data");
-									
-									GolfAppliaction app = (GolfAppliaction) getActivity().getApplication();
-									GAccount acc = app.getAccount();
-									acc.initilization(data.getString("user_id"), "");
-									acc.setPhone(data.getString("phone"));
-									
-									getActivity().finish();
-								}else{
-									
-									
-									
-									
-									
-								}
-								
+								GolfAppliaction app = (GolfAppliaction) getActivity().getApplication();
+								GAccount acc = app.getAccount();
+								acc.initilization(data.getString("user_id"));
+								acc.setPhone(data.getString("phone"));
+								getActivity().finish();
 								
 							} catch (JSONException e) {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
 							}
+							
+							super.sucessData(res);
+							
+//							try {
+//								JSONObject resObj = new JSONObject(res);
+//								int status = resObj.getInt("status");
+//								if(status == 0){
+//								
+//									JSONObject data = resObj.getJSONObject("data");
+//									
+//									GolfAppliaction app = (GolfAppliaction) getActivity().getApplication();
+//									GAccount acc = app.getAccount();
+//									acc.initilization(data.getString("user_id"));
+//									acc.setPhone(data.getString("phone"));
+//									
+//									getActivity().finish();
+//								}else{
+//									
+//									
+//									
+//									
+//									
+//								}
+//								
+//							} catch (JSONException e) {
+//								// TODO Auto-generated catch block
+//								e.printStackTrace();
+//							}
+							
 						}
-
+						
 					});
 
 			GThreadExecutor.execute(r);

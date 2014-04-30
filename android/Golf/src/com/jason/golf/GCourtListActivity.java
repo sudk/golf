@@ -118,40 +118,65 @@ public class GCourtListActivity extends ActionBarActivity implements
 					new HttpCallback() {
 
 						@Override
-						public void sucess(String res) {
+						public void sucessData(String res) {
 							// TODO Auto-generated method stub
-							super.sucess(res);
-							
 							try {
-								JSONObject resObj = new JSONObject(res);
+								JSONArray data = new JSONArray(res);
 								
-								int status = resObj.getInt("status");
-								
-								if(status == 0){
-								
-									JSONArray data = resObj.getJSONArray("data");
-									for(int i=0, length=data.length(); i<length;i++){
-										
-										JSONObject item = data.getJSONObject(i);
-										SearchCourtBean bean = new SearchCourtBean();
-										bean.setId(item.getString("court_id"));
-										bean.setName(item.getString("name"));
-										bean.setAddr(item.getString("addr"));
-										bean.setDistance(item.getString("distance"));
-										bean.setPrice(item.getInt("price"));
-										bean.setIcoImgUrl(item.getString("ico_img"));
-										bean.setPayType(item.getString("pay_type"));
-//										bean.setIsOfficial(item.getString("is_official"));
-										_courts.add(bean);
-									}
+								for(int i=0, length=data.length(); i<length;i++){
 									
-									mAdapter.swapData(_courts);
-									
+									JSONObject item = data.getJSONObject(i);
+									SearchCourtBean bean = new SearchCourtBean();
+									bean.setId(item.getString("court_id"));
+									bean.setName(item.getString("name"));
+									bean.setAddr(item.getString("addr"));
+									bean.setDistance(item.getString("distance"));
+									bean.setPrice(item.getInt("price"));
+									bean.setIcoImgUrl(item.getString("ico_img"));
+									bean.setPayType(item.getString("pay_type"));
+//									bean.setIsOfficial(item.getString("is_official"));
+									_courts.add(bean);
 								}
+								
+								mAdapter.swapData(_courts);
+								
 							} catch (JSONException e) {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
 							}
+							
+							super.sucessData(res);
+							
+//							try {
+//								JSONObject resObj = new JSONObject(res);
+//								
+//								int status = resObj.getInt("status");
+//								
+//								if(status == 0){
+//								
+//									JSONArray data = resObj.getJSONArray("data");
+//									for(int i=0, length=data.length(); i<length;i++){
+//										
+//										JSONObject item = data.getJSONObject(i);
+//										SearchCourtBean bean = new SearchCourtBean();
+//										bean.setId(item.getString("court_id"));
+//										bean.setName(item.getString("name"));
+//										bean.setAddr(item.getString("addr"));
+//										bean.setDistance(item.getString("distance"));
+//										bean.setPrice(item.getInt("price"));
+//										bean.setIcoImgUrl(item.getString("ico_img"));
+//										bean.setPayType(item.getString("pay_type"));
+////										bean.setIsOfficial(item.getString("is_official"));
+//										_courts.add(bean);
+//									}
+//									
+//									mAdapter.swapData(_courts);
+//									
+//								}
+//							} catch (JSONException e) {
+//								// TODO Auto-generated catch block
+//								e.printStackTrace();
+//							}
 							
 						}
 
@@ -206,8 +231,8 @@ public class GCourtListActivity extends ActionBarActivity implements
 		Intent it = new Intent(this, GCourtInfoActivity.class);
 		Bundle param = new Bundle();
 		param.putString(GCourtInfoActivity.KEY_COURT_ID, court.getId());
-		param.putString(GCourtInfoActivity.KEY_DATE, _time);
-		param.putString(GCourtInfoActivity.KEY_TIME, _date);
+		param.putString(GCourtInfoActivity.KEY_DATE, _date);
+		param.putString(GCourtInfoActivity.KEY_TIME, _time);
 		it.putExtras(param);
 		startActivity(it);
 
