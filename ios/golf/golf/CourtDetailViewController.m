@@ -33,6 +33,7 @@
     self.title=@"球场详情";
     self.navigationItem.leftBarButtonItem=[self topBarButtonItem:@"" andHighlightedName:@""];
     self.evaluateArray=@[@"80",@"80",@"80",@"80"];
+    self.httpUtils=[[HttpUtils alloc]init];
  self.timeArray=@[@"04:00",@"04:30",@"05:00",@"05:30",@"06:00",@"06:30",@"07:00",@"07:30",@"08:00",@"08:30",@"09:00",@"09:30",@"10:00",@"10:30",@"11:00",@"11:30",@"12:00",@"12:30",@"13:00",@"13:30",@"14:00",@"14:30",@"15:00",@"15:30",@"16:00",@"16:30",@"17:00",@"17:30",@"18:00",@"18:30",@"19:00",@"19:30",@"20:00"];
     NSString *dateAndTimeStr=[[_dateStr stringByAppendingString:@"&"] stringByAppendingString:_timeStr];
     self.courtDetailArray=@[dateAndTimeStr,@"golf007",@"golf008",@"golf009",@"golf100"];
@@ -282,6 +283,31 @@
         [_timePickView removeFromSuperview];
     }
     [_courtDetailTable reloadData];
+}
+//获取球场信息
+-(void)golfgetCourtInfo
+{
+    NSMutableDictionary *dic=[NSMutableDictionary dictionary];
+    [dic setObject:@"court/info" forKey:@"cmd"];
+    [dic setObject:_courtId forKey:@"court_id"];
+    
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(golfgetCourtInfoMethod:) name:@"com.golf.golfgetCourtInfoMethod" object:nil];
+    [_httpUtils startRequest:dic andUrl:baseUrlStr andRequestField:@"court/info" andNotificationName:@"com.golf.golfgetCourtInfoMethod" andViewControler:nil];
+}
+-(void)golfgetCourtInfoMethod:(NSNotification *)notification
+{
+    NSDictionary *getCourtInfoDic=[notification object];
+    [[NSNotificationCenter defaultCenter]removeObserver:self name:@"com.golf.golfgetCourtInfoMethod" object:nil];
+}
+//获取球场评论
+-(void)golfgetComment
+{
+    
+}
+//获取球场报价
+-(void)golfgetPrice
+{
+    
 }
 #pragma mark -UIPickerViewDataSource
 

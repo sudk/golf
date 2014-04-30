@@ -36,4 +36,5 @@
 @property(nonatomic,strong)CourtDetailInfoViewController *detailInfo;
 @property(nonatomic,strong)AHPreviewController *preview;
 @property(nonatomic,strong)EvaluateViewController *evaluate;
+@property(nonatomic,strong)HttpUtils *httpUtils;
 @end
