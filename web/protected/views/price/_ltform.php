@@ -32,7 +32,7 @@ $form = $this->beginWidget('SimpleForm', array(
         <td class="maxname">上传文件：</td>
         <td class="mivalue"  colspan="3">
             <p><input type="file" name="template_file" id="upfile" value="" class="input_text"/></p>
-            <input type="text" name="tag" value="<?php echo $tag;?>" id="tag"/>
+            <input type="hidden" name="tag" value="<?php echo $tag;?>" id="tag"/>
         </td>
        
     </tr>
@@ -42,7 +42,8 @@ $form = $this->beginWidget('SimpleForm', array(
             <p>说明：</p><p>
 1,请按模板格式填写价格.</p><p>
 2,选择填写好的模板,点击导入.</p><p>
-3,价格导入完成.如格式填写不正确,将导入不成功 .</p><p>
+3,支付方式包括：现付、全额支付、押金 .</p><p>
+4,价格导入完成.如格式填写不正确,将导入不成功 .</p><p>
 规则说明：</p><p>
 （以下所说的“格式错误”：指日期重叠、果,僮,车,柜,简餐,保险,小费不是（0或者1）、球场名称为空,编码为空。）</p><p>
 1. 默认价格：</p><p>

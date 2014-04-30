@@ -53,7 +53,7 @@ class UserController extends CMDBaseController
                 }
                 $message = '成功！';
                 $status=0;
-                $msg['data']=User::FindOneByPhone(Yii::app()->user->id);
+                $msg['data']=User::FindOneById(Yii::app()->user->id);
                 break;
             case UserIdentity::ERROR_USERNAME_INVALID:
                 $message = '用户名错误！';
@@ -88,7 +88,7 @@ class UserController extends CMDBaseController
                 $model->save();
                 $msg['status']=0;
                 $msg['desc']="成功";
-                $msg['data']=User::FindOneByPhone(Yii::app()->command->cmdObj->phone);
+                $msg['data']=User::FindOneById(Yii::app()->command->cmdObj->phone);
             }catch (Exception $e){
                 $msg['status']=$e->getCode();
                 if($e->getCode()==23000){
@@ -115,7 +115,7 @@ class UserController extends CMDBaseController
         //echo Yii::app()->user->id;
         if(!Yii::app()->user->isGuest){
             //User::model()->find("phone=:phone",array(':phone'=>Yii::app()->user->id));
-            $user=User::FindOneByPhone(Yii::app()->user->id);
+            $user=User::FindOneById(Yii::app()->user->id);
             if($user){
                 $msg['status']=0;
                 $msg['desc']="成功";

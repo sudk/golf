@@ -40,7 +40,7 @@ class MUserIdentity extends CUserIdentity
             return false;
         }
 
-        $this->username=$user->id;
+        $this->username=$user->user_id;
 
         $this->errorCode = self::ERROR_NONE;
 

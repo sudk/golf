@@ -24,6 +24,20 @@ class News extends CActiveRecord {
          );
     }
 
+    
+     /**
+     * 吃住行游购娱
+     * @param type $s
+     */
+   public static function getStatus($s = null)
+   {
+       $rs = array(
+           '0'=>'正常',
+           '1'=>'取消',
+       );
+       
+       return $s!="" ? $rs[$s] : $rs;
+   }
     /**
      * 查询
      * @param int $page
