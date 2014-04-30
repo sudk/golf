@@ -154,11 +154,11 @@ class User extends CActiveRecord {
         return $rs;
     }
 
-    public static function FindOneByPhone($phone){
+    public static function FindOneById($id){
         $row = Yii::app()->db->createCommand()
             ->select("user_id,user_name,phone,card_no,email,sex,remark,record_time,status,balance,point")
             ->from("g_user")
-            ->where("phone='{$phone}'")
+            ->where("user_id='{$id}'")
             ->queryRow();
         return $row;
     }
