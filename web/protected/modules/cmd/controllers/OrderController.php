@@ -6,6 +6,8 @@
  */
 class OrderController extends CMDBaseController
 {
+
+
     public function accessRules() {
         return array(
             array('allow',
@@ -39,11 +41,11 @@ class OrderController extends CMDBaseController
             return;
         }
         //echo Yii::app()->command->cmdObj->_pg_[1];
-        $rs=Order::Order_list(Yii::app()->command->cmdObj->_pg_[0],Yii::app()->command->cmdObj->_pg_[1],Yii::app()->command->cmdObj);
+        $rs=Order::Order_list(Yii::app()->command->cmdObj->_pg_,$this->pageSize,Yii::app()->command->cmdObj);
         if($rs['rows']){
             $msg['status']=0;
             $msg['desc']="成功";
-            $msg['_pg_']=array(Yii::app()->command->cmdObj->_pg_[0],Yii::app()->command->cmdObj->_pg_[1],$rs['total_page'],$rs['total_num']);
+            $msg['_pg_']=Yii::app()->command->cmdObj->_pg_;
             $msg['data']=$rs['rows'];
         }else{
             $msg['status']=4;

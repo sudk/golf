@@ -49,11 +49,11 @@ class TripController extends CMDBaseController
             $args['end_date']=Yii::app()->command->cmdObj->end_date;
         }
         //echo Yii::app()->command->cmdObj->_pg_[1];
-        $rs=Trip::queryList(Yii::app()->command->cmdObj->_pg_[0],Yii::app()->command->cmdObj->_pg_[1],$args);
+        $rs=Trip::queryList(Yii::app()->command->cmdObj->_pg_,$this->pageSize,$args);
         if($rs['rows']){
             $msg['status']=0;
             $msg['desc']="成功";
-            $msg['_pg_']=array(Yii::app()->command->cmdObj->_pg_[0],Yii::app()->command->cmdObj->_pg_[1],$rs['total_page'],$rs['total_num']);
+            $msg['_pg_']=Yii::app()->command->cmdObj->_pg_;
             $msg['data']=$rs['rows'];
         }else{
             $msg['status']=4;
