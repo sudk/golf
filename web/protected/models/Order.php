@@ -243,7 +243,10 @@ class Order extends CActiveRecord {
             $params['end_time'] = $args->end_time;
         }
 
+        $condition.=' AND user_id = :user_id';
+        $params['user_id'] = Yii::app()->user->id;
 
+        
         $total_num = Yii::app()->db->createCommand()
             ->select("count(1)")
             ->from("g_order")
