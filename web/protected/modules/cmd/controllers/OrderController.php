@@ -34,7 +34,7 @@ class OrderController extends CMDBaseController
     }
 
     public function actionList(){
-        if(!Yii::app()->command->cmdObj->_pg_){
+        if(Yii::app()->command->cmdObj->_pg_==null||Yii::app()->command->cmdObj->_pg_==""){
             $msg['status']=1;
             $msg['desc']="分页参数不能为空！";
             echo json_encode($msg);
