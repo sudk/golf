@@ -71,7 +71,6 @@ class CourtController extends CMDBaseController
         }
         echo json_encode($msg);
         return;
-
     }
 
     public function actionPrice(){
@@ -98,7 +97,6 @@ class CourtController extends CMDBaseController
         }
         echo json_encode($msg);
         return;
-
     }
 
 

@@ -5,7 +5,7 @@
  *
  * @author sudk
  */
-class SystemlogController extends BaseController
+class SystemlogController extends AuthBaseController
 {
 
     public $defaultAction = 'list';

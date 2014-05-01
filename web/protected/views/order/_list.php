@@ -10,13 +10,17 @@ if (is_array($rows))
     {
         $t->begin_row("onclick","getDetail(this,'{$row['order_id']}');");
         $link = "";
-        $link .= CHtml::link('编辑状态',"javascript:itemEdit('{$row['order_id']}')", array());
         $status = $row['status'];
-        if($status == Order::STATUS_TOBE_CANCEL)
+        $link .= CHtml::link('详细',"javascript:itemLog('{$row['order_id']}')", array());
+        if(Yii::app()->user->type == Operator::TYPE_AGENT)
         {
-            $link .= CHtml::link('删除',"javascript:itemDelete('{$row['order_id']}');", array());
+            $link .= CHtml::link('编辑状态',"javascript:itemEdit('{$row['order_id']}')", array());
+
+            if($status == Order::STATUS_TOBE_CANCEL)
+            {
+                $link .= CHtml::link('删除',"javascript:itemDelete('{$row['order_id']}');", array());
+            }
         }
-        
         $status_text = "";
         if($status == Order::STATUS_TOBE_CONFIRM)
         {
@@ -36,7 +40,7 @@ if (is_array($rows))
         
         $t->echo_td($row['order_id']);
         $t->echo_td($type_list[$row['type']]); //
-        $t->echo_td($row['user_id']); //
+        $t->echo_td($row['contact']); //
         $t->echo_td($row['relation_name']); //
         $t->echo_td($row['amount']); //
         $t->echo_td($pay_type[$row['pay_type']]); //

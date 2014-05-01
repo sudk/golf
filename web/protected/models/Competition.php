@@ -7,7 +7,8 @@
  */
 class Competition extends CActiveRecord {
 
-    
+    const PAY_TYPE_PREPAY = '0';
+    CONST PAY_TYPE_PAY = '1';
 
     public static function model($className=__CLASS__){
         return parent::model($className);
@@ -38,7 +39,7 @@ class Competition extends CActiveRecord {
            '1'=>'现付',
        );
        
-       return $s ? $rs[$s] : $rs;
+       return $s!="" ? $rs[$s] : $rs;
    }
 
    
@@ -56,11 +57,24 @@ class Competition extends CActiveRecord {
         $params = array();
 
         
+        
+
         if ($args['city'] != ''){
             $condition.=' AND g_court.city = :city';
             $params['city'] = $args['city'];
         }
 
+        
+        
+        if ($args['court_id'] != ''){
+            $condition.=' AND g_competition.court_id = :court_id';
+            $params['court_id'] = $args['court_id'];
+        }
+        
+        if ($args['agent_id'] != ''){
+            $condition.=' AND g_competition.agent_id = :agent_id';
+            $params['agent_id'] = $args['agent_id'];
+        }
         if ($args['name'] != ''){
             $condition.=' AND g_competition.name like :name';
             $params['name'] = "%".$args['name']."%";
@@ -72,7 +86,7 @@ class Competition extends CActiveRecord {
             ->select("count(1)")
             ->from("g_competition")
             ->leftJoin("g_court","g_court.court_id=g_competition.court_id")
-            ->leftJoin("g_agent","g_agent.agent_id=g_competition.id")
+            ->leftJoin("g_agent","g_agent.id=g_competition.agent_id")
             ->where($condition,$params)
             ->queryScalar();
         
@@ -84,7 +98,7 @@ class Competition extends CActiveRecord {
             ->select("g_competition.*,g_court.name court_name,g_agent.agent_name")
             ->from("g_competition")
             ->leftJoin("g_court","g_court.court_id=g_competition.court_id")
-            ->leftJoin("g_agent","g_agent.agent_id=g_competition.id")
+            ->leftJoin("g_agent","g_agent.id=g_competition.agent_id")
             ->where($condition,$params)
             ->order($order)
             ->limit($pageSize)
@@ -121,7 +135,7 @@ class Competition extends CActiveRecord {
             ->select("g_competition.*,g_court.name court_name,g_agent.agent_name")
             ->from("g_competition")
             ->leftJoin("g_court","g_court.court_id=g_competition.court_id")
-            ->leftJoin("g_agent","g_agent.agent_id=g_competition.id")
+            ->leftJoin("g_agent","g_agent.id=g_competition.agent_id")
             ->where($condition,$params)
             ->queryRow();
         if($row){

@@ -15,10 +15,11 @@ return array(
     // application components
     'components' => array(
         'db' => array(
-            'connectionString' => 'mysql:host=192.168.22.35;port=3306; dbname=posm_bate',
+            'connectionString' => 'mysql:host=115.28.77.119;port=3306; dbname=golf',
             'emulatePrepare' => true,
+            'enableProfiling'=>true,
             'username' => 'root',
-            'password' => '123456',
+            'password' => 'qgolf@1qazxcde3',
             'charset' => 'utf8',
         ),
     ),

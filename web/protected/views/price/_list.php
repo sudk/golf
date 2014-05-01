@@ -135,11 +135,11 @@ if (is_array($rows))
         {
             $f_link .= CHtml::link('编辑',"javascript:itemEdit('{$f_row['id']}','1')", array());
             $f_link .= "<br/>";
-            $f_link .= CHtml::link('优惠报价列表',"javascript:itemFoverDetail('{$row['court_id']}','{$month}');", array());
+            $f_link .= CHtml::link('报价列表',"javascript:itemFoverDetail('{$row['court_id']}','{$month}');", array());
         }else{
             $f_link .= CHtml::link('新增',"javascript:itemNew('{$row['court_id']}','1')", array());
             $f_link .= "<br/>";
-            $f_link .= CHtml::link('优惠报价列表',"javascript:itemFoverDetail('{$row['court_id']}','');", array());
+            $f_link .= CHtml::link('报价列表',"javascript:itemFoverDetail('{$row['court_id']}','');", array());
         }
         
         //$t->begin_row("onclick","getDetail(this,'{$row['court_id']}');");
@@ -149,12 +149,12 @@ if (is_array($rows))
         {
             $h_link .= CHtml::link('编辑',"javascript:itemEdit('{$holiday_row['id']}','2')", array());
             $h_link .= "<br/>";
-            $h_link .=CHtml::link('特殊日报价列表',"javascript:itemCustomDetail('{$row['court_id']}','{$month}');", array());
+            $h_link .=CHtml::link('报价列表',"javascript:itemCustomDetail('{$row['court_id']}','{$month}');", array());
         
         }else{
             $h_link .= CHtml::link('新增',"javascript:itemNew('{$row['court_id']}','2')", array());
             $h_link .= "<br/>";
-            $h_link .=CHtml::link('特殊日报价列表',"javascript:itemCustomDetail('{$row['court_id']}','');", array());
+            $h_link .=CHtml::link('报价列表',"javascript:itemCustomDetail('{$row['court_id']}','');", array());
         
         }
         

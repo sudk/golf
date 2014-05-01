@@ -1,6 +1,28 @@
 <form name="_query_form" id="_query_form" action="javascript:itemQuery(0);">
     <li>
         <span class="sift-title">搜索：</span>
+        <?php
+        if(Yii::app()->user->type == Operator::TYPE_SYS)
+        {
+        ?>
+        <select name="q[agent_id]" >
+            <option value="">--选择代理商--</option>
+            <?php
+            $agent_list = Agent::getAgentList();
+            foreach($agent_list as $k=>$v)
+            {
+                echo '<option value="',$k,'">',$v,'</option>';
+            }
+            ?>
+        </select>
+        <span style="float:left; margin:0 5px; margin-top:-3px;">&nbsp;</span>
+        <?php
+        }else{
+            ?>
+        <input type="hidden" name="q[agent_id]"  value="<?php echo Yii::app()->user->agent_id;?>"/> 
+             <?php
+        }
+        ?>
         <select name="q[type]" >
             <option value="">--选择球场--</option>
             <?php

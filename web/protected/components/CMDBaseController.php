@@ -6,6 +6,8 @@
 class CMDBaseController extends CController
 {
 
+    public $pageSize=20;
+
     public function filters()
     {
         return array(

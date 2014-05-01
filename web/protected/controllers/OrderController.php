@@ -2,13 +2,14 @@
 /*
  * 订单管理
  */
-class OrderController extends BaseController
+class OrderController extends AuthBaseController
 {
 
     public $defaultAction = 'list';
     public $gridId = 'list';
+    public $lGridId = 'log_list';
    
-    public $pageSize = 100;
+    public $pageSize = 20;
     public $module_id = 'order';
     
     
@@ -50,6 +51,11 @@ class OrderController extends BaseController
         }
 
         $t = $this->genDataGrid();
+        
+        if(Yii::app()->user->type == Operator::TYPE_AGENT)
+        {
+            $args['agent_id'] = Yii::app()->user->agent_id;
+        }
 
         $list = Order::queryList($page, $this->pageSize, $args);
 
@@ -80,17 +86,13 @@ class OrderController extends BaseController
                 ->where("t.court_id='{$model['relation_id']}'")
                 ->queryRow();
                 
-        $user = Yii::app()->db->createCommand()
-                ->select('phone')
-                ->from('g_user t')
-                ->where("t.user_id='{$model['user_id']}'")
-                ->queryRow();
+        
          
         $msg['status'] = true;
         if ($model) {
             $detail=array(
                 '球场电话'=>$court['phone'],
-                '客户电话'=>$user['phone'],
+                '客户电话'=>$model['phone'],
                '打球时间'=>$model['tee_time'],
                 '人数'=>$model['count'],
                 '单价'=>$model['unitprice'],
@@ -142,6 +144,65 @@ class OrderController extends BaseController
         }
         $this->layout = '//layouts/base';
         $this->render("edit",array('model' => $model, 'msg' => $msg));
+    }
+    
+    
+    /**
+     * 表头
+     * @return SimpleGrid
+     */
+    private function genLDataGrid()
+    {
+        $t = new SimpleGrid($this->lGridId);
+        $t->url = 'index.php?r=order/lgrid';
+        $t->updateDom = 'datagrid';
+        $t->set_header('编号', '50', '');
+        $t->set_header('记录时间', '100', '');
+        $t->set_header('订单编号', '100', '');
+        $t->set_header('状态', '70', '');   
+        $t->set_header('操作人', '60', '');
+        $t->set_header('操作类型', '100', '');
+        $t->set_header('流水号', '100', '');
+        
+        return $t;
+    }
+
+    /**
+     * 查询
+     */
+    public function actionLGrid()
+    {
+        $page = $_GET['page'] == '' ? 0 : $_GET['page']; //当前页码
+        $_GET['page']=$_GET['page']+1;
+        $args = $_GET['q']; //查询条件
+
+
+        if ($_REQUEST['q_value'])
+        {
+            $args[$_REQUEST['q_by']] = $_REQUEST['q_value'];
+        }
+        
+        if(isset($_SESSION['cur_order_log']))
+        {
+            $args['order_id'] = $_SESSION['cur_order_log'];
+        }
+        //var_dump($args);
+        $t = $this->genLDataGrid();
+
+        $list = OrderLog::queryList($page, $this->pageSize, $args);
+
+        $this->renderPartial('_loglist', array('t' => $t, 'rows' => $list['rows'], 'cnt' => $list['total_num'], 'curpage' => $list['page_num']));
+    }
+
+    /**
+     * 列表
+     */
+    public function actionLog()
+    {
+        unset($_SESSION['cur_order_log']);
+        $order_id = trim($_GET['id']);
+        $_SESSION['cur_order_log'] = $order_id;
+        $this->render('log_list',array('order_id'=>$order_id));
     }
 	
 

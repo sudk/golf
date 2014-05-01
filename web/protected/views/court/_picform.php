@@ -35,7 +35,12 @@ if($__model__!="edit"){
         <td class="maxname">图片类型：</td>
         <td class="mivalue" colspan="3">
             <?php 
-            echo $form->activeDropDownList($model, 'type',Img::getType(), array('title' => '本项必填'), 'required'); 
+            $pic_type = array(
+            '8'=>'球场标志',
+            '0'=>'球场风景',
+            '1'=>'球道',
+        );
+            echo $form->activeDropDownList($model, 'type',$pic_type, array('title' => '本项必填'), 'required'); 
             echo $form->activeHiddenField($model,'relation_id',array(),'required');
             ?></td>  
     </tr>

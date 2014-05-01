@@ -5,7 +5,7 @@
  *
  * @author sudk
  */
-class UscoreController extends BaseController
+class UscoreController extends AuthBaseController
 {
 
     public $defaultAction = 'list';

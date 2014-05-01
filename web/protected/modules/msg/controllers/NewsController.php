@@ -5,7 +5,7 @@
  *
  * @author sudk
  */
-class NewsController extends BaseController
+class NewsController extends AuthBaseController
 {
 
     public $defaultAction = 'list';

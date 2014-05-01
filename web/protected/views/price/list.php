@@ -1,9 +1,9 @@
 <div class="title-box">
     <h1><span style="float:left;">报价单管理</span>
-        <a href="javascript:void(0);" onclick="javascript:copyPolicy();" style="float:right;"><span class="add_ico"></span><span>一键复制上月报价</span></a>
-        <a href="javascript:void(0);" onclick="javascript:loadTemplate('2');"  style="float:right;"><span class="add_ico"></span><span>特殊日报价批量导入</span></a>
-        <a href="javascript:void(0);" onclick="javascript:loadTemplate('0');"  style="float:right;"><span class="add_ico"></span><span>普通报价批量导入</span></a>
-        <a href="javascript:void(0);" onclick="javascript:downTemplate();"  style="float:right;"><span class="add_ico"></span><span>报价模板下载</span></a>
+        <a href="javascript:void(0);" onclick="javascript:copyPolicy();" style="float:right;margin-left: 15px;"><span class="mover_ico"></span><span>一键复制上月报价</span></a>
+        <a href="javascript:void(0);" onclick="javascript:loadTemplate('2');"  style="float:right;margin-left: 15px;"><span class="add_ico"></span><span>特殊报价批量导入</span></a>
+        <a href="javascript:void(0);" onclick="javascript:loadTemplate('0');"  style="float:right;margin-left: 15px;"><span class="add_ico"></span><span>普通报价批量导入</span></a>
+        <a href="javascript:void(0);" onclick="javascript:downTemplate();"  style="float:right;margin-left: 15px;"><span class="file_ico"></span><span>报价模板下载</span></a>
         
     </h1>
     <ul class="sift">
@@ -66,8 +66,8 @@
     //为一个球场提交报价
     var itemNew = function (id,tag) {
         tipsWindown(
-            "编辑报价单信息", // title：窗口标题
-            "iframe:index.php?r=price/newPolicy&id=" + id+'&tag='+tag, // Url：弹窗所加截的页面路径
+            "新建报价单信息", // title：窗口标题
+            "iframe:index.php?r=price/newpolicy&id=" + id+'&tag='+tag, // Url：弹窗所加截的页面路径
             "900", // width：窗体宽度
             "720", // height：窗体高度
             "true", // drag：是否可以拖动（ture为是,false为否）

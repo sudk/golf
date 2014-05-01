@@ -90,9 +90,27 @@ class Order extends CActiveRecord {
         $condition = ' 1=1 ';
         $params = array();
 
+        
         if ($args['court_id'] != ''){
             $condition.= ' AND court_id=:court_id';
             $params['court_id'] = $args['court_id'];
+        }
+        
+        if ($args['agent_id'] != ''){
+            $condition.= ' AND  agent_id=:agent_id';
+            $params['agent_id'] = $args['agent_id'];
+        }
+        
+        if($args['status'] != "")
+        {
+            $condition .= ' AND status=:status';
+            $params['status'] = $args['status'];
+        }
+        
+        if($args['pre_deal'] != "")
+        {
+            $condition .= ' AND status in (0,1)';
+            
         }
         
         if($args['begin_date']!="" && $args['end_date']!="")
@@ -210,19 +228,19 @@ class Order extends CActiveRecord {
         $condition = ' 1=1 ';
         $params = array();
 
-        if ($args['relation_name'] != ''){
+        if ($args->relation_name != ''){
             $condition.=' AND relation_name like :relation_name';
-            $params['relation_name'] = "%".$args['relation_name']."%";
+            $params['relation_name'] = "%".$args->relation_name."%";
         }
 
-        if ($args['start_time'] != ''){
+        if ($args->start_time != ''){
             $condition.=' AND record_time >= :start_time';
-            $params['start_time'] = $args['start_time'];
+            $params['start_time'] = $args->start_time;
         }
 
-        if ($args['end_time'] != ''){
+        if ($args->end_time != ''){
             $condition.=' AND record_time <= :end_time';
-            $params['end_time'] = $args['end_time'];
+            $params['end_time'] = $args->end_time;
         }
 
 

@@ -5,7 +5,7 @@
  *会员信息管理
  * @author guohao
  */
-class UinfoController extends BaseController
+class UinfoController extends AuthBaseController
 {
 
     public $defaultAction = 'list';

@@ -19,7 +19,7 @@ $form = $this->beginWidget('SimpleForm', array(
     'id' => 'form1',
     'enableAjaxSubmit' => false,
     'ajaxUpdateId' => 'form-container',
-    'focus' => array($model,'id'),
+    'focus' => array($model,'name'),
 ));
 if($__model__!="edit"){
     $pass_r="required";
@@ -108,11 +108,15 @@ echo $form->activeHiddenField($model, 'cities', array(), '');
                 <?php
         }
         ?>
-        jQuery("#operator_type").click(function(){
+        jQuery("#operator_type").change(function(){
             var v = jQuery(this).val();
+            //alert(v);
             if(v == '2'){
                 jQuery("#oper_agent_id").show();
                 jQuery("#oper_agent_id1").show();
+            }else{
+                jQuery("#oper_agent_id").hide();
+                jQuery("#oper_agent_id1").hide();
             }
         });
     });

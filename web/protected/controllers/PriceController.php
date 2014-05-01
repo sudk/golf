@@ -2,7 +2,7 @@
 /*
  * 价格管理
  */
-class PriceController extends BaseController
+class PriceController extends AuthBaseController
 {
 
     public $defaultAction = 'list';
@@ -30,9 +30,9 @@ class PriceController extends BaseController
         $t->set_header('周一至周日', '150', ''); 
               
         $t->set_header('状态', '50', '');
-        $t->set_header('正常日报价', '70', '');
+        $t->set_header('正常报价', '70', '');
         $t->set_header('优惠报价', '70', '');
-        $t->set_header('特殊日报价', '70', '');
+        $t->set_header('特殊报价', '70', '');
         $t->set_header('有效期', '70', '');
         return $t;
     }

@@ -3,17 +3,22 @@ $t->echo_grid_header();
 if (is_array($rows))
 {
 	$j = 1;
+        $trans_type = TransRecord::getTransType();
+        $status = TransRecord::getStatus();
     foreach ($rows as $i => $row)
     {
 
-		$num = ($curpage-1)*$this->pageSize + $j++;
-        $t->begin_row("onclick","getDetail(this,'{$row['id']}','{$row['recordtime']}');");
-		$t->echo_td($num); 
-        $t->echo_td($row['userid']); //学校编号
-        $t->echo_td($row['username']);
-        $t->echo_td($row['operation']);
-        $t->echo_td($row['ip']);
-        $t->echo_td($row['recordtime']);
+	$num = ($curpage-1)*$this->pageSize + $j++;
+        //$t->begin_row("onclick","getDetail(this,'{$row['id']}','{$row['recordtime']}');");
+        $t->echo_td($num); 
+        $t->echo_td($trans_type[$row['trans_type']]); //学校编号
+        $t->echo_td($row['serial_number']);
+        $t->echo_td($row['amount']);
+        $t->echo_td($row['re_serial_number']);
+        $t->echo_td($row['user_id']);
+        $t->echo_td($status[$row['status']]);
+        
+        $t->echo_td($row['record_time']);
         $t->end_row();
     }
 }

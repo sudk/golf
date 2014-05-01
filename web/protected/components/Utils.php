@@ -91,7 +91,7 @@ class Utils {
      * 产生action的权限配置文件
      * @param <string> 模块名称, 为空表示app下Controller
      */
-    public function getControllersActions($module='')
+    public static function getControllersActions($module='')
 	{
 		
 		if($module=='')

@@ -5,7 +5,7 @@
  *
  * @author sudk
  */
-class AgentController extends BaseController
+class AgentController extends AuthBaseController
 {
 
     public $defaultAction = 'list';

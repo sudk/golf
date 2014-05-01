@@ -5,7 +5,7 @@
  *
  * @author sudk
  */
-class UcardController extends BaseController
+class UcardController extends AuthBaseController
 {
 
     public $defaultAction = 'list';

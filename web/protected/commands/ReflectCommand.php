@@ -49,6 +49,7 @@ class ReflectCommand extends CConsoleCommand
                 }
             }
         $d->close();
+        //print_r($a);
         return $a;
     }
 }

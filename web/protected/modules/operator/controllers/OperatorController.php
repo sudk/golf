@@ -5,7 +5,7 @@
  *
  * @author sudk
  */
-class OperatorController extends BaseController
+class OperatorController extends AuthBaseController
 {
 
     public $defaultAction = 'list';

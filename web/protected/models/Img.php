@@ -15,7 +15,7 @@ class Img extends CActiveRecord {
     CONST TYPE_TRIP = '6';
     CONST TYPE_COMPETITION = '3';
     CONST TYPE_NEWS = '9';
-    
+    const IMG_PATH="http://115.28.77.119/images/picture/";
     
     
     public static function model($className=__CLASS__){
@@ -38,6 +38,7 @@ class Img extends CActiveRecord {
             '5'=>'会员卡',
             '6'=>'行程',
             '7'=>'广告',
+            '9'=>'新闻',
         );
         
         return $type?$rs[$type]:$rs;
@@ -55,6 +56,10 @@ class Img extends CActiveRecord {
         if ($args['type'] != ''){
             $condition.= ' type=:type';
             $params['type'] = $args['type'];
+        }
+        
+        if($args['from']!="" && $args['from'] == 'court'){
+            $condition .= "type in ('0','1','8')";
         }
         
         
@@ -121,6 +126,7 @@ class Img extends CActiveRecord {
         $model->relation_id = $relation_id;
         $model->type = $type;
         $model->img_url = $rs['url'];
+        $model->record_time = date('Y-m-d H:i:s');
         $model->save();
         
         return $rs;
@@ -158,6 +164,17 @@ class Img extends CActiveRecord {
         
         return $rs;
     }
+    
+    
+    public static function delSimpleImg($url)
+    {
+        $upload_dir = Yii::app()->params['upload_dir'];
+        $url_array = explode(".", $url);
+        $file_small = $url_array[0]."_small.".$url_array[1];
+        @unlink($upload_dir.$url);
+        @unlink($upload_dir.$file_small);
+        return true;
+    }
 
     public static function GetImgs($relation_id,$type){
         $condition="relation_id=:relation_id and type=:type";
@@ -172,7 +189,7 @@ class Img extends CActiveRecord {
         if($rows){
             $rows_tmp=array();
             foreach($rows as $row){
-                $rows_tmp[]=$row['img_url'];
+                $rows_tmp[]=Img::IMG_PATH.$row['img_url'];
             }
         }
         return $rows_tmp;

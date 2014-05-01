@@ -27,6 +27,11 @@
         );
     }
     
+    
+    var itemLog = function (id) {
+        window.location.href = "index.php?r=order/log&id="+id;
+    }
+    
    
     var itemDelete = function(id){
         if(!confirm("确认要删除订单:"+id+"吗？")){return ;}

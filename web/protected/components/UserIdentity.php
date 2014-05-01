@@ -43,8 +43,8 @@ class UserIdentity extends CUserIdentity
         Yii::app()->user->setState('name', $operator->name);
         Yii::app()->user->setState('type', $operator->type);
         Yii::app()->user->setState('agent_id', $operator->agent_id);
-        //Yii::app()->user->setState('auths', Auth::GetAuth($operator->staffid));
-        //Yii::app()->user->setState('data', Auth::GetData(Yii::app()->user->auths));
+        Yii::app()->user->setState('auths', Auth::GetAuth($operator->id));
+        Yii::app()->user->setState('data', Auth::GetData(Yii::app()->user->auths));
 
         $this->errorCode = self::ERROR_NONE;
         
