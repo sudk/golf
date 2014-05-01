@@ -87,6 +87,28 @@ class Card extends CActiveRecord {
 
         return $rs;
     }
+
+    public static function Info($type) {
+
+        $condition="";
+        $params=array();
+        if ($type != ''){
+            $condition.=' type = :type';
+            $params['type'] =$type;
+        }else{
+            return false;
+        }
+
+        $row=Yii::app()->db->createCommand()
+            ->select("*")
+            ->from("g_card")
+            ->where($condition,$params)
+            ->queryRow();
+        if($row){
+            $row['img']=Img::GetImg($row['id'],Img::TYPE_CARD);
+        }
+        return $row;
+    }
 }
 
 

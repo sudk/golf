@@ -96,6 +96,52 @@ class Comment extends CActiveRecord {
             ->queryRow();
         return $row;
     }
+
+    public static function InfoList($page, $pageSize, $args = array()) {
+
+        $condition = ' 1=1 ';
+        $params = array();
+
+        if ($args['status'] != ''){
+            $condition.=' AND status = :status';
+            $params['status'] = $args['status'];
+        }
+
+        if ($args['title'] != ''){
+            $condition.=' AND title like :title';
+            $params['title'] = "%".$args['title']."%";
+        }
+
+
+        $total_num = Yii::app()->db->createCommand()
+            ->select("count(1)")
+            ->from("g_comment")
+            ->where($condition,$params)
+            ->queryScalar();
+
+
+        $order = 'record_time  DESC,status asc';
+
+        $rows=Yii::app()->db->createCommand()
+            ->select("*")
+            ->from("g_comment")
+            ->where($condition,$params)
+            ->order($order)
+            ->limit($pageSize)
+            ->offset($page * $pageSize)
+            ->queryAll();
+
+        $rs['status'] = 0;
+        $rs['desc'] = '成功';
+        $rs['page_num'] = ($page + 1);
+        $rs['total_num'] = $total_num;
+        $rs['total_page'] = ceil($total_num/$pageSize);
+        $rs['num_of_page'] = $pageSize;
+        $rs['rows'] = $rows;
+
+        return $rs;
+    }
+
 }
 
 

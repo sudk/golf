@@ -120,6 +120,98 @@ class CourtFacilities extends CActiveRecord {
     }
 
 
+    public static function InfoList($page, $pageSize, $args = array()) {
+
+        $condition = ' 1=1 ';
+        $params = array();
+
+        if (isset($args->court_id)&&$args->court_id != ''){
+            $condition.=' AND g_court_facilities.court_id = :court_id';
+            $params['court_id'] = $args->court_id;
+        }
+        if (isset($args->type)&&$args->type != ''){
+            $condition.=' AND g_court_facilities.type = :type';
+            $params['type'] = $args->type;
+        }
+
+        if (isset($args->facilitie_name)&&$args->facilitie_name != ''){
+            $condition.=' AND g_court_facilities.facilitie_name like :facilitie_name';
+            $params['facilitie_name'] = "%".$args->facilitie_name."%";
+        }
+
+        if (isset($args->court_name)&&$args->court_name != ''){
+            $condition.=' AND g_court.court_name like :court_name';
+            $params['court_name'] = "%".$args->court_name."%";
+        }
+
+
+        $total_num = Yii::app()->db->createCommand()
+            ->select("count(1)")
+            ->from("g_court_facilities")
+            ->leftJoin('g_court',"g_court_facilities.court_id=g_court.court_id")
+            ->where($condition,$params)
+            ->queryScalar();
+
+
+        $order = 'record_time DESC';
+
+        $rows=Yii::app()->db->createCommand()
+            ->select("g_court_facilities.*,g_court.name court_name")
+            ->from("g_court_facilities")
+            ->leftJoin('g_court',"g_court_facilities.court_id=g_court.court_id")
+            ->where($condition,$params)
+            ->order($order)
+            ->limit($pageSize)
+            ->offset($page * $pageSize)
+            ->queryAll();
+
+        if($rows){
+            $rows_tmp=array();
+            foreach($rows as $row){
+                $row['imgs']=Img::GetImgs($row['id'],Img::TYPE_COURT_FACILITIES);
+                $rows_tmp=$row;
+            }
+        }
+
+        $rs['status'] = 0;
+        $rs['desc'] = '成功';
+        $rs['page_num'] = ($page + 1);
+        $rs['total_num'] = $total_num;
+        $rs['total_page'] = ceil($total_num/$pageSize);
+        $rs['num_of_page'] = $pageSize;
+        $rs['rows'] = $rows_tmp;
+
+        return $rs;
+    }
+
+
+    public static function Info($id) {
+
+        $condition = ' 1=1 ';
+        $params = array();
+
+
+        if ($id != ''){
+            $condition.=' AND g_court_facilities.id = :id';
+            $params['id'] =$id;
+        }else{
+            return false;
+        }
+
+        $row=Yii::app()->db->createCommand()
+            ->select("g_court_facilities.*,g_court.name court_name")
+            ->from("g_court_facilities")
+            ->leftJoin('g_court',"g_court_facilities.court_id=g_court.court_id")
+            ->where($condition,$params)
+            ->queryRow();
+        if($row){
+            $row['imgs']=Img::GetImgs($id,Img::TYPE_COURT_FACILITIES);
+        }
+        return $row;
+
+    }
+
+
     
     
     

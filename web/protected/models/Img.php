@@ -12,6 +12,7 @@ class Img extends CActiveRecord {
     CONST TYPE_COURT_FACILITIES = '2';
     CONST TYPE_COURT_LOGO = '8';
     CONST TYPE_ADV = '7';
+    CONST TYPE_CARD = '5';
     CONST TYPE_TRIP = '6';
     CONST TYPE_COMPETITION = '3';
     CONST TYPE_NEWS = '9';
@@ -193,6 +194,21 @@ class Img extends CActiveRecord {
             }
         }
         return $rows_tmp;
+    }
+    public static function GetImg($relation_id,$type){
+        $condition="relation_id=:relation_id and type=:type";
+        $params=array('relation_id'=>$relation_id,'type'=>$type);
+
+        $row=Yii::app()->db->createCommand()
+            ->select("*")
+            ->from("g_img")
+            ->where($condition,$params)
+            ->queryRow();
+        if($row){
+            return $row['img_url'];
+        }else{
+            return "";
+        }
     }
 }
 
