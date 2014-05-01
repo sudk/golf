@@ -88,7 +88,7 @@ class UserController extends CMDBaseController
                 $model->save();
                 $msg['status']=0;
                 $msg['desc']="成功";
-                $msg['data']=User::FindOneById(Yii::app()->command->cmdObj->phone);
+                $msg['data']=User::FindOneByPhone(Yii::app()->command->cmdObj->phone);
             }catch (Exception $e){
                 $msg['status']=$e->getCode();
                 if($e->getCode()==23000){
