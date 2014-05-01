@@ -286,7 +286,7 @@ class Court extends CActiveRecord {
         }
 
         $condition.= ' AND g_policy.status=0 ';
-        $condition.= ' AND g_policy_detail.status=1 ';
+        $condition.= ' AND g_policy_detail.status=0 ';
 
         $rows = Yii::app()->db->createCommand()
             ->select("g_policy.*,g_court.name court_name,g_policy_detail.price,g_policy_detail.day,g_policy_detail.start_time,g_policy_detail.end_time,g_agent.agent_name")
@@ -296,6 +296,8 @@ class Court extends CActiveRecord {
             ->leftJoin("g_agent","g_agent.id=g_policy.agent_id")
             ->where($condition,$params)
             ->queryAll();
+
+        //print_r($rows);
 
         $rows_tmp=array();
 
