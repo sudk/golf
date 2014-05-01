@@ -246,7 +246,7 @@ class Order extends CActiveRecord {
         $condition.=' AND user_id = :user_id';
         $params['user_id'] = Yii::app()->user->id;
 
-        
+
         $total_num = Yii::app()->db->createCommand()
             ->select("count(1)")
             ->from("g_order")

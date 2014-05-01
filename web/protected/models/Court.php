@@ -155,7 +155,7 @@ class Court extends CActiveRecord {
         }
 
         $condition.= ' AND g_policy.status=0 ';
-        $condition.= ' AND g_policy_detail.status=1 ';
+        $condition.= ' AND g_policy_detail.status=0 ';
         if(isset($args->long_lat)){
             list($u_lon,$u_lat)=explode(",",$args->long_lat);
         }
