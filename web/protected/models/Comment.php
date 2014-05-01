@@ -102,16 +102,10 @@ class Comment extends CActiveRecord {
         $condition = ' 1=1 ';
         $params = array();
 
-        if ($args['status'] != ''){
-            $condition.=' AND status = :status';
-            $params['status'] = $args['status'];
+        if (isset($args->court_id)&&$args->court_id != ''){
+            $condition.=' AND court_id = :court_id';
+            $params['court_id'] = $args->court_id;
         }
-
-        if ($args['title'] != ''){
-            $condition.=' AND title like :title';
-            $params['title'] = "%".$args['title']."%";
-        }
-
 
         $total_num = Yii::app()->db->createCommand()
             ->select("count(1)")

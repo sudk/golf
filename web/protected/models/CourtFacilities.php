@@ -169,7 +169,7 @@ class CourtFacilities extends CActiveRecord {
             $rows_tmp=array();
             foreach($rows as $row){
                 $row['imgs']=Img::GetImgs($row['id'],Img::TYPE_COURT_FACILITIES);
-                $rows_tmp=$row;
+                $rows_tmp[]=$row;
             }
         }
 
