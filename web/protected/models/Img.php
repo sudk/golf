@@ -15,6 +15,7 @@ class Img extends CActiveRecord {
     CONST TYPE_CARD = '5';
     CONST TYPE_TRIP = '6';
     CONST TYPE_COMPETITION = '3';
+    CONST TYPE_FLEA = '4';
     CONST TYPE_NEWS = '9';
     const IMG_PATH="http://115.28.77.119/images/picture/";
     

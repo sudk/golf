@@ -116,9 +116,54 @@ class Flea extends CActiveRecord {
         
         return $rs;
     }
-    
-    
-    
+
+    public static function InfoList($page, $pageSize, $args = array()) {
+
+        $condition = ' 1=1 ';
+        $params = array();
+
+        if (isset($args->city)&&$args->city != ''){
+            $condition.=' AND city = :city';
+            $params['city'] = $args->city;
+        }
+
+        if (isset($args->title)&&$args->title != ''){
+            $condition.=' AND title like :title';
+            $params['title'] = "%".$args->title."%";
+        }
+
+        $order = 'record_time DESC';
+
+        $rows=Yii::app()->db->createCommand()
+            ->select("*")
+            ->from("g_flea")
+            ->where($condition,$params)
+            ->order($order)
+            ->limit($pageSize)
+            ->offset($page * $pageSize)
+            ->queryAll();
+
+        if($rows){
+            $rows_tmp=array();
+            foreach($rows as $row){
+                $row['imgs']=Img::GetImgs($row['id'],Img::TYPE_FLEA);
+                $rows_tmp[]=$row;
+            }
+        }
+
+        return $rows_tmp;
+    }
+
+    public static function Info($id) {
+        $row=Yii::app()->db->createCommand()
+            ->select("*")
+            ->from("g_flea")
+            ->where("id=:id",array(":id"=>$id))
+            ->queryRow();
+        if($row){
+            $row['imgs']=Img::GetImgs($id,Img::TYPE_FLEA);
+        }
+    }
     
 }
 
