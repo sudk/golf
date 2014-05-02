@@ -128,11 +128,31 @@ class CourtController extends CMDBaseController
             echo json_encode($msg);
             return;
         }
+        if(Yii::app()->command->cmdObj->court_id==null||Yii::app()->command->cmdObj->court_id==""){
+            $msg['status']=2;
+            $msg['desc']="球场ID不能为空！";
+            echo json_encode($msg);
+            return;
+        }
+
+        $msg['comment_count']=0;
+        $msg['service_total']=0;
+        $msg['design_total']=0;
+        $msg['facilitie_total']=0;
+        $msg['lawn_total']=0;
 
         $rs=Comment::InfoList(Yii::app()->command->cmdObj->_pg_,$this->pageSize,Yii::app()->command->cmdObj);
         if($rs['rows']){
             $msg['status']=0;
             $msg['desc']="成功";
+            $com_avg=Comment::ComAvg(Yii::app()->command->cmdObj->court_id);
+            if($com_avg){
+                $msg['comment_count']=$com_avg['comment_count'];
+                $msg['service_total']=$com_avg['service_total'];
+                $msg['design_total']=$com_avg['design_total'];
+                $msg['facilitie_total']=$com_avg['facilitie_total'];
+                $msg['lawn_total']=$com_avg['lawn_total'];
+            }
             $msg['_pg_']=Yii::app()->command->cmdObj->_pg_;
             $msg['data']=$rs['rows'];
         }else{

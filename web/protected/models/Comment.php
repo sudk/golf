@@ -107,14 +107,7 @@ class Comment extends CActiveRecord {
             $params['court_id'] = $args->court_id;
         }
 
-        $total_num = Yii::app()->db->createCommand()
-            ->select("count(1)")
-            ->from("g_comment")
-            ->where($condition,$params)
-            ->queryScalar();
-
-
-        $order = 'record_time  DESC,status asc';
+        $order = 'record_time  DESC';
 
         $rows=Yii::app()->db->createCommand()
             ->select("*")
@@ -127,13 +120,19 @@ class Comment extends CActiveRecord {
 
         $rs['status'] = 0;
         $rs['desc'] = '成功';
-        $rs['page_num'] = ($page + 1);
-        $rs['total_num'] = $total_num;
-        $rs['total_page'] = ceil($total_num/$pageSize);
-        $rs['num_of_page'] = $pageSize;
         $rs['rows'] = $rows;
 
         return $rs;
+    }
+
+    public static function Info($id) {
+
+        return Yii::app()->db->createCommand()
+            ->select("*")
+            ->from("g_comment")
+            ->where("id=:id",array(":id"=>$id))
+            ->queryRow();
+
     }
 
 }
