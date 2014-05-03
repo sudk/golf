@@ -146,7 +146,7 @@ class OrderController extends CMDBaseController
         if($row){
             $msg['status']=0;
             $msg['desc']="成功";
-            $msg['data']=$row;
+            $msg['data']=array(array('order_id'=>$row));
         }else{
             $msg['status']=4;
             $msg['desc']="没有数据";

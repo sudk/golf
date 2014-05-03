@@ -218,7 +218,7 @@ class Order extends CActiveRecord {
 
             $transaction->commit();
 
-            return true;
+            return $order_id;
         }catch (Exception $e){
             Yii::log($e->getMessage(),'debug','application.firebuglog');
             $transaction->rollBack();
