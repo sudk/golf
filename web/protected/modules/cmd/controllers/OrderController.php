@@ -76,13 +76,13 @@ class OrderController extends CMDBaseController
     }
 
     public function actionCreate(){
-        if(!Yii::app()->command->cmdObj->type){
+        if(!isset(Yii::app()->command->cmdObj->type)||Yii::app()->command->cmdObj->type==''){
             $msg['status']=1;
             $msg['desc']="订单类型不能为空！";
             echo json_encode($msg);
             return;
         }
-        if(!Yii::app()->command->cmdObj->relation_id){
+        if(!isset(Yii::app()->command->cmdObj->relation_id)||Yii::app()->command->cmdObj->relation_id==''){
             $msg['status']=2;
             $msg['desc']="关联ID不能为空！";
             echo json_encode($msg);
