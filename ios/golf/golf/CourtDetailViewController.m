@@ -8,10 +8,8 @@
 
 #import "CourtDetailViewController.h"
 #import "UIImageView+WebCache.h"
-#import "CourtDetailInfoViewController.h"
 #import "UIButton+WebCache.h"
-#import "AHPreviewController.h"
-#import "EvaluateViewController.h"
+
 
 @interface CourtDetailViewController ()
 
@@ -35,19 +33,18 @@
     self.title=@"球场详情";
     self.navigationItem.leftBarButtonItem=[self topBarButtonItem:@"" andHighlightedName:@""];
     self.evaluateArray=@[@"80",@"80",@"80",@"80"];
-
-    self.timeArray=@[@"04:00",@"04:30",@"05:00",@"05:30",@"06:00",@"06:30",@"07:00",@"07:30",@"08:00",@"08:30",@"09:00",@"09:30",@"10:00",@"10:30",@"11:00",@"11:30",@"12:00",@"12:30",@"13:00",@"13:30",@"14:00",@"14:30",@"15:00",@"15:30",@"16:00",@"16:30",@"17:00",@"17:30",@"18:00",@"18:30",@"19:00",@"19:30",@"20:00"];
+    self.httpUtils=[[HttpUtils alloc]init];
+ self.timeArray=@[@"04:00",@"04:30",@"05:00",@"05:30",@"06:00",@"06:30",@"07:00",@"07:30",@"08:00",@"08:30",@"09:00",@"09:30",@"10:00",@"10:30",@"11:00",@"11:30",@"12:00",@"12:30",@"13:00",@"13:30",@"14:00",@"14:30",@"15:00",@"15:30",@"16:00",@"16:30",@"17:00",@"17:30",@"18:00",@"18:30",@"19:00",@"19:30",@"20:00"];
     NSString *dateAndTimeStr=[[_dateStr stringByAppendingString:@"&"] stringByAppendingString:_timeStr];
     self.courtDetailArray=@[dateAndTimeStr,@"golf007",@"golf008",@"golf009",@"golf100"];
-    _courtDetailTable=[[UITableView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT-64) style:UITableViewStyleGrouped];
+    UITableView *tmpcourtDetailTable=[[UITableView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT-64) style:UITableViewStyleGrouped];
+    self.courtDetailTable=tmpcourtDetailTable;
+    [tmpcourtDetailTable release];
     _courtDetailTable.delegate=self;
     _courtDetailTable.dataSource=self;
     _courtDetailTable.contentInset=UIEdgeInsetsMake(-40, 0, 0, 0);
     _courtDetailTable.backgroundColor=[UIColor clearColor];
-    [self.view addSubview:_courtDetailTable];
-    
-    
-    
+    [self.view addSubview:self.courtDetailTable];
 }
 
 - (void)didReceiveMemoryWarning
@@ -88,7 +85,7 @@
     static NSString *identifier=@"courtDetailIdentifier";
     UITableViewCell *cell=[tableView dequeueReusableCellWithIdentifier:identifier];
     if (cell==nil) {
-        cell=[[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+        cell=[[[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier] autorelease];
     }
     while ([cell.contentView.subviews lastObject] != nil) {
         [(UIView*)[cell.contentView.subviews lastObject] removeFromSuperview];  //删除并进行重新分配
@@ -123,11 +120,13 @@
                     imgv.image=[UIImage imageNamed:@"setting_arrow_normal"];
                     [courtView addSubview:imgv];
                     [cell.contentView addSubview:courtView];
+                    [imgv release];
+                    [courtView release];
                     break;
                 }
                 case 2:
                 {
-                    [self customLabel:CGRectMake(0, 3, 200, 40) withTag:addressLabelTag withCell:cell withText:@"北京奥体路191号"];
+                    [self customLabel:CGRectMake(0, 3, 200, 40) withTag:addressLabelTag withCell:cell withText:_courtAddress];
                     UIButton *daoHangBtn=[self customButton:CGRectMake(205, 2, 45, 36) withCell:cell withTitle:@"导航" withColor:[UIColor blackColor] withNormalImg:@"" withHighlightedImg:@""];
                     [daoHangBtn addTarget:self action:@selector(operateMethod) forControlEvents:UIControlEventTouchUpInside];
                     
@@ -198,29 +197,40 @@
     customLabel.backgroundColor=[UIColor clearColor];
     customLabel.tag=customTag;
     [cell.contentView addSubview:customLabel];
+    [customLabel release];
     
     UILabel *customLabelContent=(UILabel *)[cell.contentView viewWithTag:customTag];
     customLabelContent.text=textStr;
 }
 -(void)operateMethod
 {
-    
+    LMapViewController *tmplMap=[[LMapViewController alloc]init];
+    self.lMap=tmplMap;
+    [tmplMap release];
+    self.lMap.courtAddress=self.courtAddress;
+    [self.navigationController pushViewController:self.lMap.retain animated:NO];
 }
+
 -(void)showMethod
 {
-    CourtDetailInfoViewController *detailInfo=[[CourtDetailInfoViewController alloc]init];
-    [self.navigationController pushViewController:detailInfo animated:YES];
+    CourtDetailInfoViewController *tmpdetailInfo=[[CourtDetailInfoViewController alloc]init];
+    self.detailInfo=tmpdetailInfo;
+    [tmpdetailInfo release];
+    self.detailInfo.courtId=_courtId;
+    [self.navigationController pushViewController:self.detailInfo animated:YES];
 }
 -(void)showDateMethod
 {
-    self.calendarView=[[DSLCalendarView alloc]initWithFrame:CGRectMake(0, SCREEN_HEIGHT-20-330, SCREEN_WIDTH, 330)];
+    DSLCalendarView *tmpcalendarView=[[DSLCalendarView alloc]initWithFrame:CGRectMake(0, SCREEN_HEIGHT-20-330, SCREEN_WIDTH, 330)];
+    self.calendarView=tmpcalendarView;
+    [tmpcalendarView release];
     _calendarView.delegate = self;
     _calendarView.backgroundColor=[UIColor whiteColor];
-    [self.view addSubview:_calendarView];
+    [self.view addSubview:self.calendarView];
 }
 -(void)showTimeMethod
 {
-    _timePickView=[[UIView alloc]initWithFrame:CGRectMake(0, SCREEN_HEIGHT-20-49-260, SCREEN_WIDTH, 260)];
+    self.timePickView=[[UIView alloc]initWithFrame:CGRectMake(0, SCREEN_HEIGHT-20-49-260, SCREEN_WIDTH, 260)];
     UIToolbar *toolBar=[[UIToolbar alloc]initWithFrame:CGRectMake(0,0, SCREEN_WIDTH, 44)];
     UIImageView *imgv=[[UIImageView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 44)];
     imgv.image=[UIImage imageNamed:@"title_bg2"];
@@ -248,6 +258,13 @@
     pick.dataSource=self;
     [_timePickView addSubview:pick];
     [self.view addSubview:_timePickView];
+    [sureItem release];
+    [sureBtn release];
+    [cancelItem release];
+    [cancelBtn release];
+    [spaceItem release];
+    [toolBar release];
+    [imgv release];
 
 }
 -(void)courtOrderMehtod
@@ -266,6 +283,31 @@
         [_timePickView removeFromSuperview];
     }
     [_courtDetailTable reloadData];
+}
+//获取球场信息
+-(void)golfgetCourtInfo
+{
+    NSMutableDictionary *dic=[NSMutableDictionary dictionary];
+    [dic setObject:@"court/info" forKey:@"cmd"];
+    [dic setObject:_courtId forKey:@"court_id"];
+    
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(golfgetCourtInfoMethod:) name:@"com.golf.golfgetCourtInfoMethod" object:nil];
+    [_httpUtils startRequest:dic andUrl:baseUrlStr andRequestField:@"court/info" andNotificationName:@"com.golf.golfgetCourtInfoMethod" andViewControler:nil];
+}
+-(void)golfgetCourtInfoMethod:(NSNotification *)notification
+{
+    NSDictionary *getCourtInfoDic=[notification object];
+    [[NSNotificationCenter defaultCenter]removeObserver:self name:@"com.golf.golfgetCourtInfoMethod" object:nil];
+}
+//获取球场评论
+-(void)golfgetComment
+{
+    
+}
+//获取球场报价
+-(void)golfgetPrice
+{
+    
 }
 #pragma mark -UIPickerViewDataSource
 
@@ -304,6 +346,7 @@
         if (_calendarView!=nil) {
             [_calendarView removeFromSuperview];
         }
+        [format release];
     }
     else {
         NSLog( @"No selection" );
@@ -350,14 +393,18 @@
 }
 -(void)showImg
 {
-    AHPreviewController *preview=[[AHPreviewController alloc]init];
-    preview.previewImgArray=@[@"http://www.5aihuan.com/images/n_tjian/pp_11.jpg",@"http://www.5aihuan.com/images/n_tjian/pp_11.jpg",@"http://www.5aihuan.com/images/n_tjian/pp_11.jpg",@"http://www.5aihuan.com/images/n_tjian/pp_11.jpg",@"http://www.5aihuan.com/images/n_tjian/pp_11.jpg"];
-    preview.previewTitle=@"图片浏览";
-    [self.navigationController pushViewController:preview animated:YES];
+    AHPreviewController *tmppreview=[[AHPreviewController alloc]init];
+    self.preview=tmppreview;
+    [tmppreview release];
+    self.preview.previewImgArray=@[@"http://www.5aihuan.com/images/n_tjian/pp_11.jpg",@"http://www.5aihuan.com/images/n_tjian/pp_11.jpg",@"http://www.5aihuan.com/images/n_tjian/pp_11.jpg",@"http://www.5aihuan.com/images/n_tjian/pp_11.jpg",@"http://www.5aihuan.com/images/n_tjian/pp_11.jpg"];
+    self.preview.previewTitle=@"图片浏览";
+    [self.navigationController pushViewController:self.preview animated:YES];
 }
 -(void)evaluateMethod
 {
-    EvaluateViewController *evaluate=[[EvaluateViewController alloc]init];
-    [self.navigationController pushViewController:evaluate animated:YES];
+    EvaluateViewController *tmpevaluate=[[EvaluateViewController alloc]init];
+    self.evaluate=tmpevaluate;
+    [tmpevaluate release];
+    [self.navigationController pushViewController:self.evaluate animated:YES];
 }
 @end

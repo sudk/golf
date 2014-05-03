@@ -198,6 +198,7 @@
     SearchCourtHomeViewController *searchVc=(SearchCourtHomeViewController *)[viewControls objectAtIndex:[viewControls count]-2];
     searchVc.isFromUpdate=YES;
     searchVc.changeDic=tmpDic;
+    searchVc.hidesBottomBarWhenPushed=NO;
     [self.navigationController popToViewController:searchVc animated:YES];
 }
 
@@ -237,6 +238,7 @@
     NSArray *viewControls=[self.navigationController viewControllers];
     SearchCourtHomeViewController *searchVc=(SearchCourtHomeViewController *)[viewControls objectAtIndex:[viewControls count]-2];
     searchVc.isFromUpdate=NO;
+    searchVc.hidesBottomBarWhenPushed=NO;
     [self.navigationController popToViewController:searchVc animated:YES];
 }
 

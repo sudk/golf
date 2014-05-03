@@ -14,6 +14,8 @@
 @property(nonatomic,assign)float courtPrice;
 @property(nonatomic,strong)NSString *courtImgUrl;
 @property(nonatomic,assign)BOOL isUp;
+@property(nonatomic,strong)NSString *courtAddress;
+@property(nonatomic,strong)NSString *courtId;
 
 -(NSComparisonResult)compareName:(CourtModel *)courtModel;
 -(NSComparisonResult)compareDistance:(CourtModel *)courtModel;

@@ -8,7 +8,6 @@
 
 #import "BaseViewController.h"
 #import "SQLUtilsObject.h"
-#import "HttpUtils.h"
 #import "NMTextField.h"
 
 @interface CardNoViewController : BaseViewController<UITextFieldDelegate>

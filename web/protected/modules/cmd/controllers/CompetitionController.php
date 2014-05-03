@@ -26,7 +26,7 @@ class CompetitionController extends CMDBaseController
             $args['name']=Yii::app()->command->cmdObj->name;
         }
 
-        if(!Yii::app()->command->cmdObj->_pg_){
+        if(Yii::app()->command->cmdObj->_pg_==null||Yii::app()->command->cmdObj->_pg_==""){
             $msg['status']=1;
             $msg['desc']="分页参数不能为空！";
             echo json_encode($msg);

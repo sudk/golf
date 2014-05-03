@@ -14,6 +14,7 @@
 #import "FSSysConfig.h"
 #import "CityViewController.h"
 
+
 @interface SearchCourtHomeViewController ()
 
 @end
@@ -47,6 +48,14 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    self.long_latStr=@"0";
+    //添加map
+    _map = [[MKMapView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)];
+	_map.showsUserLocation = YES;
+	_map.mapType = MKMapTypeStandard;// MKMapTypeSatellite
+	_zoomLevel = 0.02;
+    _map.delegate = self;
+    //添加
     _httpUtils=[[HttpUtils alloc]init];
     //默认登录
     _sqlUtils=[[SQLUtilsObject alloc]init];
@@ -76,13 +85,15 @@
     formatter.dateFormat = @"EE";
     NSTimeInterval  interval = 24*60*60;
     NSString *weekStr = [formatter stringFromDate:[[NSDate date]initWithTimeInterval:interval sinceDate:[NSDate date]]];
+    self.selectDate=[[NSDate date]initWithTimeInterval:interval sinceDate:[NSDate date]];
     if (_selectDateStr==nil) {
         _selectDateStr=[@"明天" stringByAppendingString:weekStr];;
     }
-    NSArray *tmpContent=@[@"青岛",_selectDateStr,@"9:00",@"选择价格",@"球场名称"];
+    NSArray *tmpContent=@[@"珠海市",_selectDateStr,@"09:00",@"选择价格",@"球场名称"];//青岛市
     for (int i=0; i<[tmpContent count]; i++) {
         [_contentArray addObject:[tmpContent objectAtIndex:i]];
     }
+    _selectTime=@"09:00";
     self.conditionTable=[[UITableView alloc]initWithFrame:CGRectMake(10, 10, SCREEN_WIDTH-20, 200) style:UITableViewStylePlain];
     _conditionTable.dataSource=self;
     _conditionTable.delegate=self;
@@ -221,8 +232,9 @@
     _changeDic=[NSDictionary dictionaryWithObject:[_contentArray objectAtIndex:tag] forKey:[NSString stringWithFormat:@"%d",tag]];
     CityViewController *city=[[CityViewController alloc]init];
     city.changeDic=_changeDic;
+    self.hidesBottomBarWhenPushed=YES;
     [self.navigationController pushViewController:city animated:YES];
-//    [self selectCustomMethod:@"城市"];
+    //    [self selectCustomMethod:@"城市"];
 }
 -(void)selectDateMethod:(id)sender
 {
@@ -328,6 +340,7 @@
     _changeDic=[NSDictionary dictionaryWithObject:[_contentArray objectAtIndex:tag] forKey:[NSString stringWithFormat:@"%d",tag]];
     KeyWordViewController *keyWord=[[KeyWordViewController alloc]init];
     keyWord.changeDic=_changeDic;
+    self.hidesBottomBarWhenPushed=YES;
     [self.navigationController pushViewController:keyWord animated:YES];
 }
 -(void)selectCustomMethod:(NSString *)infoTitle
@@ -335,6 +348,7 @@
     ListInfoViewController *listInfoVc=[[ListInfoViewController alloc]init];
     listInfoVc.infoTitle=infoTitle;
     listInfoVc.changeDic=_changeDic;
+    self.hidesBottomBarWhenPushed=YES;
     [self.navigationController pushViewController:listInfoVc animated:YES];
 }
 -(void)datePickCancelMethod
@@ -360,14 +374,58 @@
 }
 -(void)searchMethod
 {
-    ListCourtViewController *courtVc=[[ListCourtViewController alloc]init];
-    courtVc.courtTitle=[[[_contentArray objectAtIndex:0] stringByAppendingString:[_contentArray objectAtIndex:1]] stringByAppendingString:[_contentArray objectAtIndex:2]];
-    courtVc.dateStr=[_contentArray objectAtIndex:1];
-    courtVc.timeStr=[_contentArray objectAtIndex:2];
-    self.hidesBottomBarWhenPushed=YES;
-    [self.navigationController pushViewController:courtVc animated:YES];
+    NSMutableDictionary *dic=[NSMutableDictionary dictionary];
+    [dic setObject:@"court/search" forKey:@"cmd"];
+    NSString *cityStr=[_contentArray objectAtIndex:0];
+//    NSString *cityId=[_sqlUtils query_city_tab_cityId:[cityStr retain]];
+    NSString *cityId=[_sqlUtils query_city_tab_cityId:cityStr];
+    [dic setObject:cityId forKey:@"city"];//@"440400"
+    [dic setObject:self.long_latStr forKey:@"long_lat"]
+    ;
+    NSDateFormatter *format=[[NSDateFormatter alloc]init];
+    [format setDateFormat:@"yyyy-MM-dd"];
+    NSString *dateStr=[format stringFromDate:_selectDate];
+    [dic setObject:dateStr forKey:@"date"]
+    ;
+    [dic setObject:[_contentArray objectAtIndex:2] forKey:@"time"]
+    ;
+    NSString *keyWordStr=[_contentArray objectAtIndex:4];
+    if ([keyWordStr isEqualToString:@"球场名称"]) {
+        keyWordStr=@"";
+    }
+    [dic setObject:keyWordStr forKey:@"key_word"]
+    ;//
+//    [dic setObject:@"price" forKey:@"order_key_word"]
+    ;
+//    [dic setObject:@"[1,10]" forKey:@"_pg_"]
+//    ;
+    [dic setObject:@"0" forKey:@"order_type"]
+    ;
+    
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(courtSearchMethod:) name:@"com.golf.ahCourtSearchMethod" object:nil];
+    [_httpUtils startRequest:dic andUrl:baseUrlStr andRequestField:@"court/search" andNotificationName:@"com.golf.ahCourtSearchMethod" andViewControler:nil];
 }
-
+-(void)courtSearchMethod:(NSNotification*)notification
+{
+    NSLog(@"球场搜索回调====%@",[notification object]);
+    NSNumber *statusNum=[[notification object] objectForKey:@"status"];
+    if ([statusNum intValue]==0) {
+        ListCourtViewController *courtVc=[[ListCourtViewController alloc]init];
+        courtVc.courtTitle=[[[_contentArray objectAtIndex:0] stringByAppendingString:[_contentArray objectAtIndex:1]] stringByAppendingString:[_contentArray objectAtIndex:2]];
+        courtVc.dateStr=[_contentArray objectAtIndex:1];
+        courtVc.timeStr=[_contentArray objectAtIndex:2];
+        courtVc.courtArray=[[notification object]objectForKey:@"data"];
+        self.hidesBottomBarWhenPushed=YES;
+        [self.navigationController pushViewController:courtVc animated:YES];
+    }
+    else
+    {
+        UIAlertView *alert=[[UIAlertView alloc]initWithTitle:nil message:[[notification object]objectForKey:@"desc"] delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+        [alert show];
+    }
+    
+    [[NSNotificationCenter defaultCenter]removeObserver:self name:@"com.golf.ahCourtSearchMethod" object:nil];
+}
 #pragma mark - DSLCalendarViewDelegate methods
 
 - (void)calendarView:(DSLCalendarView *)calendarView didSelectRange:(DSLCalendarRange *)range {
@@ -375,13 +433,14 @@
         NSLog( @"Selected %d/%d - %d/%d", range.startDay.day, range.startDay.month, range.endDay.day, range.endDay.month);
         NSDateFormatter *format=[[NSDateFormatter alloc]init];
         [format setDateFormat:@"MM月dd日 EE"];
+        self.selectDate=range.startDay.date;
         NSString *str=[format stringFromDate:range.startDay.date];
         NSDictionary *tmpDic=[NSDictionary dictionaryWithObject:str forKey:[[self.changeDic allKeys] objectAtIndex:0]];
         [_contentArray replaceObjectAtIndex:[[[tmpDic allKeys]objectAtIndex:0] intValue] withObject:[[tmpDic allValues]objectAtIndex:0]];
         [_conditionTable reloadData];
-//        if (_calendarView!=nil) {
-            [_allCalendarView removeFromSuperview];
-//        }
+        //        if (_calendarView!=nil) {
+        [_allCalendarView removeFromSuperview];
+        //        }
     }
     else {
         NSLog( @"No selection" );
@@ -482,5 +541,17 @@
     _notify.center = CGPointMake(73, self.view.center.y - 20);
     return _notify;
 }
-
+#pragma mark -MapViewDelegate
+- (void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation {
+    CLLocationCoordinate2D coords = userLocation.location.coordinate;
+//    CLLocation *loc=[[CLLocation alloc]initWithLatitude:coords.latitude longitude:coords.longitude];
+    NSLog(@"coords.latitude======%f",coords.latitude);
+    NSLog(@"coords.longitude====%f",coords.longitude);
+    self.long_latStr=[NSString stringWithFormat:@"%f,%f",coords.longitude,coords.latitude];
+    NSLog(@"_long_latStr====%@",_long_latStr);
+    //    [self geocodeMethod:loc andSubTitle:@"我当前的位置" andIsShowAnnotation:NO];
+//    MKCoordinateRegion region=MKCoordinateRegionMake(coords, MKCoordinateSpanMake(_zoomLevel, _zoomLevel));
+//    _map.showsUserLocation = NO;
+    //    [map setRegion:region];
+}
 @end

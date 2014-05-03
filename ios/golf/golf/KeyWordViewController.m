@@ -155,6 +155,7 @@
     SearchCourtHomeViewController *courtVc=(SearchCourtHomeViewController*)[viewcontrols objectAtIndex:[viewcontrols count]-2];
     courtVc.isFromUpdate=YES;
     courtVc.changeDic=tmpDic;
+    courtVc.hidesBottomBarWhenPushed=NO;
     [self.navigationController popToViewController:courtVc animated:YES];
     NSLog(@"courtName=====%@",courtName);
     }
@@ -169,6 +170,7 @@
     NSArray *viewControls=[self.navigationController viewControllers];
     SearchCourtHomeViewController *searchVc=(SearchCourtHomeViewController *)[viewControls objectAtIndex:[viewControls count]-2];
     searchVc.isFromUpdate=YES;
+    searchVc.hidesBottomBarWhenPushed=NO;
     [self.navigationController popToViewController:searchVc animated:YES];
 }
 

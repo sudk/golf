@@ -288,6 +288,40 @@
 	return cityInfoArray;
 }
 
+-(NSString*)query_city_tab_cityId:(NSString *)cityName
+{
+    NSString *cityIdStr;
+	//判断数据库是否打开
+	if ([self create_city_tab]) {
+        sqlite3_stmt *statement = nil;
+        //sql语句
+        char *sql = "SELECT cityID FROM cityInfoTb where city=?";
+        
+        if (sqlite3_prepare_v2(_database, sql, -1, &statement, NULL) != SQLITE_OK) {
+            NSLog(@"Error: failed to prepare statement with cityInfoTb.");
+        }
+        else {
+            //查询结果集中一条一条的遍历所有的记录，这里的数字对应的是列值。
+            sqlite3_bind_text(statement, 1, [cityName UTF8String], -1, SQLITE_TRANSIENT);
+            while (sqlite3_step(statement) == SQLITE_ROW) {
+                
+                char *cityIdChar = (char *)sqlite3_column_text(statement, 0);
+                if (cityIdChar!=nil) {
+                    cityIdStr = [[NSString alloc]
+                                 initWithUTF8String:cityIdChar];
+                }
+                else
+                {
+                    cityIdStr=@"";
+                }
+            }
+        }
+        sqlite3_finalize(statement);
+        sqlite3_close(_database);
+    }
+	return cityIdStr;
+}
+
 //省
 -(BOOL)create_province_tab
 {

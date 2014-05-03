@@ -8,7 +8,6 @@
 
 #import "BaseViewController.h"
 #import "NMTextField.h"
-#import "HttpUtils.h"
 #import "SQLUtilsObject.h"
 
 @interface ChangePswdViewController : BaseViewController<UITextFieldDelegate>
