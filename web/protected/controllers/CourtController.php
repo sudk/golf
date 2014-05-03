@@ -23,11 +23,11 @@ class CourtController extends AuthBaseController
         $t = new SimpleGrid($this->gridId);
         $t->url = 'index.php?r=court/grid';
         $t->updateDom = 'datagrid';
-        $t->set_header('球场名称', '100', '');
-        $t->set_header('球场模式', '70', '');   
-        $t->set_header('球场电话', '60', '');
-        $t->set_header('球场地址', '100', '');
-        $t->set_header('操作', '100', '');
+        $t->set_header('球场名称', '30%', '');
+        $t->set_header('球场模式', '10%', '');   
+        $t->set_header('球场电话', '10%', '');
+        $t->set_header('球场地址', '30%', '');
+        $t->set_header('操作', '20%', '');
         return $t;
     }
 
@@ -306,9 +306,9 @@ class CourtController extends AuthBaseController
         $t = new SimpleGrid($this->picGridId);
         $t->url = 'index.php?r=court/piclist';
         $t->updateDom = 'datagrid';
-        $t->set_header('图片类型', '100', '');
-        $t->set_header('图片', '100', '');   
-        $t->set_header('操作', '100', '');
+        $t->set_header('图片类型', '20%', '');
+        $t->set_header('图片', '60%', '');   
+        $t->set_header('操作', '20%', '');
         return $t;
     }
 
@@ -607,14 +607,14 @@ class CourtController extends AuthBaseController
         $t = new SimpleGrid($this->cGridId);
         $t->url = 'index.php?r=court/commentlist';
         $t->updateDom = 'datagrid';
-        $t->set_header('球场名称', '200', '');
-        $t->set_header('服务', '50', '');   
-        $t->set_header('设计', '50', '');   
-        $t->set_header('设施', '50', '');   
-        $t->set_header('草坪', '50', '');        
-        $t->set_header('评分人', '100', '');  
-        $t->set_header('评分时间', '100', '');  
-        $t->set_header('备注', '100', '');  
+        $t->set_header('球场名称', '20%', '');
+        $t->set_header('服务', '10%', '');   
+        $t->set_header('设计', '10%', '');   
+        $t->set_header('设施', '10%', '');   
+        $t->set_header('草坪', '10%', '');        
+        $t->set_header('评分人', '10%', '');  
+        $t->set_header('评分时间', '15%', '');  
+        $t->set_header('备注', '15%', '');  
         return $t;
     }
 

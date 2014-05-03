@@ -23,15 +23,15 @@ class OrderController extends AuthBaseController
         $t = new SimpleGrid($this->gridId);
         $t->url = 'index.php?r=order/grid';
         $t->updateDom = 'datagrid';
-        $t->set_header('订单编号', '100', '');
-        $t->set_header('订单类型', '70', '');   
-        $t->set_header('下单人', '60', '');
-        $t->set_header('商品名称', '100', '');
-        $t->set_header('订单金额', '100', '');
-        $t->set_header('支付方式', '100', '');
-        $t->set_header('状态', '100', '');
-        $t->set_header('下单时间', '100', '');
-        $t->set_header('操作', '100', '');
+        $t->set_header('订单编号', '15%', '');
+        $t->set_header('订单类型', '10%', '');   
+        $t->set_header('下单人', '10%', '');
+        $t->set_header('商品名称', '15%', '');
+        $t->set_header('订单金额', '10%', '');
+        $t->set_header('支付方式', '10%', '');
+        $t->set_header('状态', '10%', '');
+        $t->set_header('下单时间', '10%', '');
+        $t->set_header('操作', '10%', '');
         return $t;
     }
 
@@ -95,7 +95,7 @@ class OrderController extends AuthBaseController
                 '客户电话'=>$model['phone'],
                '打球时间'=>$model['tee_time'],
                 '人数'=>$model['count'],
-                '单价'=>$model['unitprice'],
+                '单价'=>(intval($model['unitprice'])/100)."元",
                 '必须支付'=>$model['had_pay'],
                 '备注'=>$model['desc'],
                     

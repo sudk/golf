@@ -25,15 +25,15 @@ class PriceController extends AuthBaseController
         $t->url = 'index.php?r=price/grid';
         $t->updateDom = 'datagrid';
      
-        $t->set_header('球场', '100', '');
-        $t->set_header('服务项目', '70', '');
-        $t->set_header('周一至周日', '150', ''); 
+        $t->set_header('球场', '20%', '');
+        $t->set_header('服务项目', '10%', '');
+        $t->set_header('周一至周日', '20%', ''); 
               
-        $t->set_header('状态', '50', '');
-        $t->set_header('正常报价', '70', '');
-        $t->set_header('优惠报价', '70', '');
-        $t->set_header('特殊报价', '70', '');
-        $t->set_header('有效期', '70', '');
+        $t->set_header('状态', '10%', '');
+        $t->set_header('正常报价', '10%', '');
+        $t->set_header('优惠报价', '10%', '');
+        $t->set_header('特殊报价', '10%', '');
+        $t->set_header('有效期', '10%', '');
         return $t;
     }
 
@@ -486,14 +486,14 @@ class PriceController extends AuthBaseController
         $t = new SimpleGrid($this->pGridId);
         $t->url = 'index.php?r=price/policygrid';
         $t->updateDom = 'datagrid';
-        $t->set_header('开始日期', '100', '');
-        $t->set_header('结束日期', '100', '');
+        $t->set_header('开始日期', '10%', '');
+        $t->set_header('结束日期', '10%', '');
         //$t->set_header('', '70', '');
-        $t->set_header('服务项目', '70', '');
-        $t->set_header('预订须知', '100', '');
-        $t->set_header('取消规则', '100', '');
-        $t->set_header('周一至周日', '150', ''); 
-        $t->set_header('操作', '150', '');
+        $t->set_header('服务项目', '10%', '');
+        $t->set_header('预订须知', '15%', '');
+        $t->set_header('取消规则', '15%', '');
+        $t->set_header('周一至周日', '25%', ''); 
+        $t->set_header('操作', '15%', '');
 
         return $t;
     }
@@ -540,14 +540,15 @@ class PriceController extends AuthBaseController
         $t = new SimpleGrid($this->cGridId);
         $t->url = 'index.php?r=price/cusotmgrid';
         $t->updateDom = 'datagrid';
-        $t->set_header('开始日期', '100', '');
-        $t->set_header('结束日期', '100', '');
+       
+        $t->set_header('开始日期', '10%', '');
+        $t->set_header('结束日期', '10%', '');
         //$t->set_header('', '70', '');
-        $t->set_header('服务项目', '70', '');
-        $t->set_header('预订须知', '100', '');
-        $t->set_header('取消规则', '100', '');
-        $t->set_header('周一至周日', '150', ''); 
-        $t->set_header('操作', '150', '');
+        $t->set_header('服务项目', '10%', '');
+        $t->set_header('预订须知', '15%', '');
+        $t->set_header('取消规则', '15%', '');
+        $t->set_header('周一至周日', '25%', ''); 
+        $t->set_header('操作', '15%', '');
 
         return $t;
     }
@@ -594,13 +595,15 @@ class PriceController extends AuthBaseController
         $t = new SimpleGrid($this->sGridId);
         $t->url = 'index.php?r=price/specialgrid';
         $t->updateDom = 'datagrid';
-        $t->set_header('开始日期', '100', '');
-        $t->set_header('结束日期', '100', '');
-        $t->set_header('服务项目', '70', '');
-        $t->set_header('预订须知', '100', '');
-        $t->set_header('取消规则', '100', '');
-        $t->set_header('默认价格', '150', ''); 
-        $t->set_header('操作', '150', '');
+        $t->set_header('开始日期', '10%', '');
+        $t->set_header('结束日期', '10%', '');
+        //$t->set_header('', '70', '');
+        $t->set_header('服务项目', '10%', '');
+        $t->set_header('预订须知', '15%', '');
+        $t->set_header('取消规则', '15%', '');
+        $t->set_header('默认价格', '25%', ''); 
+        $t->set_header('操作', '15%', '');
+        
 
         return $t;
     }
