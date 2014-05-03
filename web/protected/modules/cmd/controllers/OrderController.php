@@ -21,16 +21,16 @@ class OrderController extends CMDBaseController
             ),
         );
     }
-    public function init()
+    public function beforeAction($action)
     {
-        parent::init();
         if(Yii::app()->user->isGuest){
             $msg['status']=-1;
             $msg['desc']="用户未登陆！";
             echo json_encode($msg);
-            return;
+            return false;
+        }else{
+            return true;
         }
-
     }
 
     public function actionList(){

@@ -125,7 +125,7 @@ class UserController extends CMDBaseController
                 $msg['desc']="获取用户信息失败";
             }
         }else{
-            $msg['status']=4;
+            $msg['status']=-1;
             $msg['desc']="未登陆";
         }
         echo json_encode($msg);
