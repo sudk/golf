@@ -325,22 +325,21 @@ class Order extends CActiveRecord {
                 ->queryRow();
 
             $sql = "insert into ".$log_table."
-                    (order_id,user_id,`type`,relation_id,relation_name,tee_time,`count`,unitprice,amount,had_pay,pay_type,status,record_time,serial_number,agent_id,contact,phone)
+                   (order_id,user_id,`type`,relation_id,relation_name,tee_time,`count`,unitprice,amount,had_pay,pay_type,status,record_time,serial_number,agent_id,contact,phone)
                      values
-                    (:order_id,:user_id,:type,:relation_id,:relation_name,:tee_time,:count,:unitprice,:amount,:had_pay,:pay_type,:status,:record_time,serial_number,:agent_id,:contact,:phone)
-            ";
+                    (:order_id,:user_id,:type,:relation_id,:relation_name,:tee_time,:count,:unitprice,:amount,:had_pay,:pay_type,:status,:record_time,:serial_number,:agent_id,:contact,:phone)";
             $command = $conn->createCommand($sql);
-            $command->bindParam(":order_id", $row['order_id'], PDO::PARAM_STR);
-            $command->bindParam(":user_id", $row['user_id'], PDO::PARAM_STR);
-            $command->bindParam(":type", $row['type'], PDO::PARAM_STR);
-            $command->bindParam(":relation_id", $row['relation_id'], PDO::PARAM_STR);
-            $command->bindParam(":relation_name", $row['relation_name'], PDO::PARAM_STR);
-            $command->bindParam(":tee_time", $row['tee_time'], PDO::PARAM_STR);
-            $command->bindParam(":count", $row['count'], PDO::PARAM_STR);
-            $command->bindParam(":unitprice", $row['unitprice'], PDO::PARAM_STR);
-            $command->bindParam(":amount", $row['amount'], PDO::PARAM_STR);
-            $command->bindParam(":had_pay", $row['had_pay'], PDO::PARAM_STR);
-            $command->bindParam(":pay_type", $row['pay_type'], PDO::PARAM_STR);
+            $command->bindParam(":order_id",$row['order_id'], PDO::PARAM_STR);
+            $command->bindParam(":user_id",$row['user_id'], PDO::PARAM_STR);
+            $command->bindParam(":type",$row['type'], PDO::PARAM_STR);
+            $command->bindParam(":relation_id",$row['relation_id'], PDO::PARAM_STR);
+            $command->bindParam(":relation_name",$row['relation_name'], PDO::PARAM_STR);
+            $command->bindParam(":tee_time",$row['tee_time'], PDO::PARAM_STR);
+            $command->bindParam(":count",$row['count'], PDO::PARAM_STR);
+            $command->bindParam(":unitprice",$row['unitprice'], PDO::PARAM_STR);
+            $command->bindParam(":amount",$row['amount'], PDO::PARAM_STR);
+            $command->bindParam(":had_pay",$row['had_pay'], PDO::PARAM_STR);
+            $command->bindParam(":pay_type",$row['pay_type'], PDO::PARAM_STR);
             $command->bindParam(":status",Order::STATUS_TOBE_CANCEL, PDO::PARAM_STR);
             $command->bindParam(":record_time",$record_time, PDO::PARAM_STR);
             $command->bindParam(":serial_number",$serial_number, PDO::PARAM_STR);
