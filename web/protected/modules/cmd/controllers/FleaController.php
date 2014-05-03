@@ -122,12 +122,13 @@ class FleaController extends CMDBaseController
             $command->bindParam(":user_id", $user_id, PDO::PARAM_STR);
             $command->execute();
             if(!isset(Yii::app()->command->cmdObj->imgs)&&count(Yii::app()->command->cmdObj->imgs)){
+                $type=Img::TYPE_FLEA;
                 foreach(Yii::app()->command->cmdObj->imgs as $img){
                     $img=str_replace(Img::IMG_PATH,'',$img);
                     $sql="insert into g_img (relation_id,`type`,`img_url`,record_time) values (:relation_id,:type,:img_url,:record_time)";
                     $command = $conn->createCommand($sql);
                     $command->bindParam(":relation_id",$id, PDO::PARAM_STR);
-                    $command->bindParam(":type",Img::TYPE_FLEA, PDO::PARAM_STR);
+                    $command->bindParam(":type",$type, PDO::PARAM_STR);
                     $command->bindParam(":img_url",$img, PDO::PARAM_STR);
                     $command->bindParam(":record_time",$record_time, PDO::PARAM_STR);
                     $command->execute();
@@ -212,13 +213,13 @@ class FleaController extends CMDBaseController
             $command->execute();
 
             if(!isset(Yii::app()->command->cmdObj->imgs)&&count(Yii::app()->command->cmdObj->imgs)){
-
+                $type=Img::TYPE_FLEA;
                 foreach(Yii::app()->command->cmdObj->imgs as $img){
                     $img=str_replace(Img::IMG_PATH,'',$img);
                     $sql="insert into g_img (relation_id,`type`,`img_url`,record_time) values (:relation_id,:type,:img_url,:record_time)";
                     $command = $conn->createCommand($sql);
-                    $command->bindParam(":relation_id",$id, PDO::PARAM_STR);
-                    $command->bindParam(":type",Img::TYPE_FLEA, PDO::PARAM_STR);
+                    $command->bindParam(":relation_id",Yii::app()->command->cmdObj->id, PDO::PARAM_STR);
+                    $command->bindParam(":type",$type, PDO::PARAM_STR);
                     $command->bindParam(":img_url",$img, PDO::PARAM_STR);
                     $command->bindParam(":record_time",$record_time, PDO::PARAM_STR);
                     $command->execute();
