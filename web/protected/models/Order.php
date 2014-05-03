@@ -310,12 +310,13 @@ class Order extends CActiveRecord {
         $d=date("YmdHis");
         $serial_number=$d.$r;
         $record_time=date("Y-m-d H:i:s");
-
+        $status=Order::STATUS_TOBE_CANCEL;
         try{
+
             $sql = "update g_order set status=:status where order_id=:order_id";
             $command = $conn->createCommand($sql);
-            $command->bindParam(":status", Order::STATUS_TOBE_CANCEL, PDO::PARAM_STR);
-            $command->bindParam(":order_id", $id, PDO::PARAM_STR);
+            $command->bindParam(":status",$status, PDO::PARAM_STR);
+            $command->bindParam(":order_id",$id, PDO::PARAM_STR);
             $command->execute();
 
             $row=Yii::app()->db->createCommand()
@@ -340,7 +341,7 @@ class Order extends CActiveRecord {
             $command->bindParam(":amount",$row['amount'], PDO::PARAM_STR);
             $command->bindParam(":had_pay",$row['had_pay'], PDO::PARAM_STR);
             $command->bindParam(":pay_type",$row['pay_type'], PDO::PARAM_STR);
-            $command->bindParam(":status",Order::STATUS_TOBE_CANCEL, PDO::PARAM_STR);
+            $command->bindParam(":status",$status, PDO::PARAM_STR);
             $command->bindParam(":record_time",$record_time, PDO::PARAM_STR);
             $command->bindParam(":serial_number",$serial_number, PDO::PARAM_STR);
             $command->bindParam(":agent_id",$row['agent_id'] , PDO::PARAM_STR);
