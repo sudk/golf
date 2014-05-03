@@ -7,6 +7,14 @@
  */
 class TransRecord extends CActiveRecord {
 
+    const TYPE_COURT_PAY=10;//订场
+    const TYPE_COURT_CANCEL=11;//订场撤销
+    const TYPE_TRIP_PAY=20;
+    const TYPE_TRIP_CANCEL=21;
+    const TYPE_COMPETITION_PAY=30;
+    const TYPE_COMPETITION_CANCEL=31;
+    const TYPE_RECHARGE_PAY=40;
+    const TYPE_RECHARGE_CANCEL=41;
 
     public static function model($className=__CLASS__){
         return parent::model($className);
@@ -142,8 +150,23 @@ class TransRecord extends CActiveRecord {
         }
         return $table;
     }
-    
-   
+
+    public static function Add($type,$amount,$serial_number,$re_serial_number=""){
+        $record_time=date("Y-m-d H:i:s");
+        $user_id=Yii::app()->user->id;
+        $sql = "insert into ".self::getTable()."
+                   (serial_number,trans_type,amount,re_serial_number,status,user_id,record_time)
+                     values
+                    (:serial_number,:trans_type,:amount,:re_serial_number,:status,:user_id,:record_time)";
+        $command = Yii::app()->db->createCommand($sql);
+        $command->bindParam(":serial_number",$serial_number, PDO::PARAM_STR);
+        $command->bindParam(":trans_type",$type, PDO::PARAM_STR);
+        $command->bindParam(":amount",$amount, PDO::PARAM_STR);
+        $command->bindParam(":re_serial_number",$re_serial_number, PDO::PARAM_STR);
+        $command->bindParam(":user_id",$user_id, PDO::PARAM_STR);
+        $command->bindParam(":record_time",$record_time, PDO::PARAM_STR);
+        $command->execute();
+    }
 }
 
 

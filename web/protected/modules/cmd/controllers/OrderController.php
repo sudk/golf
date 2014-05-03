@@ -175,4 +175,23 @@ class OrderController extends CMDBaseController
         return;
     }
 
+    public function actionPay(){
+        if(!isset(Yii::app()->command->cmdObj->type)||Yii::app()->command->cmdObj->type==''){
+            $msg['status']=1;
+            $msg['desc']="支付类型不能为空！";
+            echo json_encode($msg);
+            return;
+        }
+        if(!isset(Yii::app()->command->cmdObj->order_id)||Yii::app()->command->cmdObj->order_id==''){
+            $msg['status']=2;
+            $msg['desc']="订单ID不能为空！";
+            echo json_encode($msg);
+
+        }
+        $rs=Order::Pay(Yii::app()->command->cmdObj->order_id,Yii::app()->command->cmdObj->type);
+        echo json_encode($rs);
+        return;
+
+    }
+
 }

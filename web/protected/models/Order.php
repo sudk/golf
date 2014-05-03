@@ -149,9 +149,6 @@ class Order extends CActiveRecord {
     }
 
     public static function Create($args){
-        $log_table="g_order_log_".date("Ym");
-        Yii::app()->db->createCommand('create table if not exists `'.$log_table.'` like g_order_log_')->execute();
-
         $conn=Yii::app()->db;
         $transaction = $conn->beginTransaction();
         $r=rand(100000,999999);
@@ -191,32 +188,9 @@ class Order extends CActiveRecord {
             $command->bindParam(":contact",$args->contact,PDO::PARAM_STR);
             $command->bindParam(":phone",$args->phone,PDO::PARAM_STR);
             $command->execute();
-
-            $sql = "insert into {$log_table}
-                    (order_id,user_id,`type`,relation_id,relation_name,tee_time,`count`,unitprice,amount,had_pay,pay_type,status,record_time,serial_number,agent_id,contact,phone)
-                     values
-                    (:order_id,:user_id,:type,:relation_id,:relation_name,:tee_time,:count,:unitprice,:amount,:had_pay,:pay_type,:status,:record_time,:serial_number,:agent_id,:contact,:phone)";
-            $command = $conn->createCommand($sql);
-            $command->bindParam(":order_id", $order_id, PDO::PARAM_STR);
-            $command->bindParam(":user_id", $user_id, PDO::PARAM_STR);
-            $command->bindParam(":type", $args->type, PDO::PARAM_STR);
-            $command->bindParam(":relation_id", $args->relation_id, PDO::PARAM_STR);
-            $command->bindParam(":relation_name", $args->relation_name, PDO::PARAM_STR);
-            $command->bindParam(":tee_time", $args->tee_time, PDO::PARAM_STR);
-            $command->bindParam(":count",$args->count, PDO::PARAM_STR);
-            $command->bindParam(":unitprice",$args->unitprice, PDO::PARAM_STR);
-            $command->bindParam(":amount",$args->amount, PDO::PARAM_STR);
-            $command->bindParam(":had_pay",$had_pay,PDO::PARAM_STR);
-            $command->bindParam(":pay_type",$args->pay_type, PDO::PARAM_STR);
-            $command->bindParam(":status",$status,PDO::PARAM_STR);
-            $command->bindParam(":record_time",$record_time,PDO::PARAM_STR);
-            $command->bindParam(":serial_number",$order_id,PDO::PARAM_STR);
-            $command->bindParam(":agent_id",$args->agent_id,PDO::PARAM_STR);
-            $command->bindParam(":contact",$args->contact,PDO::PARAM_STR);
-            $command->bindParam(":phone",$args->phone,PDO::PARAM_STR);
-            $command->execute();
-
             $transaction->commit();
+
+            OrderLog::Add($order_id,$order_id);
 
             return $order_id;
 
@@ -302,61 +276,79 @@ class Order extends CActiveRecord {
     }
 
     public static function Cancel($id){
-        $log_table="g_order_log_".date("Ym");
-        Yii::app()->db->createCommand('create table if not exists `'.$log_table.'` like g_order_log_')->execute();
 
         $conn=Yii::app()->db;
         $transaction = $conn->beginTransaction();
         $r=rand(100000,999999);
         $d=date("YmdHis");
         $serial_number=$d.$r;
-        $record_time=date("Y-m-d H:i:s");
+
         $status=Order::STATUS_TOBE_CANCEL;
         try{
-
             $sql = "update g_order set status=:status where order_id=:order_id";
             $command = $conn->createCommand($sql);
             $command->bindParam(":status",$status, PDO::PARAM_STR);
             $command->bindParam(":order_id",$id, PDO::PARAM_STR);
             $command->execute();
-
-            $row=Yii::app()->db->createCommand()
-                ->select("*")
-                ->from("g_order")
-                ->where("order_id=:order_id",array("order_id"=>$id))
-                ->queryRow();
-
-            $sql = "insert into ".$log_table."
-                   (order_id,user_id,`type`,relation_id,relation_name,tee_time,`count`,unitprice,amount,had_pay,pay_type,status,record_time,serial_number,agent_id,contact,phone)
-                     values
-                    (:order_id,:user_id,:type,:relation_id,:relation_name,:tee_time,:count,:unitprice,:amount,:had_pay,:pay_type,:status,:record_time,:serial_number,:agent_id,:contact,:phone)";
-            $command = $conn->createCommand($sql);
-            $command->bindParam(":order_id",$row['order_id'], PDO::PARAM_STR);
-            $command->bindParam(":user_id",$row['user_id'], PDO::PARAM_STR);
-            $command->bindParam(":type",$row['type'], PDO::PARAM_STR);
-            $command->bindParam(":relation_id",$row['relation_id'], PDO::PARAM_STR);
-            $command->bindParam(":relation_name",$row['relation_name'], PDO::PARAM_STR);
-            $command->bindParam(":tee_time",$row['tee_time'], PDO::PARAM_STR);
-            $command->bindParam(":count",$row['count'], PDO::PARAM_STR);
-            $command->bindParam(":unitprice",$row['unitprice'], PDO::PARAM_STR);
-            $command->bindParam(":amount",$row['amount'], PDO::PARAM_STR);
-            $command->bindParam(":had_pay",$row['had_pay'], PDO::PARAM_STR);
-            $command->bindParam(":pay_type",$row['pay_type'], PDO::PARAM_STR);
-            $command->bindParam(":status",$status, PDO::PARAM_STR);
-            $command->bindParam(":record_time",$record_time, PDO::PARAM_STR);
-            $command->bindParam(":serial_number",$serial_number, PDO::PARAM_STR);
-            $command->bindParam(":agent_id",$row['agent_id'] , PDO::PARAM_STR);
-            $command->bindParam(":contact",$row['contact'] , PDO::PARAM_STR);
-            $command->bindParam(":phone",$row['phone'], PDO::PARAM_STR);
-            $command->execute();
-
             $transaction->commit();
+
+            OrderLog::Add($id,$serial_number);
 
             return true;
         }catch (Exception $e){
             $transaction->rollBack();
             return false;
         }
+    }
+
+    public static function Pay($order_id,$type){
+
+        $conn=Yii::app()->db;
+        $transaction = $conn->beginTransaction();
+        $r=rand(100000,999999);
+        $d=date("YmdHis");
+        $serial_number=$d.$r;
+        $status=Order::STATUS_TOBE_SUCCESS;
+
+        $row=Yii::app()->db->createCommand()
+            ->select("*")
+            ->from("g_order")
+            ->where("order_id=:order_id",array("order_id"=>$order_id))
+            ->queryRow();
+
+        try{
+            $sql = "update g_order set status=:status where order_id=:order_id";
+            $command = $conn->createCommand($sql);
+            $command->bindParam(":status",$status, PDO::PARAM_STR);
+            $command->bindParam(":order_id",$order_id, PDO::PARAM_STR);
+            $command->execute();
+
+            if($type==1){
+                $rs=User::Deduct($conn,$row['amount']);
+                if($rs['status']!=0){
+                    $transaction->rollBack();
+                    return $rs;
+                }
+            }
+
+            $transaction->commit();
+
+            switch($row['type']){
+                case Order::TYPE_COURT: $trans_type=TransRecord::TYPE_COURT_PAY;break;
+                case Order::TYPE_COMPETITION: $trans_type=TransRecord::TYPE_COMPETITION_PAY;break;
+                case Order::TYPE_TRIP: $trans_type=TransRecord::TYPE_TRIP_PAY;break;
+            }
+
+            TransRecord::Add($trans_type,-$row['amount'],$serial_number);
+
+            OrderLog::Add($order_id,$serial_number);
+
+            return array('status'=>0,'desc'=>'成功');
+        }catch (Exception $e){
+            $transaction->rollBack();
+            return array('status'=>3,'desc'=>'失败');;
+        }
+
     }
 
 }

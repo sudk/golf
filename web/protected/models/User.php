@@ -186,6 +186,36 @@ class User extends CActiveRecord {
     	}
     	return $ar;
     }
+
+    public static function Deduct($conn,$amount){
+        $id=Yii::app()->user->id;
+        $msg=array('status'=>0,'desc'=>'成功');
+        $row=Yii::app()->db->createCommand()
+            ->select("*")
+            ->from("g_user")
+            ->where("user_id=:user_id",array("user_id"=>Yii::app()->user->id))
+            ->queryRow();
+        $balance=$row['balance'];
+
+        if($row['status']!=User::STATUS_NORMAL){
+            $msg['status']=1;
+            $msg['desc']='账户状态异常！';
+            return $msg;
+        }
+        if($balance<$amount){
+            $msg['status']=2;
+            $msg['desc']='余额不足！';
+            return $msg;
+        }
+
+        $sql = "update g_user set balance=balance-:amount where user_id=:user_id";
+        $command = $conn->createCommand($sql);
+        $command->bindParam(":amount",$amount, PDO::PARAM_STR);
+        $command->bindParam(":user_id",$id, PDO::PARAM_STR);
+        $command->execute();
+
+        return $msg;
+    }
 }
 
 
