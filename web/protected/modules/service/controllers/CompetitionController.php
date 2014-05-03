@@ -21,12 +21,12 @@ class CompetitionController extends AuthBaseController
         $t = new SimpleGrid($this->gridId);
         $t->url = 'index.php?r=service/competition/grid';
         $t->updateDom = 'datagrid';
-        $t->set_header('序号', '30', '');
-        $t->set_header('赛事名称', '120', '');
-        $t->set_header('所在球场', '100', '');
-        $t->set_header('费用', '60', '');
-        $t->set_header('赛事时间', '100', '');
-        $t->set_header('操作', '100', '');
+        $t->set_header('序号', '5%', '');
+        $t->set_header('赛事名称', '25%', '');
+        $t->set_header('所在球场', '25%', '');
+        $t->set_header('费用', '10%', '');
+        $t->set_header('赛事时间', '20%', '');
+        $t->set_header('操作', '15%', '');
         return $t;
     }
 
@@ -195,6 +195,7 @@ class CompetitionController extends AuthBaseController
             
             $model->setScenario("modify");
             $model->attributes=$_POST['Competition'];
+            $model->fee = intval($_POST['Competition']['fee'])*100;
             $id = $model->id;
             $rs=$model->save();
             if($rs){

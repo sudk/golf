@@ -21,12 +21,12 @@ class RouteController extends AuthBaseController
         $t = new SimpleGrid($this->gridId);
         $t->url = 'index.php?r=service/route/grid';
         $t->updateDom = 'datagrid';
-        $t->set_header('序号', '30', '');
-        $t->set_header('行程名称', '100', '');
-        $t->set_header('支付方式', '100', '');
-        $t->set_header('开始日期', '230', '');
-        $t->set_header('结束日期', '100', '');
-        $t->set_header('操作', '80', '');
+        $t->set_header('序号', '5%', '');
+        $t->set_header('行程名称', '35%', '');
+        $t->set_header('支付方式', '15%', '');
+        $t->set_header('开始日期', '15%', '');
+        $t->set_header('结束日期', '15%', '');
+        $t->set_header('操作', '15%', '');
         return $t;
     }
 
@@ -88,9 +88,9 @@ class RouteController extends AuthBaseController
             $model->trip_name = $_POST['Trip']['trip_name'];
             $model->court_id = $_POST['Trip']['court_id'];
             $model->city = $_POST['Trip']['city'];
-            $model->normal_price = $_POST['Trip']['normal_price'];
-            $model->holiday_price = $_POST['Trip']['holiday_price'];
-            $model->other_price = $_POST['Trip']['other_price'];
+            $model->normal_price = intval($_POST['Trip']['normal_price'])*100;
+            $model->holiday_price = intval($_POST['Trip']['holiday_price'])*100;
+            $model->other_price = intval($_POST['Trip']['other_price'])*100;
             $model->pay_type = $_POST['Trip']['pay_type'];
             $model->is_check = $_POST['Trip']['is_check'];
             $model->start_date = $_POST['Trip']['start_date'];
@@ -143,9 +143,10 @@ class RouteController extends AuthBaseController
             $model->trip_name = $_POST['Trip']['trip_name'];
             $model->court_id = $_POST['Trip']['court_id'];
             $model->city = $_POST['Trip']['city'];
-            $model->normal_price = $_POST['Trip']['normal_price'];
-            $model->holiday_price = $_POST['Trip']['holiday_price'];
-            $model->other_price = $_POST['Trip']['other_price'];
+            $model->normal_price = intval($_POST['Trip']['normal_price'])*100;
+            $model->holiday_price = intval($_POST['Trip']['holiday_price'])*100;
+            $model->other_price = intval($_POST['Trip']['other_price'])*100;
+            
             $model->pay_type = $_POST['Trip']['pay_type'];
             $model->is_check = $_POST['Trip']['is_check'];
             $model->start_date = $_POST['Trip']['start_date'];

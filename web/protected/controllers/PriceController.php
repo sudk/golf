@@ -102,7 +102,8 @@ class PriceController extends AuthBaseController
                             'start_time'=>'',
                             'end_time'=>'',
                             'price'=>$_POST[$i.'_price'],
-                            'status'=>$_POST[$i."_status"]
+                            'status'=>$_POST[$i."_status"],
+                            'record_time'=>date('Y-m-d H:i:s')
                         );
                         array_push($week_day[$i], $day);
                         if(isset($_POST[$i.'_start_time']))
@@ -148,7 +149,8 @@ class PriceController extends AuthBaseController
                             'start_time'=>'',
                             'end_time'=>'',
                             'price'=>$_POST[$i.'_price'],
-                            'status'=>$_POST[$i."_status"]
+                            'status'=>$_POST[$i."_status"],
+                            'record_time'=>date('Y-m-d H:i:s')
                         );
                         array_push($week_day[$i], $day);
                     }
@@ -279,7 +281,8 @@ class PriceController extends AuthBaseController
                             'start_time'=>'',
                             'end_time'=>'',
                             'price'=>$_POST[$i.'_price'],
-                            'status'=>$_POST[$i."_status"]
+                            'status'=>$_POST[$i."_status"],
+                            'record_time'=>date('Y-m-d H:i:s')
                         );
                         array_push($week_day[$i], $day);
                         if(isset($_POST[$i.'_start_time']))
@@ -321,7 +324,8 @@ class PriceController extends AuthBaseController
                             'start_time'=>'',
                             'end_time'=>'',
                             'price'=>$_POST[$i.'_price'],
-                            'status'=>$_POST[$i."_status"]
+                            'status'=>$_POST[$i."_status"],
+                            'record_time'=>date('Y-m-d H:i:s')
                         );
                         array_push($week_day[$i], $day);
                     }

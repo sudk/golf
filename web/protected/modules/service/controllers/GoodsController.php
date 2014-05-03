@@ -21,14 +21,14 @@ class GoodsController extends AuthBaseController
         $t = new SimpleGrid($this->gridId);
         $t->url = 'index.php?r=service/goods/grid';
         $t->updateDom = 'datagrid';
-        $t->set_header('序号', '30', '');
-        $t->set_header('标题', '60', '');
-        $t->set_header('价格', '60', '');
+        $t->set_header('序号', '5%', '');
+        $t->set_header('标题', '30%', '');
+        $t->set_header('价格', '10%', '');
         
-        $t->set_header('所在城市', '80', '');
-        $t->set_header('发布时间', '80', '');
-        $t->set_header('状态', '80', '');
-        $t->set_header('操作', '80', '');
+        $t->set_header('所在城市', '10%', '');
+        $t->set_header('发布时间', '15%', '');
+        $t->set_header('状态', '10%', '');
+        $t->set_header('操作', '10%', '');
         return $t;
     }
 

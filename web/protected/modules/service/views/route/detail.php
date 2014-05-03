@@ -31,17 +31,18 @@
                   ?>
         </td>
         <td class="maxname">平日价格：</td>
-        <td class="mivalue"><?php echo $model->normal_price; ?></td>  
+        <td class="mivalue"><?php echo intval($model->normal_price)/100; ?>元</td>  
     </tr>
     <tr>
         <td class="maxname">假日价格：</td>
         <td class="mivalue">
            <?php
-                echo $model->holiday_price;         
+                echo intval($model->holiday_price)/100;         
             ?>
+            元
         </td>
         <td class="maxname">包括平日和假日的价格：</td>
-        <td class="mivalue"><?php echo $model->other_price; ?></td>  
+        <td class="mivalue"><?php echo intval($model->other_price)/100; ?>元</td>  
     </tr>
     
     <tr>

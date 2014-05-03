@@ -10,9 +10,14 @@ if (is_array($rows)) {
 
         $link = CHtml::link('详细',"javascript:itemEdit('{$row['id']}')", array());
         
+        $price = intval($row['price']);
+        $price = $price==0?0:floatval($price/100);
+        $price .= "元";
+        
+        
         $t->echo_td($num);
         $t->echo_td(htmlspecialchars($row['title'])); //学校编号
-        $t->echo_td($row['price']);
+        $t->echo_td($price);
         
         $t->echo_td($row['city']?$city_list[$row['city']]:"");
         $t->echo_td($row['record_time']);

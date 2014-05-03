@@ -16,10 +16,15 @@ if (is_array($rows))
            
         $valid_time = $row['start_date']."至".$row['end_date'];
         
+        $fee = $row['fee'];
+        $fee = intval($fee)==0 ? $fee : floatval(intval($fee)/100);
+        $fee .= "元";
+        
+        
 	$t->echo_td($num); 
         $t->echo_td($row['name']); //学校编号
         $t->echo_td($court_list[$row['court_id']]);
-        $t->echo_td($row['fee']);
+        $t->echo_td($fee);
         $t->echo_td($valid_time);
        
         $t->echo_td($link);

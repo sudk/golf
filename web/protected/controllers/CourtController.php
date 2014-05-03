@@ -327,8 +327,13 @@ class CourtController extends AuthBaseController
 
         $t = $this->genPicDataGrid();
         
+        if(!isset($args['relation_id']))
+        {
+            $args['relation_id'] = $_SESSION['cur_court_id'];
+        }
+        
         $args['from'] = 'court';
-
+        //var_dump($args);
         $list = Img::queryList($page, $this->pageSize, $args);
 
         $this->renderPartial('_piclist', array('t' => $t, 'rows' => $list['rows'], 'cnt' => $list['total_num'], 'curpage' => $list['page_num']));
@@ -506,9 +511,9 @@ class CourtController extends AuthBaseController
      * 保存头像
      * 180x180 50x50 30x30三个尺寸
      */
-    function saveThumbnails($file_name,$file_name_small){
+    function saveThumbnails($file_name,$file_name_small,$img_size=56){
       
-        $middle_size = 56;     
+        $middle_size = $img_size;     
         $src = $file_name;
         //$suffix = strtolower($suffix);
         

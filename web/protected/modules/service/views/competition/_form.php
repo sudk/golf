@@ -60,7 +60,7 @@ if($__model__!="edit"){
                 echo $form->activeDropDownList($model, 'fee_type',  Competition::getType(), array('title' => '本项必填', 'class' => 'input_text'), 'required');         
             ?>
         </td>
-        <td class="maxname">费用(分)：</td>
+        <td class="maxname">费用(元)：</td>
         <td class="mivalue"><?php echo $form->activeTextField($model, 'fee', array('title' => '本项必填', 'class' => 'input_text', 'maxlength' => 20), 'required&number'); ?></td>  
     </tr>
     

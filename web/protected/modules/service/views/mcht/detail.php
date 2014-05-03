@@ -40,7 +40,7 @@
             ?>
         </td>
         <td class="maxname">人均消费：</td>
-        <td class="mivalue"><?php echo $model->consumption; ?></td>  
+        <td class="mivalue"><?php echo $model->consumption; ?>元</td>  
     </tr>
     
     <tr>
