@@ -301,7 +301,7 @@ class Order extends CActiveRecord {
         }
     }
 
-    public static function Pay($order_id,$type){
+    public static function Pay($order_id,$type,$amount){
 
         $conn=Yii::app()->db;
         $transaction = $conn->beginTransaction();
@@ -317,14 +317,15 @@ class Order extends CActiveRecord {
             ->queryRow();
 
         try{
-            $sql = "update g_order set status=:status where order_id=:order_id";
+            $sql = "update g_order set status=:status,had_pay=:had_pay where order_id=:order_id";
             $command = $conn->createCommand($sql);
             $command->bindParam(":status",$status, PDO::PARAM_STR);
+            $command->bindParam(":had_pay",$amount, PDO::PARAM_STR);
             $command->bindParam(":order_id",$order_id, PDO::PARAM_STR);
             $command->execute();
 
             if($type==1){
-                $rs=User::Deduct($conn,$row['amount']);
+                $rs=User::Deduct($conn,$amount);
                 if($rs['status']!=0){
                     $transaction->rollBack();
                     return $rs;
@@ -333,13 +334,14 @@ class Order extends CActiveRecord {
 
             $transaction->commit();
 
+            $trans_type=TransRecord::TYPE_COURT_PAY;
             switch($row['type']){
                 case Order::TYPE_COURT: $trans_type=TransRecord::TYPE_COURT_PAY;break;
                 case Order::TYPE_COMPETITION: $trans_type=TransRecord::TYPE_COMPETITION_PAY;break;
                 case Order::TYPE_TRIP: $trans_type=TransRecord::TYPE_TRIP_PAY;break;
             }
 
-            TransRecord::Add($trans_type,-$row['amount'],$serial_number);
+            TransRecord::Add($trans_type,-$amount,$serial_number);
 
             OrderLog::Add($order_id,$serial_number);
 
