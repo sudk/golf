@@ -17,6 +17,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 public class GAccountFragment extends Fragment implements OnClickListener {
 
@@ -24,6 +25,8 @@ public class GAccountFragment extends Fragment implements OnClickListener {
 	Button mLogout;
 
 	LinearLayout mButtons, mUserInfo;
+
+	private TextView mBalance, mPoints, mPhone;
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
@@ -42,7 +45,6 @@ public class GAccountFragment extends Fragment implements OnClickListener {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
-
 		View v = inflater.inflate(R.layout.fragment_account, container, false);
 		v.findViewById(R.id.account_login).setOnClickListener(this);
 		v.findViewById(R.id.account_register).setOnClickListener(this);
@@ -51,14 +53,18 @@ public class GAccountFragment extends Fragment implements OnClickListener {
 		mButtons = (LinearLayout) v.findViewById(R.id.account_buttons);
 		mUserInfo = (LinearLayout) v.findViewById(R.id.account_info);
 
+		mBalance = (TextView) v.findViewById(R.id.account_balance);
+		mPoints = (TextView) v.findViewById(R.id.account_points);
+		mPhone = (TextView) v.findViewById(R.id.account_phone);
+
 		mLogout = (Button) v.findViewById(R.id.account_logout);
 		mLogout.setOnClickListener(this);
+
+		v.findViewById(R.id.account_order).setOnClickListener(this);
 
 		ActionBarActivity activity = (ActionBarActivity) getActivity();
 		ActionBar bar = activity.getSupportActionBar();
 		bar.setTitle(R.string.account_manager);
-		// int change = bar.getDisplayOptions() ^ ActionBar.DISPLAY_HOME_AS_UP;
-		// bar.setDisplayOptions(change, ActionBar.DISPLAY_HOME_AS_UP);
 
 		return v;
 	}
@@ -76,6 +82,10 @@ public class GAccountFragment extends Fragment implements OnClickListener {
 			mLogout.setEnabled(true);
 			mButtons.setVisibility(ViewGroup.GONE);
 			mUserInfo.setVisibility(ViewGroup.VISIBLE);
+
+			mPhone.setText(_account.getPhone());
+			mBalance.setText(String.format("金额：%d", _account.getBalance()));
+			mPoints.setText(String.format("积分：%d", _account.getPoint()));
 
 		} else {
 			mLogout.setEnabled(false);
@@ -97,11 +107,12 @@ public class GAccountFragment extends Fragment implements OnClickListener {
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
+		GolfAppliaction app = (GolfAppliaction) getActivity().getApplication();
+		_account = app.getAccount();
+
 		switch (v.getId()) {
 		case R.id.account_login:
-			Intent itLogin = new Intent(getActivity(), GAccountActivity.class);
-			itLogin.putExtra(GAccountActivity.FRAGMENT, GAccountActivity.LOGIN);
-			startActivity(itLogin);
+			startLoginActivity();
 			break;
 		case R.id.account_register:
 			Intent itRegister = new Intent(getActivity(),
@@ -111,19 +122,36 @@ public class GAccountFragment extends Fragment implements OnClickListener {
 			startActivity(itRegister);
 			break;
 		case R.id.account_logout:
-
-			GolfAppliaction app = (GolfAppliaction) getActivity().getApplication();
-			_account = app.getAccount();
 			_account.clear();
 			onResume();
-			
 			break;
 
 		case R.id.account_change_pwd:
 			startActivity(new Intent(getActivity(), GChangePwdActivity.class));
 			break;
+		case R.id.account_order:
+
+			if (_account.isLogin()) {
+				
+				Intent itOrder = new Intent(getActivity(), GOrderActivity.class);
+				Bundle params = new Bundle();
+				params.putInt(GOrderActivity.FRAGMENT_MARK, GOrderActivity.FRAGMENT_MARK_LIST_ORDER);
+				itOrder.putExtras(params);
+				startActivity(itOrder);
+
+			} else {
+				startLoginActivity();
+			}
+
+			break;
 		}
 
+	}
+
+	private void startLoginActivity() {
+		Intent itLogin = new Intent(getActivity(), GAccountActivity.class);
+		itLogin.putExtra(GAccountActivity.FRAGMENT, GAccountActivity.LOGIN);
+		startActivity(itLogin);
 	}
 
 }

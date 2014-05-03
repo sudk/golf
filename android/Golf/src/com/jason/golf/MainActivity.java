@@ -24,6 +24,9 @@ public class MainActivity extends ActionBarActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
+		ActionBar bar = getSupportActionBar();
+		bar.setIcon(R.drawable.actionbar_icon);
+		
 		mTabHost = (FragmentTabHost)findViewById(android.R.id.tabhost);
         mTabHost.setup(this, getSupportFragmentManager(), R.id.main_real_content);
 

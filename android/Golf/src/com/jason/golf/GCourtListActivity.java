@@ -1,7 +1,6 @@
 package com.jason.golf;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 
@@ -12,7 +11,6 @@ import org.json.JSONObject;
 import com.jason.controller.GThreadExecutor;
 import com.jason.controller.HttpCallback;
 import com.jason.controller.HttpRequest;
-import com.jason.golf.classes.GCourt;
 import com.jason.golf.classes.SearchCourtBean;
 import com.jason.golf.classes.SearchCourtListAdapter;
 import com.jsaon.golf.R;
@@ -49,7 +47,6 @@ public class GCourtListActivity extends ActionBarActivity implements
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-
 		setContentView(R.layout.activity_search_court_list);
 		_courts = new ArrayList<SearchCourtBean>();
 		
@@ -189,6 +186,9 @@ public class GCourtListActivity extends ActionBarActivity implements
 			e.printStackTrace();
 		}
 
+		ActionBar bar = getSupportActionBar();
+		bar.setIcon(R.drawable.actionbar_icon);
+		
 		initialTabs();
 
 	}

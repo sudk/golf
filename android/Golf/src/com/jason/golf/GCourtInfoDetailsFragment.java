@@ -3,17 +3,13 @@ package com.jason.golf;
 import java.util.ArrayList;
 
 import net.tsz.afinal.FinalBitmap;
-import net.tsz.afinal.exception.AfinalException;
 
 import com.jason.golf.classes.GCourt;
 import com.jsaon.golf.R;
 
-import android.R.integer;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;

@@ -27,6 +27,7 @@ public class GAccountActivity extends ActionBarActivity {
 		
 		ActionBar bar = getSupportActionBar();
 		bar.setTitle(R.string.court_info);
+		bar.setIcon(R.drawable.actionbar_icon);
 		int change = bar.getDisplayOptions() ^ ActionBar.DISPLAY_HOME_AS_UP;
 	    bar.setDisplayOptions(change, ActionBar.DISPLAY_HOME_AS_UP);
 		
@@ -61,29 +62,23 @@ public class GAccountActivity extends ActionBarActivity {
 		}
 
 	}
-
+	
+	
 	@Override
 	public boolean onSupportNavigateUp() {
-		
-		checkToFinish();
-		return true;
+		// TODO Auto-generated method stub
+		onBackPressed();
+		return super.onSupportNavigateUp();
 	}
 
 	@Override
 	public void onBackPressed() {
 		// TODO Auto-generated method stub
-		checkToFinish();
-	}
-	
-	private void checkToFinish(){
-		/*
-		 * 如果activity的fragment栈为空，结束activity。 
-		 */
+		
 		if(fm.getBackStackEntryCount() == 1)
 			finish();
 		else
-			fm.popBackStack();
+			super.onBackPressed();
 		
 	}
-	
 }

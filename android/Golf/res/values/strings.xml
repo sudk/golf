@@ -4,22 +4,23 @@
     <string name="app_name">青之鸟高尔夫</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-    
+
     <!-- MainActivity -->
     <string name="court">球场</string>
     <string name="account">账户</string>
     <string name="find">发现</string>
-    
+
     <!-- other -->
     <string name="preference">特惠</string>
     <string name="combo">套餐</string>
     <string name="sale">寄卖</string>
     <string name="ranking">排行榜</string>
-    
+
     <!-- 用户信息 -->
     <string name="account_manager">账户管理</string>
     <string name="register">注册</string>
     <string name="register_title">用户注册</string>
+    <string name="register_success">感谢注册“青之鸟高尔夫”，您的注册手机号是%1$s。</string>
     <string name="login">登录</string>
     <string name="login_title">用户登录</string>
     <string name="phone">手机号</string>
@@ -29,44 +30,47 @@
     <string name="email">Email</string>
     <string name="vipcard">VIP卡</string>
     <string name="order_to_pay">待支付订单</string>
-    <string name="order_manager">订单管理</string>
     <string name="hint_input_phone_number">请输入手机号码</string>
     <string name="hint_password_length">6至16位密码</string>
     <string name="hint_username">请输入用户姓名</string>
     <string name="hint_email">请输入电子邮箱地址</string>
     <string name="hint_vip">VIP卡号，没有可不填</string>
     <string name="sms_code">验证码</string>
-    
     <string name="account_recharge">账户充值</string>
     <string name="account_transfer">转账</string>
     <string name="account_withdraw">余额提现</string>
     <string name="consumption_details">消费明细</string>
     <string name="account_changepwd">修改密码</string>
     <string name="account_logout">退出账户</string>
-    
+
     <!-- 球场搜索 -->
     <string name="city">城市</string>
-	<string name="playdate">打球日期</string>
-	<string name="playtime">打球时间</string>
-	<string name="keyword">关键字</string>
-	<string name="name_of_court">球场名称</string>
-	<string name="current_position">当前位置</string>
-	<string name="court_info">球场详情</string>
-	<string name="court_model">球场模式</string>
-	<string name="court_creat_date">建立时间</string>
-	<string name="court_area">球场面积</string>
-	<string name="court_greengrass">果岭草种</string>
-	<string name="court_data">球场数据</string>
-	<string name="court_designer">设计师</string>
-	<string name="court_fairway_length">球道长度</string>
-	<string name="court_fairway_grass">球场草种</string>
-	<string name="court_facilities">球场设施</string>
-	<string name="court_phone">球场电话</string>
-	<string name="court_brief">球场简介</string>
-	<string name="court_fairway_imags">球道图片</string>
-	
-	<!-- 通用 -->
-	<string name="note">提示</string>
+    <string name="playdate">打球日期</string>
+    <string name="playtime">打球时间</string>
+    <string name="keyword">关键字</string>
+    <string name="name_of_court">球场名称</string>
+    <string name="current_position">当前位置</string>
+    <string name="court_info">球场详情</string>
+    <string name="court_model">球场模式</string>
+    <string name="court_creat_date">建立时间</string>
+    <string name="court_area">球场面积</string>
+    <string name="court_greengrass">果岭草种</string>
+    <string name="court_data">球场数据</string>
+    <string name="court_designer">设计师</string>
+    <string name="court_fairway_length">球道长度</string>
+    <string name="court_fairway_grass">球场草种</string>
+    <string name="court_facilities">球场设施</string>
+    <string name="court_phone">球场电话</string>
+    <string name="court_brief">球场简介</string>
+    <string name="court_fairway_imags">球道图片</string>
+    
+    <!-- order -->
+    <string name="order_manager">订单管理</string>
+    <string name="order">订单</string>
+    <string name="order_successful">订单提交成功！</string>
+
+    <!-- 通用 -->
+    <string name="note">提示</string>
     <string name="cancel">取消</string>
     <string name="no_sd_card">找不到SD卡</string>
     <string name="confirm">确定</string>
@@ -74,5 +78,13 @@
     <string name="exit">退出</string>
     <string name="is_exit">是否退出？</string>
     <string name="obtain">获取</string>
-    
+
+    <!-- XListView -->
+    <string name="xlistview_header_hint_normal">下拉刷新</string>
+    <string name="xlistview_header_hint_ready">松开刷新数据</string>
+    <string name="xlistview_header_hint_loading">正在加载...</string>
+    <string name="xlistview_header_last_time">上次更新时间：</string>
+    <string name="xlistview_footer_hint_normal">查看更多</string>
+    <string name="xlistview_footer_hint_ready">松开载入更多</string>
+
 </resources>

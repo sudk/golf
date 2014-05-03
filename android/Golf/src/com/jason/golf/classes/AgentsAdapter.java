@@ -2,9 +2,13 @@ package com.jason.golf.classes;
 
 import java.util.ArrayList;
 
+import com.jason.golf.GAccountActivity;
+import com.jason.golf.GolfAppliaction;
+import com.jason.golf.dialog.OrderDialog;
 import com.jsaon.golf.R;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,7 +63,7 @@ public class AgentsAdapter extends BaseAdapter {
 			v = _inflater.inflate(R.layout.agent_list_item, null);
 			holder = new ViewHolder();
 			holder._name = (TextView) v.findViewById(R.id.agent_name);
-			holder._brief = (TextView) v.findViewById(R.id.agent_brief);
+			holder._service = (TextView) v.findViewById(R.id.agent_service);
 			holder._price = (TextView) v.findViewById(R.id.agent_price);
 			holder._payType = (TextView) v.findViewById(R.id.agent_paytype);
 			holder._reserve = (Button) v.findViewById(R.id.agent_reserve);
@@ -70,10 +74,11 @@ public class AgentsAdapter extends BaseAdapter {
 			holder = (ViewHolder) v.getTag();
 		}
 		
-		GAgent agent = _agents.get(position);
+		final GAgent agent = _agents.get(position);
 		holder._name.setText(agent.getName());
-//		holder._brief.setText(agent.getBrief());
-		
+		holder._service.setText(agent.getService());
+		holder._price.setText(String.format("￥%.2f", (float)agent.getPrice()/100));
+		holder._payType.setText(GAgent.GetPayTypeDes(agent.getPayType()));
 		
 		holder._reserve.setOnClickListener(new View.OnClickListener() {
 			
@@ -81,14 +86,27 @@ public class AgentsAdapter extends BaseAdapter {
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
 				Toast.makeText(_context, "Generate Order", Toast.LENGTH_SHORT).show();
+				
+				GolfAppliaction app = (GolfAppliaction) _context.getApplicationContext();
+				GAccount acc = app.getAccount();
+				
+				if(acc.isLogin()){
+					OrderDialog dialog = new OrderDialog(_context, agent);
+					dialog.show();
+				
+				}else{
+					
+					Intent itLogin = new Intent(_context, GAccountActivity.class);
+					itLogin.putExtra(GAccountActivity.FRAGMENT, GAccountActivity.LOGIN);
+					_context.startActivity(itLogin);
+					
+				}
+				
 			}
 			
 		});
 		
-		
-		
-		
-		holder._price.setText(String.format("￥ %s", agent.getPrice()));
+		holder._price.setText(String.format("￥ %.2f", (float)agent.getPrice()/100));
 		
 		return v;
 	}
@@ -101,7 +119,7 @@ public class AgentsAdapter extends BaseAdapter {
 	
 	private class ViewHolder{
 		public TextView _name;
-		public TextView _brief;
+		public TextView _service;
 		public TextView _price;
 		public TextView _payType;
 		public Button _reserve;

@@ -61,6 +61,7 @@ public class HttpRequest implements Runnable, Callback {
 					JSONObject resObj = new JSONObject(res);
 					
 					int status = resObj.getInt("status");
+					String des = resObj.getString("desc");
 					
 					switch(status){
 					case 0:
@@ -83,16 +84,9 @@ public class HttpRequest implements Runnable, Callback {
 					case -1:
 						Log.e(TAG, "Session Timeout");
 						
-						
-						
-						
 						break;
 					default:
-						
-						
-						
-						
-						
+						if(_callBack != null) _callBack.faildData(status, des);
 					}
 					
 				} catch (JSONException e) {

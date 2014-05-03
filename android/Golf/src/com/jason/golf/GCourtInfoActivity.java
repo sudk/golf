@@ -39,6 +39,7 @@ public class GCourtInfoActivity extends ActionBarActivity {
 		
 		ActionBar bar = getSupportActionBar();
 		bar.setTitle(R.string.court_info);
+		bar.setIcon(R.drawable.actionbar_icon);
 		int change = bar.getDisplayOptions() ^ ActionBar.DISPLAY_HOME_AS_UP;
 	    bar.setDisplayOptions(change, ActionBar.DISPLAY_HOME_AS_UP);
 

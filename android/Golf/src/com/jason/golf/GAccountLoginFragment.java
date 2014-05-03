@@ -27,7 +27,6 @@ public class GAccountLoginFragment extends Fragment implements OnClickListener {
 	
 	public static GAccountLoginFragment Instance(){
 		GAccountLoginFragment fragment = new GAccountLoginFragment();
-		
 		return fragment;
 	}
 	
@@ -99,22 +98,33 @@ public class GAccountLoginFragment extends Fragment implements OnClickListener {
 				@Override
 				public void sucessData(String res) {
 					// TODO Auto-generated method stub
-					//{"data":{"user_id":"6","user_name":"","phone":"18653157591","card_no":"","email":"","sex":null,"remark":null,"record_time":"2014-04-24 17:21:17","status":null,"balance":null,"point":null},"desc":"\u6210\u529f\uff01","status":0}
+//					 {"data":{"user_id":"6","user_name":"","phone":"18653157591",
+//					"card_no":"","email":"","sex":null,"remark":null,"record_time":
+//					"2014-04-24 17:21:17","status":"0","balance":null,"point":null},
+//					"desc":"\u6210\u529f\uff01","status":0}
 
+					super.sucessData(res);
+					
 					JSONObject data;
 					try {
 						data = new JSONObject(res);
 						GolfAppliaction app = (GolfAppliaction) getActivity().getApplication();
 						GAccount acc = app.getAccount();
 						acc.initilization(data.getString("user_id"));
+						acc.setName(data.getString("user_name"));
+						acc.setPhone(data.getString("phone"));
+						acc.setVipCardNo(data.getString("card_no"));
+						acc.setEamil(data.getString("email"));
+						acc.setSex(data.getString("sex"));
+						acc.setRemark(data.getString("remark"));
+						acc.setBalance(data.getString("balance"));
+						acc.setPoint(data.getString("point"));
 						getActivity().finish();
 						
 					} catch (JSONException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					
-					super.sucessData(res);
 					
 				}
 				

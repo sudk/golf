@@ -1,9 +1,12 @@
 package com.jason.golf.classes;
 
+import com.jsaon.golf.R;
+
 import android.widget.LinearLayout;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.util.TypedValue;
@@ -31,6 +34,8 @@ public class AddAndSubView extends LinearLayout {
 	int editTextMinHeight; // editText文本区域的最小高度
 	int editTextHeight; // editText文本区域的高度
 
+	int _maxNumber = -1;
+
 	public AddAndSubView(Context context) {
 		super(context);
 		this.context = context;
@@ -51,13 +56,12 @@ public class AddAndSubView extends LinearLayout {
 		control();
 	}
 
-	public AddAndSubView(Context context, AttributeSet attrs)
-    {
-        super(context, attrs);
-        this.context = context;
-        num = 0;
-        control();
-    }
+	public AddAndSubView(Context context, AttributeSet attrs) {
+		super(context, attrs);
+		this.context = context;
+		num = 0;
+		control();
+	}
 
 	/**
      * 
@@ -107,14 +111,20 @@ public class AddAndSubView extends LinearLayout {
 	 * 设置内部view的布局参数
 	 */
 	private void setViewsLayoutParm() {
-		LayoutParams viewLayoutParams = new LayoutParams(
-				LinearLayout.LayoutParams.WRAP_CONTENT,
-				LinearLayout.LayoutParams.WRAP_CONTENT);
+		// LayoutParams viewLayoutParams = new LayoutParams(
+		// LinearLayout.LayoutParams.WRAP_CONTENT,
+		// LinearLayout.LayoutParams.WRAP_CONTENT);
+
+		LayoutParams viewLayoutParams = new LayoutParams(60, 45);
 
 		addButton.setLayoutParams(viewLayoutParams);
+		addButton.setPadding(1, 1, 1, 1);
 		subButton.setLayoutParams(viewLayoutParams);
+		subButton.setPadding(1, 1, 1, 1);
 		editText.setLayoutParams(viewLayoutParams);
 		editText.setGravity(Gravity.CENTER);
+		editText.setPadding(1, 1, 1, 1);
+		editText.setBackground(null);
 		setTextWidthHeight();
 
 		viewLayoutParams.gravity = Gravity.CENTER;
@@ -131,6 +141,7 @@ public class AddAndSubView extends LinearLayout {
 		viewLayoutParams.width = LinearLayout.LayoutParams.MATCH_PARENT;
 		mainLinearLayout.setLayoutParams(viewLayoutParams);
 		mainLinearLayout.setOrientation(LinearLayout.HORIZONTAL);
+		mainLinearLayout.setBackground(context.getResources().getDrawable(R.drawable.block_background));
 	}
 
 	/**
@@ -324,8 +335,13 @@ public class AddAndSubView extends LinearLayout {
 	public void setButtonBgResource(int addBtnResource, int subBtnResource) {
 		addButton.setBackgroundResource(addBtnResource);
 		subButton.setBackgroundResource(subBtnResource);
-		addButton.setText("");
-		subButton.setText("");
+
+		addButton.setTextColor(context.getResources().getColor(
+				android.R.color.white));
+		subButton.setTextColor(context.getResources().getColor(
+				android.R.color.white));
+		// addButton.setText("");
+		// subButton.setText("");
 	}
 
 	/**
@@ -370,7 +386,7 @@ public class AddAndSubView extends LinearLayout {
 		@Override
 		public void onClick(View v) {
 			String numString = editText.getText().toString();
-			if (numString == null || numString.equals("")) {
+			if (TextUtils.isEmpty(numString)) {
 				num = 0;
 				editText.setText("0");
 			} else {
@@ -380,6 +396,7 @@ public class AddAndSubView extends LinearLayout {
 						num--;
 						Toast.makeText(context, "请输入一个大于0的数字",
 								Toast.LENGTH_SHORT).show();
+
 					} else {
 						editText.setText(String.valueOf(num));
 
@@ -388,6 +405,15 @@ public class AddAndSubView extends LinearLayout {
 									num);
 						}
 					}
+
+					// if(_maxNumber < 0 ) return ;
+					//
+					// if( num >= _maxNumber){
+					//
+					// addButton.setEnabled(false);
+					//
+					// }
+
 				} else if (v.getTag().equals("-")) {
 					if (--num < 0) // 先减，再判断
 					{
@@ -401,6 +427,15 @@ public class AddAndSubView extends LinearLayout {
 									num);
 						}
 					}
+					//
+					// if(_maxNumber < 0 ) return ;
+					//
+					// if( num >= _maxNumber){
+					//
+					// addButton.setEnabled(false);
+					//
+					// }
+
 				}
 			}
 		}

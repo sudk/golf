@@ -24,8 +24,6 @@ import com.jsaon.golf.R;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -141,7 +139,7 @@ public class GCourtInfoBriefFragment extends Fragment implements OnClickListener
 		super.onDetach();
 	}
 
-	private void quertAgents(String c){
+	private void quertAgents(final String c){
 		
 		JSONObject params = new JSONObject();
 		
@@ -176,20 +174,23 @@ public class GCourtInfoBriefFragment extends Fragment implements OnClickListener
 						agent.setCourtid(item.getString("court_id"));
 						agent.setCourtname(item.getString("court_name"));
 						agent.setPriceremark(item.getString("remark"));
-						agent.setGreen("1".equals(item.getString("is_green")));
-						agent.setCaddie("1".equals(item.getString("is_caddie")));
-						agent.setCar("1".equals(item.getString("is_car")));
-						agent.setWardrobe("1".equals(item.getString("is_wardrobe")));
-						agent.setMeal("1".equals(item.getString("is_meal")));;
-						agent.setInsurance("1".equals(item.getString("is_insurance")));
-						agent.setTips("1".equals(item.getString("is_tip")));
-						agent.setPayType(item.getInt("pay_type"));
+						agent.setGreen(item.getString("is_green"));
+						agent.setCaddie(item.getString("is_caddie"));
+						agent.setCar(item.getString("is_car"));
+						agent.setWardrobe(item.getString("is_wardrobe"));
+						agent.setMeal(item.getString("is_meal"));
+						agent.setInsurance(item.getString("is_insurance"));
+						agent.setTips(item.getString("is_tip"));
+						agent.setPayType(item.getString("pay_type"));
 						agent.setPrice(item.getString("price"));
+						agent.setCancelRemark(item.getString("cancel_remark"));
 //						agent.setBargainPriceDes(item.getString("special_desc"));
 						
+						agent.setTeeTime(String.format("%d-%02d-%02d %02d:%02d", _year, _month, _day, _hour, _minute));
 						agents.add(agent);
 						
 					}
+					
 					mAgentsAdapter.swapData(agents);
 					setListViewHeightBasedOnChildren(mAgentList);
 					
@@ -201,55 +202,6 @@ public class GCourtInfoBriefFragment extends Fragment implements OnClickListener
 				}
 				
 				super.sucessData(res);
-				
-//				try {
-//					JSONObject resObj = new JSONObject(res);
-//					
-//					int status = resObj.getInt("status");
-//					
-//					if( status == 0){
-//					
-//						JSONArray data = resObj.getJSONArray("data");
-//						
-//						ArrayList<GAgent> agents = new ArrayList<GAgent>();
-//						
-//						for(int i=0, length=data.length(); i<length; i++){
-//							
-//							JSONObject item = data.getJSONObject(i);
-//							
-//							GAgent agent = new GAgent();
-//							agent.setId(item.getString("agent_id"));
-//							agent.setName(item.getString("agent_name"));
-//							agent.setCourtid(item.getString("court_id"));
-//							agent.setCourtname(item.getString("court_name"));
-//							agent.setPriceremark(item.getString("remark"));
-//							agent.setGreen("1".equals(item.getString("is_green")));
-//							agent.setCaddie("1".equals(item.getString("is_caddie")));
-//							agent.setCar("1".equals(item.getString("is_car")));
-//							agent.setWardrobe("1".equals(item.getString("is_wardrobe")));
-//							agent.setMeal("1".equals(item.getString("is_meal")));;
-//							agent.setInsurance("1".equals(item.getString("is_insurance")));
-//							agent.setTips("1".equals(item.getString("is_tip")));
-//							agent.setPayType(item.getInt("pay_type"));
-//							agent.setPrice(item.getString("price"));
-////							agent.setBargainPriceDes(item.getString("special_desc"));
-//							
-//							agents.add(agent);
-//							
-//						}
-//						mAgentsAdapter.swapData(agents);
-//						setListViewHeightBasedOnChildren(mAgentList);
-//					}else if(status == 4){
-//						ArrayList<GAgent> agents = new ArrayList<GAgent>();
-//						mAgentsAdapter.swapData(agents);
-//						setListViewHeightBasedOnChildren(mAgentList);
-//					}
-//					
-//				} catch (JSONException e) {
-//					// TODO Auto-generated catch block
-//					e.printStackTrace();
-//				}
-				
 				
 			}
 			
