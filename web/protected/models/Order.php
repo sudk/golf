@@ -154,7 +154,7 @@ class Order extends CActiveRecord {
 
         $conn=Yii::app()->db;
         $transaction = $conn->beginTransaction();
-        $r=rand(1000000,9999999);
+        $r=rand(100000,999999);
         $d=date("YmdHis");
         $order_id=$d.$r;
         $record_time=date("Y-m-d H:i:s");
@@ -219,6 +219,7 @@ class Order extends CActiveRecord {
             $transaction->commit();
 
             return $order_id;
+
         }catch (Exception $e){
             Yii::log($e->getMessage(),'debug','application.firebuglog');
             $transaction->rollBack();
@@ -306,7 +307,7 @@ class Order extends CActiveRecord {
 
         $conn=Yii::app()->db;
         $transaction = $conn->beginTransaction();
-        $r=rand(1000000,9999999);
+        $r=rand(100000,999999);
         $d=date("YmdHis");
         $serial_number=$d.$r;
         $record_time=date("Y-m-d H:i:s");
