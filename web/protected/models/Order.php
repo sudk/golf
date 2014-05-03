@@ -192,11 +192,10 @@ class Order extends CActiveRecord {
             $command->bindParam(":phone",$args->phone,PDO::PARAM_STR);
             $command->execute();
 
-            $sql = "insert into ".$log_table."
+            $sql = "insert into {$log_table}
                     (order_id,user_id,`type`,relation_id,relation_name,tee_time,`count`,unitprice,amount,had_pay,pay_type,status,record_time,serial_number,agent_id,contact,phone)
                      values
-                    (:order_id,:user_id,:type,:relation_id,:relation_name,:tee_time,:count,:unitprice,:amount,:had_pay,:pay_type,:status,:record_time,serial_number,:agent_id,:contact,:phone)
-            ";
+                    (:order_id,:user_id,:type,:relation_id,:relation_name,:tee_time,:count,:unitprice,:amount,:had_pay,:pay_type,:status,:record_time,:serial_number,:agent_id,:contact,:phone)";
             $command = $conn->createCommand($sql);
             $command->bindParam(":order_id", $order_id, PDO::PARAM_STR);
             $command->bindParam(":user_id", $user_id, PDO::PARAM_STR);
@@ -210,17 +209,18 @@ class Order extends CActiveRecord {
             $command->bindParam(":had_pay",$had_pay,PDO::PARAM_STR);
             $command->bindParam(":pay_type",$args->pay_type, PDO::PARAM_STR);
             $command->bindParam(":status",$status,PDO::PARAM_STR);
-            $command->bindParam(":record_time",$record_time, PDO::PARAM_STR);
-            $command->bindParam(":serial_number",$order_id, PDO::PARAM_STR);
-            $command->bindParam(":agent_id",$args->agent_id , PDO::PARAM_STR);
-            $command->bindParam(":contact",$args->contact , PDO::PARAM_STR);
-            $command->bindParam(":phone",$args->phone, PDO::PARAM_STR);
+            $command->bindParam(":record_time",$record_time,PDO::PARAM_STR);
+            $command->bindParam(":serial_number",$order_id,PDO::PARAM_STR);
+            $command->bindParam(":agent_id",$args->agent_id,PDO::PARAM_STR);
+            $command->bindParam(":contact",$args->contact,PDO::PARAM_STR);
+            $command->bindParam(":phone",$args->phone,PDO::PARAM_STR);
             $command->execute();
 
             $transaction->commit();
 
             return true;
         }catch (Exception $e){
+            Yii::log($e->getMessage(),'debug','application.firebuglog');
             $transaction->rollBack();
             return false;
         }
