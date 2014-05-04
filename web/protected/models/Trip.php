@@ -92,7 +92,7 @@ class Trip extends CActiveRecord {
             $params['trip_name'] = "%".$args['trip_name']."%";
         }
 
-
+        
         $total_num = Yii::app()->db->createCommand()
             ->select("count(1)")
             ->from("g_trip")

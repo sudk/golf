@@ -23,7 +23,7 @@
              <?php
         }
         ?>
-        <select name="q[type]" >
+        <select name="q[court_id]" >
             <option value="">--选择球场--</option>
             <?php
             $court_list = Court::getCourtArray();

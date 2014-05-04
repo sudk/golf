@@ -83,6 +83,16 @@ class Court extends CActiveRecord {
             $params['court_id'] = $args['court_id'];
         }
         
+        if ($args['model'] != ''){
+            $condition.= ' AND model=:model';
+            $params['model'] = $args['model'];
+        }
+        
+        if ($args['name'] != ''){
+            $condition.= ' AND name like :name';
+            $params['name'] = "%".$args['name']."%";
+        }
+        //var_dump($condition);
         
         
         $total_num = Court::model()->count($condition, $params); //总记录数

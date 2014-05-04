@@ -9,6 +9,7 @@ class CourtController extends AuthBaseController
     public $gridId = 'list';
     public $picGridId = 'pic_list';
     public $cGridId = 'comment_list';
+    public $mcGridId = 'my_comment_list';
     public $pageSize = 100;
     public $module_id = 'court';
     
@@ -46,6 +47,7 @@ class CourtController extends AuthBaseController
             $args[$_REQUEST['q_by']] = $_REQUEST['q_value'];
         }
 
+        //var_dump($args);
         $t = $this->genDataGrid();
 
         $list = Court::queryList($page, $this->pageSize, $args);
@@ -602,9 +604,10 @@ class CourtController extends AuthBaseController
      * 表头
      * @return SimpleGrid
      */
-    private function genCDataGrid()
+    private function genCDataGrid($grid)
     {
-        $t = new SimpleGrid($this->cGridId);
+        
+        $t = new SimpleGrid($grid);
         $t->url = 'index.php?r=court/commentlist';
         $t->updateDom = 'datagrid';
         $t->set_header('球场名称', '20%', '');
@@ -630,11 +633,13 @@ class CourtController extends AuthBaseController
         {
             $args[$_REQUEST['q_by']] = $_REQUEST['q_value'];
         }
+        $grid = $this->cGridId;
         if($cur_court_id!=null)
         {
             $args['court_id'] = $cur_court_id;
+            $grid = $this->mcGridId;
         }
-        $t = $this->genCDataGrid();
+        $t = $this->genCDataGrid($grid);
         //var_dump($args);
         $list = Comment::queryList($page, $this->pageSize, $args);
         
