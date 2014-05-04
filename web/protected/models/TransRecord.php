@@ -155,9 +155,9 @@ class TransRecord extends CActiveRecord {
         $record_time=date("Y-m-d H:i:s");
         $user_id=Yii::app()->user->id;
         $sql = "insert into ".self::getTable()."
-                   (serial_number,trans_type,amount,re_serial_number,status,user_id,record_time)
+                   (serial_number,trans_type,amount,re_serial_number,user_id,record_time)
                      values
-                    (:serial_number,:trans_type,:amount,:re_serial_number,:status,:user_id,:record_time)";
+                    (:serial_number,:trans_type,:amount,:re_serial_number,:user_id,:record_time)";
         $command = Yii::app()->db->createCommand($sql);
         $command->bindParam(":serial_number",$serial_number, PDO::PARAM_STR);
         $command->bindParam(":trans_type",$type, PDO::PARAM_STR);
