@@ -930,7 +930,7 @@ class PriceController extends AuthBaseController
         }
         $success_cnt = 0;
         
-        for($a=2;$a<$count;$a++) {
+        for($a=2;$a<=$count;$a++) {
             $court_name = trim($data->val($a,1,0));
             $court_id = trim($data->val($a,2,0));
             $is_green = trim($data->val($a,3,0));
