@@ -14,6 +14,8 @@ web/protected/runtime/application.log
 
 *.xls
 
+web/images/*
+
 技术文档/移动端接口文档1.0.xls
 
 *.apk
