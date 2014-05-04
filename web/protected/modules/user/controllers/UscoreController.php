@@ -21,10 +21,10 @@ class UscoreController extends AuthBaseController
         $t = new SimpleGrid($this->gridId);
         $t->url = 'index.php?r=user/uscore/grid';
         $t->updateDom = 'datagrid';
-        $t->set_header('序号', '30', '');   
-        $t->set_header('姓名', '40', '');
-        $t->set_header('所在球场', '60', '');
-        $t->set_header('记录时间', '70', '');
+        $t->set_header('序号', '5%', '');   
+        $t->set_header('姓名', '10%', '');
+        $t->set_header('所在球场', '25%', '');
+        $t->set_header('记录时间', '60%', '');
         return $t;
     }
 

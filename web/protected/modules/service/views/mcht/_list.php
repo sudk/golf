@@ -17,11 +17,21 @@ if (is_array($rows))
         $link .= CHtml::link('删除',"javascript:itemDelete('{$row['id']}','{$row['facilitie_name']}')", array());
                
         
+        $facilitie_name = htmlspecialchars($row['facilitie_name']);
+        $name_text = "<span title='".$facilitie_name."'>";
+        $name_text .= mb_strlen($facilitie_name, 'UTF-8') > 20 ? mb_substr($facilitie_name, 0, 20, 'UTF-8')."..." : $facilitie_name;
+        $name_text .= "</span>";
+        
+        $court_name = $court_list[$row['court_id']];
+        $court_text = "<span title='".$court_name."'>";
+        $court_text .= mb_strlen($court_name, 'UTF-8') > 20 ? mb_substr($court_name, 0, 20, 'UTF-8')."..." : $court_name;
+        $court_text .= "</span>";
+        
 	$t->echo_td($num); 
-        $t->echo_td($row['facilitie_name']); //学校编号
+        $t->echo_td($name_text); //学校编号
         $t->echo_td($type_list[$row['type']]);
         $t->echo_td($row['phone']);
-        $t->echo_td($court_list[$row['court_id']]);
+        $t->echo_td($court_text);
         $t->echo_td($row['record_time']);
         $t->echo_td($link);
         $t->end_row();

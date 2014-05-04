@@ -20,7 +20,7 @@ if (is_array($rows))
         $t->echo_td($row['jobtitle']);
         $t->echo_td($row['abbreviation']);
         $t->echo_td(Operator::GetStatus($row['status']));
-        $t->echo_td($row['record_time']);
+        //$t->echo_td($row['record_time']);
         $t->echo_td($link);
         $t->end_row();
     }

@@ -177,11 +177,15 @@ class RouteController extends AuthBaseController
                 $msg['msg'] = "修改失败！";
                 $msg['status'] = 0;
             }
-        }else{
-            $city = $model->city;
-            $province = substr($city,0,2)."0000";
-            $model->province = $province;
         }
+        $city = $model->city;
+        $province = substr($city,0,2)."0000";
+        $model->province = $province;
+
+        $model->normal_price = intval($model->normal_price)/100;
+        $model->holiday_price = intval($model->holiday_price)/100;
+        $model->other_price = intval($model->other_price)/100;
+        
         //var_dump($id);
         $this->layout = '//layouts/base';
         $this->render("edit", array('model' => $model, 'msg' => $msg, 'Trip_id' => $id));

@@ -16,7 +16,7 @@
     //为一个球场提交报价
     var itemNew = function (id,tag) {
         tipsWindown(
-            "编辑报价单信息", // title：窗口标题
+            "添加报价单信息", // title：窗口标题
             "iframe:index.php?r=price/newPolicy&id=" + id+'&tag='+tag, // Url：弹窗所加截的页面路径
             "900", // width：窗体宽度
             "720", // height：窗体高度

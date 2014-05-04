@@ -2,7 +2,7 @@
 <div class="clearfix" id='msg' style="width: 100%">
     <div class="index_c"  style="width:49%;">
         <div class="index_c_main">
-            <h1 style="width: auto;"><img src="images/icons/index_1.png" />消息中心 <span style="margin-left: 400px;"><a href="index.php?r=msg/inbox/list">更多...</a></span></h1>
+            <h1 style="width: auto;"><a href="index.php?r=msg/inbox/list"><img src="images/icons/index_1.png" />消息中心 </a></h1>
             <div class="clear"></div>
             <ul class="list" style="overflow-y:auto;height:181px;">
                 <?php
@@ -23,9 +23,9 @@
          
     </div>
     
-    <div class="index_c ml10" style="width: 49%;">
+    <div class="index_c ml10" style="width: 50%;">
         <div class="index_c_main" >
-            <h1 style="width:auto;"><img src="images/icons/index_3.png" />公告中心 <span style="margin-left: 400px;"><a href="index.php?r=msg/inbox/list">更多...</a></span></h1>
+            <h1 style="width:auto;"><a href="index.php?r=msg/inbox/list"><img src="images/icons/index_3.png" />公告中心 </a></h1>
             <div class="clear"></div>
             <ul class="list" style="overflow-y:auto;height:181px;">
                 <?php

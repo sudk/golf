@@ -20,10 +20,20 @@ if (is_array($rows))
         $fee = intval($fee)==0 ? $fee : floatval(intval($fee)/100);
         $fee .= "元";
         
+        $comp_name = $row['name'];
+        $comp_text = "<span title='".$comp_name."'>";
+        $comp_text .= mb_strlen($comp_name, 'UTF-8') > 20 ? mb_substr($comp_name, 0, 20, 'UTF-8')."..." : $comp_name;
+        $comp_text .= "</span>";
+        
+        $court_name = $court_list[$row['court_id']];
+        $court_text = "<span title='".$court_name."'>";
+        $court_text .= mb_strlen($court_name, 'UTF-8') > 20 ? mb_substr($court_name, 0, 20, 'UTF-8')."..." : $court_name;
+        $court_text .= "</span>";
+        
         
 	$t->echo_td($num); 
-        $t->echo_td($row['name']); //学校编号
-        $t->echo_td($court_list[$row['court_id']]);
+        $t->echo_td($comp_text); //学校编号
+        $t->echo_td($court_text);
         $t->echo_td($fee);
         $t->echo_td($valid_time);
        

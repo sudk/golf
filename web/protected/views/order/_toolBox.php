@@ -49,6 +49,9 @@
             }
             ?>
         </select>
+        <span style="float:left; margin:0 5px; margin-top:-3px;">&nbsp;</span>
+        
+        <input name="q[order_id]" type="text" class="grayTips" value="订单编号"/>
         <input type="submit" value="" class="search_btn"/>
     </li>
     

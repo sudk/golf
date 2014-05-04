@@ -13,8 +13,14 @@ if (is_array($rows))
         $link .= CHtml::link('编辑',"javascript:itemEdit('{$row['id']}')", array());
         $link .= CHtml::link('删除',"javascript:itemDelete('{$row['id']}','{$row['trip_name']}')", array());
         
+        $trip_name = htmlspecialchars($row['trip_name']);
+        $trip_text = "<span title='".$trip_name."'>";
+        $trip_text .= mb_strlen($trip_name, 'UTF-8') > 20 ? mb_substr($trip_name, 0, 20, 'UTF-8')."..." : $trip_name;
+        $trip_text .= "</span>";
+        
+        
 	$t->echo_td($num); 
-        $t->echo_td(htmlspecialchars($row['trip_name'])); //学校编号
+        $t->echo_td($trip_text); //学校编号
         $t->echo_td($pay_type[$row['pay_type']]);
         $t->echo_td($row['start_date']);
         $t->echo_td($row['end_date']);

@@ -14,9 +14,13 @@ if (is_array($rows)) {
         $price = $price==0?0:floatval($price/100);
         $price .= "元";
         
+        $title = htmlspecialchars($row['title']);
+        $title_text = "<span title='".$title."'>";
+        $title_text .= mb_strlen($title, 'UTF-8') > 20 ? mb_substr($title, 0, 20, 'UTF-8')."..." : $title;
+        $title_text .= "</span>";
         
         $t->echo_td($num);
-        $t->echo_td(htmlspecialchars($row['title'])); //学校编号
+        $t->echo_td($title_text); //学校编号
         $t->echo_td($price);
         
         $t->echo_td($row['city']?$city_list[$row['city']]:"");

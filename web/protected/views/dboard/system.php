@@ -2,7 +2,7 @@
 <div class="clearfix" id='msg' style="width: 100%">
     <div class="index_c" style="width: 32%">
         <div class="index_c_main">
-            <h1 style="width:auto;"><img src="images/icons/index_1.png" />消息中心 <span style="margin-left: 200px;"><a href="index.php?r=msg/inbox/list">更多...</a></span></h1>
+            <h1 style="width:auto;"><a href="index.php?r=msg/inbox/list"><img src="images/icons/index_1.png" />消息中心 </a></h1>
             <div class="clear"></div>
             <ul class="list" style="overflow-y:auto;height:181px;">
                 <?php
@@ -24,7 +24,7 @@
     
     <div class="index_c ml10" style="width: 32%">
         <div class="index_c_main">
-            <h1 style="width: auto;"><img src="images/icons/index_3.png" />公告中心 <span style="margin-left: 200px;"><a href="index.php?r=msg/inbox/list">更多...</a></span></h1>
+            <h1 style="width: auto;"><a href="index.php?r=msg/inbox/list"><img src="images/icons/index_3.png" />公告中心 </a></h1>
             <div class="clear"></div>
             <ul class="list" style="overflow-y:auto;height:181px;">
                 <?php
@@ -45,7 +45,7 @@
     <div class="index_c ml10" style="width: 34%">
         <div class="index_c_main">
             
-            <h1 style="width: auto;"><img src="images/icons/index_2.png" />订单 <span style="margin-left: 240px;"><a href="index.php?r=order/list">更多...</a></span></h1>
+            <h1 style="width: auto;"><a href="index.php?r=order/list"><img src="images/icons/index_2.png" />待处理订单 </a></h1>
             <div class="clear"></div>
             <ul class="list" style="overflow-y:auto;height:181px;">
                 <?php

@@ -22,13 +22,13 @@ class AgentController extends AuthBaseController
         $t->url = 'index.php?r=operator/agent/grid';
         $t->updateDom = 'datagrid';
         
-        $t->set_header('代理商名称', '100', '');
-        $t->set_header('联系人', '70', '');
-        $t->set_header('电话', '70', '');
-        $t->set_header('佣金', '70', '');
-        $t->set_header('状态', '50', '');
-        $t->set_header('记录时间', '70', '');
-        $t->set_header('操作', '100', '');
+        $t->set_header('代理商名称', '20%', '');
+        $t->set_header('联系人', '10%', '');
+        $t->set_header('电话', '10%', '');
+        $t->set_header('佣金', '10%', '');
+        $t->set_header('状态', '10%', '');
+        $t->set_header('记录时间', '15%', '');
+        $t->set_header('操作', '15%', '');
         return $t;
     }
 
@@ -76,7 +76,7 @@ class AgentController extends AuthBaseController
         $model=new Agent('create');
         if($_POST['Agent']){
             $model->attributes=$_POST['Agent'];
-            
+            $model->extra = intval($_POST['Agent']['extra'])*100;
             $model->record_time=date("Y-m-d H:i:s");
             
             try{
@@ -108,7 +108,7 @@ class AgentController extends AuthBaseController
             
             $model->setScenario("modify");
             $model->attributes=$_POST['Agent'];
-            
+            $model->extra = intval($_POST['Agent']['extra'])*100;
             $rs=$model->save();
             if($rs){
                 $msg['msg']="修改成功！";
@@ -119,6 +119,8 @@ class AgentController extends AuthBaseController
                 $msg['status']=0;
             }
 
+        }else{
+            $model->extra = intval($model->extra)/100;
         }
         
         $this->layout = '//layouts/base';

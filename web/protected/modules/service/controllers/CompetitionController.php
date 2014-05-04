@@ -217,6 +217,7 @@ class CompetitionController extends AuthBaseController
             
             
         }
+        $model->fee = intval($model->fee)/100;
        //var_dump($id);
         $this->layout = '//layouts/base';
         $this->render("edit",array('model' => $model, 'msg' => $msg,'competition_id'=>$id));

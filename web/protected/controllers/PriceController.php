@@ -489,11 +489,11 @@ class PriceController extends AuthBaseController
         $t->set_header('开始日期', '10%', '');
         $t->set_header('结束日期', '10%', '');
         //$t->set_header('', '70', '');
-        $t->set_header('服务项目', '10%', '');
+        $t->set_header('服务项目', '15%', '');
         $t->set_header('预订须知', '15%', '');
         $t->set_header('取消规则', '15%', '');
         $t->set_header('周一至周日', '25%', ''); 
-        $t->set_header('操作', '15%', '');
+        $t->set_header('操作', '10%', '');
 
         return $t;
     }
@@ -544,11 +544,11 @@ class PriceController extends AuthBaseController
         $t->set_header('开始日期', '10%', '');
         $t->set_header('结束日期', '10%', '');
         //$t->set_header('', '70', '');
-        $t->set_header('服务项目', '10%', '');
+        $t->set_header('服务项目', '15%', '');
         $t->set_header('预订须知', '15%', '');
         $t->set_header('取消规则', '15%', '');
         $t->set_header('周一至周日', '25%', ''); 
-        $t->set_header('操作', '15%', '');
+        $t->set_header('操作', '10%', '');
 
         return $t;
     }
@@ -598,11 +598,11 @@ class PriceController extends AuthBaseController
         $t->set_header('开始日期', '10%', '');
         $t->set_header('结束日期', '10%', '');
         //$t->set_header('', '70', '');
-        $t->set_header('服务项目', '10%', '');
+        $t->set_header('服务项目', '15%', '');
         $t->set_header('预订须知', '15%', '');
         $t->set_header('取消规则', '15%', '');
         $t->set_header('默认价格', '25%', ''); 
-        $t->set_header('操作', '15%', '');
+        $t->set_header('操作', '10%', '');
         
 
         return $t;

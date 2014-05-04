@@ -158,9 +158,22 @@ if (is_array($rows))
         
         }
         
+        $court_name = htmlspecialchars($row['name']);
+        $court_text = "<span title='".$court_name."'>";
+        $court_text .= mb_strlen($court_name, 'UTF-8')>20 ? mb_substr($court_name, 0, 20, 'UTF-8')."..." : $court_name;
+        $court_text .= "</span>";
         
         
-        $t->echo_td($row['name']);
+        if($service_text!="")
+        {
+            $service_txt = "<span title='".$service_text."'>";
+            $service_txt .= mb_strlen($service_text,'UTF-8')>8? mb_substr($service_text, 0,8,'UTF-8')."...":$service_text;
+            $service_txt .= "</span>";
+            
+            $service_text = $service_txt;
+        }
+        
+        $t->echo_td($court_text);
         $t->echo_td($service_text); //
         $t->echo_td($price_text); //      
         $t->echo_td($status_text); //

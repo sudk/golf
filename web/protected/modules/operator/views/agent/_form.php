@@ -45,7 +45,7 @@ if($__model__!="edit"){
     <tr>
         <td class="maxname">联系电话：</td>
         <td class="mivalue"><?php echo $form->activeTextField($model, 'phone',array('title' => '本项必填', 'class' => 'input_text', 'maxlength' => 20), 'required'); ?></td>
-        <td class="maxname">佣金：</td>
+        <td class="maxname">佣金（元）：</td>
         <td class="mivalue"><?php echo $form->activeTextField($model, 'extra', array('title' => '本项必填', 'class' => 'input_text', 'maxlength' => 20), 'required&number'); ?></td>
     </tr>
     

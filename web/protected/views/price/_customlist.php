@@ -76,11 +76,32 @@ if (is_array($rows))
         $link .= CHtml::link('编辑',"javascript:itemEdit('{$row['id']}','1');", array());
         $link .= CHtml::link('删除',"javascript:itemDelete('{$row['id']}');", array());
         
+        
+        if($service_text!="")
+        {
+            $service_txt = "<span title='".$service_text."'>";
+            $service_txt .= mb_strlen($service_text,'UTF-8')>8? mb_substr($service_text, 0,8,'UTF-8')."...":$service_text;
+            $service_txt .= "</span>";
+            
+            $service_text = $service_txt;
+        }
+        
+        $remark = htmlspecialchars($row['remark']);
+        $remark_txt = "<span title='".$remark."'>";
+        $remark_txt .= mb_strlen($remark, 'UTF-8')>20 ? mb_substr($remark, 0, 20, 'UTF-8')."..." : $remark;
+        $remark_txt .= "</span>";
+        
+        $cancel_remark = htmlspecialchars($row['cancel_remark']);
+        $cancel_remark_txt = "<span title='".$cancel_remark."'>";
+        $cancel_remark_txt .= mb_strlen($cancel_remark, 'UTF-8')>20 ? mb_substr($cancel_remark, 0, 20, 'UTF-8')."..." : $cancel_remark;
+        $cancel_remark_txt .= "</span>";
+        
+        
         $t->echo_td($row['start_date']);
         $t->echo_td($row['end_date']); //
         $t->echo_td($service_text);
-        $t->echo_td($row['remark']); //
-        $t->echo_td($row['cancel_remark']);
+        $t->echo_td($remark_txt); //
+        $t->echo_td($cancel_remark_txt);
         $t->echo_td($price_text); //
         $t->echo_td($link);
         $t->end_row();

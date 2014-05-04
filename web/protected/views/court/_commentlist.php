@@ -9,9 +9,14 @@ if (is_array($rows))
         //$link = "";
         //$link .= CHtml::link('删除',"javascript:itemDelete('{$row['id']}');", array());
         $desc = $row['desc'];
-        $sub_desc = mb_substr($desc,0,5,'UTF-8')."...";
+        $sub_desc = mb_strlen($desc,'UTF-8')>5?mb_substr($desc,0,5,'UTF-8')."...":$desc;
         $desc_text = '<span title="'.$desc.'">'.$sub_desc.'</span>';
-        $t->echo_td($row['court_name']);
+        
+        $court_name = $row['court_name'];
+        $sub_name = mb_strlen($court_name,'UTF-8')>20?mb_substr($court_name,0,20,'UTF-8')."...":$court_name;
+        $name_text = '<span title="'.$court_name.'">'.$sub_name.'</span>';
+        
+        $t->echo_td($name_text);
         $t->echo_td($row['service']); //
         $t->echo_td($row['design']); //
         $t->echo_td($row['facilitie']);

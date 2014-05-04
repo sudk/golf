@@ -21,9 +21,9 @@ if (is_array($rows))
 	$t->echo_td($num); 
         $t->echo_td($title_txt); //学校编号
         $t->echo_td($status_list[$row['status']]);
-        $t->echo_td($row['record_time']);
+        
         $t->echo_td($row['creator']);
-       
+        $t->echo_td($row['record_time']);
         $t->echo_td($link);
         $t->end_row();
     }

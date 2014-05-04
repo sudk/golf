@@ -21,12 +21,12 @@ class SystemlogController extends AuthBaseController
         $t = new SimpleGrid($this->gridId);
         $t->url = 'index.php?r=log/systemlog/grid';
         $t->updateDom = 'datagrid';
-        $t->set_header('序号', '30', '');
-        $t->set_header('账号', '100', 'userid');
-        $t->set_header('用户名', '100', '');
-        $t->set_header('操作', '230', 'operation');
-        $t->set_header('IP地址', '100', '');
-        $t->set_header('记录时间', '80', '');
+        $t->set_header('序号', '5%', '');
+        $t->set_header('账号', '15%', '');
+        $t->set_header('用户名', '15%', '');
+        $t->set_header('操作', '35%', '');
+        $t->set_header('IP地址', '15%', '');
+        $t->set_header('记录时间', '15%', '');
         return $t;
     }
 

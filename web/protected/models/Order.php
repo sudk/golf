@@ -34,6 +34,34 @@ class Order extends CActiveRecord {
         return array();
     }
     
+    
+    public static function getNextStatus($cur_status='0')
+    {
+        if($cur_status==null)
+        {
+            return false;
+        }
+        $next_status = '';
+        switch ($cur_status) {
+            case self::STATUS_TOBE_CONFIRM:
+                $next_status = self::STATUS_TOBE_PAID;
+                break;
+            case self::STATUS_TOBE_PAID:
+                $next_status = self::STATUS_TOBE_SUCCESS;
+                break;
+            case self::STATUS_TOBE_SUCCESS:
+                //可以有三中情况。撤销，未到场，订单完成。
+                $next_status = self::STATUS_TOBE_CANCEL;
+                break;
+            
+            default:
+                $next_status = self::STATUS_ORDER_OVER;
+                break;
+        }
+        
+        return $next_status;
+    }
+    
     /**
      * 订单类型，0、订场；1、行程；3、赛事报名；
      */
@@ -90,6 +118,10 @@ class Order extends CActiveRecord {
         $condition = ' 1=1 ';
         $params = array();
 
+        if ($args['order_id'] != ''){
+            $condition.= ' AND order_id=:order_id';
+            $params['order_id'] = $args['order_id'];
+        }
         
         if ($args['court_id'] != ''){
             $condition.= ' AND court_id=:court_id';

@@ -38,13 +38,13 @@ if($__model__=="edit"){
             }
             if($detail_row['start_time'] == "" && $detail_row['end_time'] == ""){
                 
-                $price_row[$day."_default"] = $detail_row['price'];
+                $price_row[$day."_default"] = intval($detail_row['price'])/100;
                 $status_row[$day."_default"] = $detail_row['status'];
             }else{
                 $price_row[$day][] = array(
                     'start_time'=>$detail_row['start_time'],
                     'end_time'=>$detail_row['end_time'],
-                    'price'=>$detail_row['price'],
+                    'price'=>intval($detail_row['price'])/100,
                     'id'=>$detail_row['id']
                     );
             }

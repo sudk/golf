@@ -21,16 +21,16 @@ class OperatorController extends AuthBaseController
         $t = new SimpleGrid($this->gridId);
         $t->url = 'index.php?r=operator/operator/grid';
         $t->updateDom = 'datagrid';
-        $t->set_header('序号', '30', '');
-        $t->set_header('类型', '60', '');
-        $t->set_header('账号', '60', '','id');
-        $t->set_header('姓名', '40', '');
-        $t->set_header('电话', '60', '');
-        $t->set_header('职称', '60', '');
-        $t->set_header('全拼', '60', '','abbreviation');
-        $t->set_header('状态', '30', '');
-        $t->set_header('记录时间', '70', '');
-        $t->set_header('操作', '100', '');
+        $t->set_header('序号', '5%', '');
+        $t->set_header('类型', '10%', '');
+        $t->set_header('账号', '15%', '','id');
+        $t->set_header('姓名', '15%', '');
+        $t->set_header('电话', '10%', '');
+        $t->set_header('职称', '10%', '');
+        $t->set_header('全拼', '15%', '','abbreviation');
+        $t->set_header('状态', '10%', '');
+        //$t->set_header('记录时间', '10%', '');
+        $t->set_header('操作', '10%', '');
         return $t;
     }
 
@@ -220,6 +220,7 @@ class OperatorController extends AuthBaseController
                 'E-Mail'=>$model['email'],
                 'QQ'=>$model['qq'],
                 '创建人'=>$model['creator'],
+                '创建时间'=>$model['record_time'],
                 '备注'=>$model['remark'],
             );
             if($model['type'] == Operator::TYPE_AGENT)
