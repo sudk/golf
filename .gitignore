@@ -12,8 +12,6 @@ web/protected/runtime/*
 
 web/protected/runtime/application.log
 
-web/images/*
-
 *.xls
 
 技术文档/移动端接口文档1.0.xls
