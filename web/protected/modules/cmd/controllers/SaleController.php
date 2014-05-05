@@ -28,8 +28,7 @@ class SaleController extends CMDBaseController
             echo json_encode($msg);
             return;
         }
-
-        $rows=Court::Search(Yii::app()->command->cmdObj);
+        $rows=Court::Sale(Yii::app()->command->cmdObj);
         if($rows){
             $msg['status']=0;
             $msg['desc']="成功";

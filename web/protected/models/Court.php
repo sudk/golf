@@ -355,8 +355,6 @@ class Court extends CActiveRecord {
         $condition.= ' AND g_court.city=:city ';
         $params['city'] = $args->city;
 
-
-
         if (isset($args->court_id)&&$args->court_id != ''){
             $condition.= ' AND g_policy.court_id=:court_id ';
             $params['court_id'] = $args->court_id;
@@ -380,7 +378,7 @@ class Court extends CActiveRecord {
             $params['day'] = $args->day;
         }
 
-        $condition.= ' AND g_policy.type >= :type ';
+        $condition.= ' AND g_policy.type <= :type ';
         $params['type'] = Policy::TYPE_FOVERABLE;
 
 
@@ -403,33 +401,21 @@ class Court extends CActiveRecord {
             ->leftJoin("g_img","g_img.type=8 and g_img.relation_id=g_court.court_id")
             ->where($condition,$params)
             ->queryAll();
-        //print_r($rows);
-        //return $row;
+
         $rows_tmp=array();
-
-        if($rows){//先出球场中的最低有效报价
+        $normal_price=array();
+        if($rows){
             foreach($rows as $row){
-                $court_id=$row['court_id'];
-                if(isset($rows_tmp[$court_id])){
-                    $row_tmp=$rows_tmp[$court_id];
-
-                    if($row_tmp['type']==$row['type']&&$row_tmp['price']>$row['price']){
-                        $rows_tmp[$court_id]=$row;
-                        continue;
-                    }
-
-                    if($row_tmp['type']<$row['type']){
-                        $rows_tmp[$court_id]=$row;
-                        continue;
-                    }
+                if($row['type']==Policy::TYPE_NORMAL){
+                    $normal_price[$row['court_id']]=$row['price'];
                 }else{
-                    $rows_tmp[$court_id]=$row;
+                    $rows_tmp[]=$row;
                 }
             }
         }
 
-        $rows=array();
 
+        $return_rows=array();
         if($rows_tmp){
             foreach($rows_tmp as $row){
                 if(trim($row['lon'])&&trim($row['lat'])&&trim($u_lon)&&trim($u_lat)){
@@ -440,11 +426,14 @@ class Court extends CActiveRecord {
                 if($row['ico_img']){
                     $row['ico_img']=Img::IMG_PATH.$row['ico_img'];
                 }
-                $rows[]=$row;
+                $row['normal_price']=$normal_price[$row['court_id']];
+                $row['date']=$weeksToDates[$args->day];
+
+                $return_rows[]=$row;
             }
         }
 
-        return $rows;
+        return $return_rows;
 
     }
 }
