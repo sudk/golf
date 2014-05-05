@@ -32,7 +32,7 @@ if (is_array($rows))
         $price = "";
         if($d_row)
         {
-            $price = $d_row['price'];
+            $price = $d_row['price']/100;
         }
 
         

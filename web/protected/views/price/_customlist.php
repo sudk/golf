@@ -70,7 +70,7 @@ if (is_array($rows))
         {
             $sun_price = $sun_row['price'];
         }
-        $price_text = $mon_price.",".$tun_price.",".$wed_price.",".$thu_price.",".$fri_price.",".$sat_price.",".$sun_price;
+        $price_text = ($mon_price/100).",".($tun_price/100).",".($wed_price/100).",".($thu_price/100).",".($fri_price/100).",".($sat_price/100).",".($sun_price/100);
         
         $link = "";
         $link .= CHtml::link('编辑',"javascript:itemEdit('{$row['id']}','1');", array());
