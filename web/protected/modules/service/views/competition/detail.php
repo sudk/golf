@@ -39,8 +39,8 @@
                 echo $pay_type;         
             ?>
         </td>
-        <td class="maxname">费用（分）：</td>
-        <td class="mivalue"><?php echo $model['fee']; ?></td>  
+        <td class="maxname">费用：</td>
+        <td class="mivalue"><?php echo intval($model['fee'])/100; ?>元</td>  
     </tr>
     
     <tr>

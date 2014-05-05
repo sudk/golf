@@ -83,6 +83,16 @@ class Court extends CActiveRecord {
             $params['court_id'] = $args['court_id'];
         }
         
+        if ($args['model'] != ''){
+            $condition.= ' AND model=:model';
+            $params['model'] = $args['model'];
+        }
+        
+        if ($args['name'] != ''){
+            $condition.= ' AND name like :name';
+            $params['name'] = "%".$args['name']."%";
+        }
+        //var_dump($condition);
         
         
         $total_num = Court::model()->count($condition, $params); //总记录数
@@ -154,8 +164,8 @@ class Court extends CActiveRecord {
             $params['time'] = $args->time;
         }
 
-        $condition.= ' AND g_policy.status=0 ';
-        $condition.= ' AND g_policy_detail.status=1 ';
+        $condition.= " AND g_policy.status=".Policy::STATUS_NORMAL;
+        $condition.= ' AND g_policy_detail.status='.PolicyDetail::STATUS_NORMAL;
         if(isset($args->long_lat)){
             list($u_lon,$u_lat)=explode(",",$args->long_lat);
         }
@@ -285,8 +295,8 @@ class Court extends CActiveRecord {
             $params['type'] = $args->type;
         }
 
-        $condition.= ' AND g_policy.status=0 ';
-        $condition.= ' AND g_policy_detail.status=1 ';
+        $condition.= " AND g_policy.status=".Policy::STATUS_NORMAL;
+        $condition.= ' AND g_policy_detail.status='.PolicyDetail::STATUS_NORMAL;
 
         $rows = Yii::app()->db->createCommand()
             ->select("g_policy.*,g_court.name court_name,g_policy_detail.price,g_policy_detail.day,g_policy_detail.start_time,g_policy_detail.end_time,g_agent.agent_name")
@@ -296,6 +306,8 @@ class Court extends CActiveRecord {
             ->leftJoin("g_agent","g_agent.id=g_policy.agent_id")
             ->where($condition,$params)
             ->queryAll();
+
+        //print_r($rows);
 
         $rows_tmp=array();
 

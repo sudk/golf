@@ -15,10 +15,17 @@ if (is_array($rows))
         $link .= CHtml::link('重置密码',"javascript:itemResetPwd('{$row['user_id']}','{$row['user_name']}')", array());
 	
       
+        $balance = intval($row['balance']);
+        if($balance!=0)
+        {
+            $balance = floatval($balance/100);
+        }
+        $balance .= "元";
+        
         $t->echo_td($row['user_name']); //
         $t->echo_td($row['phone']);
         $t->echo_td($row['card_no']);
-        $t->echo_td($row['balance']);
+        $t->echo_td($balance);
         $t->echo_td($row['point']);
         $t->echo_td($row['city']);
         $t->echo_td(User::GetStatus($row['status']));

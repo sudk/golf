@@ -88,13 +88,13 @@ class Adv extends CActiveRecord {
 
         
         if ($args['order'] != ''){
-            $condition.=' AND order = :order';
-            $params['facilite_name'] = $args['order'];
+            $condition.=' AND `order` = :order';
+            $params['order'] = intval($args['order']);
         }
         
         
         if ($args['type'] != ''){
-            $condition.=' AND type=:type';
+            $condition.=' AND `type`=:type';
             $params['type'] = $args['type'];
         }
         

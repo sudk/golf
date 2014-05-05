@@ -1,11 +1,14 @@
 package com.jason.golf;
 
+import com.jason.golf.classes.GCourt;
 import com.jsaon.golf.R;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.widget.FrameLayout;
 
@@ -16,6 +19,10 @@ public class GCourtInfoActivity extends ActionBarActivity {
 	public static final String KEY_TIME = "Key_Time";
 	
 	FrameLayout mComtainer;
+
+	FragmentManager fm ;
+	
+	private GCourt _court;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -30,17 +37,50 @@ public class GCourtInfoActivity extends ActionBarActivity {
 		String date = params.getString(KEY_DATE);
 		String time = params.getString(KEY_TIME);
 		
-		Fragment newFragment = GCourtInfoBriefFragment.Instance(courtId, date, time);
-		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+		ActionBar bar = getSupportActionBar();
+		bar.setTitle(R.string.court_info);
+		bar.setIcon(R.drawable.actionbar_icon);
+		int change = bar.getDisplayOptions() ^ ActionBar.DISPLAY_HOME_AS_UP;
+	    bar.setDisplayOptions(change, ActionBar.DISPLAY_HOME_AS_UP);
 
-		// Replace whatever is in the fragment_container view with this fragment,
-		// and add the transaction to the back stack
+		
+		fm = getSupportFragmentManager();
+		
+		Fragment newFragment = GCourtInfoBriefFragment.Instance(courtId, date, time);
+		FragmentTransaction transaction = fm.beginTransaction();
+
 		transaction.replace(R.id.container, newFragment);
 		transaction.addToBackStack(null);
 
-		// Commit the transaction
 		transaction.commit();
 		
+	}
+
+	@Override
+	public boolean onSupportNavigateUp() {
+		// TODO Auto-generated method stub
+		onBackPressed();
+		return super.onSupportNavigateUp();
+	}
+
+	@Override
+	public void onBackPressed() {
+		// TODO Auto-generated method stub
+		
+		if(fm.getBackStackEntryCount() == 1)
+			finish();
+		else
+			super.onBackPressed();
+		
+	}
+
+	public void setCourt(GCourt court) {
+		// TODO Auto-generated method stub
+		_court = court;
+	}
+	
+	public GCourt getCourt(){
+		return _court;
 	}
 	
 }

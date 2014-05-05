@@ -23,15 +23,15 @@ class OrderController extends AuthBaseController
         $t = new SimpleGrid($this->gridId);
         $t->url = 'index.php?r=order/grid';
         $t->updateDom = 'datagrid';
-        $t->set_header('订单编号', '100', '');
-        $t->set_header('订单类型', '70', '');   
-        $t->set_header('下单人', '60', '');
-        $t->set_header('商品名称', '100', '');
-        $t->set_header('订单金额', '100', '');
-        $t->set_header('支付方式', '100', '');
-        $t->set_header('状态', '100', '');
-        $t->set_header('下单时间', '100', '');
-        $t->set_header('操作', '100', '');
+        $t->set_header('订单编号', '15%', '');
+        $t->set_header('订单类型', '10%', '');   
+        $t->set_header('下单人', '8%', '');
+        $t->set_header('商品名称', '15%', '');
+        $t->set_header('订单金额', '8%', '');
+        $t->set_header('支付方式', '8%', '');
+        $t->set_header('状态', '10%', '');
+        $t->set_header('下单时间', '10%', '');
+        $t->set_header('操作', '16%', '');
         return $t;
     }
 
@@ -48,6 +48,10 @@ class OrderController extends AuthBaseController
         if ($_REQUEST['q_value'])
         {
             $args[$_REQUEST['q_by']] = $_REQUEST['q_value'];
+        }
+        
+        if($args['order_id'] == "订单编号"){
+            $args['order_id'] = "";
         }
 
         $t = $this->genDataGrid();
@@ -95,8 +99,8 @@ class OrderController extends AuthBaseController
                 '客户电话'=>$model['phone'],
                '打球时间'=>$model['tee_time'],
                 '人数'=>$model['count'],
-                '单价'=>$model['unitprice'],
-                '必须支付'=>$model['had_pay'],
+                '单价'=>(intval($model['unitprice'])/100)."元",
+                '实付'=>(intval($model['had_pay'])/100)."元",
                 '备注'=>$model['desc'],
                     
             );
@@ -156,13 +160,13 @@ class OrderController extends AuthBaseController
         $t = new SimpleGrid($this->lGridId);
         $t->url = 'index.php?r=order/lgrid';
         $t->updateDom = 'datagrid';
-        $t->set_header('编号', '50', '');
-        $t->set_header('记录时间', '100', '');
-        $t->set_header('订单编号', '100', '');
-        $t->set_header('状态', '70', '');   
-        $t->set_header('操作人', '60', '');
-        $t->set_header('操作类型', '100', '');
-        $t->set_header('流水号', '100', '');
+        $t->set_header('编号', '5%', '');
+        $t->set_header('记录时间', '20%', '');
+        //$t->set_header('订单编号', '15%', '');
+        $t->set_header('状态', '15%', '');   
+        $t->set_header('操作人', '20%', '');
+        $t->set_header('操作类型', '20%', '');
+        $t->set_header('流水号', '20%', '');
         
         return $t;
     }

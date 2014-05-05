@@ -32,7 +32,7 @@ if (is_array($rows))
         
         $t->echo_td($num);
         $t->echo_td($row['record_time']); //
-        $t->echo_td($row['order_id']); //
+        //$t->echo_td($row['order_id']); //
         $t->echo_td($status_text); //
         $t->echo_td($row['operator_id']); //
         $t->echo_td($opt_type[$row['operator_type']]); //

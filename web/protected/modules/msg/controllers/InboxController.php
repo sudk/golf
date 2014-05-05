@@ -21,12 +21,12 @@ class InboxController extends AuthBaseController
         $t = new SimpleGrid($this->gridId);
         $t->url = 'index.php?r=msg/inbox/grid';
         $t->updateDom = 'datagrid';
-        $t->set_header('序号', '30', '');
-        $t->set_header('标题', '180', '');
-        $t->set_header('类型', '60', '');
-        $t->set_header('发件人', '60', '');
-        $t->set_header('发布时间', '80', '');
-        $t->set_header('操作', '100', '');
+        $t->set_header('序号', '5%', '');
+        $t->set_header('标题', '30%', '');
+        $t->set_header('类型', '10%', '');
+        $t->set_header('发件人', '10%', '');
+        $t->set_header('发布时间', '20%', '');
+        $t->set_header('操作', '15%', '');
         return $t;
     }
 

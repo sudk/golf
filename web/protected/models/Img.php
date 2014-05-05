@@ -12,8 +12,10 @@ class Img extends CActiveRecord {
     CONST TYPE_COURT_FACILITIES = '2';
     CONST TYPE_COURT_LOGO = '8';
     CONST TYPE_ADV = '7';
+    CONST TYPE_CARD = '5';
     CONST TYPE_TRIP = '6';
     CONST TYPE_COMPETITION = '3';
+    CONST TYPE_FLEA = '4';
     CONST TYPE_NEWS = '9';
     const IMG_PATH="http://115.28.77.119/images/picture/";
     
@@ -49,16 +51,25 @@ class Img extends CActiveRecord {
         $params = array();
         $condition= "";
         if ($args['relation_id'] != ''){
+            if($condition!=""){
+                $condition .= " AND ";
+            }
             $condition.= ' relation_id=:relation_id';
             $params['relation_id'] = $args['relation_id'];
         }
         
         if ($args['type'] != ''){
+            if($condition!=""){
+                $condition .= " AND ";
+            }
             $condition.= ' type=:type';
             $params['type'] = $args['type'];
         }
         
         if($args['from']!="" && $args['from'] == 'court'){
+            if($condition!=""){
+                $condition .= " AND ";
+            }
             $condition .= "type in ('0','1','8')";
         }
         
@@ -119,6 +130,10 @@ class Img extends CActiveRecord {
         {
             $rs['status'] = -1;
             $rs['msg'] = "上传图片到服务器失败";
+        }else{
+            //然后要生成一张缩略图
+            $new_file_name_s = $new_file_path."_small.".$suffix;
+            self::saveThumbnails($new_file_name, $new_file_name_s);
         }
         
         //add data into db
@@ -132,6 +147,45 @@ class Img extends CActiveRecord {
         return $rs;
     }
     
+    /**
+     * 保存头像
+     * 180x180 50x50 30x30三个尺寸
+     */
+    public static function saveThumbnails($file_name,$file_name_small,$img_size=56)
+    {
+        $middle_size = $img_size;     
+        $src = $file_name;
+        //$suffix = strtolower($suffix);
+        
+        $img_array = getimagesize($file_name);
+	$mime = $img_array['mime'];
+        $file_mime = explode("/", $mime);
+        $suffix = $file_mime[1];
+        if($suffix == 'png')
+        {
+            $img_r = @imagecreatefrompng($src);
+            
+            $img_r_m = self::resizeImage($img_r,$middle_size,$middle_size,$src);
+            imagepng($img_r_m,$file_name_small);
+        }else if($suffix == 'gif')
+        {
+            $img_r  = @imagecreatefromgif($src);
+            
+            $img_r_m = self::resizeImage($img_r,$middle_size,$middle_size,$src);
+            imagegif($img_r_m,$file_name_small);
+            
+        }else//jpg
+        {
+            $img_r = imagecreatefromjpeg($src);       
+            $img_r_m = self::resizeImage($img_r,$middle_size,$middle_size,$src);
+            imagejpeg($img_r_m,$file_name_small);
+           
+        }        
+        imagedestroy($img_r);   
+        imagedestroy($img_r_m);
+       
+        return true;
+    }
     
     public static function delImg($relation_id,$type)
     {
@@ -149,7 +203,8 @@ class Img extends CActiveRecord {
                 
                 if(Img::model()->deleteByPk($id))
                 {
-                    @unlink($upload_dir.$img_url);
+                    self::delSimpleImg($img_url);
+                    
                 }else{
                     $rs['msg'] .= "编号为".$id."的图片删除失败";
                 }
@@ -163,6 +218,48 @@ class Img extends CActiveRecord {
         }
         
         return $rs;
+    }
+    
+    
+    /**
+     *等比例缩放
+     * @param <type> $im--image object
+     * @param <type> $maxwidth  目标图片的宽度 例如168
+     * @param <type> $maxheight  目标图片的高度 例如168
+     */
+    public static function resizeImage($im,$maxwidth=116,$maxheight=116,$src)
+    {
+        //源图片的宽、高
+        $pic_width = imagesx($im);
+        $pic_height = imagesy($im);
+        //$pic_array = getimagesize($src);
+        //$pic_width = $pic_array[0];
+        //$pic_height = $pic_array[1];
+        //if(($maxwidth && $pic_width > $maxwidth) || ($maxheight && $pic_height > $maxheight))
+        if(true)
+        {
+
+            $newwidth = $maxwidth;//$pic_width * $ratio;
+            $newheight = $maxheight;//$pic_height * $ratio;
+           
+            if(function_exists("imagecopyresampled"))
+            {
+                $newim = imagecreatetruecolor($newwidth,$newheight);
+                imagecopyresampled($newim,$im,0,0,0,0,$newwidth,$newheight,$pic_width,$pic_height);
+            }
+            else
+            {
+                $newim = imagecreate($newwidth,$newheight);
+               imagecopyresized($newim,$im,0,0,0,0,$newwidth,$newheight,$pic_width,$pic_height);
+            }
+
+            return $newim;
+
+        }
+        else
+        {
+            return $im;
+        }
     }
     
     
@@ -193,6 +290,21 @@ class Img extends CActiveRecord {
             }
         }
         return $rows_tmp;
+    }
+    public static function GetImg($relation_id,$type){
+        $condition="relation_id=:relation_id and type=:type";
+        $params=array('relation_id'=>$relation_id,'type'=>$type);
+
+        $row=Yii::app()->db->createCommand()
+            ->select("*")
+            ->from("g_img")
+            ->where($condition,$params)
+            ->queryRow();
+        if($row){
+            return $row['img_url'];
+        }else{
+            return "";
+        }
     }
 }
 

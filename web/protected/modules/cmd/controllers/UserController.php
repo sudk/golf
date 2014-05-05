@@ -42,15 +42,15 @@ class UserController extends CMDBaseController
         $identity->authenticate();
         switch ($identity->errorCode) {
             case UserIdentity::ERROR_NONE:
-                $duration = isset($form['rememberMe']) ? 3600 * 24 * 1 : 0; // 1 day
+                //$duration = isset($form['rememberMe']) ? 3600 * 24 * 1 : 0; // 1 day
                 Yii::app()->user->login($identity);
                 //echo Yii::app()->user->id;
-                if ($duration !== 0) {
-                    setcookie('golf', trim($form['username']), time() + $duration, Yii::app()->request->baseUrl);
-                } else {
-                    unset($_COOKIE['golf']);
-                    setcookie('golf', NULL, -1);
-                }
+//                if ($duration !== 0) {
+//                    setcookie('golf', trim($form['username']), time() + $duration, Yii::app()->request->baseUrl);
+//                } else {
+//                    unset($_COOKIE['golf']);
+//                    setcookie('golf', NULL, -1);
+//                }
                 $message = '成功！';
                 $status=0;
                 $msg['data']=User::FindOneById(Yii::app()->user->id);
@@ -88,7 +88,7 @@ class UserController extends CMDBaseController
                 $model->save();
                 $msg['status']=0;
                 $msg['desc']="成功";
-                $msg['data']=User::FindOneById(Yii::app()->command->cmdObj->phone);
+                $msg['data']=User::FindOneByPhone(Yii::app()->command->cmdObj->phone);
             }catch (Exception $e){
                 $msg['status']=$e->getCode();
                 if($e->getCode()==23000){
@@ -125,7 +125,7 @@ class UserController extends CMDBaseController
                 $msg['desc']="获取用户信息失败";
             }
         }else{
-            $msg['status']=4;
+            $msg['status']=-1;
             $msg['desc']="未登陆";
         }
         echo json_encode($msg);

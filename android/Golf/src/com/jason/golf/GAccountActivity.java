@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 
 public class GAccountActivity extends ActionBarActivity {
@@ -23,6 +24,12 @@ public class GAccountActivity extends ActionBarActivity {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_account);
+		
+		ActionBar bar = getSupportActionBar();
+		bar.setTitle(R.string.court_info);
+		bar.setIcon(R.drawable.actionbar_icon);
+		int change = bar.getDisplayOptions() ^ ActionBar.DISPLAY_HOME_AS_UP;
+	    bar.setDisplayOptions(change, ActionBar.DISPLAY_HOME_AS_UP);
 		
 		fm = getSupportFragmentManager();
 		transaction = fm.beginTransaction();
@@ -55,29 +62,23 @@ public class GAccountActivity extends ActionBarActivity {
 		}
 
 	}
-
+	
+	
 	@Override
 	public boolean onSupportNavigateUp() {
-		
-		checkToFinish();
-		return true;
+		// TODO Auto-generated method stub
+		onBackPressed();
+		return super.onSupportNavigateUp();
 	}
 
 	@Override
 	public void onBackPressed() {
 		// TODO Auto-generated method stub
-		checkToFinish();
-	}
-	
-	private void checkToFinish(){
-		/*
-		 * 如果activity的fragment栈为空，结束activity。 
-		 */
+		
 		if(fm.getBackStackEntryCount() == 1)
 			finish();
 		else
-			fm.popBackStack();
+			super.onBackPressed();
 		
 	}
-	
 }

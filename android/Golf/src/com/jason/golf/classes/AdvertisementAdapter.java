@@ -7,13 +7,10 @@ import com.jsaon.golf.R;
 import net.tsz.afinal.FinalBitmap;
 import android.content.Context;
 import android.content.Intent;
-import android.media.Image;
 import android.net.Uri;
 import android.support.v4.view.PagerAdapter;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ImageView.ScaleType;
@@ -51,6 +48,7 @@ public class AdvertisementAdapter extends PagerAdapter {
 						_context.startActivity(it);
 					}
 				});
+				
 				LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(
 						LinearLayout.LayoutParams.MATCH_PARENT,
 						LinearLayout.LayoutParams.MATCH_PARENT);

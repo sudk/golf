@@ -1,11 +1,13 @@
 package com.jason.golf.dialog;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.text.TextUtils;
 
+@SuppressLint("ValidFragment")
 public class ProgressDialog extends DialogFragment {
 	
 	Context _context;
@@ -24,6 +26,10 @@ public class ProgressDialog extends DialogFragment {
 		if(_dialog != null)
 			_dialog.dismiss();
 		_dialog = null;
+	}
+	
+	public ProgressDialog(){
+		super();
 	}
 	
 	public ProgressDialog(Context ctx) {

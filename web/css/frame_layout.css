@@ -2,9 +2,9 @@
 
 /* layout
 --------------------------------------------------------------------*/
-body { text-align:center; background:#fff;}
+body { text-align:center; background:url("../images/bg.jpg") repeat-x;}
 #header, #content, #indexMain, #footer
-{ margin: 0 auto; width: 980px; text-align: left; position: relative;}
+{ margin: 0 auto; width: 98%; text-align: left; position: relative;}
 
 
 /* font > 文字

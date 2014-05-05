@@ -1,5 +1,6 @@
 package com.jason.golf.dialog;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -7,6 +8,7 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.text.TextUtils;
 
+@SuppressLint("ValidFragment")
 public class WarnDialog extends DialogFragment{
 	
 	public static WarnDialog newInstance(Context context) {
@@ -26,7 +28,12 @@ public class WarnDialog extends DialogFragment{
 	private DialogInterface.OnClickListener _positiveBtnClickListener;
 	private DialogInterface.OnClickListener _negativeBtnClickListener;
 	
+	public WarnDialog(){
+		super();
+	}
+	
 	public WarnDialog(Context context) {
+		super();
 		this._context = context;
 	}
 	

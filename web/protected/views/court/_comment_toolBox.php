@@ -1,15 +1,7 @@
 <form name="_query_form" id="_query_form" action="javascript:itemQuery(0);">
     <li>
         <span class="sift-title">搜索：</span>
-        
-        
-        <?php
-        if(isset($cur_court_id)){
-            ?>
-                <input type="hidden" name="q[court_id]" value="<?php echo $cur_court_id;?>"/>
-                <?php
-        }else{
-        ?>
+       
         <span style="float:left; margin:0 3px; margin-top:-3px;">球场名称</span>
         <select name="q[court_id]">
             <option value="">--选择--</option>
@@ -24,9 +16,7 @@
             }
             ?>
         </select>
-        <?php
-        }
-        ?>
+      
        <span style="float:left; margin:0 3px; margin-top:-3px;">查询日期</span>
         <input id="begintime"  type="text" name="q[begin_date]" size="14" class="Wdate" value="<?php echo date('Y-m-d');?>" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',skin:'whyGreen',errDealMode:0})" >
         <span style="float:left; margin:0 5px; margin-top:-3px;">到</span>

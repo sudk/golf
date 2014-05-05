@@ -8,12 +8,14 @@ import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
 
-public class SelectCityActivity extends Activity implements OnChildClickListener {
+public class SelectCityActivity extends ActionBarActivity implements OnChildClickListener {
 	
 	ExpandableListView mCitys;
 	
@@ -36,12 +38,15 @@ public class SelectCityActivity extends Activity implements OnChildClickListener
 		
 		mCitys.setOnChildClickListener(this);
 		
+		ActionBar bar = getSupportActionBar();
+		bar.setIcon(R.drawable.actionbar_icon);
+		
 	}
 
 	@Override
 	public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
 		// TODO Auto-generated method stub
-		System.out.println(String.format("%d£¬ %d£¬%d", groupPosition, childPosition, id));
+		System.out.println(String.format("%dï¿½ï¿½ %dï¿½ï¿½%d", groupPosition, childPosition, id));
 		
 		Intent data = new Intent();
 		data.putExtra("RowID", id);

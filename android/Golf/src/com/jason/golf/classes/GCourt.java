@@ -8,51 +8,69 @@ import java.util.ArrayList;
  * 
  */
 public class GCourt {
-	
+
 	private String _id;
 	private String _name;
 	private String _city;
-	private int _price;
-	private String _point; //���
-	private String _description;
 	private String _address;
+	private String _model;
 	private String _createYear;
+	private String _area;
 	private String _greenGrass;
 	private String _designer;
+	private String _courtData;
 	private String _fairwayLength;
 	private String _fairwayGrass;
 	private String _phone;
 	private String _remark;
 	private String _facilities;
-	private String _data;
-	private long _distance; // 距离
-	
-	private ArrayList<GPhoto> _photos;
 
+	private ArrayList<String> _fairwayImgs;
+	private ArrayList<String> _courtImgs;
+
+	public GCourt() {
+		_fairwayImgs = new ArrayList<String>();
+		_courtImgs = new ArrayList<String>();
+	}
+
+	public void addFairwayImg(String url) {
+		_fairwayImgs.add(url);
+	}
 	
+	public ArrayList<String> getFairwayImgs(){
+		return _fairwayImgs;
+	}
 	
-	public GCourt(String id, String name, String city, int price, String point,
-			String description, String address, String createYear,
-			String greenGrass, String designer, String fairwayLength,
-			String fairwayGrass, String phone, String remark,
-			String facilities, String data) {
-		super();
-		this._id = id;
-		this._name = name;
-		this._city = city;
-		this._price = price;
-		this._point = point;
-		this._description = description;
-		this._address = address;
-		this._createYear = createYear;
-		this._greenGrass = greenGrass;
-		this._designer = designer;
-		this._fairwayLength = fairwayLength;
-		this._fairwayGrass = fairwayGrass;
-		this._phone = phone;
-		this._remark = remark;
-		this._facilities = facilities;
-		this._data = data;
+	public ArrayList<String> getCourtImgs(){
+		return _courtImgs;
+	}
+
+	public void addCourtImg(String url) {
+		_courtImgs.add(url);
+	}
+
+	public String getModel() {
+		return _model;
+	}
+
+	public void setModel(String model) {
+		this._model = model;
+	}
+
+	public String getArea() {
+		return _area;
+	}
+
+	public void setArea(String area) {
+		this._area = area;
+	}
+
+	public String getCourtData() {
+		return _courtData;
+	}
+
+	public void setCourtData(String courtData) {
+		this._courtData = courtData;
 	}
 
 	public String getId() {
@@ -62,13 +80,13 @@ public class GCourt {
 	public void setId(String id) {
 		this._id = id;
 	}
-	
-	public String getName(){
+
+	public String getName() {
 		return this._name;
 	}
-	
-	public void setName(String name){
-		this._name = name ;
+
+	public void setName(String name) {
+		this._name = name;
 	}
 
 	public String getCity() {
@@ -77,30 +95,6 @@ public class GCourt {
 
 	public void setCity(String city) {
 		this._city = city;
-	}
-
-	public int getPrice() {
-		return _price;
-	}
-
-	public void setPrice(int price) {
-		this._price = price;
-	}
-
-	public String getPoint() {
-		return _point;
-	}
-
-	public void setPoint(String point) {
-		this._point = point;
-	}
-
-	public String getDescription() {
-		return _description;
-	}
-
-	public void setDescription(String description) {
-		this._description = description;
 	}
 
 	public String getAddress() {
@@ -175,20 +169,28 @@ public class GCourt {
 		this._facilities = facilities;
 	}
 
-	public String getData() {
-		return _data;
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder( "GCourt [_id=" + _id + ", _name=" + _name + ", _city=" + _city
+				+ ", _address=" + _address + ", _model=" + _model
+				+ ", _createYear=" + _createYear + ", _area=" + _area
+				+ ", _greenGrass=" + _greenGrass + ", _designer=" + _designer
+				+ ", _courtData=" + _courtData + ", _fairwayLength="
+				+ _fairwayLength + ", _fairwayGrass=" + _fairwayGrass
+				+ ", _phone=" + _phone + ", _remark=" + _remark
+				+ ", _facilities=" + _facilities + ", _fairwayImgs=[" );
+		
+		for (String str : _fairwayImgs) {
+			builder.append(str).append(",");
+		}
+		builder.append("] , _courtImgs=[" );
+		
+		for (String str : _courtImgs) {
+			builder.append(str).append(",");
+		}
+		
+		builder.append("]]");
+		
+		return builder.toString();
 	}
-
-	public void setData(String data) {
-		this._data = data;
-	}
-
-	public long getDistance() {
-		return _distance;
-	}
-
-	public void setDistance(long distance) {
-		this._distance = distance;
-	}
-	
 }

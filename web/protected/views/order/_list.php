@@ -38,11 +38,15 @@ if (is_array($rows))
             $status_text = '<span style="color:gray">'.$status_list[$status].'</span>';
         }
         
+        $amount = intval($row['amount']);
+        $amount = $amount!=0? floatval($amount/100):0;
+        $amount .= "元";
+        
         $t->echo_td($row['order_id']);
         $t->echo_td($type_list[$row['type']]); //
         $t->echo_td($row['contact']); //
         $t->echo_td($row['relation_name']); //
-        $t->echo_td($row['amount']); //
+        $t->echo_td($amount); //
         $t->echo_td($pay_type[$row['pay_type']]); //
         $t->echo_td($status_text); //
         $t->echo_td($row['record_time']); //

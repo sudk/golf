@@ -14,7 +14,7 @@
     <script type="text/javascript">
         var itemEdit = function (id) {
         tipsWindown(
-            "编辑广告信息", // title：窗口标题
+            "编辑套餐信息", // title：窗口标题
             "iframe:index.php?r=service/route/edit&id=" + id, // Url：弹窗所加截的页面路径
             "900", // width：窗体宽度
             "520", // height：窗体高度

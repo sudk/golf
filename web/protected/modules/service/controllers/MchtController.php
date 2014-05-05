@@ -21,13 +21,13 @@ class MchtController extends AuthBaseController
         $t = new SimpleGrid($this->gridId);
         $t->url = 'index.php?r=service/mcht/grid';
         $t->updateDom = 'datagrid';
-        $t->set_header('序号', '30', '');
-        $t->set_header('商户名称', '60', '');
-        $t->set_header('商户类型', '60', '');
-        $t->set_header('电话', '130', '');
-        $t->set_header('最近的球场', '80', '');
-        $t->set_header('记录时间', '80', '');
-        $t->set_header('操作', '100', '');
+        $t->set_header('序号', '5%', '');
+        $t->set_header('商户名称', '20%', '');
+        $t->set_header('商户类型', '10%', '');
+        $t->set_header('电话', '10%', '');
+        $t->set_header('最近的球场', '20%', '');
+        $t->set_header('记录时间', '20%', '');
+        $t->set_header('操作', '15%', '');
         return $t;
     }
 

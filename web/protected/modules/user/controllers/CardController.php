@@ -22,10 +22,10 @@ class CardController extends AuthBaseController
         $t = new SimpleGrid($this->gridId);
         $t->url = 'index.php?r=user/card/grid';
         $t->updateDom = 'datagrid';
-        $t->set_header('序号', '30', '');
-        $t->set_header('卡号', '40', '');
-        $t->set_header('卡名称', '40', '');
-        $t->set_header('操作', '100', '');
+        $t->set_header('序号', '5%', '');
+        $t->set_header('卡号', '45%', '');
+        $t->set_header('卡名称', '30%', '');
+        $t->set_header('操作', '20%', '');
         return $t;
     }
 

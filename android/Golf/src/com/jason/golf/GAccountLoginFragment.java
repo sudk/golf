@@ -27,7 +27,6 @@ public class GAccountLoginFragment extends Fragment implements OnClickListener {
 	
 	public static GAccountLoginFragment Instance(){
 		GAccountLoginFragment fragment = new GAccountLoginFragment();
-		
 		return fragment;
 	}
 	
@@ -62,11 +61,11 @@ public class GAccountLoginFragment extends Fragment implements OnClickListener {
 		mRegister = (Button) v.findViewById(R.id.register_button);
 		mRegister.setOnClickListener(this);
 		
-		ActionBarActivity activity = (ActionBarActivity) getActivity();
-		ActionBar bar = activity.getSupportActionBar();
-		bar.setTitle(R.string.login_title);
-		int change = bar.getDisplayOptions() ^ ActionBar.DISPLAY_HOME_AS_UP;
-	    bar.setDisplayOptions(change, ActionBar.DISPLAY_HOME_AS_UP);
+//		ActionBarActivity activity = (ActionBarActivity) getActivity();
+//		ActionBar bar = activity.getSupportActionBar();
+//		bar.setTitle(R.string.login_title);
+//		int change = bar.getDisplayOptions() ^ ActionBar.DISPLAY_HOME_AS_UP;
+//	    bar.setDisplayOptions(change, ActionBar.DISPLAY_HOME_AS_UP);
 		
 		return v;
 	}
@@ -97,37 +96,35 @@ public class GAccountLoginFragment extends Fragment implements OnClickListener {
 			Runnable r = new HttpRequest(getActivity(), p, new HttpCallback() {
 
 				@Override
-				public void sucess(String res) {
+				public void sucessData(String res) {
 					// TODO Auto-generated method stub
-					//{"data":{"user_id":"6","user_name":"","phone":"18653157591","card_no":"","email":"","sex":null,"remark":null,"record_time":"2014-04-24 17:21:17","status":null,"balance":null,"point":null},"desc":"\u6210\u529f\uff01","status":0}
+//					 {"data":{"user_id":"6","user_name":"","phone":"18653157591",
+//					"card_no":"","email":"","sex":null,"remark":null,"record_time":
+//					"2014-04-24 17:21:17","status":"0","balance":null,"point":null},
+//					"desc":"\u6210\u529f\uff01","status":0}
 
+					super.sucessData(res);
 					
+					JSONObject data;
 					try {
-						JSONObject obj = new JSONObject(res);
-						
-						int status = obj.getInt("status");
-						if(status == 0){
-							
-							GolfAppliaction app = (GolfAppliaction) getActivity().getApplication();
-							GAccount acc = app.getAccount();
-							JSONObject data = obj.getJSONObject("data");
-							acc.initilization(data.getString("user_id"), "");
-							getActivity().finish();
-							
-						}else{
-							
-							
-							
-						}
-						
-						
+						data = new JSONObject(res);
+						GolfAppliaction app = (GolfAppliaction) getActivity().getApplication();
+						GAccount acc = app.getAccount();
+						acc.initilization(data.getString("user_id"));
+						acc.setName(data.getString("user_name"));
+						acc.setPhone(data.getString("phone"));
+						acc.setVipCardNo(data.getString("card_no"));
+						acc.setEamil(data.getString("email"));
+						acc.setSex(data.getString("sex"));
+						acc.setRemark(data.getString("remark"));
+						acc.setBalance(data.getString("balance"));
+						acc.setPoint(data.getString("point"));
+						getActivity().finish();
 						
 					} catch (JSONException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					
-					super.sucess(res);
 					
 				}
 				

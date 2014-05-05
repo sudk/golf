@@ -1,13 +1,250 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:scrollbars="none"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin" >
 
-    <TextView 
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Details"/>
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/block_background"
+            android:orientation="vertical" >
 
-</LinearLayout>
+            <LinearLayout
+                style="@style/CourtDetailLinearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+                <TextView
+                    style="@style/CourtDetailTitle"
+                    android:text="@string/court_model" />
+
+                <TextView
+                    android:id="@+id/court_model"
+                    style="@style/CourtDetailContent"
+                    android:text="内容" />
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/CourtDetailLinearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+                <TextView
+                    style="@style/CourtDetailTitle"
+                    android:text="@string/court_creat_date" />
+
+                <TextView
+                    android:id="@+id/court_create_date"
+                    style="@style/CourtDetailContent"
+                    android:text="内容" />
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/CourtDetailLinearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+                <TextView
+                    style="@style/CourtDetailTitle"
+                    android:text="@string/court_area" />
+
+                <TextView
+                    android:id="@+id/court_area"
+                    style="@style/CourtDetailContent"
+                    android:text="内容" />
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/CourtDetailLinearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+                <TextView
+                    style="@style/CourtDetailTitle"
+                    android:text="@string/court_greengrass" />
+
+                <TextView
+                    android:id="@+id/court_greengrass"
+                    style="@style/CourtDetailContent"
+                    android:text="内容" />
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/CourtDetailLinearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+                <TextView
+                    style="@style/CourtDetailTitle"
+                    android:text="@string/court_data" />
+
+                <TextView
+                    android:id="@+id/court_data"
+                    style="@style/CourtDetailContent"
+                    android:text="内容" />
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/CourtDetailLinearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+                <TextView
+                    style="@style/CourtDetailTitle"
+                    android:text="@string/court_designer" />
+
+                <TextView
+                    android:id="@+id/court_designer"
+                    style="@style/CourtDetailContent"
+                    android:text="内容" />
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/CourtDetailLinearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+                <TextView
+                    style="@style/CourtDetailTitle"
+                    android:text="@string/court_fairway_length" />
+
+                <TextView
+                    android:id="@+id/court_fairway_length"
+                    style="@style/CourtDetailContent"
+                    android:text="内容" />
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/CourtDetailLinearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+                <TextView
+                    style="@style/CourtDetailTitle"
+                    android:text="@string/court_fairway_grass" />
+
+                <TextView
+                    android:id="@+id/court_fairway_grass"
+                    style="@style/CourtDetailContent"
+                    android:text="内容" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dip"
+            android:background="@drawable/block_background"
+            android:orientation="horizontal"
+            android:padding="4dip" >
+
+            <TextView
+                style="@style/CourtDetailTitle"
+                android:text="@string/court_phone" />
+
+            <TextView
+                android:id="@+id/court_phone"
+                style="@style/CourtDetailContent"
+                android:drawableRight="@drawable/ic_37_triange"
+                android:text="内容"
+                android:textColor="@color/basecolor" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dip"
+            android:background="@drawable/block_background"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:padding="4dip" >
+
+            <TextView
+                style="@style/CourtDetailTitle"
+                android:text="@string/court_fairway_imags" />
+
+            <LinearLayout
+                android:id="@+id/images"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:orientation="horizontal" >
+                
+                
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/triange"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_37_triange" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dip"
+            android:background="@drawable/block_background"
+            android:orientation="vertical"
+            android:padding="4dip" >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dip"
+                android:text="@string/court_brief"
+                android:textColor="#7c7c7c" />
+
+            <TextView
+                android:id="@+id/court_brief"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dip"
+                android:text="内容"
+                android:textColor="@android:color/black" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dip"
+            android:background="@drawable/block_background"
+            android:orientation="vertical"
+            android:padding="4dip" >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dip"
+                android:text="@string/court_facilities"
+                android:textColor="#7c7c7c" />
+
+            <TextView
+                android:id="@+id/court_facilities"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dip"
+                android:text="内容"
+                android:textColor="@android:color/black" />
+        </LinearLayout>
+    </LinearLayout>
+
+</ScrollView>

@@ -4,39 +4,56 @@ import android.location.Location;
 import android.text.TextUtils;
 
 public class GAccount {
-	
+
 	private String _id;
 	private String _session;
-	
+
 	private String _phone;
 	private String _city;
 	private String _name;
-	
-	private String _balance; //���
-	
-	private String _type; // �Ƿ�VIP�ͻ�
-	private String _vipCardNo; //VIP����
-	private String _point; // ���
-	
-	private Location _loc;
 
-	public void initilization(String id, String session){
+	private String _eamil;
+	private String _sex;
+	private String _remark;
+
+	private String _balance; // ���
+
+	private String _type; // �Ƿ�VIP�ͻ�
+	private String _vipCardNo; // VIP����
+	private String _point; // ���
+
+	private Location _loc;
+	private boolean _login;
+
+	public void initilization(String id) {
 		_id = id;
-		_session = session;
+		_login = true;
 	}
-	
-	/*
-	 * 
-	 * 判断用户是否已经登录
-	 * 
-	 */
-	public boolean hasLogin(){
-		if(TextUtils.isEmpty(_id) || TextUtils.isEmpty(_session))
-			return false;
-		else
-			return true;
+
+	public String getRemark() {
+		return _remark;
 	}
-	
+
+	public void setRemark(String remark) {
+		this._remark = remark;
+	}
+
+	public String getSex() {
+		return _sex;
+	}
+
+	public void setSex(String sex) {
+		this._sex = sex;
+	}
+
+	public String getEamil() {
+		return _eamil;
+	}
+
+	public void setEamil(String eamil) {
+		this._eamil = eamil;
+	}
+
 	public Location getLoc() {
 		return _loc;
 	}
@@ -45,12 +62,19 @@ public class GAccount {
 		this._loc = loc;
 	}
 
-	public String getId(){
+	public String getId() {
 		return _id;
 	}
 
-	public String getSession(){
+	public String getSession() {
 		return _session;
+	}
+
+	public void setSession(String session) {
+		// TODO Auto-generated method stub
+		if (!TextUtils.isEmpty(session)) {
+			_session = session.substring(0, session.indexOf(";"));
+		}
 	}
 
 	public String getPhone() {
@@ -77,8 +101,12 @@ public class GAccount {
 		this._name = name;
 	}
 
-	public String getBalance() {
-		return _balance;
+	public int getBalance() {
+		int res = 0;
+		if(!TextUtils.isEmpty(_balance) && TextUtils.isDigitsOnly(_balance)){
+			res = Integer.parseInt(_balance);
+		}
+		return res;
 	}
 
 	public void setBalance(String balance) {
@@ -101,18 +129,31 @@ public class GAccount {
 		this._vipCardNo = vipCardNo;
 	}
 
-	public String getPoint() {
-		return _point;
+	public int getPoint() {
+		int res = 0;
+		if(!TextUtils.isEmpty(_point) && TextUtils.isDigitsOnly(_point)){
+			res = Integer.parseInt(_point);
+		}
+		return res;
 	}
 
 	public void setPoint(String point) {
 		this._point = point;
 	}
 
+	/*
+	 * 
+	 * 判断用户是否已经登录
+	 */
+	public boolean isLogin() {
+		return _login;
+	}
+
 	public void clear() {
 		// TODO Auto-generated method stub
 		_id = null;
 		_session = null;
+		_login = false;
 	}
 
 	@Override
@@ -122,7 +163,5 @@ public class GAccount {
 				+ ", _balance=" + _balance + ", _type=" + _type
 				+ ", _vipCardNo=" + _vipCardNo + ", _point=" + _point + "]";
 	}
-	
-	
 
 }

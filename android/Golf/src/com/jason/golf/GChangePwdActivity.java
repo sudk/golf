@@ -90,13 +90,13 @@ public class GChangePwdActivity extends ActionBarActivity implements
 			HttpRequest r = new HttpRequest(this, params, new HttpCallback() {
 
 				@Override
-				public void sucess(String res) {
+				public void sucessData(String res) {
 					// TODO Auto-generated method stub
-					super.sucess(res);
 
 					mGetSmsCode.setEnabled(false);
 					mHandler.sendEmptyMessage(MESSAGE_TIMING);
 
+					super.sucessData(res);
 				}
 
 			});
@@ -126,13 +126,11 @@ public class GChangePwdActivity extends ActionBarActivity implements
 			HttpRequest r = new HttpRequest(this, params, new HttpCallback() {
 
 				@Override
-				public void sucess(String res) {
+				public void sucessData(String res) {
 					// TODO Auto-generated method stub
-					super.sucess(res);
-
 					mGetSmsCode.setEnabled(false);
 					mHandler.sendEmptyMessage(MESSAGE_TIMING);
-
+					super.sucessData(res);
 				}
 
 			});

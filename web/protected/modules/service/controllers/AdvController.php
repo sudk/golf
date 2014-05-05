@@ -19,13 +19,13 @@ class AdvController extends AuthBaseController {
         $t = new SimpleGrid($this->gridId);
         $t->url = 'index.php?r=service/adv/grid';
         $t->updateDom = 'datagrid';
-        $t->set_header('序号', '30', '');
-        $t->set_header('广告权重', '60', '');
-        $t->set_header('广告类型', '60', '');
-        $t->set_header('广告图片', '130', '');
-        $t->set_header('有效期', '100', '');
-        $t->set_header('状态', '100', '');
-        $t->set_header('操作', '100', '');
+        $t->set_header('序号', '5%', '');
+        $t->set_header('广告权重', '10%', '');
+        $t->set_header('广告类型', '10%', '');
+        $t->set_header('广告图片', '25%', '');
+        $t->set_header('有效期', '30%', '');
+        $t->set_header('状态', '10%', '');
+        $t->set_header('操作', '10%', '');
         return $t;
     }
 
