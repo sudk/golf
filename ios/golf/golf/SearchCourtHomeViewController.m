@@ -89,7 +89,7 @@
     if (_selectDateStr==nil) {
         _selectDateStr=[@"明天" stringByAppendingString:weekStr];;
     }
-    NSArray *tmpContent=@[@"珠海市",_selectDateStr,@"09:00",@"选择价格",@"球场名称"];//青岛市
+    NSArray *tmpContent=@[@"青岛市",_selectDateStr,@"09:00",@"选择价格",@"球场名称"];//青岛市
     for (int i=0; i<[tmpContent count]; i++) {
         [_contentArray addObject:[tmpContent objectAtIndex:i]];
     }
@@ -414,6 +414,7 @@
         courtVc.courtTitle=[[[_contentArray objectAtIndex:0] stringByAppendingString:[_contentArray objectAtIndex:1]] stringByAppendingString:[_contentArray objectAtIndex:2]];
         courtVc.dateStr=[_contentArray objectAtIndex:1];
         courtVc.timeStr=[_contentArray objectAtIndex:2];
+        courtVc.selectDate=_selectDate;
         courtVc.courtArray=[[notification object]objectForKey:@"data"];
         self.hidesBottomBarWhenPushed=YES;
         [self.navigationController pushViewController:courtVc animated:YES];

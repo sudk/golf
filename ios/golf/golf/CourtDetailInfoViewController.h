@@ -19,5 +19,17 @@
 @property(nonatomic,strong)UIButton *phnBtn;//球场电话
 @property(nonatomic,strong)UILabel *descInfo;//球场简介
 @property(nonatomic,strong)UILabel *facilityInfo;//球场设施
-@property(nonatomic,strong)AHPreviewController *preview;
+@property(nonatomic,strong)NSString *fairwayImgStr;
+@property(nonatomic,strong)NSArray *fairwayImgArray;
+@property(nonatomic,strong)UIButton *fcourtWayBtn;
+@property(nonatomic,strong)UIButton *scourtWayBtn;
+@property(nonatomic,strong)UIButton *tcourtWayBtn;
+@property(nonatomic,strong)NSString *descInfoStr;
+@property(nonatomic,strong)NSString *phnStr;
+@property(nonatomic,strong)NSString *facilityInfoStr;
+@property(nonatomic,strong)NSArray *nearbyInfoArray;
+@property(nonatomic,strong)BDKNotifyHUD *notify;
+@property(nonatomic,strong)NSString *notificationText;
+@property(nonatomic,strong)UIView *facilityView;
+@property(nonatomic,strong)NSArray *nearByImgArray;
 @end

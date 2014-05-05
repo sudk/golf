@@ -32,7 +32,8 @@
     self.title=@"球场信息";
     self.navigationItem.leftBarButtonItem=[self topBarButtonItem:@"" andHighlightedName:@""];
     _httpUtils=[[HttpUtils alloc]init];
-    self.courtInfoArray=[NSMutableArray array];
+    self.nearbyInfoArray=[NSArray array];
+    
     _courtInfoScroll=[[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT-64)];
     _courtInfoScroll.contentSize=CGSizeMake(SCREEN_WIDTH, SCREEN_HEIGHT*1.8);
     [self.view addSubview:_courtInfoScroll];
@@ -43,10 +44,9 @@
     _courtInfoTable.rowHeight=30;
     [_courtInfoScroll addSubview:_courtInfoTable];
     self.courtInfoTitleArray=@[@"球场模式",@"建立时间",@"球场面积",@"果岭草种",@"球场数据",@"设计师",@"球道长度",@"球道草种"];
-    for (int i=0; i<8; i++) {
-        [_courtInfoArray addObject:@""];
-    }
-    [self courtDetailInfo];
+    
+//    [self courtDetailInfo];
+    [self courtFacilitiesInfo];
     UIView *phnView=[[UIView alloc]initWithFrame:CGRectMake(0, _courtInfoTable.frame.origin.y+_courtInfoTable.frame.size.height+10, SCREEN_WIDTH, 40)];
     phnView.backgroundColor=[UIColor whiteColor];
     UILabel *phnLabel=[[UILabel alloc]initWithFrame:CGRectMake(10, 0, 80, 40)];
@@ -55,39 +55,47 @@
     
     self.phnBtn=[[UIButton alloc]initWithFrame:CGRectMake(phnLabel.frame.origin.x+phnLabel.frame.size.width, 0, 180, 40)];
     [_phnBtn setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
-    [_phnBtn setTitle:@"" forState:UIControlStateNormal];
+    [_phnBtn setTitle:_phnStr forState:UIControlStateNormal];
     [_phnBtn addTarget:self action:@selector(callMethod:) forControlEvents:UIControlEventTouchUpInside];
     [phnView addSubview:phnLabel];
     [phnView addSubview:_phnBtn];
     [_courtInfoScroll addSubview:phnView];
     
-    
-    
-    UIView *courtWayView=[[UIView alloc]initWithFrame:CGRectMake(0, phnView.frame.origin.y+phnView.frame.size.height+10, SCREEN_WIDTH, 70)];
+    UIView *courtWayView;
+    if ([_fairwayImgArray count]>0) {
+    courtWayView=[[UIView alloc]initWithFrame:CGRectMake(0, phnView.frame.origin.y+phnView.frame.size.height+10, SCREEN_WIDTH, 70)];
     courtWayView.backgroundColor=[UIColor whiteColor];
     UILabel *courtWaylabel=[[UILabel alloc]initWithFrame:CGRectMake(10, 15, 80, 40)];
     courtWaylabel.text=@"球道详情";
     courtWaylabel.backgroundColor=[UIColor clearColor];
     [courtWayView addSubview:courtWaylabel];
     [_courtInfoScroll addSubview:courtWayView];
-    
-    UIButton *courtWayBtn1=[[UIButton alloc]initWithFrame:CGRectMake(95, 5, 60, 60)];
-    [courtWayBtn1 setImageWithURL:[NSURL URLWithString:@"http://www.5aihuan.com/images/n_tjian/pp_11.jpg"] forState:UIControlStateNormal];
-    [courtWayBtn1 addTarget:self action:@selector(showCourtWayImgs) forControlEvents:UIControlEventTouchUpInside];
-    [courtWayView addSubview:courtWayBtn1];
-    
-    UIButton *courtWayBtn2=[[UIButton alloc]initWithFrame:CGRectMake(160, 5, 60, 60)];
-    [courtWayBtn2 setImageWithURL:[NSURL URLWithString:@"http://www.5aihuan.com/images/n_tjian/pp_11.jpg"] forState:UIControlStateNormal];
-    [courtWayBtn2 addTarget:self action:@selector(showCourtWayImgs) forControlEvents:UIControlEventTouchUpInside];
-    [courtWayView addSubview:courtWayBtn2];
-    
-    UIButton *courtWayBtn3=[[UIButton alloc]initWithFrame:CGRectMake(225, 5, 60, 60)];
-    [courtWayBtn3 setImageWithURL:[NSURL URLWithString:@"http://www.5aihuan.com/images/n_tjian/pp_11.jpg"] forState:UIControlStateNormal];
-    [courtWayBtn3 addTarget:self action:@selector(showCourtWayImgs) forControlEvents:UIControlEventTouchUpInside];
-    [courtWayView addSubview:courtWayBtn3];
+        self.fcourtWayBtn=[[UIButton alloc]initWithFrame:CGRectMake(95, 5, 60, 60)];
+        [_fcourtWayBtn setImageWithURL:[NSURL URLWithString:[NSStringSmall smallSpliceStr:[self.fairwayImgArray objectAtIndex:0]]] forState:UIControlStateNormal placeholderImage:[UIImage imageNamed:@"defaultImg"]];
+        [_fcourtWayBtn addTarget:self action:@selector(showCourtWayImgs) forControlEvents:UIControlEventTouchUpInside];
+        [courtWayView addSubview:_fcourtWayBtn];
+    }
+    if ([_fairwayImgArray count]>1) {
+        self.scourtWayBtn=[[UIButton alloc]initWithFrame:CGRectMake(160, 5, 60, 60)];
+        [_scourtWayBtn setImageWithURL:[NSURL URLWithString:[NSStringSmall smallSpliceStr:[self.fairwayImgArray objectAtIndex:1]]] forState:UIControlStateNormal placeholderImage:[UIImage imageNamed:@"defaultImg"]];
+        [_scourtWayBtn addTarget:self action:@selector(showCourtWayImgs) forControlEvents:UIControlEventTouchUpInside];
+        [courtWayView addSubview:_scourtWayBtn];
+    }
+    if ([_fairwayImgArray count]>2) {
+        self.tcourtWayBtn=[[UIButton alloc]initWithFrame:CGRectMake(225, 5, 60, 60)];
+        [_tcourtWayBtn setImageWithURL:[NSURL URLWithString:[NSStringSmall smallSpliceStr:[self.fairwayImgArray objectAtIndex:2]]] forState:UIControlStateNormal placeholderImage:[UIImage imageNamed:@"defaultImg"]];
+        [_tcourtWayBtn addTarget:self action:@selector(showCourtWayImgs) forControlEvents:UIControlEventTouchUpInside];
+        [courtWayView addSubview:_tcourtWayBtn];
+    }
     [_courtInfoScroll addSubview:courtWayView];
-    
-    UILabel *desclabel=[[UILabel alloc]initWithFrame:CGRectMake(10, courtWayView.frame.origin.y+courtWayView.frame.size.height+10, 100, 40)];
+    UILabel *desclabel;
+    if ([_fairwayImgArray count]==0) {
+        desclabel=[[UILabel alloc]initWithFrame:CGRectMake(10, phnView.frame.origin.y+phnView.frame.size.height+10, 100, 40)];
+    }
+    else
+    {
+        desclabel=[[UILabel alloc]initWithFrame:CGRectMake(10, courtWayView.frame.origin.y+courtWayView.frame.size.height+10, 100, 40)];
+    }
     desclabel.text=@"球场简介";
     desclabel.backgroundColor=[UIColor clearColor];
     [_courtInfoScroll addSubview:desclabel];
@@ -96,7 +104,7 @@
     descView.backgroundColor=[UIColor whiteColor];
     self.descInfo=[[UILabel alloc]initWithFrame:CGRectMake(0, 0, descView.frame.size.width, descView.frame.size.height)];
     _descInfo.backgroundColor=[UIColor clearColor];
-    _descInfo.text=@"澳门凯撒高尔夫也叫东方澳门高尔夫球场，事东方拉斯维加斯的球场，澳门凯撒高尔夫也叫东方澳门高尔夫球场，事东方拉斯维加斯的球场，澳门凯撒高尔夫也叫东方澳门高尔夫球场，事东方拉斯维加斯的球场，澳门凯撒高尔夫也叫东方澳门高尔夫球场，事东方拉斯维加斯的球场。";
+    _descInfo.text=_descInfoStr;
     _descInfo.numberOfLines=7;
     _descInfo.lineBreakMode=NSLineBreakByWordWrapping;
     _descInfo.font=[UIFont systemFontOfSize:14];
@@ -108,75 +116,160 @@
     facilitylabel.backgroundColor=[UIColor clearColor];
     [_courtInfoScroll addSubview:facilitylabel];
     
-    UIView *facilityView=[[UIView alloc]initWithFrame:CGRectMake(0, facilitylabel.frame.origin.y+facilitylabel.frame.size.height, SCREEN_WIDTH, 40)];
-    facilityView.backgroundColor=[UIColor whiteColor];
-    self.facilityInfo=[[UILabel alloc]initWithFrame:CGRectMake(0, 0, facilityView.frame.size.width, facilityView.frame.size.height)];
+    self.facilityView=[[UIView alloc]initWithFrame:CGRectMake(0, facilitylabel.frame.origin.y+facilitylabel.frame.size.height, SCREEN_WIDTH, 40)];
+    _facilityView.backgroundColor=[UIColor whiteColor];
+    self.facilityInfo=[[UILabel alloc]initWithFrame:CGRectMake(0, 0, _facilityView.frame.size.width, _facilityView.frame.size.height)];
     _facilityInfo.backgroundColor=[UIColor clearColor];
-    _facilityInfo.text=@"";
+    _facilityInfo.text=_facilityInfoStr;
     _facilityInfo.numberOfLines=2;
     _facilityInfo.lineBreakMode=NSLineBreakByWordWrapping;
     _facilityInfo.font=[UIFont systemFontOfSize:14];
-    [facilityView addSubview:_facilityInfo];
-    [_courtInfoScroll addSubview:facilityView];
+    [_facilityView addSubview:_facilityInfo];
+    [_courtInfoScroll addSubview:_facilityView];
     
-    UILabel *evaluationlabel=[[UILabel alloc]initWithFrame:CGRectMake(10, facilityView.frame.origin.y+facilityView.frame.size.height+10, 100, 40)];
-    evaluationlabel.text=@"球场评价";
-    evaluationlabel.backgroundColor=[UIColor clearColor];
+//    UILabel *evaluationlabel=[[UILabel alloc]initWithFrame:CGRectMake(10, facilityView.frame.origin.y+facilityView.frame.size.height+10, 100, 40)];
+//    evaluationlabel.text=@"球场评价";
+//    evaluationlabel.backgroundColor=[UIColor clearColor];
 //    [_courtInfoScroll addSubview:evaluationlabel];
     
-    UIView *evaluationView=[[UIView alloc]initWithFrame:CGRectMake(0, evaluationlabel.frame.origin.y+evaluationlabel.frame.size.height, SCREEN_WIDTH, 40)];
-    evaluationView.backgroundColor=[UIColor whiteColor];
-    UILabel *evaluationInfo=[[UILabel alloc]initWithFrame:CGRectMake(0, 0, evaluationView.frame.size.width, evaluationView.frame.size.height)];
-    evaluationInfo.backgroundColor=[UIColor clearColor];
-    evaluationInfo.text=@"环境优雅，环境优雅，环境优雅，环境优雅，环境优雅，环境优雅";
-    evaluationInfo.numberOfLines=2;
-    evaluationInfo.lineBreakMode=NSLineBreakByWordWrapping;
-    evaluationInfo.font=[UIFont systemFontOfSize:14];
-    [evaluationView addSubview:evaluationInfo];
+//    UIView *evaluationView=[[UIView alloc]initWithFrame:CGRectMake(0, evaluationlabel.frame.origin.y+evaluationlabel.frame.size.height, SCREEN_WIDTH, 40)];
+//    evaluationView.backgroundColor=[UIColor whiteColor];
+//    UILabel *evaluationInfo=[[UILabel alloc]initWithFrame:CGRectMake(0, 0, evaluationView.frame.size.width, evaluationView.frame.size.height)];
+//    evaluationInfo.backgroundColor=[UIColor clearColor];
+//    evaluationInfo.text=@"环境优雅，环境优雅，环境优雅，环境优雅，环境优雅，环境优雅";
+//    evaluationInfo.numberOfLines=2;
+//    evaluationInfo.lineBreakMode=NSLineBreakByWordWrapping;
+//    evaluationInfo.font=[UIFont systemFontOfSize:14];
+//    [evaluationView addSubview:evaluationInfo];
 //    [_courtInfoScroll addSubview:evaluationView];
     
-    UILabel *nearbylabel=[[UILabel alloc]initWithFrame:CGRectMake(10, facilityView.frame.origin.y+facilityView.frame.size.height+10, 100, 40)];
+    UILabel *nearbylabel=[[UILabel alloc]initWithFrame:CGRectMake(10, _facilityView.frame.origin.y+_facilityView.frame.size.height+10, 100, 40)];
     nearbylabel.text=@"附近的店";
     nearbylabel.backgroundColor=[UIColor clearColor];
     [_courtInfoScroll addSubview:nearbylabel];
     
-    UIView *nearbyView=[[UIView alloc]initWithFrame:CGRectMake(0, evaluationlabel.frame.origin.y+evaluationlabel.frame.size.height, SCREEN_WIDTH, 210)];
-    nearbyView.backgroundColor=[UIColor whiteColor];
-    
-    UIImageView *nearbyImgv1=[[UIImageView alloc]initWithFrame:CGRectMake(10, 2, 60, 60)];
-    [nearbyImgv1 setImageWithURL:[NSURL URLWithString:@"http://www.5aihuan.com/images/n_tjian/pp_11.jpg"] placeholderImage:[UIImage imageNamed:@"defaultImg"]];
-    [nearbyView addSubview:nearbyImgv1];
-    UILabel *nearbyInfo1=[[UILabel alloc]initWithFrame:CGRectMake(75, 2, 225, 30)];
-    nearbyInfo1.backgroundColor=[UIColor clearColor];
-    nearbyInfo1.text=@"ktv";
-    nearbyInfo1.font=[UIFont systemFontOfSize:14];
-    [nearbyView addSubview:nearbyInfo1];
-    
-    UIImageView *nearbyImgv2=[[UIImageView alloc]initWithFrame:CGRectMake(10, 64, 60, 60)];
-    [nearbyImgv2 setImageWithURL:[NSURL URLWithString:@"http://www.5aihuan.com/images/n_tjian/pp_11.jpg"] placeholderImage:[UIImage imageNamed:@"defaultImg"]];
-    [nearbyView addSubview:nearbyImgv2];
-    UILabel *nearbyInfo2=[[UILabel alloc]initWithFrame:CGRectMake(75, 64, 225, 30)];
-    nearbyInfo2.backgroundColor=[UIColor clearColor];
-    nearbyInfo2.text=@"ktv";
-    nearbyInfo2.font=[UIFont systemFontOfSize:14];
-    [nearbyView addSubview:nearbyInfo2];
-    
-    UIImageView *nearbyImgv3=[[UIImageView alloc]initWithFrame:CGRectMake(10, 126, 60, 60)];
-    [nearbyImgv3 setImageWithURL:[NSURL URLWithString:@"http://www.5aihuan.com/images/n_tjian/pp_11.jpg"] placeholderImage:[UIImage imageNamed:@"defaultImg"]];
-    [nearbyView addSubview:nearbyImgv3];
-    UILabel *nearbyInfo3=[[UILabel alloc]initWithFrame:CGRectMake(75, 126, 225, 30)];
-    nearbyInfo3.backgroundColor=[UIColor clearColor];
-    nearbyInfo3.text=@"ktv";
-    nearbyInfo3.font=[UIFont systemFontOfSize:14];
-    [nearbyView addSubview:nearbyInfo3];
-    [_courtInfoScroll addSubview:nearbyView];
-
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+-(void)customNearByBtn:(CGRect)frame andIndex:(int)index andnearbyView:(UIView *)nearbyView
+{
+    UIButton *nearbyBtn=[[UIButton alloc]initWithFrame:frame];
+    NSLog(@"=====%@",[NSStringSmall smallSpliceStr:[[[_nearbyInfoArray objectAtIndex:index] objectForKey:@"imgs"] objectAtIndex:0]]);
+    [nearbyBtn setImageWithURL:[NSURL URLWithString:[NSStringSmall smallSpliceStr:[[[_nearbyInfoArray objectAtIndex:index] objectForKey:@"imgs"] objectAtIndex:0]]] forState:UIControlStateNormal placeholderImage:[UIImage imageNamed:@"defaultImg"]];
+    nearbyBtn.tag=index;
+    [nearbyBtn addTarget:self action:@selector(showNearbyImgs:) forControlEvents:UIControlEventTouchUpInside];
+    [nearbyView addSubview:nearbyBtn];
+}
+-(void)customNearByLabel:(int)index andNameFrame:(CGRect)nameFrame andInfoFrame:(CGRect)infoFrame andnearbyView:(UIView *)nearbyView
+{
+    NSString *facilitie_nameStr=[[_nearbyInfoArray objectAtIndex:index] objectForKey:@"facilitie_name"];//巴山夜雨
+    if (facilitie_nameStr==nil) {
+        facilitie_nameStr=@"";
+    }
+    NSString *typeStr=[[_nearbyInfoArray objectAtIndex:index] objectForKey:@"type"];//吃
+    if (typeStr==nil) {
+        typeStr=@"";
+    }
+    NSString *featureStr=[[_nearbyInfoArray objectAtIndex:index] objectForKey:@"feature"];//好吃的菜
+    if (featureStr==nil) {
+        featureStr=@"";
+    }
+    featureStr=[featureStr stringByAppendingString:@"\n"];
+    NSString *consumptionStr=[[_nearbyInfoArray objectAtIndex:index] objectForKey:@"consumption"];//200元
+    if (consumptionStr==nil) {
+        consumptionStr=@"";
+    }
+    consumptionStr=[consumptionStr stringByAppendingString:@"   "];
+    NSString *favourableStr=@"";
+    if ([[[_nearbyInfoArray objectAtIndex:index] objectForKey:@"favourable"] intValue]==1) {
+        favourableStr=@"绿卡优惠";
+    }
+    favourableStr=[favourableStr stringByAppendingString:@"  "];
+    NSString *phoneStr=[[_nearbyInfoArray objectAtIndex:index] objectForKey:@"phone"];
+    if (phoneStr==nil) {
+        phoneStr=@"";
+    }
+    phoneStr=[phoneStr stringByAppendingString:@"\n"];
+    NSString *addrStr=[[_nearbyInfoArray objectAtIndex:index] objectForKey:@"addr"];
+    if (addrStr==nil) {
+        addrStr=@"";
+    }
+    addrStr=[addrStr stringByAppendingString:@"\n"];
+    NSString *distanceStr=[[_nearbyInfoArray objectAtIndex:index] objectForKey:@"distance"];
+    if (distanceStr==nil) {
+        distanceStr=@"";
+    }
+    distanceStr=[@"距离球场" stringByAppendingString:distanceStr];
+    NSString *infoStr=[[[[[featureStr stringByAppendingString:consumptionStr] stringByAppendingString:favourableStr] stringByAppendingString:phoneStr] stringByAppendingString:addrStr] stringByAppendingString:distanceStr];
+    UILabel *nearbyNameInfo=[[UILabel alloc]initWithFrame:nameFrame];
+    nearbyNameInfo.backgroundColor=[UIColor clearColor];
+    nearbyNameInfo.text=facilitie_nameStr;
+    nearbyNameInfo.font=[UIFont systemFontOfSize:14];
+    [nearbyView addSubview:nearbyNameInfo];
+    
+    UILabel *nearbyInfo=[[UILabel alloc]initWithFrame:infoFrame];
+    nearbyInfo.backgroundColor=[UIColor clearColor];
+    nearbyInfo.font=[UIFont systemFontOfSize:12];
+    nearbyInfo.text=infoStr;
+    nearbyInfo.numberOfLines=7;
+    nearbyInfo.lineBreakMode=NSLineBreakByWordWrapping;
+    [nearbyView addSubview:nearbyInfo];
+}
+-(void)addNearByView
+{
+    UIView *nearbyView=[[UIView alloc]initWithFrame:CGRectMake(0, _facilityView.frame.origin.y+_facilityView.frame.size.height+50, SCREEN_WIDTH, 300)];
+    nearbyView.backgroundColor=[UIColor whiteColor];
+    if ([_nearbyInfoArray count]>0) {
+        [self customNearByBtn:CGRectMake(10, 2, 90, 90) andIndex:0 andnearbyView:nearbyView];
+        [self customNearByLabel:0 andNameFrame:CGRectMake(105, 2, 215, 20) andInfoFrame:CGRectMake(105, 22, 215, 76) andnearbyView:nearbyView];
+    }
+    if ([_nearbyInfoArray count]>1) {
+        [self customNearByBtn:CGRectMake(10, 96, 90, 90) andIndex:1 andnearbyView:nearbyView];
+        [self customNearByLabel:1 andNameFrame:CGRectMake(105, 96, 215, 20) andInfoFrame:CGRectMake(105, 116, 215, 76) andnearbyView:nearbyView];
+    }
+    if ([_nearbyInfoArray count]>2) {
+        [self customNearByBtn:CGRectMake(10, 190, 90, 90) andIndex:2 andnearbyView:nearbyView];
+        [self customNearByLabel:2 andNameFrame:CGRectMake(105, 190, 215, 20) andInfoFrame:CGRectMake(105, 210, 215, 76) andnearbyView:nearbyView];
+    }
+    [_courtInfoScroll addSubview:nearbyView];
+}
+//附近的店
+-(void)courtFacilitiesInfo
+{
+    NSMutableDictionary *dic=[NSMutableDictionary dictionary];
+    [dic setObject:@"court/facilities" forKey:@"cmd"];
+    [dic setObject:_courtId forKey:@"court_id"];
+    [dic setObject:@"" forKey:@"id"];
+    [dic setObject:@"" forKey:@"facilitie_name"];
+    [dic setObject:@"" forKey:@"type"];
+    [dic setObject:@"0" forKey:@"_pg_"];
+    
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(courtFacilitiesInfoMethod:) name:@"com.golf.courtFacilitiesInfoMethod" object:nil];
+    [_httpUtils startRequest:dic andUrl:baseUrlStr andRequestField:@"court/facilities" andNotificationName:@"com.golf.courtFacilitiesInfoMethod" andViewControler:nil];
+}
+-(void)courtFacilitiesInfoMethod:(NSNotification *)notification
+{
+    NSDictionary *faciDic=[notification object];
+    NSLog(@"球场信息界面附近的店回调====%@",faciDic);
+    NSNumber *statusNum=[faciDic objectForKey:@"status"];
+    if ([statusNum intValue]==0) {
+        _nearbyInfoArray=[faciDic objectForKey:@"data"];
+        [self addNearByView];
+    }
+    else
+    {
+        NSString *descStr=[faciDic objectForKey:@"desc"];
+        if (descStr==nil) {
+            descStr=networkAbnormalInfo;
+        }
+        self.notificationText=descStr;
+        [self displayNotification];
+    }
+    [[NSNotificationCenter defaultCenter]removeObserver:self name:@"com.golf.courtFacilitiesInfoMethod" object:nil];
 }
 -(void)courtDetailInfo
 {
@@ -189,7 +282,7 @@
 }
 -(void)courtDetailInfoMethod:(NSNotification *)notification
 {
-    NSLog(@"球场详情====%@",[notification object]);
+    NSLog(@"球场信息界面详情====%@",[notification object]);
     NSDictionary *dataArray=[[notification object]objectForKey:@"data"];
     NSString *modelStr=[dataArray  objectForKey:@"model"];
     if (modelStr==nil) {
@@ -239,7 +332,7 @@
     [_phnBtn setTitle:[dataArray  objectForKey:@"phone"] forState:UIControlStateNormal];
     _descInfo.text=[dataArray  objectForKey:@"remark"];
     _facilityInfo.text=[dataArray  objectForKey:@"facilities"];
-    _preview.previewImgArray=[dataArray  objectForKey:@"fairway_imgs"];
+    _fairwayImgArray=[dataArray  objectForKey:@"fairway_imgs"];
     //http://115.28.77.119/images/picture/20140410/230742147.png
     [[NSNotificationCenter defaultCenter]removeObserver:self name:@"com.golf.ahCourtDetailInfoMethod" object:nil];
 }
@@ -279,9 +372,33 @@
 }
 -(void)showCourtWayImgs
 {
-    _preview=[[AHPreviewController alloc]init];
-    _preview.previewImgArray=@[@"http://www.5aihuan.com/images/n_tjian/pp_11.jpg",@"http://www.5aihuan.com/images/n_tjian/pp_11.jpg",@"http://www.5aihuan.com/images/n_tjian/pp_11.jpg",@"http://www.5aihuan.com/images/n_tjian/pp_11.jpg",@"http://www.5aihuan.com/images/n_tjian/pp_11.jpg"];
-    _preview.previewTitle=@"球道详情";
-    [self.navigationController pushViewController:_preview animated:YES];
+    AHPreviewController *preview=[[AHPreviewController alloc]init];
+    preview.previewImgArray=_fairwayImgArray;
+    preview.previewTitle=@"球道详情";
+    [self.navigationController pushViewController:preview animated:YES];
 }
+-(IBAction)showNearbyImgs:(id)sender
+{
+    int tag=(int)[sender tag];
+    AHPreviewController *preview=[[AHPreviewController alloc]init];
+    preview.previewImgArray=[[_nearbyInfoArray objectAtIndex:tag] objectForKey:@"imgs"];
+    preview.previewTitle=@"店铺图片";
+    [self.navigationController pushViewController:preview animated:YES];
+}
+- (void)displayNotification {
+    if (self.notify.isAnimating) return;
+    [self.view addSubview:self.notify];
+    //    [[[UIApplication sharedApplication]keyWindow] addSubview:self.notify];
+    [self.notify presentWithDuration:1.5f speed:1.0f inView:self.view completion:^{
+        [self.notify removeFromSuperview];
+    }];
+}
+
+- (BDKNotifyHUD *)notify {
+    if (_notify != nil) return _notify;
+    _notify = [BDKNotifyHUD notifyHUDWithImage:[UIImage imageNamed:@""] text:_notificationText];
+    _notify.center = CGPointMake(73, self.view.center.y - 20);
+    return _notify;
+}
+
 @end

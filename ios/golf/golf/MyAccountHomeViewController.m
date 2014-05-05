@@ -200,7 +200,7 @@
         [_sqlUtils delete_loginInfo_tab];
         [[FSSysConfig getInstance]setIsLogin:NO];
         GolfTabBarController *golfTab=(GolfTabBarController*)self.navigationController.tabBarController;
-        [golfTab _butttonActionWithtag4];
+        [golfTab _butttonActionWithtag3];
     }
     [[NSNotificationCenter defaultCenter]removeObserver:self name:@"com.golf.ahLogoutMethod" object:nil];
 }

@@ -45,7 +45,7 @@
         return;
     }
     
-    for (int i=1; i<=4; i++) {
+    for (int i=1; i<=3; i++) {
         
         UIButton *button=[UIButton buttonWithType:UIButtonTypeCustom];
         button.frame=CGRectMake((i-1)*320/3.0, 0, 320/3.0, 49);

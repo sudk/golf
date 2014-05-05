@@ -97,12 +97,12 @@
         courtModel.courtImgUrl=[[_courtArray objectAtIndex:i] objectForKey:@"ico_img"];
         courtModel.courtId=[[_courtArray objectAtIndex:i] objectForKey:@"court_id"];
         
-        [_courtInfoArray addObject:courtModel];
+        [self.courtInfoArray addObject:courtModel];
         [courtModel release];
     }
     
-    NSMutableArray *sortedArray = (NSMutableArray*)[_courtInfoArray sortedArrayUsingSelector:@selector(compareName:)];
-    self.courtInfoArray=sortedArray;//_courtInfoArray
+    NSMutableArray *sortedArray = (NSMutableArray*)[self.courtInfoArray sortedArrayUsingSelector:@selector(compareName:)];
+    self.courtInfoArray=sortedArray;//
     
     _courtInfoTable=[[UITableView alloc]initWithFrame:CGRectMake(0, 34, SCREEN_WIDTH, SCREEN_HEIGHT-64-34) style:UITableViewStylePlain];
     _courtInfoTable.delegate=self;
@@ -128,7 +128,7 @@
 -(void)sgAction:(ITTSegement *)sg
 {
     NSLog(@"%d %d", sg.selectedIndex, sg.currentState);
-    for (CourtModel *model in _courtInfoArray) {
+    for (CourtModel *model in self.courtInfoArray) {
         if (sg.currentState == UPStates) {
             model.isUp = YES;
         } else {
@@ -137,21 +137,21 @@
     }
     NSArray *sortedArray;
     if (sg.selectedIndex == 0) {
-         sortedArray= [_courtInfoArray sortedArrayUsingSelector:@selector(compareName:)];
+         sortedArray= [self.courtInfoArray sortedArrayUsingSelector:@selector(compareName:)];
     } else if (sg.selectedIndex == 1) {
-        sortedArray = [_courtInfoArray sortedArrayUsingSelector:@selector(comparePrice:)];
+        sortedArray = [self.courtInfoArray sortedArrayUsingSelector:@selector(comparePrice:)];
     } else {
-        sortedArray = [_courtInfoArray sortedArrayUsingSelector:@selector(compareDistance:)];
+        sortedArray = [self.courtInfoArray sortedArrayUsingSelector:@selector(compareDistance:)];
     }
     
-    _courtInfoArray=(NSMutableArray*)sortedArray;
+    self.courtInfoArray=(NSMutableArray*)sortedArray;
     [_courtInfoTable reloadData];
 }
 
 #pragma mark -TableViewDelegate
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [_courtInfoArray count];
+    return [self.courtInfoArray count];
 }
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -160,7 +160,7 @@
     if (cell==nil) {
         cell=[[[ListCourtCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:idetifier] autorelease];
     }
-    CourtModel *tmpModel=[_courtInfoArray objectAtIndex:[indexPath row]];
+    CourtModel *tmpModel=[self.courtInfoArray objectAtIndex:[indexPath row]];
     NSLog(@"tmpModel.courtImgUrl====%@",tmpModel.courtImgUrl);
     if ([tmpModel.courtImgUrl class]==[NSNull class]||tmpModel.courtImgUrl==nil||[tmpModel.courtImgUrl isEqualToString:@""]) {
         [cell.courtImgv setImage:[UIImage imageNamed:@"defaultImg"]];
@@ -178,12 +178,13 @@
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    CourtModel *tmpModel=[self.courtInfoArray objectAtIndex:[indexPath row]];//_courtInfoArray
+    CourtModel *tmpModel=[self.courtInfoArray objectAtIndex:[indexPath row]];//
     CourtDetailViewController *tmpcourtDetailVc=[[CourtDetailViewController alloc]init];
     self.courtDetailVc=tmpcourtDetailVc;
     [tmpcourtDetailVc release];
     self.courtDetailVc.dateStr=_dateStr;
     self.courtDetailVc.timeStr=_timeStr;
+    self.courtDetailVc.selectDate=self.selectDate;
     self.courtDetailVc.courtAddress=tmpModel.courtAddress;
     self.courtDetailVc.courtName=tmpModel.courtName;
     self.courtDetailVc.courtId=tmpModel.courtId;
