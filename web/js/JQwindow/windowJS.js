@@ -97,7 +97,7 @@ function tipsWindown(title,content,width,height,drag,time,showbg,cssName) {
 	}
 	var	cw = document.documentElement.clientWidth,ch = document.documentElement.clientHeight,est = document.documentElement.scrollTop; 
 	var _version = $.browser.version;
-	if ( _version == 7.0 ) {
+	if ( _version == 5.0 ) {
 		$("#windown-box").css({left:"50%",top:(parseInt((ch)/2)+est)+"px",marginTop: -((parseInt(height)+53)/2)+"px",marginLeft:-((parseInt(width)+32)/2)+"px",zIndex: "999999"});
 	}else {
 		$("#windown-box").css({left:"50%",top:"50%",marginTop:-((parseInt(height)+53)/2)+"px",marginLeft:-((parseInt(width)+32)/2)+"px",zIndex: "999999"});
