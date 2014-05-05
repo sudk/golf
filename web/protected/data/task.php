@@ -149,6 +149,7 @@ return array(
                 'price/del' ,
                 'price/delpolicydetail' ,
                 'price/detail' ,
+                'price/customdetail',
                 'price/policygrid' ,
                 'price/policy' ,
                 'price/customgrid' ,

@@ -142,18 +142,7 @@ class PriceController extends AuthBaseController
                 for($i = 1; $i <=7 ; $i++)
                 {
                     $week_day[$i] = array();
-                    if($_POST[$i."_price"] !="")
-                    {
-                        $day = array(
-                            'day'=>$i."",
-                            'start_time'=>'',
-                            'end_time'=>'',
-                            'price'=>$_POST[$i.'_price'],
-                            'status'=>$_POST[$i."_status"],
-                            'record_time'=>date('Y-m-d H:i:s')
-                        );
-                        array_push($week_day[$i], $day);
-                    }
+                    
                     if(isset($_POST[$i.'_start_time']))
                     {
                         //print_r($_POST[$i.'_start_time']);
@@ -317,18 +306,7 @@ class PriceController extends AuthBaseController
                 for($i = 1; $i <=7 ; $i++)
                 {
                     $week_day[$i] = array();
-                    if($_POST[$i."_price"] !="")
-                    {
-                        $day = array(
-                            'day'=>$i."",
-                            'start_time'=>'',
-                            'end_time'=>'',
-                            'price'=>$_POST[$i.'_price'],
-                            'status'=>$_POST[$i."_status"],
-                            'record_time'=>date('Y-m-d H:i:s')
-                        );
-                        array_push($week_day[$i], $day);
-                    }
+                    
                     if(isset($_POST[$i.'_start_time']))
                     {
                         //print_r($_POST[$i.'_start_time']);
@@ -477,6 +455,50 @@ class PriceController extends AuthBaseController
         print_r(json_encode($msg));
     }
     
+    
+    public function actionCustomDetail()
+    {
+        $id = $_POST['id'];
+        $rows =  Yii::app()->db->createCommand()
+            ->select("*")
+            ->from("g_policy_detail st")
+            ->where("st.policy_id='{$id}' and start_time!=''")
+            ->queryAll();
+            //var_dump($rows);
+        $msg['status'] = true;
+        $desc = "";
+        $week = array(
+            '1'=>'周一',
+            '2'=>'周二',
+            '3'=>'周三',
+            '4'=>'周四',
+            '5'=>'周五',
+            '6'=>'周六',
+            '0'=>'周日',
+        );
+        if($rows)
+        {
+            foreach($rows as $row)
+            {
+                $start_time = substr($row['start_time'],0,2).":".substr($row['start_time'],2,2);
+                $end_time = substr($row['end_time'],0,2).":".substr($row['end_time'],2,2);
+                $desc .= $week[$row['day']]."(".$start_time."-".$end_time."):".($row['price']/100)."<br/>";
+            }
+        }
+        if ($rows) {
+        
+            $detail=array(
+               '详细'=>$desc
+               
+            );
+            $msg['detail']=Utils::MakeDetailTable($detail);
+        } else {
+            $msg['status'] = false;
+            $msg['detail'] = "获取报价单信息失败！";
+        }
+        print_r(json_encode($msg));
+    }
+    
     /**
      * 表头
      * @return SimpleGrid
@@ -547,7 +569,7 @@ class PriceController extends AuthBaseController
         $t->set_header('服务项目', '15%', '');
         $t->set_header('预订须知', '15%', '');
         $t->set_header('取消规则', '15%', '');
-        $t->set_header('周一至周日', '25%', ''); 
+        $t->set_header('优惠报价', '25%', ''); 
         $t->set_header('操作', '10%', '');
 
         return $t;

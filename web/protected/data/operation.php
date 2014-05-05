@@ -38,6 +38,7 @@ return array(
     'price/del' => array('type' => 0),
     'price/delpolicydetail' => array('type' => 0),
     'price/detail' => array('type' => 0),
+    'price/customdetail' => array('type' => 0),
     'price/policygrid' => array('type' => 0),
     'price/policy' => array('type' => 0),
     'price/customgrid' => array('type' => 0),
