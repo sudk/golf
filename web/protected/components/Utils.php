@@ -1158,4 +1158,16 @@ page;
             return "";
         }
     }
+
+    public static function WeeksToDates(){
+        return array(
+            date("w")=>date("Y-m-d"),
+            date("w",strtotime("+1 day"))=>date("Y-m-d",strtotime("+1 day")),
+            date("w",strtotime("+2 day"))=>date("Y-m-d",strtotime("+2 day")),
+            date("w",strtotime("+3 day"))=>date("Y-m-d",strtotime("+3 day")),
+            date("w",strtotime("+4 day"))=>date("Y-m-d",strtotime("+4 day")),
+            date("w",strtotime("+5 day"))=>date("Y-m-d",strtotime("+5 day")),
+            date("w",strtotime("+6 day"))=>date("Y-m-d",strtotime("+6 day"))
+        );
+    }
 }

@@ -345,6 +345,108 @@ class Court extends CActiveRecord {
         }
         return $rows;
     }
+
+
+    public static function Sale($args = array()){
+
+        $condition = ' 1=1 ';
+        $params = array();
+
+        $condition.= ' AND g_court.city=:city ';
+        $params['city'] = $args->city;
+
+
+
+        if (isset($args->court_id)&&$args->court_id != ''){
+            $condition.= ' AND g_policy.court_id=:court_id ';
+            $params['court_id'] = $args->court_id;
+        }
+
+        if (isset($args->key_word)&&$args->key_word != ''){
+            $condition.= ' AND g_court.name like :key_word ';
+            $params['key_word'] = "%".$args->key_word."%";
+        }
+
+        $weeksToDates=Utils::WeeksToDates();
+
+        if (isset($args->day)&&$args->day != ''){
+            $d=$weeksToDates[$args->day];
+            $condition.= ' AND g_policy.start_date <= :date ';
+            $condition.= ' AND g_policy.end_date >= :date ';
+            $params['date'] = $d;
+
+            //$day=date("w",strtotime($args->date));
+            $condition.= ' AND ( g_policy_detail.day < 0 or g_policy_detail.day = :day )';
+            $params['day'] = $args->day;
+        }
+
+        $condition.= ' AND g_policy.type >= :type ';
+        $params['type'] = Policy::TYPE_FOVERABLE;
+
+
+        $condition.= " AND g_policy.status=".Policy::STATUS_NORMAL;
+        $condition.= ' AND g_policy_detail.status='.PolicyDetail::STATUS_NORMAL;
+
+        if(isset($args->long_lat)){
+            list($u_lon,$u_lat)=explode(",",$args->long_lat);
+        }
+
+
+        //print_r($condition);
+        //print_r($params);
+        $rows = Yii::app()->db->createCommand()
+            ->select("g_policy.*,g_court.name name,g_court.addr,g_court.lon lon,g_court.lat lat,g_policy_detail.price,g_policy_detail.day,g_policy_detail.start_time,g_policy_detail.end_time,g_agent.agent_name,g_img.img_url ico_img")
+            ->from("g_policy_detail")
+            ->leftJoin("g_policy","g_policy_detail.policy_id=g_policy.id")
+            ->leftJoin("g_court","g_policy.court_id=g_court.court_id")
+            ->leftJoin("g_agent","g_agent.id=g_policy.agent_id")
+            ->leftJoin("g_img","g_img.type=8 and g_img.relation_id=g_court.court_id")
+            ->where($condition,$params)
+            ->queryAll();
+        //print_r($rows);
+        //return $row;
+        $rows_tmp=array();
+
+        if($rows){//先出球场中的最低有效报价
+            foreach($rows as $row){
+                $court_id=$row['court_id'];
+                if(isset($rows_tmp[$court_id])){
+                    $row_tmp=$rows_tmp[$court_id];
+
+                    if($row_tmp['type']==$row['type']&&$row_tmp['price']>$row['price']){
+                        $rows_tmp[$court_id]=$row;
+                        continue;
+                    }
+
+                    if($row_tmp['type']<$row['type']){
+                        $rows_tmp[$court_id]=$row;
+                        continue;
+                    }
+                }else{
+                    $rows_tmp[$court_id]=$row;
+                }
+            }
+        }
+
+        $rows=array();
+
+        if($rows_tmp){
+            foreach($rows_tmp as $row){
+                if(trim($row['lon'])&&trim($row['lat'])&&trim($u_lon)&&trim($u_lat)){
+                    $row['distance']=BaiduDistance::GetLongDistance($row['lon'],$row['lat'],$u_lon,$u_lat);
+                }else{
+                    $row['distance']="未知";
+                }
+                if($row['ico_img']){
+                    $row['ico_img']=Img::IMG_PATH.$row['ico_img'];
+                }
+                $rows[]=$row;
+            }
+        }
+
+        return $rows;
+
+    }
 }
 
 
