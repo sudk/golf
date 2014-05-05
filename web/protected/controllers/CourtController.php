@@ -604,10 +604,10 @@ class CourtController extends AuthBaseController
      * 表头
      * @return SimpleGrid
      */
-    private function genCDataGrid($grid)
+    private function genCDataGrid()
     {
         
-        $t = new SimpleGrid($grid);
+        $t = new SimpleGrid($this->cGridId);
         $t->url = 'index.php?r=court/commentlist';
         $t->updateDom = 'datagrid';
         $t->set_header('球场名称', '20%', '');
@@ -622,7 +622,7 @@ class CourtController extends AuthBaseController
     }
 
     
-    public function actionCommentList($cur_court_id=null)
+    public function actionCommentList()
     {
         $page = $_GET['page'] == '' ? 0 : $_GET['page']; //当前页码
         $_GET['page']=$_GET['page']+1;
@@ -633,13 +633,9 @@ class CourtController extends AuthBaseController
         {
             $args[$_REQUEST['q_by']] = $_REQUEST['q_value'];
         }
-        $grid = $this->cGridId;
-        if($cur_court_id!=null)
-        {
-            $args['court_id'] = $cur_court_id;
-            $grid = $this->mcGridId;
-        }
-        $t = $this->genCDataGrid($grid);
+        
+        
+        $t = $this->genCDataGrid();
         //var_dump($args);
         $list = Comment::queryList($page, $this->pageSize, $args);
         
@@ -668,6 +664,63 @@ class CourtController extends AuthBaseController
         $_SESSION['cur_court_name'] = $name;
         
         $this->render('my_comment',array('cur_court_id'=>$id));
+    }
+    
+    
+    /**
+     * 表头
+     * @return SimpleGrid
+     */
+    private function genMCDataGrid()
+    {
+        
+        $t = new SimpleGrid($this->mcGridId);
+        $t->url = 'index.php?r=court/mycommentlist';
+        $t->updateDom = 'datagrid';
+        $t->set_header('球场名称', '20%', '');
+        $t->set_header('服务', '10%', '');   
+        $t->set_header('设计', '10%', '');   
+        $t->set_header('设施', '10%', '');   
+        $t->set_header('草坪', '10%', '');        
+        $t->set_header('评分人', '10%', '');  
+        $t->set_header('评分时间', '15%', '');  
+        $t->set_header('备注', '15%', '');  
+        return $t;
+    }
+
+    
+    public function actionMyCommentList($cur_court_id=null)
+    {
+        $page = $_GET['page'] == '' ? 0 : $_GET['page']; //当前页码
+        $_GET['page']=$_GET['page']+1;
+        $args = $_GET['q']; //查询条件
+
+
+        if ($_REQUEST['q_value'])
+        {
+            $args[$_REQUEST['q_by']] = $_REQUEST['q_value'];
+        }
+        
+        if($cur_court_id!=null)
+        {
+            $args['court_id'] = $cur_court_id;
+            
+        }
+        $t = $this->genMCDataGrid();
+        //var_dump($args);
+        $list = Comment::queryList($page, $this->pageSize, $args);
+        
+        if($list['rows'])
+        {
+            $court_list = Court::getCourtArray();
+            foreach($list['rows'] as $key=>$row)
+            {
+                $court_id = $row['court_id'];
+                $list['rows'][$key]['court_name'] = $court_list[$court_id];
+            }
+        }
+
+        $this->renderPartial('_mycomment', array('t' => $t, 'rows' => $list['rows'], 'cnt' => $list['total_num'], 'curpage' => $list['page_num']));
     }
 
 

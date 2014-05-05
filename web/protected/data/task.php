@@ -110,6 +110,7 @@ return array(
             'court/comment' ,
             'court/commentlist' ,
             'court/mycomment' ,
+            'court/mycommentlist',
             
             ),
         'bizRules' => '',

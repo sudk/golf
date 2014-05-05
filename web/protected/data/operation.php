@@ -21,6 +21,7 @@ return array(
     'court/delpic' => array('type' => 0),
     'court/comment' => array('type' => 0),
     'court/commentlist' => array('type' => 0),
+    'court/mycommentlist' => array('type' => 0),
     'court/mycomment' => array('type' => 0),
     'dboard/index' => array('type' => 0),
     'dboard/system' => array('type' => 0),

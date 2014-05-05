@@ -1,11 +1,11 @@
 <div class="title-box">
     <h1><span style="float:left;">球场评论[球场名称：<?php echo $_SESSION['cur_court_name'];?>]</span><a href="./?r=court/list" style="float:right;"><span class="ing_ico"></span><span>返回球场列表</span></a></h1>
     <ul class="sift">
-        <?php $this->renderPartial('_comment_toolBox',array('cur_court_id'=>$cur_court_id)); ?>
+        <?php $this->renderPartial('_mycomment_toolBox',array('cur_court_id'=>$cur_court_id)); ?>
     </ul>
 </div>
 <div id="datagrid">
-    <?php $this->actionCommentList($cur_court_id); ?>
+    <?php $this->actionMyCommentList($cur_court_id); ?>
 </div>
 <style type="text/css">
     #row_desc span{
