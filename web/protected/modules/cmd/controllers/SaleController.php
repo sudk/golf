@@ -28,6 +28,12 @@ class SaleController extends CMDBaseController
             echo json_encode($msg);
             return;
         }
+        if(!isset(Yii::app()->command->cmdObj->day)||Yii::app()->command->cmdObj->day==""){
+            $msg['status']=1;
+            $msg['desc']="周几不能为空！";
+            echo json_encode($msg);
+            return;
+        }
         $rows=Court::Sale(Yii::app()->command->cmdObj);
         if($rows){
             $msg['status']=0;
