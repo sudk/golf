@@ -141,7 +141,7 @@ class Adv extends CActiveRecord {
             ->from("g_adv")
             ->leftJoin("g_img","g_img.type=7 and g_adv.id=g_img.relation_id")
             ->where("g_adv.type=:type and g_adv.status=0 and g_adv.start_time <= :date and g_adv.end_time >= :date",array("type"=>$type,'date'=>date("Y-m-d")))
-            ->order("`order`")
+            ->order("order")
             ->limit(4)
             ->queryAll();
         return $rows;
