@@ -77,11 +77,15 @@ class UpmPay
     }
 
     public function track($params){
-
+        $str=self::buildReq($params);
+        $resp=self::HttpPos($str,self::TRADE_URL);
+        return self::verifySignature($resp);
     }
 
     public function query($params){
-
+        $str=self::buildReq($params);
+        $resp=self::HttpPos($str,self::QUERY_URL);
+        return self::verifySignature($resp);
     }
 
     //订单推送请求
@@ -100,7 +104,7 @@ class UpmPay
         $req["orderTimeout"]=date("YmdHis",strtotime("+1 hours"));// 订单超时时间
         $req["sysReseverd"]="";// 系统保留域
         $req["version"]=self::VERSION;// 协议版本
-
+        $rs=self::track($req);
     }
 
     //交易信息查询
@@ -113,6 +117,7 @@ class UpmPay
         $req["orderTime"]=date("YmdHis");// 交易时间
         $req["sysReseverd"]="";// 系统保留域
         $req["version"]=self::VERSION;// 协议版本
+
     }
 
     //消费撤销接口
@@ -129,6 +134,7 @@ class UpmPay
         $req["qn"]="";// 查询流水号
         $req["sysReseverd"]="";// 系统保留域
         $req["version"]=self::VERSION;// 协议版本
+
     }
 
     //退货接口
@@ -145,6 +151,11 @@ class UpmPay
         $req["qn"]="";// 查询流水号
         $req["sysReseverd"]="";// 系统保留域
         $req["version"]=self::VERSION;// 协议版本
+
+    }
+
+    public function HttpPos($str){
+
     }
 
 }
