@@ -12,13 +12,29 @@ class Order extends CActiveRecord {
     const TYPE_TRIP = '1';
     const TYPE_COMPETITION = '2';
     
-    //0、待确认；1、待付款；2、完成预约；3、撤销 ，4-未到场  5-订单完成
+    
+    /**
+     * 状态流程
+     * 0、等待确认；1、等待付款；2、付款完成；3、交易关闭 ，4-未到场  5-交易成功，6-等待退款 7-拒绝退款 8-退款中
+     * 1）需要预付款的订单，需要完成上面的流程；无需预付款的，“等待确认”  到  “交易成功”
+     * 2）在“等待确认”，“等待付款”时，客户可以随时 关闭交易。
+     * 3）“付款完成”，客户想取消订单，只能【申请退款】，填写退款原因。
+     * 4）客户未到场，则有 代理商 修改状态 “未到场”，可能需要执行一个返还部分款项的操作。订单结束
+     * 5）客户打球完，代理商 修改状态 “交易成功”。订单结束
+     * 6）客户申请退款，状态为“等待退款”。代理商审核通过，则执行退款流程，状态为“退款中”。退款完成，状态为“交易成功”。订单结束
+     * 7）客户申请退款，代理商审核不通过，状态为“拒绝退款”。 订单结束。
+     * 8)代理商 可以在任何时候 关闭订单。“交易关闭”，已经付款的，执行退款流程
+     */
     const STATUS_TOBE_CONFIRM = '0';
     const STATUS_TOBE_PAID = '1';
     const STATUS_TOBE_SUCCESS = '2';
     const STATUS_TOBE_CANCEL = '3';
     const STATUS_NOT_PRESENT = '4';
     const STATUS_ORDER_OVER = '5';
+    
+    const STATUS_WAIT_REFUND = '6';
+    CONST STATUS_REFUND = '8';
+    CONST STATUS_REFUSE_REFUND = '7';
     
     public $court_phone;
 
@@ -34,32 +50,97 @@ class Order extends CActiveRecord {
         return array();
     }
     
-    
-    public static function getNextStatus($cur_status='0')
+    /**
+     * 流程。
+     * 根据pay_type
+     * 先付的， 待确认，交易成功
+     * 预付和押金的  
+     * 0、等待确认；1、等待付款；2、付款完成；3、交易关闭 ，4-未到场  5-交易成功，6-等待退款 7-拒绝退款 8-退款中
+     * @param type $cur_status
+     * @param type $pay_type
+     * @return boolean
+     */
+    public static function getNextStatus($cur_status='0',$pay_type='0')
     {
         if($cur_status==null)
         {
             return false;
         }
-        $next_status = '';
+       
+        $close_next = array(
+            'status'=>self::STATUS_TOBE_CANCEL,
+            'desc'=>'交易关闭'
+        );
+        $next = array();
+        if($pay_type == '0')
+        {
+         
+            $tmp_next = array(
+                'status'=>self::STATUS_ORDER_OVER,
+                'desc'=>"交易成功"
+            );
+            array_push($next, $tmp_next);
+            array_push($next,$close_next);
+            return $next;
+        }
+        
         switch ($cur_status) {
             case self::STATUS_TOBE_CONFIRM:
-                $next_status = self::STATUS_TOBE_PAID;
+                $tmp_next = array(
+                    'status'=>self::STATUS_TOBE_PAID,
+                    'desc'=>"等待付款"
+                );
+                array_push($next, $tmp_next);
+                array_push($next,$close_next);
                 break;
             case self::STATUS_TOBE_PAID:
-                $next_status = self::STATUS_TOBE_SUCCESS;
+                $tmp_next = array(
+                    'status'=>self::STATUS_TOBE_SUCCESS,
+                    'desc'=>"付款成功"
+                );
+                array_push($next, $tmp_next);
+                array_push($next,$close_next);
                 break;
             case self::STATUS_TOBE_SUCCESS:
                 //可以有三中情况。撤销，未到场，订单完成。
-                $next_status = self::STATUS_TOBE_CANCEL;
+                $tmp_next = array(
+                    'status'=>self::STATUS_ORDER_OVER,
+                    'desc'=>"交易成功"
+                );
+                array_push($next, $tmp_next);
+                $tmp_next = array(
+                    'status'=>self::STATUS_NOT_PRESENT,
+                    'desc'=>"未到场"
+                );
+                array_push($next, $tmp_next);
+                array_push($next,$close_next);
                 break;
-            
+            case self::STATUS_WAIT_REFUND:
+                $tmp_next = array(
+                    'status'=>self::STATUS_REFUND,
+                    'desc'=>"退款中"
+                );
+                array_push($next, $tmp_next);
+                $tmp_next = array(
+                    'status'=>self::STATUS_REFUSE_REFUND,
+                    'desc'=>"拒绝退款"
+                );
+                array_push($next, $tmp_next);
+                //array_push($next,$close_next);
+                break;
+            case self::STATUS_REFUND:
+                $tmp_next = array(
+                    'status'=>self::STATUS_ORDER_OVER,
+                    'desc'=>"交易成功"
+                );
+                array_push($next, $tmp_next);
+                break;
             default:
-                $next_status = self::STATUS_ORDER_OVER;
+                $next = array();
                 break;
         }
         
-        return $next_status;
+        return $next;
     }
     
     /**

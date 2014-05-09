@@ -15,14 +15,26 @@ if (is_array($rows))
          
         $link .= CHtml::link('编辑',"javascript:itemEdit('{$row['id']}')", array());
         $link .= CHtml::link('删除',"javascript:itemDelete('{$row['id']}')", array());
-               
-        $url = "index.php?r=court/loadpic&name=".$row['link_url'];
-        $img = '<img src="'.$url.'" style="width:50px;height:50px;"/>';
+            
+        $img = "无";
+        $img_info = Img::model()->find("relation_id='{$row['id']}' and type='".Img::TYPE_ADV."'");
+        if($img_info)
+        {
+            $url = "index.php?r=court/loadpic&name=".$img_info['img_url'];
+            $img = '<img src="'.$url.'" style="width:50px;height:50px;"/>';
+        }
+        
+        
+        $link_url = htmlspecialchars($row['link_url']);
+        
+        $link_url_txt = "<span title='".$link_url."'>[查看]</span>";
+        
 	$t->echo_td($num); 
         $t->echo_td($row['order']); //学校编号
         $t->echo_td($type_list[$row['type']]);
         $t->echo_td($img);
         $t->echo_td($row['start_time']."至".$row['end_time']);
+        $t->echo_td($link_url_txt);
         $t->echo_td($status_list[$row['status']]);
         $t->echo_td($link);
         $t->end_row();

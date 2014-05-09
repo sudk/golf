@@ -22,9 +22,10 @@ class AdvController extends AuthBaseController {
         $t->set_header('序号', '5%', '');
         $t->set_header('广告权重', '10%', '');
         $t->set_header('广告类型', '10%', '');
-        $t->set_header('广告图片', '25%', '');
-        $t->set_header('有效期', '30%', '');
-        $t->set_header('状态', '10%', '');
+        $t->set_header('广告图片', '20%', '');
+        $t->set_header('有效期', '25%', '');
+        $t->set_header('关联网址', '15%', '');
+        $t->set_header('状态', '5%', '');
         $t->set_header('操作', '10%', '');
         return $t;
     }
@@ -84,8 +85,7 @@ class AdvController extends AuthBaseController {
                         if ($upload_rs['status'] != 0) {
                             $msg['msg'] .= "广告图片上传失败。";
                         }
-                        $model->link_url = $upload_rs['url'];
-                        $model->save();
+                        
                     }
 
 
@@ -131,9 +131,6 @@ class AdvController extends AuthBaseController {
                     if ($upload_rs['status'] != 0) {
                         $msg['msg'] .= "商户图片上传失败。";
                     }
-
-                    $model->link_url = $upload_rs['url'];
-                    $model->save();
                 }
             } else {
                 $msg['msg'] = "修改失败！";
