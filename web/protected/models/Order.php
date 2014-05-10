@@ -68,6 +68,7 @@ class Order extends CActiveRecord {
         }
        
         $close_next = array(
+            'now_status'=>'',
             'status'=>self::STATUS_TOBE_CANCEL,
             'desc'=>'交易关闭'
         );
@@ -76,6 +77,7 @@ class Order extends CActiveRecord {
         {
          
             $tmp_next = array(
+                'now_status'=>self::STATUS_TOBE_CONFIRM,
                 'status'=>self::STATUS_ORDER_OVER,
                 'desc'=>"交易成功"
             );
@@ -87,41 +89,45 @@ class Order extends CActiveRecord {
         switch ($cur_status) {
             case self::STATUS_TOBE_CONFIRM:
                 $tmp_next = array(
+                    'now_status'=>self::STATUS_TOBE_CONFIRM,
                     'status'=>self::STATUS_TOBE_PAID,
-                    'desc'=>"等待付款"
+                    'desc'=>"订单确认"
                 );
                 array_push($next, $tmp_next);
+                $close_next['now_status'] = self::STATUS_TOBE_CONFIRM;
                 array_push($next,$close_next);
                 break;
             case self::STATUS_TOBE_PAID:
-                $tmp_next = array(
-                    'status'=>self::STATUS_TOBE_SUCCESS,
-                    'desc'=>"付款成功"
-                );
-                array_push($next, $tmp_next);
+                
+                $close_next['now_status'] = self::STATUS_TOBE_PAID;
                 array_push($next,$close_next);
                 break;
             case self::STATUS_TOBE_SUCCESS:
                 //可以有三中情况。撤销，未到场，订单完成。
                 $tmp_next = array(
+                    'now_status'=>self::STATUS_TOBE_SUCCESS,
                     'status'=>self::STATUS_ORDER_OVER,
                     'desc'=>"交易成功"
                 );
                 array_push($next, $tmp_next);
-                $tmp_next = array(
+                $tmp_next2 = array(
+                    'now_status'=>self::STATUS_TOBE_SUCCESS,
                     'status'=>self::STATUS_NOT_PRESENT,
                     'desc'=>"未到场"
                 );
-                array_push($next, $tmp_next);
+                array_push($next, $tmp_next2);
+                $close_next['now_status'] = self::STATUS_TOBE_SUCCESS;
                 array_push($next,$close_next);
                 break;
             case self::STATUS_WAIT_REFUND:
                 $tmp_next = array(
+                    'now_status'=>self::STATUS_WAIT_REFUND,
                     'status'=>self::STATUS_REFUND,
-                    'desc'=>"退款中"
+                    'desc'=>"退款"
                 );
                 array_push($next, $tmp_next);
                 $tmp_next = array(
+                    'now_status'=>self::STATUS_WAIT_REFUND,
                     'status'=>self::STATUS_REFUSE_REFUND,
                     'desc'=>"拒绝退款"
                 );
@@ -130,6 +136,7 @@ class Order extends CActiveRecord {
                 break;
             case self::STATUS_REFUND:
                 $tmp_next = array(
+                    'now_status'=>self::STATUS_REFUND,
                     'status'=>self::STATUS_ORDER_OVER,
                     'desc'=>"交易成功"
                 );
@@ -163,10 +170,13 @@ class Order extends CActiveRecord {
         $rs = array(
             self::STATUS_TOBE_CONFIRM=>'等待确认',
             self::STATUS_TOBE_PAID=>'等待支付',
-            self::STATUS_TOBE_SUCCESS=>'预约成功',
-            self::STATUS_TOBE_CANCEL=>'订单撤销',
+            self::STATUS_TOBE_SUCCESS=>'付款成功',
+            self::STATUS_TOBE_CANCEL=>'交易关闭',
             self::STATUS_NOT_PRESENT=>'未到场',
-            self::STATUS_ORDER_OVER=>'订单完成'
+            self::STATUS_ORDER_OVER=>'交易成功',
+            self::STATUS_WAIT_REFUND=>'等待退款',
+            self::STATUS_REFUND=>'退款中',
+            self::STATUS_REFUSE_REFUND=>'拒绝退款',
                 
         );
         

@@ -27,6 +27,20 @@
         );
     }
     
+    var itemNextStatus = function(id,now_status,next_status,pay_type,title)
+    {
+        tipsWindown(
+            ""+title, // title：窗口标题
+            "iframe:index.php?r=order/nextstatus&id=" + id+"&ns="+now_status+"&s="+next_status+"&type="+pay_type, // Url：弹窗所加截的页面路径
+            "400", // width：窗体宽度
+            "200", // height：窗体高度
+            "true", // drag：是否可以拖动（ture为是,false为否）
+            "", // time：自动关闭等待的时间，为空代表不会自动关闭
+            "true", // showbg：设置是否显示遮罩层（false为不显示,true为显示）
+            "text"    // cssName：附加class名称
+        );
+    }
+    
     
     var itemLog = function (id) {
         window.location.href = "index.php?r=order/log&id="+id;
