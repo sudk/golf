@@ -33,12 +33,12 @@ class CompetitionController extends CMDBaseController
             return;
         }
 
-        $rows=Competition::queryList(Yii::app()->command->cmdObj->_pg_,$this->pageSize,$args);
-        if($rows){
+        $rs=Competition::queryList(Yii::app()->command->cmdObj->_pg_,$this->pageSize,$args);
+        if($rs['rows']){
             $msg['status']=0;
             $msg['desc']="成功";
             $msg['_pg_']=Yii::app()->command->cmdObj->_pg_;
-            $msg['data']=$rows;
+            $msg['data']=$rs['rows'];
         }else{
             $msg['status']=4;
             $msg['desc']="没有数据";
