@@ -29,9 +29,41 @@ echo $form->activeHiddenField($model, 'order_id', array(), '');
     
     
     <tr>
-        <td class="maxname">订单状态：</td>
+        <td class="maxname">订单联系人：</td>
         <td class="mivalue">
-            <?php echo $form->activeDropDownList($model, 'status', Order::getStatus(), array('title' => '本项必选', 'class' => 'input_text'), 'required'); ?>
+            <?php echo $form->activeTextField($model, 'contact',  array('title' => '本项必选', 'class' => 'input_text'), 'required'); ?>
+        </td>
+       
+    </tr>
+    <tr>
+        <td class="maxname">联系人电话：</td>
+        <td class="mivalue">
+            <?php echo $form->activeTextField($model, 'phone', array('title' => '本项必选', 'class' => 'input_text'), 'required&phone'); ?>
+        </td>
+       
+    </tr>
+    <tr>
+        <td class="maxname">打球时间：</td>
+        <td class="mivalue">
+            <?php echo $form->activeTextField($model, 'tee_time',  array('title' => '本项必选',  'class' => 'Wdate input_text',"onfocus"=>"WdatePicker({dateFmt:'yyyy-MM-dd',skin:'whyGreen',errDealMode:0})"), 'required'); ?>
+        </td>
+       
+    </tr>
+    <tr>
+        <td class="maxname">打球人数：</td>
+        <td class="mivalue">
+            <?php 
+            echo $form->activeTextField($model, 'count',  array('title' => '本项必选', 'class' => 'input_text','id'=>'user_cnt'), 'required');
+            echo $form->activeHiddenField($model, 'unitprice',  array('title' => '本项必选', 'class' => 'input_text','id'=>'unitprice'), 'required'); 
+            
+            ?>
+        </td>
+       
+    </tr>
+    <tr>
+        <td class="maxname">应付金额：</td>
+        <td class="mivalue">
+            <?php echo $form->activeTextField($model, 'amount',  array('title' => '本项必选', 'class' => 'input_text','id'=>'amount'), 'required'); ?>
         </td>
        
     </tr>
@@ -47,7 +79,26 @@ echo $form->activeHiddenField($model, 'order_id', array(), '');
     </tr>
 </table>
 <?php $this->endWidget();?>
+<script type="text/javascript" src="js/JQdate/WdatePicker.js"></script>
 <script type="text/javascript">
+    jQuery("#user_cnt").blur(function(){
+       var v = jQuery("#unitprice").val();
+       var cnt = jQuery(this).val();
+       jQuery("#amount").val(v*cnt);
+    }).keypress(function(){
+        var v = jQuery("#unitprice").val();
+       var cnt = jQuery(this).val();
+       jQuery("#amount").val(v*cnt);
+    }).keyup(function(){
+        var v = jQuery("#unitprice").val();
+       var cnt = jQuery(this).val();
+       jQuery("#amount").val(v*cnt);
+    }).keydown(function(){
+        var v = jQuery("#unitprice").val();
+       var cnt = jQuery(this).val();
+       jQuery("#amount").val(v*cnt);
+    });
+    
     var flag = true;
     function formSubmit() {
         //checkMyForm();

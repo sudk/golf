@@ -11,14 +11,18 @@ if (is_array($rows))
         $t->begin_row("onclick","getDetail(this,'{$row['order_id']}');");
         $link = "";
         $status = $row['status'];
-        $link .= CHtml::link('详细',"javascript:itemLog('{$row['order_id']}')", array());
+        $link .= CHtml::link('详情',"javascript:itemLog('{$row['order_id']}')", array());
         if(Yii::app()->user->type == Operator::TYPE_AGENT)
         {
-            $link .= CHtml::link('编辑',"javascript:itemEdit('{$row['order_id']}')", array());
+            $edit_array = array(Order::STATUS_TOBE_CONFIRM,Order::STATUS_TOBE_PAID);
+            if(in_array($status,$edit_array))
+            {
+                $link .= CHtml::link('编辑',"javascript:itemEdit('{$row['order_id']}')", array());
+            }
 
             if($status == Order::STATUS_TOBE_CANCEL)
             {
-                $link .= CHtml::link('删除',"javascript:itemDelete('{$row['order_id']}');", array());
+                //$link .= CHtml::link('删除',"javascript:itemDelete('{$row['order_id']}');", array());
             }
             
             $next_opt = Order::getNextStatus($status, $row['pay_type']);

@@ -5,7 +5,7 @@ if (is_array($rows))
 	$j = 1;
 
     $status_list = Order::getStatus();
-    $opt_type = OrderLog::getOptType();
+    //$opt_type = OrderLog::getOptType();
     foreach ($rows as $i => $row)
     {
         //$t->begin_row("onclick","getDetail(this,'{$row['order_id']}');");
@@ -34,9 +34,10 @@ if (is_array($rows))
         $t->echo_td($row['record_time']); //
         //$t->echo_td($row['order_id']); //
         $t->echo_td($status_text); //
-        $t->echo_td($row['operator_id']); //
-        $t->echo_td($opt_type[$row['operator_type']]); //
+//        $t->echo_td($row['operator_id']); //
+//        $t->echo_td($opt_type[$row['operator_type']]); //
         $t->echo_td($row['serial_number']); //
+        $t->echo_td("");//备注信息，以后要显示，交易关闭原因，退款原因，退款拒绝原因
         $t->end_row();
     }
 }

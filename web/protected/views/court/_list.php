@@ -12,7 +12,7 @@ if (is_array($rows))
         if(Yii::app()->user->type == Operator::TYPE_SYS)
         {
             $link .= CHtml::link('编辑',"javascript:itemEdit('{$row['court_id']}')", array());
-            $link .= CHtml::link('删除',"javascript:itemDelete('{$row['court_id']}','{$row['name']}')", array());
+            //$link .= CHtml::link('删除',"javascript:itemDelete('{$row['court_id']}','{$row['name']}')", array());
         }
         
         $name = $row['name'];

@@ -168,6 +168,16 @@ class Order extends CActiveRecord {
         return $type?$rs[$type]:$rs;
     }
     
+    public static function getPayMethod($method=null)
+    {
+        $rs = array(
+            '1'=>'余额支付',
+            '2'=>'银联支付'
+        );
+        
+        return $method?$rs[$method] : $rs;
+    }
+    
     
     public static function getStatus($status=null)
     {
@@ -433,6 +443,42 @@ class Order extends CActiveRecord {
             case Order::PAY_METHOD_UPMP : $pay=new UpmPay();break;
         }
         return $pay->Purchase($amount,"支付:".$amount,$order_id);
+    }
+    
+    /**
+     * web端处理订单状态
+     * @param type $order_id
+     * @param type $now_status
+     * @param type $next_status
+     * @param type $pay_type
+     */
+    public static function dealOrderStatus($order_id,$now_status,$next_status,$pay_type)
+    {
+        if(!$order_id||$now_status==null||$next_status==null)
+        {
+            return array('status'=>false,'msg'=>'订单不存在');
+        }
+        $conn=Yii::app()->db;
+        $transaction = $conn->beginTransaction();
+        try{
+            //处理订单状态。
+            $sql = "update g_order set status=:status where order_id=:order_id";
+            $command = $conn->createCommand($sql);
+            $command->bindParam(":status",$next_status, PDO::PARAM_STR);
+            $command->bindParam(":order_id",$order_id, PDO::PARAM_STR);
+            $command->execute();
+            
+                    
+            $transaction->commit();
+            
+            OrderLog::Add($order_id, "");
+            
+            return array('status'=>true,'msg'=>'操作成功');
+        } catch (Exception $ex) {
+            $transaction->rollBack();
+            return array('status'=>false,'desc'=>'订单状态处理失败，未知错误');
+        }
+        
     }
 
 }

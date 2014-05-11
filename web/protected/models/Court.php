@@ -128,6 +128,78 @@ class Court extends CActiveRecord {
 
         return $rs;
     }
+    
+    /**
+     * 球场删除
+     * 包括 
+     * 球场信息
+     * 球场的图片
+     * 球场的评论
+     * 球场的附近设施
+     * 球场的比赛。
+     * 球场的预约信息
+     * @param type $court_id
+     * @return type
+     */
+    public static function deleteCourt($court_id)
+    {
+        if(!$court_id){
+            return array('status'=>false,'msg'=>'删除失败，球场不存在');
+        }
+        $conn=Yii::app()->db;
+        $transaction = $conn->beginTransaction();
+        
+        $info = $conn->createCommand()->select("*")->from("g_court")->where("court_id=:court_id",array('court_id'=>$court_id))->queryRow();
+        if(!info){
+            return array('status'=>false,'msg'=>'删除失败，球场不存在');
+        }
+        
+        $order_info = $conn->createCommand()->select("*")->from("g_order")->where("court_id=:court_id",array('court_id'=>$court_id))->queryRow();
+        if(!$order_info){
+            return array('status'=>false,'msg'=>'删除失败，本球场有预约信息');
+        }
+        
+        $comp_info = $conn->createCommand()->select("*")->from("g_competition")->where("court_id=:court_id",array('court_id'=>$court_id))->queryRow();
+        if(!$comp_info){
+            return array('status'=>false,'msg'=>'删除失败，本球场有赛事信息');
+        }
+        
+        try{
+            //球场
+            $sql = "delete from g_court where court_id=:court_id";
+            $command = $conn->createCommand($sql);
+            $command->bindParam(":court_id", $court_id, PDO::PARAM_STR);
+            $command->execute();
+            //图片
+            $sql = "delete from g_img where relation_id=:relation_id and type in('0','1','8')";
+            $command = $conn->createCommand($sql);
+            $command->bindParam(":relation_id", $court_id, PDO::PARAM_STR);
+            $command->execute();
+            //球场附近设施
+            $sql = "delete from g_court_facilities where court_id=:court_id";
+            $command = $conn->createCommand($sql);
+            $command->bindParam(":court_id", $court_id, PDO::PARAM_STR);
+            $command->execute();
+            //球场评论
+            $sql = "delete from g_comment where court_id=:court_id";
+            $command = $conn->createCommand($sql);
+            $command->bindParam(":court_id", $court_id, PDO::PARAM_STR);
+            $command->execute();         
+            
+            $transaction->commit();
+            //删除球场风景，球道，附近设施图片，logo图片
+            $rs = Img::delImg($court_id, '0');
+            $rs = Img::delImg($court_id, '1');
+            $rs = Img::delImg($court_id, '2');
+            $rs = Img::delImg($court_id, '8');
+            
+            return array('status'=>true,'msg'=>'删除成功');
+        } catch (Exception $ex) {
+            $transaction->rollBack();
+            return array('status'=>false,'desc'=>'删除失败，未知错误');
+        }
+        return array('status'=>true,'msg'=>'删除成功');
+    }
 
     public static function Search($args = array()){
 

@@ -70,6 +70,9 @@ return array(
             'order/edit' ,
             'order/lgrid' ,
             'order/log' ,
+            'order/nextstatus',
+            'order/confirmstatus',
+            'order/del',
         ),
         'bizRules' => '',
         'data' => ''
