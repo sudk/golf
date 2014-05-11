@@ -340,7 +340,7 @@ class Order extends CActiveRecord {
 
         if ($args->end_time != ''){
             $condition.=' AND record_time <= :end_time';
-            $params['end_time'] = $args->end_time;
+            $params['end_time'] = $args->end_time." 23:59:59";
         }
 
         $condition.=' AND user_id = :user_id';
