@@ -51,6 +51,8 @@ class UpmPay extends BasePay
     // 应答码
     const RESPONSE_CODE = "respCode";
 
+    const RESPONSE_SUCCESS="00";
+
     // 应答信息
     const RESPONSE_MSG = "respMsg";
 
@@ -92,10 +94,7 @@ class UpmPay extends BasePay
         return md5($str);
     }
 
-    /**
-     * 拼接请求字符串
-     * @return 请求字符串
-     */
+
     public function buildReq($params){
         $params=self::removeEmpty($params);
         $signature=self::buildSignature($params);
@@ -135,6 +134,12 @@ class UpmPay extends BasePay
 
     //订单推送请求
     public function Purchase($orderAmount,$orderDescription,$orderNumber){
+        $conn=Yii::app()->db;
+        $serial_number=Utils::GenerateSerialNumber();
+        $pay_method=Order::PAY_METHOD_UPMP;
+        $status=Order::STATUS_TOBE_SUCCESS;
+        $row=$this->OrderInfo($orderNumber);
+
         $req['backEndUrl']=self::MER_BACK_END_URL;// 通知URL
         $req['charset']=self::CHARSET;// 字符编码
         $req["transType"]="01";// 交易类型
@@ -149,7 +154,18 @@ class UpmPay extends BasePay
         $req["orderTimeout"]=date("YmdHis",strtotime("+1 hours"));// 订单超时时间
         $req["sysReseverd"]="";// 系统保留域
         $req["version"]=self::VERSION;// 协议版本
-        return self::track($req);
+        $rs=self::track($req);
+        if($rs){
+            $respCode=$rs[self::RESPONSE_CODE];
+            if($respCode==self::RESPONSE_CODE_SUCCESS){
+                TransRecord::Add($conn,$orderNumber,$trans_type,-$orderAmount,$serial_number,TransRecord::STATUS_SUCCESS,$re_serial_number="",$out_serial_number="",$user_id=Yii::app()->user->id,$operator_id="");
+            }else{
+                $msg=array('status'=>$respCode,'msg'=>$rs[self::RESPONSE_MSG]);
+            }
+        }else{
+            $msg=array('status'=>'1','msg'=>"请求银联接口失败");
+        }
+        return $msg;
     }
 
     //交易信息查询

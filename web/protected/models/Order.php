@@ -11,6 +11,7 @@ class Order extends CActiveRecord {
     const TYPE_COURT = '0';
     const TYPE_TRIP = '1';
     const TYPE_COMPETITION = '2';
+    const TYPE_RECHARGE = '3';
 
     /**
      * 支付方法
@@ -163,6 +164,7 @@ class Order extends CActiveRecord {
             self::TYPE_COURT=>'预约场地',
             self::TYPE_TRIP=>'预约行程',
             self::TYPE_COMPETITION=>'赛事报名',
+            self::TYPE_RECHARGE=>'充值',
         );
         
         return $type?$rs[$type]:$rs;

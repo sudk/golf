@@ -23,4 +23,12 @@ class BasePay
 
     }
 
+    public function OrderInfo($orderNumber){
+        return Yii::app()->db->createCommand()
+            ->select("*")
+            ->from("g_order")
+            ->where("order_id=:order_id",array("order_id"=>$orderNumber))
+            ->queryRow();
+    }
+
 }

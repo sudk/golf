@@ -3,7 +3,7 @@
  * @author sudk
  */
  
-class BalancePay
+class BalancePay extends BasePay
 {
 
     //订单推送请求
@@ -16,11 +16,7 @@ class BalancePay
 
         $status=Order::STATUS_TOBE_SUCCESS;
 
-        $row=Yii::app()->db->createCommand()
-            ->select("*")
-            ->from("g_order")
-            ->where("order_id=:order_id",array("order_id"=>$orderNumber))
-            ->queryRow();
+        $row=$this->OrderInfo($orderNumber);
 
         try{
             $sql = "update g_order set status=:status,had_pay=:had_pay,pay_method=:pay_method where order_id=:order_id";
@@ -38,8 +34,6 @@ class BalancePay
                 return $rs;
             }
 
-            $transaction->commit();
-
             $trans_type=TransRecord::TYPE_COURT_PAY;
             switch($row['type']){
                 case Order::TYPE_COURT: $trans_type=TransRecord::TYPE_COURT_PAY;break;
@@ -47,7 +41,9 @@ class BalancePay
                 case Order::TYPE_TRIP: $trans_type=TransRecord::TYPE_TRIP_PAY;break;
             }
 
-            TransRecord::Add($trans_type,-$orderAmount,$serial_number);
+            TransRecord::Add($conn,$orderNumber,$trans_type,-$orderAmount,$serial_number,TransRecord::STATUS_SUCCESS,$re_serial_number="",$out_serial_number="",$user_id=Yii::app()->user->id,$operator_id="");
+
+            $transaction->commit();
 
             OrderLog::Add($orderNumber,$serial_number);
 
