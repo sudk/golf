@@ -11,8 +11,12 @@ class Order extends CActiveRecord {
     const TYPE_COURT = '0';
     const TYPE_TRIP = '1';
     const TYPE_COMPETITION = '2';
-    
-    
+
+    /**
+     * 支付方法
+     */
+    const PAY_METHOD_BALANCE='1';//余额支付
+    const PAY_METHOD_UPMP='2';//银联支付
     /**
      * 状态流程
      * 0、等待确认；1、等待付款；2、付款完成；3、交易关闭 ，4-未到场  5-交易成功，6-等待退款 7-拒绝退款 8-退款中
@@ -274,9 +278,8 @@ class Order extends CActiveRecord {
     public static function Create($args){
         $conn=Yii::app()->db;
         $transaction = $conn->beginTransaction();
-        $r=rand(100000,999999);
-        $d=date("YmdHis");
-        $order_id=$d.$r;
+
+        $order_id=Utils::GenerateOrderId();
         $record_time=date("Y-m-d H:i:s");
         if(Yii::app()->user->isGuest){
             $user_id="guest";
@@ -402,9 +405,8 @@ class Order extends CActiveRecord {
 
         $conn=Yii::app()->db;
         $transaction = $conn->beginTransaction();
-        $r=rand(100000,999999);
-        $d=date("YmdHis");
-        $serial_number=$d.$r;
+
+        $serial_number=Utils::GenerateSerialNumber();
 
         $status=Order::STATUS_TOBE_CANCEL;
         try{
@@ -425,55 +427,12 @@ class Order extends CActiveRecord {
     }
 
     public static function Pay($order_id,$type,$amount){
-
-        $conn=Yii::app()->db;
-        $transaction = $conn->beginTransaction();
-        $r=rand(100000,999999);
-        $d=date("YmdHis");
-        $serial_number=$d.$r;
-        $status=Order::STATUS_TOBE_SUCCESS;
-
-        $row=Yii::app()->db->createCommand()
-            ->select("*")
-            ->from("g_order")
-            ->where("order_id=:order_id",array("order_id"=>$order_id))
-            ->queryRow();
-
-        try{
-            $sql = "update g_order set status=:status,had_pay=:had_pay where order_id=:order_id";
-            $command = $conn->createCommand($sql);
-            $command->bindParam(":status",$status, PDO::PARAM_STR);
-            $command->bindParam(":had_pay",$amount, PDO::PARAM_STR);
-            $command->bindParam(":order_id",$order_id, PDO::PARAM_STR);
-            $command->execute();
-
-            if($type==1){
-                $rs=User::Deduct($conn,$amount);
-                if($rs['status']!=0){
-                    $transaction->rollBack();
-                    return $rs;
-                }
-            }
-
-            $transaction->commit();
-
-            $trans_type=TransRecord::TYPE_COURT_PAY;
-            switch($row['type']){
-                case Order::TYPE_COURT: $trans_type=TransRecord::TYPE_COURT_PAY;break;
-                case Order::TYPE_COMPETITION: $trans_type=TransRecord::TYPE_COMPETITION_PAY;break;
-                case Order::TYPE_TRIP: $trans_type=TransRecord::TYPE_TRIP_PAY;break;
-            }
-
-            TransRecord::Add($trans_type,-$amount,$serial_number);
-
-            OrderLog::Add($order_id,$serial_number);
-
-            return array('status'=>0,'desc'=>'成功');
-        }catch (Exception $e){
-            $transaction->rollBack();
-            return array('status'=>3,'desc'=>'失败');;
+        $pay=Null;
+        switch(strval($type)){
+            case Order::PAY_METHOD_BALANCE : $pay=new BalancePay();break;
+            case Order::PAY_METHOD_UPMP : $pay=new UpmPay();break;
         }
-
+        return $pay->Purchase($amount,"支付:".$amount,$order_id);
     }
 
 }

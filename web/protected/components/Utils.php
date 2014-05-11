@@ -1170,4 +1170,15 @@ page;
             date("w",strtotime("+6 day"))=>date("Y-m-d",strtotime("+6 day"))
         );
     }
+
+    public static function GenerateOrderId(){
+        $r=rand(100000,999999);
+        $d=date("YmdHis");
+        return $d.$r;
+    }
+    public static function GenerateSerialNumber(){
+        $r=rand(100000,999999);
+        $d=date("YmdHis");
+        return $d.$r;
+    }
 }
