@@ -16,18 +16,11 @@ class BalancePay extends BasePay
 
         $status=Order::STATUS_TOBE_SUCCESS;
 
-        $row=$this->OrderInfo($orderNumber);
+        $row=Order::OrderInfo($orderNumber);
 
         try{
-            $sql = "update g_order set had_pay=:had_pay where order_id=:order_id";
-            $command = $conn->createCommand($sql);
-            $command->bindParam(":had_pay",$orderAmount, PDO::PARAM_STR);
-            $command->bindParam(":order_id",$orderNumber, PDO::PARAM_STR);
-            $command->execute();
-
-            Order::ChangeStatus($conn,$status,$orderNumber);
+            Order::ChangeStatus($conn,$status,$orderNumber,$orderAmount);
             Order::ChangePayMethod($conn,$pay_method,$orderNumber);
-
             //扣除余额
             $rs=User::Deduct($conn,$orderAmount);
             if($rs['status']!=0){

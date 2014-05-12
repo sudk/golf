@@ -138,7 +138,7 @@ class UpmPay extends BasePay
         $serial_number=Utils::GenerateSerialNumber();
         $pay_method=Order::PAY_METHOD_UPMP;
         //$status=Order::STATUS_TOBE_SUCCESS;
-        $row=$this->OrderInfo($orderNumber);
+        $row=Order::OrderInfo($orderNumber);
 
         $req['backEndUrl']=self::MER_BACK_END_URL;// 通知URL
         $req['charset']=self::CHARSET;// 字符编码
@@ -164,9 +164,11 @@ class UpmPay extends BasePay
                     //Order::ChangeStatus($conn,$status,$orderNumber);
                     Order::ChangePayMethod($conn,$pay_method,$orderNumber);
                     $trans_type=TransRecord::GetPayTypeByOrderType($row['type']);
-                    TransRecord::Add($conn,$orderNumber,$trans_type,-$orderAmount,$serial_number,TransRecord::STATUS_SUCCESS,$re_serial_number="",$out_serial_number="",$user_id=Yii::app()->user->id,$operator_id="");
+                    $tn=$rs['tn'];
+                    TransRecord::Add($conn,$orderNumber,$trans_type,-$orderAmount,$serial_number,TransRecord::STATUS_PROCESS,$re_serial_number="",$tn,$user_id=Yii::app()->user->id,$operator_id="");
                     $transaction->commit();
-                    return array('status'=>0,'desc'=>'成功');
+                    $data[]=array('tn'=>$tn);
+                    return array('status'=>0,'desc'=>'成功','data'=>$data);
                 }catch (Exception $e){
                     $transaction->rollBack();
                     return array('status'=>3,'desc'=>'失败');;
@@ -231,6 +233,15 @@ class UpmPay extends BasePay
 
     }
 
+    public function Notice($str){
+        $params=self::parseQString($str);
+        if($params){
+
+        }else{
+            return false;
+        }
+    }
+
     public function HttpPos($str,$url){
         $tuCurl = curl_init();
         curl_setopt($tuCurl, CURLOPT_URL,$url);
@@ -249,5 +260,6 @@ class UpmPay extends BasePay
 
         return $rs;
     }
+
 
 }

@@ -447,7 +447,26 @@ class Order extends CActiveRecord {
         return $pay->Purchase($amount,"支付:".$amount,$order_id);
     }
 
-    public static function ChangeStatus(&$conn,$status,$order_id){
+    public static function OrderInfo($orderNumber){
+        return Yii::app()->db->createCommand()
+            ->select("*")
+            ->from("g_order")
+            ->where("order_id=:order_id",array("order_id"=>$orderNumber))
+            ->queryRow();
+    }
+
+
+    public static function ChangeStatus(&$conn,$status,$order_id,$orderAmount=0){
+
+        $model=Order::OrderInfo($order_id);
+
+        if($model['status']==Order::STATUS_TOBE_PAID&&$status==Order::STATUS_TOBE_SUCCESS){
+            $sql = "update g_order set had_pay=:had_pay where order_id=:order_id";
+            $command = $conn->createCommand($sql);
+            $command->bindParam(":had_pay",$orderAmount, PDO::PARAM_STR);
+            $command->bindParam(":order_id",$order_id, PDO::PARAM_STR);
+            $command->execute();
+        }
         $sql = "update g_order set status=:status where order_id=:order_id";
         $command = $conn->createCommand($sql);
         $command->bindParam(":status",$status, PDO::PARAM_STR);
