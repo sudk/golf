@@ -446,6 +446,22 @@ class Order extends CActiveRecord {
         }
         return $pay->Purchase($amount,"支付:".$amount,$order_id);
     }
+
+    public static function ChangeStatus(&$conn,$status,$order_id){
+        $sql = "update g_order set status=:status where order_id=:order_id";
+        $command = $conn->createCommand($sql);
+        $command->bindParam(":status",$status, PDO::PARAM_STR);
+        $command->bindParam(":order_id",$order_id, PDO::PARAM_STR);
+        $command->execute();
+    }
+
+    public static function ChangePayMethod(&$conn,$pay_method,$order_id){
+        $sql = "update g_order set pay_method=:pay_method where order_id=:order_id";
+        $command = $conn->createCommand($sql);
+        $command->bindParam(":pay_method",$pay_method, PDO::PARAM_STR);
+        $command->bindParam(":order_id",$order_id, PDO::PARAM_STR);
+        $command->execute();
+    }
     
     /**
      * web端处理订单状态

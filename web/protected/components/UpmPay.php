@@ -134,10 +134,10 @@ class UpmPay extends BasePay
 
     //订单推送请求
     public function Purchase($orderAmount,$orderDescription,$orderNumber){
-        $conn=Yii::app()->db;
+
         $serial_number=Utils::GenerateSerialNumber();
         $pay_method=Order::PAY_METHOD_UPMP;
-        $status=Order::STATUS_TOBE_SUCCESS;
+        //$status=Order::STATUS_TOBE_SUCCESS;
         $row=$this->OrderInfo($orderNumber);
 
         $req['backEndUrl']=self::MER_BACK_END_URL;// 通知URL
@@ -158,7 +158,20 @@ class UpmPay extends BasePay
         if($rs){
             $respCode=$rs[self::RESPONSE_CODE];
             if($respCode==self::RESPONSE_CODE_SUCCESS){
-                TransRecord::Add($conn,$orderNumber,$trans_type,-$orderAmount,$serial_number,TransRecord::STATUS_SUCCESS,$re_serial_number="",$out_serial_number="",$user_id=Yii::app()->user->id,$operator_id="");
+                $conn=Yii::app()->db;
+                try{
+                    $transaction = $conn->beginTransaction();
+                    //Order::ChangeStatus($conn,$status,$orderNumber);
+                    Order::ChangePayMethod($conn,$pay_method,$orderNumber);
+                    $trans_type=TransRecord::GetPayTypeByOrderType($row['type']);
+                    TransRecord::Add($conn,$orderNumber,$trans_type,-$orderAmount,$serial_number,TransRecord::STATUS_SUCCESS,$re_serial_number="",$out_serial_number="",$user_id=Yii::app()->user->id,$operator_id="");
+                    $transaction->commit();
+                    return array('status'=>0,'desc'=>'成功');
+                }catch (Exception $e){
+                    $transaction->rollBack();
+                    return array('status'=>3,'desc'=>'失败');;
+                }
+
             }else{
                 $msg=array('status'=>$respCode,'msg'=>$rs[self::RESPONSE_MSG]);
             }

@@ -50,12 +50,24 @@ class TransRecord extends CActiveRecord {
         return $s == "" ? $rs : $rs[$s];
     }
 
+    //通过订单类型，转换成交易类型
     public static function GetPayTypeByOrderType($order_type){
         $rs = array(
             Order::TYPE_COURT=>self::TYPE_COURT_PAY,
             Order::TYPE_TRIP=>self::TYPE_TRIP_PAY,
             Order::TYPE_COMPETITION=>self::TYPE_COMPETITION_PAY,
             Order::TYPE_RECHARGE=>self::TYPE_RECHARGE_PAY,
+        );
+        return $rs[$order_type];
+    }
+
+    //通过订单类型，转换成交易类型
+    public static function GetCancelTypeByOrderType($order_type){
+        $rs = array(
+            Order::TYPE_COURT=>self::TYPE_COURT_CANCEL,
+            Order::TYPE_TRIP=>self::TYPE_TRIP_CANCEL,
+            Order::TYPE_COMPETITION=>self::TYPE_COMPETITION_CANCEL,
+            Order::TYPE_RECHARGE=>self::TYPE_RECHARGE_CANCEL,
         );
         return $rs[$order_type];
     }
