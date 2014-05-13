@@ -118,7 +118,7 @@ class OrderController extends CMDBaseController
             echo json_encode($msg);
             return;
         }
-        if(!Yii::app()->command->cmdObj->pay_type){
+        if(!isset(Yii::app()->command->cmdObj->pay_type)||Yii::app()->command->cmdObj->pay_type==''){
             $msg['status']=9;
             $msg['desc']="支付类型不能为空！";
             echo json_encode($msg);
