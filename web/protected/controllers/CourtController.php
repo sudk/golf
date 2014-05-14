@@ -439,13 +439,14 @@ class CourtController extends AuthBaseController
         $url = $info['img_url'];
         $rs = Img::model()->deleteByPk($id);
         //var_dump($rs);
-        $data['status'] = 0;
+        $data['status'] = 1;
         $data['msg'] = "";
         if($rs)
         {
             $this->delImg($url);
             
         }else{
+            $data['status'] = 0;
             $data['msg'] = "删除失败。";
         }
         

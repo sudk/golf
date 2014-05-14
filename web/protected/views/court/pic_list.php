@@ -33,7 +33,7 @@
             dataType:"json",
             type:"POST",
             success:function(data){
-                if(data.status){
+                if(data.status==1){
                     alert("删除成功！");
                     itemQuery();
                 }else{

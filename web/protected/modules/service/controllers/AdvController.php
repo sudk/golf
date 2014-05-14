@@ -81,7 +81,7 @@ class AdvController extends AuthBaseController {
 
                     $file = $_FILES['adv_img'];
                     if (is_uploaded_file($file['tmp_name'])) {
-                        $upload_rs = Img::uploadImg($file['tmp_name'], $file['name'], $rs, Img::TYPE_ADV);
+                        $upload_rs = Img::uploadImg($file['tmp_name'], $file['name'], $model->id, Img::TYPE_ADV);
                         if ($upload_rs['status'] != 0) {
                             $msg['msg'] .= "广告图片上传失败。";
                         }
