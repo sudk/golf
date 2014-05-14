@@ -39,6 +39,10 @@ class UpmPay extends BasePay
     const TRANS_STATUS_PROCESS="01";//处理中
     const TRANS_STATUS_FALSE="02";//交易失败
 
+    const TRANS_TYPE_PURCHASE="01";//交易
+    const TRANS_TYPE_VOID="31";//交易撤销
+    const TRANS_TYPE_REFUND="04";//退货接口
+
     // 成功应答码
     const RESPONSE_CODE_SUCCESS = "00";
 
@@ -51,7 +55,7 @@ class UpmPay extends BasePay
     // 应答码
     const RESPONSE_CODE = "respCode";
 
-    const RESPONSE_SUCCESS="00";
+    //const RESPONSE_SUCCESS="00";
 
     // 应答信息
     const RESPONSE_MSG = "respMsg";
@@ -142,7 +146,7 @@ class UpmPay extends BasePay
 
         $req['backEndUrl']=self::MER_BACK_END_URL;// 通知URL
         $req['charset']=self::CHARSET;// 字符编码
-        $req["transType"]="01";// 交易类型
+        $req["transType"]=self::TRANS_TYPE_PURCHASE;// 交易类型
         $req["frontEndUrl"]=self::MER_FRONT_END_URL;// 前台通知URL
         $req['merId']=self::MER_ID;// 商户代码
         $req["merReserved"]="";// 商户保留域
@@ -201,7 +205,7 @@ class UpmPay extends BasePay
     public function Void($orderNumber,$orderAmount,$qn){
         $req["backEndUrl"]=self::MER_BACK_END_URL;// 通知URL
         $req["charset"]=self::CHARSET;// 字符编码
-        $req["transType"]="31";// 交易类型
+        $req["transType"]=self::TRANS_TYPE_VOID;// 交易类型
         $req["merId"]=self::MER_ID;// 商户代码
         $req["merReserved"]="";// 商户保留域
         $req["orderAmount"]=$orderAmount;// 订单金额
@@ -219,7 +223,7 @@ class UpmPay extends BasePay
     public function Refund($orderNumber,$orderAmount,$qn){
         $req["backEndUrl"]=self::MER_BACK_END_URL;// 通知URL
         $req["charset"]=self::CHARSET;// 字符编码
-        $req["transType"]="04";// 交易类型
+        $req["transType"]=self::TRANS_TYPE_REFUND;// 交易类型
         $req["merId"]=self::MER_ID;// 商户代码
         $req["merReserved"]="";// 商户保留域
         $req["orderAmount"]=$orderAmount;// 订单金额
@@ -236,7 +240,14 @@ class UpmPay extends BasePay
     public function Notice($str){
         $params=self::parseQString($str);
         if($params){
+            $respCode=$params[self::RESPONSE_CODE];
+            if($respCode==self::RESPONSE_CODE_SUCCESS){
+                $transType=$params['transType'];
+                $transStatus=$params['transStatus'];
 
+            }else{
+                $msg=array('status'=>$respCode,'msg'=>$params[self::RESPONSE_MSG]);
+            }
         }else{
             return false;
         }

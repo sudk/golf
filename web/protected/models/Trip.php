@@ -81,6 +81,11 @@ class Trip extends CActiveRecord {
             $condition.=' AND g_trip.court_id=:court_id';
             $params['court_id'] = $args['court_id'];
         }
+
+        if ($args['city'] != ''){
+            $condition.=' AND g_trip.city=:city';
+            $params['city'] = $args['city'];
+        }
         
         if ($args['agent_id'] != ''){
             $condition.=' AND g_trip.agent_id=:agent_id';
@@ -97,13 +102,15 @@ class Trip extends CActiveRecord {
             ->select("count(1)")
             ->from("g_trip")
             ->leftJoin("g_court","g_trip.court_id=g_court.court_id")
+            ->leftJoin("g_agent","g_trip.agent_id=g_agent.id")
             ->where($condition,$params)
             ->queryScalar();
         $order = 'g_trip.record_time DESC';
         $rows=Yii::app()->db->createCommand()
-            ->select("g_trip.*,g_court.name court_name")
+            ->select("g_trip.*,g_court.name court_name,g_agent.agent_name")
             ->from("g_trip")
             ->leftJoin("g_court","g_trip.court_id=g_court.court_id")
+            ->leftJoin("g_agent","g_trip.agent_id=g_agent.id")
             ->where($condition,$params)
             ->order($order)
             ->limit($pageSize)
@@ -135,9 +142,10 @@ class Trip extends CActiveRecord {
         }
 
         $row=Yii::app()->db->createCommand()
-            ->select("g_trip.*,g_court.name court_name")
+            ->select("g_trip.*,g_court.name court_name,g_agent.agent_name")
             ->from("g_trip")
             ->leftJoin("g_court","g_trip.court_id=g_court.court_id")
+            ->leftJoin("g_agent","g_trip.agent_id=g_agent.id")
             ->where($condition,$params)
             ->queryRow();
         if($row){
