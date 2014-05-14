@@ -81,7 +81,7 @@ class Trip extends CActiveRecord {
             $condition.=' AND g_trip.court_id=:court_id';
             $params['court_id'] = $args['court_id'];
         }
-        
+
         if ($args['city'] != ''){
             $condition.=' AND g_trip.city=:city';
             $params['city'] = $args['city'];

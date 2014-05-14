@@ -11,8 +11,8 @@ if (is_array($rows))
 
         $num = ($curpage-1)*$this->pageSize + $j++;
         //$t->begin_row("onclick","getDetail(this,'{$row['id']}','{$row['recordtime']}');");
-        
-         
+
+        $link='';
         $link .= CHtml::link('编辑',"javascript:itemEdit('{$row['id']}')", array());
         $link .= CHtml::link('删除',"javascript:itemDelete('{$row['id']}')", array());
             
