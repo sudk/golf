@@ -86,7 +86,7 @@ class CommentController extends CMDBaseController
     }
 
     public function actionCreate(){
-        if(!isset(Yii::app()->command->cmdObj->count_id)||Yii::app()->command->cmdObj->count_id==''){
+        if(!isset(Yii::app()->command->cmdObj->court_id)||Yii::app()->command->cmdObj->court_id==''){
             $msg['status']=1;
             $msg['desc']="球场ID不能为空！";
             echo json_encode($msg);
@@ -124,7 +124,7 @@ class CommentController extends CMDBaseController
             return;
         }
 
-        if(Yii::app()->user->isGuest()){
+        if(Yii::app()->user->isGuest){
             $user_id="guest";
         }else{
             $user_id=Yii::app()->user->id;
