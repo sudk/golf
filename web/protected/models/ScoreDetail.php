@@ -5,7 +5,7 @@
  * @author #guohao 
  * @copyright Copyright &copy; 2003-2009 TrunkBow Co., Inc
  */
-class Score extends CActiveRecord {
+class ScoreDetail extends CActiveRecord {
 
    
     
@@ -15,7 +15,7 @@ class Score extends CActiveRecord {
     }
 
     public function tableName(){
-        return 'g_score';
+        return 'g_score_detail';
     }
 
     public function rules(){
@@ -113,39 +113,6 @@ class Score extends CActiveRecord {
         $rs['rows'] = $rows;
 
         return $rs;
-    }
-
-    public static function InfoList($page, $pageSize, $args = array()) {
-
-        $condition = ' 1=1 ';
-        $params = array();
-
-        if (isset($args->user_id)&&$args->user_id != ''){
-            $condition.=' AND user_id = :user_id';
-            $params['user_id'] = $args->user_id;
-        }
-
-        $order = 'record_time DESC';
-        //print_r($args);
-        $rows=Yii::app()->db->createCommand()
-            ->select("*")
-            ->from("g_score")
-            ->where($condition,$params)
-            ->order($order)
-            ->limit($pageSize)
-            ->offset($page * $pageSize)
-            ->queryAll();
-
-        return $rows;
-    }
-
-    public static function Info($id) {
-        $row=Yii::app()->db->createCommand()
-            ->select("*")
-            ->from("g_score")
-            ->where("id=:id",array(":id"=>$id))
-            ->queryRow();
-        return $row;
     }
 }
 
