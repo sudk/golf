@@ -323,8 +323,6 @@ class FleaController extends CMDBaseController
     }
     public function actionUpload(){
 
-        Yii::log(serialize($_REQUEST),'info','application.firebuglog');
-        
         if(!$_POST['id']){
             $msg['status']=1;
             $msg['desc']="ID不能为空！";
