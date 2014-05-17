@@ -49,6 +49,7 @@ public class GAccountFragment extends Fragment implements OnClickListener {
 		v.findViewById(R.id.account_login).setOnClickListener(this);
 		v.findViewById(R.id.account_register).setOnClickListener(this);
 		v.findViewById(R.id.account_change_pwd).setOnClickListener(this);
+		v.findViewById(R.id.account_recharge).setOnClickListener(this);
 
 		mButtons = (LinearLayout) v.findViewById(R.id.account_buttons);
 		mUserInfo = (LinearLayout) v.findViewById(R.id.account_info);
@@ -84,7 +85,8 @@ public class GAccountFragment extends Fragment implements OnClickListener {
 			mUserInfo.setVisibility(ViewGroup.VISIBLE);
 
 			mPhone.setText(_account.getPhone());
-			mBalance.setText(String.format("金额：%d", _account.getBalance()));
+			mBalance.setText(String.format("余额：%.2f",
+					(float) _account.getBalance() / 100));
 			mPoints.setText(String.format("积分：%d", _account.getPoint()));
 
 		} else {
@@ -97,10 +99,10 @@ public class GAccountFragment extends Fragment implements OnClickListener {
 
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-		MenuItemCompat.setShowAsAction(menu.add("Menu 1a"),
-				MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);
-		MenuItemCompat.setShowAsAction(menu.add("Menu 1b"),
-				MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);
+//		MenuItemCompat.setShowAsAction(menu.add("Menu 1a"),
+//				MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);
+//		MenuItemCompat.setShowAsAction(menu.add("Menu 1b"),
+//				MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);
 		super.onCreateOptionsMenu(menu, inflater);
 	}
 
@@ -129,13 +131,21 @@ public class GAccountFragment extends Fragment implements OnClickListener {
 		case R.id.account_change_pwd:
 			startActivity(new Intent(getActivity(), GChangePwdActivity.class));
 			break;
+		case R.id.account_recharge:
+			if (_account.isLogin()) {
+				startActivity(new Intent(getActivity(), GRechargeActivity.class));
+			} else {
+				startLoginActivity();
+			}
+			break;
 		case R.id.account_order:
 
 			if (_account.isLogin()) {
-				
+
 				Intent itOrder = new Intent(getActivity(), GOrderActivity.class);
 				Bundle params = new Bundle();
-				params.putInt(GOrderActivity.FRAGMENT_MARK, GOrderActivity.FRAGMENT_MARK_LIST_ORDER);
+				params.putInt(GOrderActivity.FRAGMENT_MARK,
+						GOrderActivity.FRAGMENT_MARK_LIST_ORDER);
 				itOrder.putExtras(params);
 				startActivity(itOrder);
 

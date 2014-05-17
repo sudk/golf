@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="10dip" >
+
+    <RadioGroup
+        android:id="@+id/list_amount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/block_background"
+        android:orientation="vertical"
+        android:padding="5dip" >
+
+        <RadioButton
+            android:id="@+id/amount_1000"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:button="@null"
+            android:drawableRight="@android:drawable/btn_radio"
+            android:gravity="left|center_vertical"
+            android:text="￥1000" />
+
+        <RadioButton
+            android:id="@+id/amount_2000"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:button="@null"
+            android:drawableRight="@android:drawable/btn_radio"
+            android:gravity="left|center_vertical"
+            android:text="￥2000" />
+
+        <RadioButton
+            android:id="@+id/amount_5000"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:button="@null"
+            android:drawableRight="@android:drawable/btn_radio"
+            android:gravity="left|center_vertical"
+            android:text="￥5000" />
+
+        <RadioButton
+            android:id="@+id/amount_10000"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:button="@null"
+            android:drawableRight="@android:drawable/btn_radio"
+            android:gravity="left|center_vertical"
+            android:text="￥10000" />
+
+        <RadioButton
+            android:id="@+id/amount_custom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:button="@null"
+            android:drawableRight="@android:drawable/btn_radio"
+            android:gravity="left|center_vertical"
+            android:text="其他金额" />
+    </RadioGroup>
+
+    <EditText
+        android:id="@+id/customer_amount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dip"
+        android:hint="请输入金额"
+        android:inputType="number"
+        android:visibility="gone" />
+
+    <Button
+        android:id="@+id/recharge"
+        style="@style/OrangeButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dip"
+        android:text="充值" />
+
+</LinearLayout>

@@ -78,9 +78,17 @@ public class OrderAdapter extends BaseAdapter {
 		if(!TextUtils.isEmpty(teetime))
 			date = teetime.substring(0, teetime.indexOf(" "));
 		holder._date.setText(date);
-		holder._amount.setText(String.format("%.2f",(float)order.getAmount()/100));
+		holder._amount.setText(String.format("￥%.2f",(float)order.getAmount()/100));
 		holder._payType.setText(GOrder.GetPayTypeDes(order.getPayType()));
-		holder._status.setText(GOrder.GetStatusDes(order.getStatus()));
+		
+		String status = order.getStatus();
+		holder._status.setText(GOrder.GetStatusDes(status));
+		if("1".equals(status)){
+			holder._status.setTextColor(_context.getResources().getColor(R.color.markedness));
+		}else{
+			holder._status.setTextColor(_context.getResources().getColor(android.R.color.black));
+		}
+		
 		holder._orderId.setText(order.getOrderId());
 		return v;
 	}

@@ -26,6 +26,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class GOrderGenerateFragment extends Fragment implements OnClickListener {
+	
+	public static final String TYPE = "0";
 
 	public static final String key_type = "order_type";
 	public static final String key_relation_id = "order_relation_id";
@@ -34,6 +36,7 @@ public class GOrderGenerateFragment extends Fragment implements OnClickListener 
 	public static final String key_unitprice = "order_unitprice";
 	public static final String key_pay_type = "order_pay_type";
 	public static final String key_agent_id = "agent_id";
+	public static final String key_agent_name = "agent_name";
 
 	private AddAndSubView mAddAndSubView;
 
@@ -62,6 +65,14 @@ public class GOrderGenerateFragment extends Fragment implements OnClickListener 
 	public void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
+		Bundle params = getArguments();
+		_agentId = params.getString(key_agent_id);
+		_relatioinId = params.getString(key_relation_id);
+		_relationName = params.getString(key_relation_name);
+		_teeTime = params.getString(key_tee_time);
+		_price = params.getInt(key_unitprice, 0);
+		_payType = params.getString(key_pay_type);
+		_orderType = TYPE;
 	}
 
 	@Override
@@ -81,15 +92,6 @@ public class GOrderGenerateFragment extends Fragment implements OnClickListener 
 
 		mSubmit = (Button) v.findViewById(R.id.order_submit);
 		mSubmit.setOnClickListener(this);
-
-		Bundle params = getArguments();
-		_agentId = params.getString(key_agent_id);
-		_relatioinId = params.getString(key_relation_id);
-		_relationName = params.getString(key_relation_name);
-		_teeTime = params.getString(key_tee_time);
-		_price = params.getInt(key_unitprice, 0);
-		_payType = params.getString(key_pay_type);
-		_orderType = params.getString(key_type);
 
 		mAgentName.setText(_relationName);
 		mTeeTime.setText(String.format("TeeTime：%s", _teeTime));
@@ -199,7 +201,7 @@ public class GOrderGenerateFragment extends Fragment implements OnClickListener 
 							}
 							
 						});
-						dialog.show(getFragmentManager(), "CreateOrderFaild");
+						dialog.show(getFragmentManager(), "CreateOrderSuccessfull");
 						
 					} catch (JSONException e) {
 						// TODO Auto-generated catch block

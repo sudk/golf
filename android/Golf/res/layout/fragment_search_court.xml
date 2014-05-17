@@ -13,6 +13,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="5dip"
             android:orientation="horizontal" >
 
             <TextView
@@ -27,13 +28,13 @@
                 style="@style/SearchCourtEditText"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:text="@string/current_position" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="5dip"
             android:orientation="horizontal" >
 
             <TextView
@@ -47,13 +48,13 @@
                 android:id="@+id/select_date"
                 style="@style/SearchCourtEditText"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
+                android:layout_height="wrap_content" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="5dip"
             android:orientation="horizontal" >
 
             <TextView
@@ -67,13 +68,13 @@
                 android:id="@+id/select_time"
                 style="@style/SearchCourtEditText"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
+                android:layout_height="wrap_content" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="5dip"
             android:orientation="horizontal" >
 
             <TextView
@@ -83,11 +84,13 @@
                 android:drawableLeft="@drawable/ic_note"
                 android:text="@string/keyword" />
 
-            <TextView
+            <EditText
+                android:id="@+id/select_keywords"
                 style="@style/SearchCourtEditText"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:drawableRight="@null"
+                android:paddingRight="10dip"
                 android:hint="@string/name_of_court" />
         </LinearLayout>
     </LinearLayout>

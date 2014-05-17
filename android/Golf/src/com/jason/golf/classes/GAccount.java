@@ -1,6 +1,5 @@
 package com.jason.golf.classes;
 
-import android.location.Location;
 import android.text.TextUtils;
 
 public class GAccount {
@@ -22,8 +21,18 @@ public class GAccount {
 	private String _vipCardNo; // VIP����
 	private String _point; // ���
 
-	private Location _loc;
+	private double _latitude;
+	private double _longitude;
 	private boolean _login;
+	
+	public GAccount(){
+		_latitude = 0;
+		_longitude = 0;
+		_city = "";
+		_balance = "0";
+		_point = "0";
+		_login = false;
+	}
 
 	public void initilization(String id) {
 		_id = id;
@@ -54,12 +63,20 @@ public class GAccount {
 		this._eamil = eamil;
 	}
 
-	public Location getLoc() {
-		return _loc;
+	public double getLatitude() {
+		return _latitude;
 	}
 
-	public void setLoc(Location loc) {
-		this._loc = loc;
+	public void setLatitude(double latitude) {
+		this._latitude = latitude;
+	}
+
+	public double getLongitude() {
+		return _longitude;
+	}
+
+	public void setLongitude(double longitude) {
+		_longitude = longitude;
 	}
 
 	public String getId() {
@@ -103,7 +120,7 @@ public class GAccount {
 
 	public int getBalance() {
 		int res = 0;
-		if(!TextUtils.isEmpty(_balance) && TextUtils.isDigitsOnly(_balance)){
+		if (!TextUtils.isEmpty(_balance) && TextUtils.isDigitsOnly(_balance)) {
 			res = Integer.parseInt(_balance);
 		}
 		return res;
@@ -131,7 +148,7 @@ public class GAccount {
 
 	public int getPoint() {
 		int res = 0;
-		if(!TextUtils.isEmpty(_point) && TextUtils.isDigitsOnly(_point)){
+		if (!TextUtils.isEmpty(_point) && TextUtils.isDigitsOnly(_point)) {
 			res = Integer.parseInt(_point);
 		}
 		return res;
@@ -160,8 +177,12 @@ public class GAccount {
 	public String toString() {
 		return "GAccount [_id=" + _id + ", _session=" + _session + ", _phone="
 				+ _phone + ", _city=" + _city + ", _name=" + _name
-				+ ", _balance=" + _balance + ", _type=" + _type
-				+ ", _vipCardNo=" + _vipCardNo + ", _point=" + _point + "]";
+				+ ", _eamil=" + _eamil + ", _sex=" + _sex + ", _remark="
+				+ _remark + ", _balance=" + _balance + ", _type=" + _type
+				+ ", _vipCardNo=" + _vipCardNo + ", _point=" + _point
+				+ ", _latitude=" + _latitude + ", _longitude=" + _longitude
+				+ ", _login=" + _login + "]";
 	}
+
 
 }

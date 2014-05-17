@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import com.jason.golf.GAccountActivity;
 import com.jason.golf.GolfAppliaction;
-import com.jason.golf.dialog.OrderDialog;
+import com.jason.golf.dialog.BookingOrderDialog;
 import com.jsaon.golf.R;
 
 import android.content.Context;
@@ -15,7 +15,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class AgentsAdapter extends BaseAdapter {
 	
@@ -85,13 +84,11 @@ public class AgentsAdapter extends BaseAdapter {
 			@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
-				Toast.makeText(_context, "Generate Order", Toast.LENGTH_SHORT).show();
-				
 				GolfAppliaction app = (GolfAppliaction) _context.getApplicationContext();
 				GAccount acc = app.getAccount();
 				
 				if(acc.isLogin()){
-					OrderDialog dialog = new OrderDialog(_context, agent);
+					BookingOrderDialog dialog = new BookingOrderDialog(_context, agent);
 					dialog.show();
 				
 				}else{

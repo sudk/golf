@@ -12,6 +12,7 @@ import android.text.TextUtils;
 public class WarnDialog extends DialogFragment{
 	
 	public static WarnDialog newInstance(Context context) {
+		
 		WarnDialog f = new WarnDialog(context);
 		f.setStyle(STYLE_NO_FRAME, 0);
 		return f;

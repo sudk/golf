@@ -2,69 +2,186 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
-    
-    <TextView 
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin" >
+
+    <TextView
         android:id="@+id/order_detail_court_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="Details"/>
-    
-    <TextView 
-        android:id="@+id/order_detail_tee_time"
+        android:padding="2dip"
+        android:text="Details"
+        android:textSize="20sp" />
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="Details"/>
-    
-    <TextView 
-        android:id="@+id/order_detail_type"
+        android:orientation="horizontal"
+        android:padding="2dip" >
+
+        <TextView
+            style="@style/OrderDetailTitle"
+            android:text="开球时间：" />
+
+        <TextView
+            android:id="@+id/order_detail_tee_time"
+            style="@style/OrderDetailContent"
+            android:text="Details"
+            android:textColor="@color/basecolor" />
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="Details"/>
-    
-    <TextView 
-        android:id="@+id/order_detail_count"
+        android:orientation="horizontal"
+        android:padding="2dip" >
+
+        <TextView
+            style="@style/OrderDetailTitle"
+            android:text="订单类型：" />
+
+        <TextView
+            android:id="@+id/order_detail_type"
+            style="@style/OrderDetailContent"
+            android:text="Details" />
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="Details"/>
-    
-    <TextView 
-        android:id="@+id/order_detail_amount"
+        android:orientation="horizontal"
+        android:padding="2dip" >
+
+        <TextView
+            style="@style/OrderDetailTitle"
+            android:text="打球人数：" />
+
+        <TextView
+            android:id="@+id/order_detail_count"
+            style="@style/OrderDetailContent"
+            android:text="Details" />
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="Details"/>
-    
-    <TextView 
-        android:id="@+id/order_detail_paytype"
+        android:orientation="horizontal"
+        android:padding="2dip" >
+
+        <TextView
+            style="@style/OrderDetailTitle"
+            android:text="订单金额：" />
+
+        <TextView
+            android:id="@+id/order_detail_amount"
+            style="@style/OrderDetailContent"
+            android:text="Details"
+            android:textColor="@color/money" />
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="Details"/>
-    
-    <TextView 
-        android:id="@+id/order_detail_status"
+        android:orientation="horizontal"
+        android:padding="2dip" >
+
+        <TextView
+            style="@style/OrderDetailTitle"
+            android:text="支付类型：" />
+
+        <TextView
+            android:id="@+id/order_detail_paytype"
+            style="@style/OrderDetailContent"
+            android:text="Details" />
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="Details"/>
-    
-    <TextView 
-        android:id="@+id/order_detail_contact"
+        android:orientation="horizontal"
+        android:padding="2dip" >
+
+        <TextView
+            style="@style/OrderDetailTitle"
+            android:text="订单状态：" />
+
+        <TextView
+            android:id="@+id/order_detail_status"
+            style="@style/OrderDetailContent"
+            android:text="Details" />
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="Details"/>
-    
-    <TextView 
-        android:id="@+id/order_detail_phone"
+        android:orientation="horizontal"
+        android:padding="2dip" >
+
+        <TextView
+            style="@style/OrderDetailTitle"
+            android:text="联系人：" />
+
+        <TextView
+            android:id="@+id/order_detail_contact"
+            style="@style/OrderDetailContent"
+            android:text="Details" />
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="Details"/>
+        android:orientation="horizontal"
+        android:padding="2dip" >
+
+        <TextView
+            style="@style/OrderDetailTitle"
+            android:text="联系电话：" />
+
+        <TextView
+            android:id="@+id/order_detail_phone"
+            style="@style/OrderDetailContent"
+            android:text="Details" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/pay_button_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dip"
+        android:orientation="horizontal"
+        android:visibility="gone" >
+
+        <Button
+            android:id="@+id/order_detail_pay_balance"
+            style="@style/OrangeButton"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_margin="3dip"
+            android:layout_weight="1"
+            android:text="余额支付" />
+
+        <Button
+            android:id="@+id/order_detail_pay_yinlian"
+            style="@style/OrangeButton"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_margin="3dip"
+            android:layout_weight="1"
+            android:text="银联支付" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/order_detail_cancel"
+        style="@style/OrangeButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="3dip"
+        android:layout_marginRight="3dip"
+        android:layout_marginTop="10dip"
+        android:text="取消订单"
+        android:visibility="gone" />
 
 </LinearLayout>

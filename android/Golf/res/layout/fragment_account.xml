@@ -63,28 +63,30 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dip"
-                android:orientation="horizontal" >
+                android:orientation="horizontal"
+                android:paddingBottom="5dip"
+                android:paddingTop="5dip" >
 
                 <TextView
                     android:id="@+id/account_balance"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dip"
+                    android:layout_width="0dip"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:drawableRight="@drawable/ic_37_triange"
                     android:gravity="center"
-                    android:text="余额：10000元" />
+                    android:text="余额：10000" />
 
                 <View
                     android:layout_width="1dip"
                     android:layout_height="fill_parent"
+                    android:layout_marginLeft="3dip"
+                    android:layout_marginRight="3dip"
                     android:background="#c7c7cc" />
 
                 <TextView
                     android:id="@+id/account_points"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dip"
+                    android:layout_width="0dip"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:drawableRight="@drawable/ic_37_triange"
                     android:gravity="center"
@@ -97,6 +99,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dip"
             android:background="@drawable/block_background"
+            android:padding="1dip"
             android:orientation="vertical" >
 
             <!--
@@ -119,21 +122,25 @@
                 style="@style/AccountTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/order_manager" />
+                android:text="@string/order_manager"
+                android:background="@drawable/account_item_background" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dip"
+            android:padding="1dip"
             android:background="@drawable/block_background"
             android:orientation="vertical" >
 
             <TextView
+                android:id="@+id/account_recharge"
                 style="@style/AccountTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/account_recharge" />
+                android:text="@string/account_recharge"
+                android:background="@drawable/account_item_background" />
 
             <View
                 android:layout_width="match_parent"
@@ -146,26 +153,15 @@
                 style="@style/AccountTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/account_transfer" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dip"
-                android:layout_marginLeft="10dip"
-                android:layout_marginRight="10dip"
-                android:background="@drawable/block_divider" />
-
-            <TextView
-                style="@style/AccountTextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/consumption_details" />
+                android:text="@string/consumption_details"
+                android:background="@drawable/account_item_background" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dip"
+            android:padding="1dip"
             android:background="@drawable/block_background"
             android:orientation="vertical" >
 
@@ -174,7 +170,8 @@
                 style="@style/AccountTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/account_changepwd" />
+                android:text="@string/account_changepwd" 
+                android:background="@drawable/account_item_background"/>
         </LinearLayout>
 
         <Button

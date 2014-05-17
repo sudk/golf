@@ -34,7 +34,7 @@ public class GOrder {
 	
 	public static String GetStatusDes(String status){
 		
-//		0、待确认；1、待付款；2、完成；3、撤销
+//		0、待确认；1、待付款；2、完成预约；3、撤销 ，4、未到场  5、交易完成
 		
 		String res = "";
 
@@ -43,9 +43,13 @@ public class GOrder {
 		if ("1".equals(status))
 			res = "待付款";
 		if ("2".equals(status))
-			res = "完成";
+			res = "完成预约";
 		if ("3".equals(status))
 			res = "撤销";
+		if ("4".equals(status))
+			res = "未到场";
+		if ("5".equals(status))
+			res = "交易完成";
 
 		return res;
 		

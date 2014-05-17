@@ -3,13 +3,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin" >
+    android:paddingLeft="5dip"
+    android:paddingRight="5dip" 
+    android:gravity="center_vertical">
 
     <ImageView
         android:id="@+id/court_list_image"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_width="50dip"
+        android:layout_height="50dip"
+        android:layout_margin="5dip"
         android:src="@drawable/test_golf" />
 
     <LinearLayout
@@ -24,11 +26,13 @@
             android:id="@+id/court_list_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dip"
-            android:layout_marginRight="10dip"
+            android:layout_marginLeft="5dip"
+            android:layout_marginRight="5dip"
             android:gravity="center_vertical"
+            android:singleLine="true"
+            android:ellipsize="end"
             android:text="1111"
-            android:textSize="20sp" />
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/court_list_distance"
@@ -46,7 +50,6 @@
         android:id="@+id/court_list_price"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_margin="10dip"
         android:gravity="center"
         android:padding="5dip"
         android:text="￥500"

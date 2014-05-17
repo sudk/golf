@@ -37,7 +37,7 @@ public class AdvertisementAdapter extends PagerAdapter {
 
 			for (GAdver gAdver : advers) {
 				ImageView iv = new ImageView(_context);
-				final String url = gAdver.getUrl();
+				final String url = gAdver.getLinkUrl();
 				iv.setOnClickListener(new View.OnClickListener() {
 					
 					@Override
@@ -60,6 +60,40 @@ public class AdvertisementAdapter extends PagerAdapter {
 
 		}
 
+	}
+	
+	public void swapData(ArrayList<GAdver> advers){
+		
+		_ListViews.clear();
+		
+		if (advers != null) {
+
+			for (GAdver gAdver : advers) {
+				ImageView iv = new ImageView(_context);
+				final String url = gAdver.getLinkUrl();
+				iv.setOnClickListener(new View.OnClickListener() {
+					
+					@Override
+					public void onClick(View v) {
+						// TODO Auto-generated method stub
+						Intent it = new Intent(Intent.ACTION_VIEW);
+						it.setData(Uri.parse(url));
+						_context.startActivity(it);
+					}
+				});
+				
+				LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(
+						LinearLayout.LayoutParams.MATCH_PARENT,
+						LinearLayout.LayoutParams.MATCH_PARENT);
+				iv.setLayoutParams(param);
+				iv.setScaleType(ScaleType.CENTER_CROP);
+				_fb.display(iv, gAdver.getImgUrl());
+				_ListViews.add(iv);
+			}
+
+		}
+		
+		notifyDataSetChanged();
 	}
 
 	@Override

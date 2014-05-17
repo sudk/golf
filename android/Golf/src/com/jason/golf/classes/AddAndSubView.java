@@ -5,6 +5,7 @@ import com.jsaon.golf.R;
 import android.widget.LinearLayout;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -124,7 +125,12 @@ public class AddAndSubView extends LinearLayout {
 		editText.setLayoutParams(viewLayoutParams);
 		editText.setGravity(Gravity.CENTER);
 		editText.setPadding(1, 1, 1, 1);
-		editText.setBackground(null);
+		
+		if(Build.VERSION.SDK_INT >= 16 ){
+			editText.setBackground(null);
+		}else{
+			editText.setBackgroundDrawable(null);
+		}
 		setTextWidthHeight();
 
 		viewLayoutParams.gravity = Gravity.CENTER;
@@ -141,7 +147,11 @@ public class AddAndSubView extends LinearLayout {
 		viewLayoutParams.width = LinearLayout.LayoutParams.MATCH_PARENT;
 		mainLinearLayout.setLayoutParams(viewLayoutParams);
 		mainLinearLayout.setOrientation(LinearLayout.HORIZONTAL);
-		mainLinearLayout.setBackground(context.getResources().getDrawable(R.drawable.block_background));
+		if(Build.VERSION.SDK_INT >= 16 ){
+			mainLinearLayout.setBackground(context.getResources().getDrawable(R.drawable.block_background));
+		}else{
+			mainLinearLayout.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.block_background));
+		}
 	}
 
 	/**

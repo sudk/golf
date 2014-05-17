@@ -17,11 +17,14 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 import android.text.format.Time;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -39,6 +42,8 @@ public class GSearchCourtFragment extends Fragment implements OnClickListener {
 	private DatePickerDialog mDatePickerDialog;
 
 	private TimePickerDialog mTimePickerDialog12h;
+	
+	private EditText mKeywords;
 
 	private static String pad(int c) {
 		if (c >= 10)
@@ -85,10 +90,14 @@ public class GSearchCourtFragment extends Fragment implements OnClickListener {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
-		View v = inflater.inflate(R.layout.fragment_search_court, container,
-				false);
+		View v = inflater.inflate(R.layout.fragment_search_court, container, false);
 		v.findViewById(R.id.select_date).setOnClickListener(this);
 		v.findViewById(R.id.search_court).setOnClickListener(this);
+		
+		ActionBarActivity activity = (ActionBarActivity) getActivity();
+		ActionBar bar = activity.getSupportActionBar();
+		bar.setTitle(R.string.search_court);
+		
 
 		mSelectDate = (TextView) v.findViewById(R.id.select_date);
 		mSelectDate.setOnClickListener(this);
@@ -96,6 +105,8 @@ public class GSearchCourtFragment extends Fragment implements OnClickListener {
 		mSelectTime.setOnClickListener(this);
 		mSelectCity = (TextView) v.findViewById(R.id.select_city);
 		mSelectCity.setOnClickListener(this);
+		
+		mKeywords = (EditText) v.findViewById(R.id.select_keywords);
 
 		mCalendar.add(Calendar.DAY_OF_MONTH, 1);
 
@@ -179,7 +190,7 @@ public class GSearchCourtFragment extends Fragment implements OnClickListener {
 			args.putString(GCourtListActivity.ARG_CITY, _cityId);
 			args.putString(GCourtListActivity.ARG_DATE, _date);
 			args.putString(GCourtListActivity.ARG_TIME, _time);
-			args.putString(GCourtListActivity.ARG_KEYWORD, "");
+			args.putString(GCourtListActivity.ARG_KEYWORD, mKeywords.getText().toString());
 			it.putExtras(args);
 
 			startActivity(it);

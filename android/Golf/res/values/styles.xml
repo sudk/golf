@@ -52,10 +52,10 @@
 
     <style name="SearchCourtText">
         <item name="android:textSize">20sp</item>
-        <item name="android:textColor">#008</item>
-        <item name="android:layout_margin">3dip</item>
-        <item name="android:gravity">center</item>
-        <item name="android:drawablePadding">20dip</item>
+        <item name="android:textColor">@color/titlecolor</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:drawablePadding">10dip</item>
     </style>
 
     <style name="SearchCourtEditText">
@@ -67,6 +67,7 @@
         <item name="android:singleLine">true</item>
         <item name="android:drawablePadding">5dip</item>
         <item name="android:drawableRight">@drawable/ic_37_triange</item>
+        <item name="android:layout_weight">3</item>
     </style>
 
     <style name="AccountTextView">
@@ -114,7 +115,46 @@
         <item name="android:layout_weight">3</item>
         <item name="android:padding">1dip</item>
     </style>
+    
+    <style name="OrderDetailTitle">
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:layout_width">0dip</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">2</item>
+        <item name="android:padding">1dip</item>
+        <item name="android:textSize">15sp</item>
+    </style>
 
+    <style name="OrderDetailContent">
+        <item name="android:gravity">left</item>
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:layout_width">0dip</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">5</item>
+        <item name="android:padding">1dip</item>
+        <item name="android:textSize">17sp</item>
+    </style>
+    
+    <style name="CompetitionDetailTitle">
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:layout_width">0dip</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">2</item>
+        <item name="android:padding">1dip</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+
+    <style name="CompetitionDetailContent">
+        <item name="android:gravity">left</item>
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:layout_width">0dip</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">5</item>
+        <item name="android:padding">1dip</item>
+        <item name="android:textSize">17sp</item>
+    </style>
+    
+    
     <style name="CourtDetailLinearLayout">
         <item name="android:layout_margin">3dip</item>
     </style>

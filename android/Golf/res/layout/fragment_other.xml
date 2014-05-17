@@ -40,20 +40,20 @@
         app:useDefaultMargins="false" >
 
        <TextView
-            android:id="@+id/grid_preference"
+            android:id="@+id/grid_preferential"
             android:layout_margin="2dip"
             android:background="#00a0ea"
             android:gravity="center"
-            android:text="@string/preference"
+            android:text="@string/preferential"
             android:textColor="@android:color/white"
             android:textSize="32sp" />
 
         <TextView
-            android:id="@+id/grid_combo"
+            android:id="@+id/grid_trip"
             android:layout_margin="2dip"
             android:background="#8587c0"
             android:gravity="center"
-            android:text="@string/combo"
+            android:text="@string/trip"
             android:textColor="@android:color/white"
             android:textSize="32sp" />
 
@@ -72,6 +72,15 @@
             android:background="#0ba29b"
             android:gravity="center"
             android:text="@string/ranking"
+            android:textColor="@android:color/white"
+            android:textSize="28sp" />
+        
+        <TextView
+            android:id="@+id/grid_competition"
+            android:layout_margin="2dip"
+            android:background="#EEDC82"
+            android:gravity="center"
+            android:text="@string/competition"
             android:textColor="@android:color/white"
             android:textSize="28sp" />
     </android.support.v7.widget.GridLayout>

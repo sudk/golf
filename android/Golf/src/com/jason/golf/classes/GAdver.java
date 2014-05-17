@@ -1,88 +1,55 @@
 package com.jason.golf.classes;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class GAdver {
-	
-	private int _order;
-	private int _type;
-	private int _state;
-	
-	private String _url;
+
+	private String _id;
+
+	private String _linkUrl;
 	private String _imgUrl;
-	private long _startDate;
-	private long _endDate;
-	
-	public GAdver(int order, int type,String imgUrl, String url, long startDate, long endDate) {
-		this._order = order;
-		this._type = type;
-		this._imgUrl = imgUrl;
-		this._url = url;
-		this._startDate = startDate;
-		this._endDate = endDate;
+
+	public boolean initialize(JSONObject data) {
+		
+		try {
+			this._id = data.getString("id");
+			this._imgUrl = data.getString("img");
+			this._linkUrl = data.getString("link_url");
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			return false;
+		}
+		
+		return true;
 	}
-	
-	
+
+	public GAdver() {
+		// TODO Auto-generated constructor stub
+	}
+
+	public String getId() {
+		return _id;
+	}
+
+	public void setId(String id) {
+		this._id = id;
+	}
 
 	public String getImgUrl() {
 		return _imgUrl;
 	}
 
-
-
 	public void setImgUrl(String imgUrl) {
 		this._imgUrl = imgUrl;
 	}
 
-
-
-	public int getOrder() {
-		return _order;
+	public String getLinkUrl() {
+		return _linkUrl;
 	}
 
-	public void setOrder(int order) {
-		this._order = order;
+	public void setLinkUrl(String linkUrl) {
+		this._linkUrl = linkUrl;
 	}
-
-	public int getType() {
-		return _type;
-	}
-
-	public void setType(int type) {
-		this._type = type;
-	}
-
-	public int getState() {
-		return _state;
-	}
-
-	public void setState(int state) {
-		this._state = state;
-	}
-
-	public String getUrl() {
-		return _url;
-	}
-
-	public void setUrl(String url) {
-		this._url = url;
-	}
-
-	public long getStartDate() {
-		return _startDate;
-	}
-
-	public void setStartDate(long startDate) {
-		this._startDate = startDate;
-	}
-
-	public long getEndDate() {
-		return _endDate;
-	}
-
-	public void setEndDate(long endDate) {
-		this._endDate = endDate;
-	}
-	
-	
-	
 
 }

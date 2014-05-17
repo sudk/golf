@@ -95,7 +95,9 @@ public class GCourtInfoDetailsFragment extends Fragment implements OnClickListen
 		
 		ArrayList<String> imgUrl = court.getFairwayImgs();
 		
-		for(int i=0, length=3; i<length; i++){
+		int length = imgUrl.size() <= 3 ? imgUrl.size() : 3 ;
+		
+		for(int i=0; i<length; i++){
 			ImageView img = new ImageView(getActivity());
 			img.setLayoutParams(param);
 			img.setPadding(2, 2, 2, 2);

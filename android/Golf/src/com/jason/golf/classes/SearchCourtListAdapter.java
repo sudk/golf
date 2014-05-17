@@ -3,6 +3,8 @@ package com.jason.golf.classes;
 import java.util.ArrayList;
 import java.util.zip.Inflater;
 
+import net.tsz.afinal.FinalBitmap;
+
 import com.jsaon.golf.R;
 
 import android.content.Context;
@@ -18,6 +20,8 @@ public class SearchCourtListAdapter extends BaseAdapter {
 	private LayoutInflater _inflater ;
 	private Context _context;
 	private ArrayList<SearchCourtBean> _courts;
+	
+	private FinalBitmap _fb;
 
 	public SearchCourtListAdapter(Context ctx, ArrayList<SearchCourtBean> courts) {
 		super();
@@ -28,6 +32,9 @@ public class SearchCourtListAdapter extends BaseAdapter {
 		if(courts != null){
 			_courts.addAll(courts);
 		}
+		
+		_fb = FinalBitmap.create(_context);
+		_fb.configLoadingImage(R.drawable.ic_launcher);
 	}
 
 	@Override
@@ -39,7 +46,7 @@ public class SearchCourtListAdapter extends BaseAdapter {
 	@Override
 	public Object getItem(int position) {
 		// TODO Auto-generated method stub
-		if( position > getCount() || position < 0)
+		if( position >= getCount() || position < 0)
 			return null;
 		SearchCourtBean court = _courts.get(position);
 		return court;
@@ -79,10 +86,11 @@ public class SearchCourtListAdapter extends BaseAdapter {
 			holder.distance.setText("未知");
 		}else{
 			if(distance > 1000)
-				holder.distance.setText(String.format("%.1f公里", distance/1000));
+				holder.distance.setText(String.format("%.1f公里", (float)distance/1000));
 			else
 				holder.distance.setText(String.format("%d米", distance));
 		}
+		_fb.display(holder.image, court.getIcoImgUrl());
 		
 		return v;
 	}

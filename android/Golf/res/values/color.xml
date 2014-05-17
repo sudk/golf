@@ -2,4 +2,7 @@
 <resources>
     <color name="basecolor">#237fca</color>
     <color name="money">#ff8605</color>
+    <color name="markedness">#FF3030</color>
+    <color name="titlecolor">#8B8682</color>
+    <color name="contentcolor">#8B8989</color>
 </resources>

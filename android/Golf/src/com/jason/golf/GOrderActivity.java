@@ -12,9 +12,13 @@ import android.support.v7.app.ActionBarActivity;
 public class GOrderActivity extends ActionBarActivity {
 	
 	public static final String FRAGMENT_MARK = "fragment_mark";
+	
 	public static final int FRAGMENT_MARK_GENERATE_ORDER = 0x1001;
-	public static final int FRAGMENT_MARK_LIST_ORDER = 0x1002;
-	public static final int FRAGMENT_MARK_VIEW_ORDER = 0x1003;
+	public static final int FRAGMENT_MARK_GENERATE_APPLY = 0x1002;
+	public static final int FRAGMENT_MARK_GENERATE_TRIP = 0x1003;
+	
+	public static final int FRAGMENT_MARK_LIST_ORDER = 0x1004;
+	public static final int FRAGMENT_MARK_VIEW_ORDER = 0x1005;
 	
 	private FragmentManager fm ;
 	
@@ -78,6 +82,30 @@ public class GOrderActivity extends ActionBarActivity {
 			
 			
 			break;
+			
+		case FRAGMENT_MARK_GENERATE_APPLY:
+			
+			Fragment applyFragment = GOrderApplyFragment.Instance();
+			applyFragment.setArguments(new Bundle(params));
+
+			transaction.replace(R.id.container, applyFragment);
+			transaction.addToBackStack(null);
+
+			// Commit the transaction
+			transaction.commit();
+			break;
+		case FRAGMENT_MARK_GENERATE_TRIP:
+			
+			Fragment tripFragment = GOrderBookingTripFragment.Instance();
+			tripFragment.setArguments(new Bundle(params));
+
+			transaction.replace(R.id.container, tripFragment);
+			transaction.addToBackStack(null);
+
+			// Commit the transaction
+			transaction.commit();
+			break;
+			
 		}
 		
 	}

@@ -81,8 +81,15 @@ public class GOrderListFragment extends Fragment implements OnItemClickListener 
 
 		mAdapter = new OrderAdapter(getActivity(), _orders);
 		mOrders.setAdapter(mAdapter);
-		queryOrders(_page, true);
+
 		return v;
+	}
+
+	@Override
+	public void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		queryOrders(0, true);
 	}
 
 	private void queryOrders(int page, final boolean isRefresh) {
@@ -197,17 +204,18 @@ public class GOrderListFragment extends Fragment implements OnItemClickListener 
 	}
 
 	@Override
-	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+	public void onItemClick(AdapterView<?> parent, View view, int position,
+			long id) {
 		// TODO Auto-generated method stub
-		System.out.println(String.format("postion is %d", position));
-		GOrder order = (GOrder) mAdapter.getItem(position -1 );
-		
+//		System.out.println(String.format("postion is %d", position));
+		GOrder order = (GOrder) mAdapter.getItem(position - 1);
+
 		Bundle params = new Bundle();
 		params.putString(GOrderDetailsFragment.KEY_ORDER_ID, order.getOrderId());
-		
+
 		Fragment detailFragment = GOrderDetailsFragment.Instance();
 		detailFragment.setArguments(params);
-		
+
 		FragmentTransaction transaction = getFragmentManager().beginTransaction();
 		transaction.replace(R.id.container, detailFragment);
 		transaction.addToBackStack(null);

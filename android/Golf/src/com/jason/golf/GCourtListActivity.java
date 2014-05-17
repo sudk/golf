@@ -11,11 +11,15 @@ import org.json.JSONObject;
 import com.jason.controller.GThreadExecutor;
 import com.jason.controller.HttpCallback;
 import com.jason.controller.HttpRequest;
+import com.jason.golf.classes.GAccount;
 import com.jason.golf.classes.SearchCourtBean;
 import com.jason.golf.classes.SearchCourtListAdapter;
+import com.jason.golf.provider.GolfProviderConfig;
 import com.jsaon.golf.R;
 
+import android.content.ContentResolver;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
@@ -48,7 +52,11 @@ public class GCourtListActivity extends ActionBarActivity implements
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_search_court_list);
+		
 		_courts = new ArrayList<SearchCourtBean>();
+		
+		GolfAppliaction app = (GolfAppliaction) getApplication();
+		GAccount acc = app.getAccount();
 		
 //		_courts.add(new GCourt("1001", "青之鸟高尔夫", "青岛", 34000, "0", "描述", "青岛",
 //				"2010", "果岭", "老苏", "1024", "Grass", "13305311011", "remark",
@@ -85,8 +93,33 @@ public class GCourtListActivity extends ActionBarActivity implements
 
 		// 设定搜索城市
 		String city_id = args.getString(ARG_CITY);
-		if (TextUtils.isEmpty(city_id))
-			city_id = "370200";
+		if (TextUtils.isEmpty(city_id)){
+			
+			String city = acc.getCity();
+			
+			ContentResolver cr = getContentResolver();
+
+			Cursor c = cr.query(GolfProviderConfig.City.CONTENT_URI, null,
+					GolfProviderConfig.City.CITY + "=? ", new String[] { ""
+							+ city }, null);
+
+			if (c == null)
+				return;
+
+			try {
+				if (c.moveToFirst()) {
+					city_id = c.getString(c.getColumnIndex(GolfProviderConfig.City.CITY_ID));
+				}
+			} finally {
+				c.close();
+			}
+			
+			
+			if (TextUtils.isEmpty(city_id)){
+				city_id = "370200";
+			}
+			
+		}
 
 		// 设定搜索日期
 		String date = args.getString(ARG_DATE);
@@ -106,7 +139,14 @@ public class GCourtListActivity extends ActionBarActivity implements
 			params.put("date", date);
 			params.put("time", time);
 			params.put("key_word", keyword);
-			params.put("long_lat", "");
+			
+			String long_lat = "";
+			if (!(Math.abs(acc.getLatitude() - 0) < 0.00000001)
+					&& !(Math.abs(acc.getLongitude() - 0) < 0.00000001)) {
+				long_lat = String.format("%f,%f", acc.getLongitude(), acc.getLatitude());
+			}
+
+			params.put("long_lat", long_lat);
 			params.put("order_key_word", "");
 			params.put("_pg_", "");
 			params.put("order_type", "");
@@ -143,38 +183,6 @@ public class GCourtListActivity extends ActionBarActivity implements
 							}
 							
 							super.sucessData(res);
-							
-//							try {
-//								JSONObject resObj = new JSONObject(res);
-//								
-//								int status = resObj.getInt("status");
-//								
-//								if(status == 0){
-//								
-//									JSONArray data = resObj.getJSONArray("data");
-//									for(int i=0, length=data.length(); i<length;i++){
-//										
-//										JSONObject item = data.getJSONObject(i);
-//										SearchCourtBean bean = new SearchCourtBean();
-//										bean.setId(item.getString("court_id"));
-//										bean.setName(item.getString("name"));
-//										bean.setAddr(item.getString("addr"));
-//										bean.setDistance(item.getString("distance"));
-//										bean.setPrice(item.getInt("price"));
-//										bean.setIcoImgUrl(item.getString("ico_img"));
-//										bean.setPayType(item.getString("pay_type"));
-////										bean.setIsOfficial(item.getString("is_official"));
-//										_courts.add(bean);
-//									}
-//									
-//									mAdapter.swapData(_courts);
-//									
-//								}
-//							} catch (JSONException e) {
-//								// TODO Auto-generated catch block
-//								e.printStackTrace();
-//							}
-							
 						}
 
 					});
@@ -185,11 +193,15 @@ public class GCourtListActivity extends ActionBarActivity implements
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		
 
 		ActionBar bar = getSupportActionBar();
+		bar.setTitle(R.string.court_list);
 		bar.setIcon(R.drawable.actionbar_icon);
-		
-		initialTabs();
+		int change = bar.getDisplayOptions() ^ ActionBar.DISPLAY_HOME_AS_UP;
+	    bar.setDisplayOptions(change, ActionBar.DISPLAY_HOME_AS_UP);
+	    initialTabs();
 
 	}
 
@@ -237,6 +249,13 @@ public class GCourtListActivity extends ActionBarActivity implements
 		startActivity(it);
 
 	}
+	
+	@Override
+	public boolean onSupportNavigateUp() {
+		// TODO Auto-generated method stub
+		finish();
+		return true;
+	}
 
 	@Override
 	public void onTabReselected(Tab tab, FragmentTransaction arg1) {
@@ -283,5 +302,7 @@ public class GCourtListActivity extends ActionBarActivity implements
 			return (int) (lhs.getDistance() - rhs.getDistance());
 		}
 	};
+	
+	
 
 }

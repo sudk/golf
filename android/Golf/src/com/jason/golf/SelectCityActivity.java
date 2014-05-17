@@ -46,7 +46,7 @@ public class SelectCityActivity extends ActionBarActivity implements OnChildClic
 	@Override
 	public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
 		// TODO Auto-generated method stub
-		System.out.println(String.format("%d�� %d��%d", groupPosition, childPosition, id));
+		System.out.println(String.format("%d  %d  %d", groupPosition, childPosition, id));
 		
 		Intent data = new Intent();
 		data.putExtra("RowID", id);

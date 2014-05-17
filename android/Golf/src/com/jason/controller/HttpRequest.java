@@ -6,28 +6,33 @@ import org.json.JSONObject;
 
 import com.jason.golf.GolfAppliaction;
 import com.jason.golf.classes.GAccount;
+import com.jason.golf.dialog.WarnDialog;
 import com.jason.network.HttpConnection;
 import com.jason.network.HttpResponse;
 import com.jason.network.ProtocolDefinition;
+import com.jsaon.golf.R;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.pm.ApplicationInfo;
 import android.os.Handler;
 import android.os.Handler.Callback;
 import android.os.Message;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
 import android.util.Log;
 
 public class HttpRequest implements Runnable, Callback {
 	private static final String TAG = "HttpRequest";
 
-	private Context _context;
+	private FragmentActivity _fgAct;
 	private JSONObject _params;
 	private Handler _handler;
 	private HttpCallback _callBack;
 
-	public HttpRequest(Context context, JSONObject params, HttpCallback callBack) {
-		_context = context;
+	public HttpRequest(FragmentActivity context, JSONObject params, HttpCallback callBack) {
+		_fgAct = context;
 		_params = params;
 		_callBack = callBack;
 		_handler = new Handler(context.getMainLooper(), this);
@@ -37,7 +42,7 @@ public class HttpRequest implements Runnable, Callback {
 	public void run() {
 		// TODO Auto-generated method stub
 		
-		GolfAppliaction app = (GolfAppliaction) _context.getApplicationContext();
+		GolfAppliaction app = (GolfAppliaction) _fgAct.getApplicationContext();
 		GAccount acc = app.getAccount();
 		String session = acc.getSession();
 		
@@ -99,20 +104,75 @@ public class HttpRequest implements Runnable, Callback {
 			
 			break;
 		case 9001:
-			if(_callBack != null) _callBack.timeout((String) msg.obj);
+			
+			if(_callBack != null) _callBack.malformedURL((String) msg.obj);
+			
 			break;
 		case 9002:
-			if(_callBack != null) _callBack.malformedURL((String) msg.obj);
+			if (_callBack != null) _callBack.timeout((String) msg.obj);
+			
+			if(_fgAct == null) break; 
+
+			WarnDialog dialogTimeout = new WarnDialog(_fgAct);
+			dialogTimeout
+					.setTitle(R.string.network)
+					.setMessage(R.string.network_time_out)
+					.setPositiveBtn(R.string.retry,
+							new DialogInterface.OnClickListener() {
+
+								@Override
+								public void onClick(DialogInterface dialog,
+										int which) {
+									// TODO Auto-generated method stub
+									GThreadExecutor.execute(HttpRequest.this);
+								}
+							})
+					.setNegativeBtn(R.string.cancel,
+							new DialogInterface.OnClickListener() {
+
+								@Override
+								public void onClick(DialogInterface dialog,
+										int which) {
+									// TODO Auto-generated method stub
+
+								}
+							});
+			
+			if( !_fgAct.isFinishing())
+				dialogTimeout.show(_fgAct.getSupportFragmentManager(), "TimeOut");
+			
 			break;
 		case 9003:
 			if(_callBack != null) _callBack.ioError((String) msg.obj);
+			
+			WarnDialog dialogDisconnected = new WarnDialog(_fgAct);
+			dialogDisconnected.setTitle(R.string.network).setMessage(R.string.network_disconnect)
+			.setPositiveBtn(R.string.retry, new DialogInterface.OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					// TODO Auto-generated method stub
+					GThreadExecutor.execute(HttpRequest.this);
+				}
+			}).setNegativeBtn(R.string.cancel, new DialogInterface.OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					// TODO Auto-generated method stub
+					
+				}
+			});
+			
+			if( !_fgAct.isFinishing())
+				dialogDisconnected.show(_fgAct.getSupportFragmentManager(), "Disconnect");
+			
 			break;
 		case 9004:// 保存session
 		{
 			String session = (String) msg.obj;
 			if (!TextUtils.isEmpty(session)) {
 
-				GolfAppliaction app = (GolfAppliaction) _context.getApplicationContext();
+				GolfAppliaction app = (GolfAppliaction) _fgAct.getApplicationContext();
 				GAccount acc = app.getAccount();
 				acc.setSession(session);
 				

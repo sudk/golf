@@ -109,7 +109,7 @@ public class GCourtInfoBriefFragment extends Fragment implements OnClickListener
 		mAgentDate.setText(String.format("%d月%d日", _month, _day));
 		mAgentTime = (TextView) v.findViewById(R.id.agent_time);
 		mAgentTime.setOnClickListener(this);
-		mAgentTime.setText(String.format("%d:%d", _hour, _minute));
+		mAgentTime.setText(String.format("%02d:%02d", _hour, _minute));
 		
 		mCourtAddr = (TextView) v.findViewById(R.id.court_addr);
 		mCourtAddr.setOnClickListener(this);
@@ -416,7 +416,7 @@ public class GCourtInfoBriefFragment extends Fragment implements OnClickListener
 					_hour = hourOfDay;
 					_minute = minute;
 					
-					mAgentTime.setText(String.format("%d点%d分", _hour, _minute));
+					mAgentTime.setText(String.format("%02d:%02d", _hour, _minute));
 					
 					quertAgents(_courtId);
 				}

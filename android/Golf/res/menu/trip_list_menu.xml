@@ -1,0 +1,12 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.jsaon.golf.MainActivity" >
+
+    <item
+        android:id="@+id/menu_getlocation"
+        android:orderInCategory="100"
+        android:title="@string/action_get_city"
+        app:showAsAction="ifRoom"/>
+
+</menu>
