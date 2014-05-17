@@ -44,6 +44,29 @@ class ScoreController extends CMDBaseController
 
     }
 
+    public function actionMylist(){
+        if(Yii::app()->command->cmdObj->_pg_==null||Yii::app()->command->cmdObj->_pg_==""){
+            $msg['status']=1;
+            $msg['desc']="分页参数不能为空！";
+            echo json_encode($msg);
+            return;
+        }
+
+        $rows=Flea::MyInfoList(Yii::app()->command->cmdObj->_pg_,$this->pageSize,Yii::app()->command->cmdObj);
+        if(count($rows)){
+            $msg['status']=0;
+            $msg['desc']="成功";
+            $msg['_pg_']=Yii::app()->command->cmdObj->_pg_;
+            $msg['data']=$rows;
+        }else{
+            $msg['status']=4;
+            $msg['desc']="没有数据";
+        }
+        echo json_encode($msg);
+        return;
+
+    }
+
     public function actionInfo(){
         if(!Yii::app()->command->cmdObj->id){
             $msg['status']=1;
@@ -286,7 +309,6 @@ class ScoreController extends CMDBaseController
         echo json_encode($msg);
         return;
     }
-
     public function actionUpload(){
         if(!$_POST['id']){
             $msg['status']=1;
@@ -310,15 +332,6 @@ class ScoreController extends CMDBaseController
                 $msg['data'][]=array('url'=>$upload_rs['url']);
             }
         }
-        echo json_encode($msg);
-        return;
-    }
-
-    public function actionGetid(){
-        $id=Utils::GenerateSerialNumber();
-        $msg['status']=0;
-        $msg['msg']='成功';
-        $msg['data'][]=array('id'=>$id);
         echo json_encode($msg);
         return;
     }

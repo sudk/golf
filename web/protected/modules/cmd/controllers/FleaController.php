@@ -27,6 +27,7 @@ class FleaController extends CMDBaseController
             $msg['status']=-1;
             $msg['desc']="用户未登陆！";
             echo json_encode($msg);
+            Yii::log('session_id:'.session_id(),'info','application.firebuglog');
             return false;
         }else{
             return true;
