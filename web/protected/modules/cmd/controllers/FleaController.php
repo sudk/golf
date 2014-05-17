@@ -21,17 +21,17 @@ class FleaController extends CMDBaseController
         );
     }
 
-//    public function beforeAction($action)
-//    {
-//        if(Yii::app()->user->isGuest){
-//            $msg['status']=-1;
-//            $msg['desc']="用户未登陆！";
-//            echo json_encode($msg);
-//            return false;
-//        }else{
-//            return true;
-//        }
-//    }
+    public function beforeAction($action)
+    {
+        if(Yii::app()->user->isGuest){
+            $msg['status']=-1;
+            $msg['desc']="用户未登陆！";
+            echo json_encode($msg);
+            return false;
+        }else{
+            return true;
+        }
+    }
 
     public function actionList(){
         if(Yii::app()->command->cmdObj->_pg_==null||Yii::app()->command->cmdObj->_pg_==""){
