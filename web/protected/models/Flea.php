@@ -176,7 +176,6 @@ class Flea extends CActiveRecord {
                 $rows_tmp[]=$row;
             }
         }
-        print_r($rows);
         return $rows_tmp;
     }
 
