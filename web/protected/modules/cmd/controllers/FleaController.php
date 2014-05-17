@@ -23,15 +23,12 @@ class FleaController extends CMDBaseController
 
     public function beforeAction($action)
     {
-        Yii::log('session_id-11:'.session_id(),'info','application.firebuglog');
         if(Yii::app()->user->isGuest){
             $msg['status']=-1;
             $msg['desc']="用户未登陆！";
             echo json_encode($msg);
-
             return false;
         }else{
-            Yii::log('session_id—22:'.session_id(),'info','application.firebuglog');
             return true;
         }
     }
@@ -191,7 +188,6 @@ class FleaController extends CMDBaseController
             $msg['desc']="保存失败";
         }
         echo json_encode($msg);
-
         return;
     }
 
@@ -326,11 +322,13 @@ class FleaController extends CMDBaseController
         return;
     }
     public function actionUpload(){
+
+        Yii::log(serialize($_REQUEST),'info','application.firebuglog');
+        
         if(!$_POST['id']){
             $msg['status']=1;
             $msg['desc']="ID不能为空！";
             echo json_encode($msg);
-            Yii::log('msg:'.json_encode($msg),'info','application.firebuglog');
             return;
         }
         $file = $_FILES['my_file'];
