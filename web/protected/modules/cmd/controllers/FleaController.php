@@ -130,13 +130,15 @@ class FleaController extends CMDBaseController
         $id=Yii::app()->command->cmdObj->id;
         try{
             $record_time=date("Y-m-d H:i:s");
-            $sql="insert into g_flea (id,title,`city`,`desc`,price,record_time,user_id) values (:id,:title,:city,:desc,:price,:record_time,:user_id)";
+            $sql="insert into g_flea (id,title,`city`,`desc`,price,record_time,user_id,phone,contact) values (:id,:title,:city,:desc,:price,:record_time,:user_id,:phone,:contact)";
             $command = $conn->createCommand($sql);
             $command->bindParam(":id",$id, PDO::PARAM_STR);
             $command->bindParam(":title", Yii::app()->command->cmdObj->title, PDO::PARAM_STR);
             $command->bindParam(":city", Yii::app()->command->cmdObj->city, PDO::PARAM_STR);
             $command->bindParam(":desc", Yii::app()->command->cmdObj->desc, PDO::PARAM_STR);
             $command->bindParam(":price", Yii::app()->command->cmdObj->price, PDO::PARAM_STR);
+            $command->bindParam(":phone", Yii::app()->command->cmdObj->phone, PDO::PARAM_STR);
+            $command->bindParam(":contact", Yii::app()->command->cmdObj->contact, PDO::PARAM_STR);
             $command->bindParam(":record_time",$record_time, PDO::PARAM_STR);
             $command->bindParam(":user_id", $user_id, PDO::PARAM_STR);
             $command->execute();
@@ -218,12 +220,14 @@ class FleaController extends CMDBaseController
         $record_time=date("Y-m-d H:i:s");
         $status=Flea::STATUS_UNAUDITED;
         try{
-            $sql="update g_flea set title=:title,city=:city,`desc`=:desc,price=:price,status=:status,record_time=:record_time,check_id='',check_time='' where id=:id";
+            $sql="update g_flea set title=:title,city=:city,`desc`=:desc,price=:price,status=:status,record_time=:record_time,phone=:phone,contact=:contact,check_id='',check_time='' where id=:id";
             $command = $conn->createCommand($sql);
             $command->bindParam(":title", Yii::app()->command->cmdObj->title, PDO::PARAM_STR);
             $command->bindParam(":city", Yii::app()->command->cmdObj->city, PDO::PARAM_STR);
             $command->bindParam(":desc", Yii::app()->command->cmdObj->desc, PDO::PARAM_STR);
             $command->bindParam(":price", Yii::app()->command->cmdObj->price, PDO::PARAM_STR);
+            $command->bindParam(":phone", Yii::app()->command->cmdObj->phone, PDO::PARAM_STR);
+            $command->bindParam(":contact", Yii::app()->command->cmdObj->contact, PDO::PARAM_STR);
             $command->bindParam(":status",$status, PDO::PARAM_STR);
             $command->bindParam(":record_time",$record_time, PDO::PARAM_STR);
             $command->bindParam(":id", Yii::app()->command->cmdObj->id, PDO::PARAM_STR);
