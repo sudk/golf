@@ -125,7 +125,7 @@ class FleaController extends CMDBaseController
 
         $user_id=Yii::app()->user->id;
         $conn=Yii::app()->db;
-//        $transaction = $conn->beginTransaction();
+        $transaction = $conn->beginTransaction();
 //        $id=date("YmdHis").rand(100000,999999);
         $id=Yii::app()->command->cmdObj->id;
         try{
