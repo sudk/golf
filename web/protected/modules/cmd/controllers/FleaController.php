@@ -157,7 +157,7 @@ class FleaController extends CMDBaseController
             $msg['status']=0;
             $msg['desc']="成功，等管理员审核后才能显示。";
         }catch (Exception $e){
-            print_r($e);
+            //print_r($e);
             $transaction->rollBack();
             $msg['status']=8;
             $msg['desc']="保存失败";
