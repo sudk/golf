@@ -157,8 +157,9 @@ class FleaController extends CMDBaseController
             $msg['status']=0;
             $msg['desc']="成功，等管理员审核后才能显示。";
         }catch (Exception $e){
+            print_r($e);
             $transaction->rollBack();
-            $msg['status']=7;
+            $msg['status']=8;
             $msg['desc']="保存失败";
         }
         echo json_encode($msg);
@@ -206,6 +207,7 @@ class FleaController extends CMDBaseController
             return;
         }
         if(!isset(Yii::app()->command->cmdObj->phone)||Yii::app()->command->cmdObj->phone==''){
+
             $msg['status']=7;
             $msg['desc']="电话不能为空！";
             echo json_encode($msg);
@@ -251,7 +253,7 @@ class FleaController extends CMDBaseController
             $msg['desc']="成功，等管理员审核后才能显示。";
         }catch (Exception $e){
             $transaction->rollBack();
-            $msg['status']=7;
+            $msg['status']=8;
             $msg['desc']="保存失败";
         }
         echo json_encode($msg);
