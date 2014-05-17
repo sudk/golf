@@ -216,6 +216,7 @@ class FleaController extends CMDBaseController
         $conn=Yii::app()->db;
         $transaction = $conn->beginTransaction();
         $record_time=date("Y-m-d H:i:s");
+        $status=Flea::STATUS_UNAUDITED;
         try{
             $sql="update g_flea set title=:title,city=:city,`desc`=:desc,price=:price,status=:status,record_time=:record_time,check_id='',check_time='' where id=:id";
             $command = $conn->createCommand($sql);
@@ -223,7 +224,7 @@ class FleaController extends CMDBaseController
             $command->bindParam(":city", Yii::app()->command->cmdObj->city, PDO::PARAM_STR);
             $command->bindParam(":desc", Yii::app()->command->cmdObj->desc, PDO::PARAM_STR);
             $command->bindParam(":price", Yii::app()->command->cmdObj->price, PDO::PARAM_STR);
-            $command->bindParam(":status",Flea::STATUS_UNAUDITED, PDO::PARAM_STR);
+            $command->bindParam(":status",$status, PDO::PARAM_STR);
             $command->bindParam(":record_time",$record_time, PDO::PARAM_STR);
             $command->bindParam(":id", Yii::app()->command->cmdObj->id, PDO::PARAM_STR);
             $command->execute();
