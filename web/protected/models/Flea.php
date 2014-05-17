@@ -163,6 +163,7 @@ class Flea extends CActiveRecord {
         if($row){
             $row['imgs']=Img::GetImgs($id,Img::TYPE_FLEA);
         }
+        return $row;
     }
     
 }
