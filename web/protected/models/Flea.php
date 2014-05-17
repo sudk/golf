@@ -133,7 +133,7 @@ class Flea extends CActiveRecord {
         }
 
         $order = 'record_time DESC';
-
+        //print_r($args);
         $rows=Yii::app()->db->createCommand()
             ->select("*")
             ->from("g_flea")
@@ -142,7 +142,7 @@ class Flea extends CActiveRecord {
             ->limit($pageSize)
             ->offset($page * $pageSize)
             ->queryAll();
-
+        //print_r($rows);
         if($rows){
             $rows_tmp=array();
             foreach($rows as $row){

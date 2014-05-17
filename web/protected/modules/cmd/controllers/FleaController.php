@@ -41,12 +41,12 @@ class FleaController extends CMDBaseController
             return;
         }
 
-        $rs=Flea::InfoList(Yii::app()->command->cmdObj->_pg_,$this->pageSize,Yii::app()->command->cmdObj);
-        if($rs['rows']){
+        $rows=Flea::InfoList(Yii::app()->command->cmdObj->_pg_,$this->pageSize,Yii::app()->command->cmdObj);
+        if(count($rows)){
             $msg['status']=0;
             $msg['desc']="成功";
             $msg['_pg_']=Yii::app()->command->cmdObj->_pg_;
-            $msg['data']=$rs['rows'];
+            $msg['data']=$rows;
         }else{
             $msg['status']=4;
             $msg['desc']="没有数据";
@@ -305,7 +305,7 @@ class FleaController extends CMDBaseController
             $msg['status']=3;
             $msg['msg']='上传失败';
         }else{
-            $upload_rs = Img::uploadImg($file['tmp_name'], $file['name'],$_POST['id'], Img::TYPE_TRIP);
+            $upload_rs = Img::uploadImg($file['tmp_name'], $file['name'],$_POST['id'], Img::TYPE_FLEA);
             if ($upload_rs['status'] != 0) {
                 $upload_rs['msg'] .= "图片上传失败。";
                 $msg['status']=$upload_rs['status'];
