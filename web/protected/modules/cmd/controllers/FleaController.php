@@ -299,11 +299,13 @@ class FleaController extends CMDBaseController
             return;
         }
         $file = $_FILES['my_file'];
-        if (is_uploaded_file($file['my_file'])) {
+        if ($file["error"]>0) {
+            $msg['status']=3;
+            $msg['msg']='上传失败';
+        }else{
             $upload_rs = Img::uploadImg($file['tmp_name'], $file['name'],$_POST['id'], Img::TYPE_TRIP);
             if ($upload_rs['status'] != 0) {
-                $upload_rs['msg'] .= "广告图片上传失败。";
-
+                $upload_rs['msg'] .= "图片上传失败。";
                 $msg['status']=$upload_rs['status'];
                 $msg['msg']=$upload_rs['msg'];
             }else{
@@ -311,9 +313,6 @@ class FleaController extends CMDBaseController
                 $msg['msg']=$upload_rs['msg'];
                 $msg['data'][]=array('url'=>$upload_rs['url']);
             }
-        }else{
-            $msg['status']=3;
-            $msg['msg']='没有任何上传文件';
         }
         echo json_encode($msg);
         return;
