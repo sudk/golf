@@ -21,6 +21,18 @@ class FleaController extends CMDBaseController
         );
     }
 
+    public function beforeAction($action)
+    {
+        if(Yii::app()->user->isGuest){
+            $msg['status']=-1;
+            $msg['desc']="用户未登陆！";
+            echo json_encode($msg);
+            return false;
+        }else{
+            return true;
+        }
+    }
+
     public function actionList(){
         if(Yii::app()->command->cmdObj->_pg_==null||Yii::app()->command->cmdObj->_pg_==""){
             $msg['status']=1;
@@ -65,41 +77,47 @@ class FleaController extends CMDBaseController
     }
 
     public function actionCreate(){
-        if(!isset(Yii::app()->command->cmdObj->title)||Yii::app()->command->cmdObj->title==''){
+        if(!isset(Yii::app()->command->cmdObj->id)||Yii::app()->command->cmdObj->id==''){
             $msg['status']=1;
+            $msg['desc']="ID不能为空！";
+            echo json_encode($msg);
+            return;
+        }
+        if(!isset(Yii::app()->command->cmdObj->title)||Yii::app()->command->cmdObj->title==''){
+            $msg['status']=2;
             $msg['desc']="标题不能为空！";
             echo json_encode($msg);
             return;
         }
 
         if(!isset(Yii::app()->command->cmdObj->city)||Yii::app()->command->cmdObj->city==''){
-            $msg['status']=1;
+            $msg['status']=3;
             $msg['desc']="城市不能为空！";
             echo json_encode($msg);
             return;
         }
 
         if(!isset(Yii::app()->command->cmdObj->desc)||Yii::app()->command->cmdObj->desc==''){
-            $msg['status']=1;
+            $msg['status']=4;
             $msg['desc']="商户描述不能为空！";
             echo json_encode($msg);
             return;
         }
 
         if(!isset(Yii::app()->command->cmdObj->price)||Yii::app()->command->cmdObj->price==''){
-            $msg['status']=1;
+            $msg['status']=5;
             $msg['desc']="价格不能为空！";
             echo json_encode($msg);
             return;
         }
         if(!isset(Yii::app()->command->cmdObj->contact)||Yii::app()->command->cmdObj->contact==''){
-            $msg['status']=1;
+            $msg['status']=6;
             $msg['desc']="联系人不能为空！";
             echo json_encode($msg);
             return;
         }
         if(!isset(Yii::app()->command->cmdObj->phone)||Yii::app()->command->cmdObj->phone==''){
-            $msg['status']=1;
+            $msg['status']=7;
             $msg['desc']="电话不能为空！";
             echo json_encode($msg);
             return;
@@ -107,8 +125,9 @@ class FleaController extends CMDBaseController
 
         $user_id=Yii::app()->user->id;
         $conn=Yii::app()->db;
-        $transaction = $conn->beginTransaction();
-        $id=date("YmdHis").rand(100000,999999);
+//        $transaction = $conn->beginTransaction();
+//        $id=date("YmdHis").rand(100000,999999);
+        $id=Yii::app()->command->cmdObj->id;
         try{
             $record_time=date("Y-m-d H:i:s");
             $sql="insert into g_flea (id,title,`city`,`desc`,price,record_time,user_id) values (:id,:title,:city,:desc,:price,:record_time,:user_id)";
@@ -207,13 +226,15 @@ class FleaController extends CMDBaseController
             $command->bindParam(":id", Yii::app()->command->cmdObj->id, PDO::PARAM_STR);
             $command->execute();
 
-            $sql="delete from g_img where relation_id=:relation_id";
+            $type=Img::TYPE_FLEA;
+            $sql="delete from g_img where relation_id=:relation_id and type=:type";
             $command = $conn->createCommand($sql);
             $command->bindParam(":relation_id",Yii::app()->command->cmdObj->id, PDO::PARAM_STR);
+            $command->bindParam(":type",$type, PDO::PARAM_STR);
             $command->execute();
 
             if(!isset(Yii::app()->command->cmdObj->imgs)&&count(Yii::app()->command->cmdObj->imgs)){
-                $type=Img::TYPE_FLEA;
+
                 foreach(Yii::app()->command->cmdObj->imgs as $img){
                     $img=str_replace(Img::IMG_PATH,'',$img);
                     $sql="insert into g_img (relation_id,`type`,`img_url`,record_time) values (:relation_id,:type,:img_url,:record_time)";
@@ -252,9 +273,11 @@ class FleaController extends CMDBaseController
             $command->bindParam(":id",Yii::app()->command->cmdObj->id, PDO::PARAM_STR);
             $command->execute();
 
-            $sql="delete from g_img where relation_id=:relation_id";
+            $type=Img::TYPE_FLEA;
+            $sql="delete from g_img where relation_id=:relation_id and type=:type";
             $command = $conn->createCommand($sql);
             $command->bindParam(":relation_id",Yii::app()->command->cmdObj->id, PDO::PARAM_STR);
+            $command->bindParam(":type",$type, PDO::PARAM_STR);
             $command->execute();
 
             $transaction->commit();
@@ -265,6 +288,42 @@ class FleaController extends CMDBaseController
             $msg['status']=7;
             $msg['desc']="保存失败";
         }
+        echo json_encode($msg);
+        return;
+    }
+    public function actionUpload(){
+        if(!$_POST['id']){
+            $msg['status']=1;
+            $msg['desc']="ID不能为空！";
+            echo json_encode($msg);
+            return;
+        }
+        $file = $_FILES['my_file'];
+        if (is_uploaded_file($file['my_file'])) {
+            $upload_rs = Img::uploadImg($file['tmp_name'], $file['name'],$_POST['id'], Img::TYPE_TRIP);
+            if ($upload_rs['status'] != 0) {
+                $upload_rs['msg'] .= "广告图片上传失败。";
+
+                $msg['status']=$upload_rs['status'];
+                $msg['msg']=$upload_rs['msg'];
+            }else{
+                $msg['status']=$upload_rs['status'];
+                $msg['msg']=$upload_rs['msg'];
+                $msg['data'][]=array('url'=>$upload_rs['url']);
+            }
+        }else{
+            $msg['status']=3;
+            $msg['msg']='没有任何上传文件';
+        }
+        echo json_encode($msg);
+        return;
+    }
+
+    public function actionGetid(){
+        $id=Utils::GenerateSerialNumber();
+        $msg['status']=0;
+        $msg['msg']='成功';
+        $msg['data'][]=array('id'=>$id);
         echo json_encode($msg);
         return;
     }

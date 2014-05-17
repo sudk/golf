@@ -125,6 +125,7 @@ class Img extends CActiveRecord {
         $new_file_name = $new_file_path.".".$suffix;
         
         $rs['status'] = 0;
+        $rs['msg'] = '成功';
         $rs['url'] = date('Ymd')."/".$file.".".$suffix;
         if(!move_uploaded_file($tmp_file, $new_file_name))
         {
