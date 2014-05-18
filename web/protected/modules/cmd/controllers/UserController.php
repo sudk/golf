@@ -139,7 +139,7 @@ class UserController extends CMDBaseController
                 echo json_encode($msg);
                 return;
             }
-            $model=User::model()->find("phone=:phone",array(":phone"=>Yii::app()->user->id));
+            $model=User::model()->find("user_id=:user_id",array(":user_id"=>Yii::app()->user->id));
             if($model){
                 $model->card_no=Yii::app()->command->cmdObj->card_no;
                 $rs=$model->save();
