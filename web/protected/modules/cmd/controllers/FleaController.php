@@ -333,36 +333,36 @@ class FleaController extends CMDBaseController
             if ($file["error"]>0) {
                 $msg['status']=3;
                 $msg['msg']='上传失败，请重试上传一张更小一点的图片';
-            }else{
-
-                $f_info = new finfo(FILEINFO_MIME_TYPE);
-                if (false === $ext = array_search(
-                        $f_info->file($file['tmp_name']),
-                        array(
-                            'jpg' => 'image/jpeg',
-                            'png' => 'image/png',
-                            'gif' => 'image/gif',
-                        ),
-                        true
-                    ))
-                {
-                    $msg['status']=4;
-                    $msg['desc']="格式错误！";
-                    throw new RuntimeException($msg['desc']);
-                }
-
-                $upload_rs = Img::uploadImg($file['tmp_name'], $file['name'],$_POST['id'], Img::TYPE_FLEA);
-                if ($upload_rs['status'] != 0) {
-                    $upload_rs['msg'] .= "图片上传失败。";
-                    $msg['status']=$upload_rs['status'];
-                    $msg['msg']=$upload_rs['msg'];
-                    throw new RuntimeException($msg['desc']);
-                }else{
-                    $msg['status']=$upload_rs['status'];
-                    $msg['msg']=$upload_rs['msg'];
-                    $msg['data'][]=array('url'=>$upload_rs['url']);
-                }
+                throw new RuntimeException($msg['desc']);
             }
+
+            $f_info = new finfo(FILEINFO_MIME_TYPE);
+            if (false === $ext = array_search(
+                    $f_info->file($file['tmp_name']),
+                    array(
+                        'jpg' => 'image/jpeg',
+                        'png' => 'image/png',
+                        'gif' => 'image/gif',
+                    ),
+                    true
+                ))
+            {
+                $msg['status']=4;
+                $msg['desc']="格式错误！";
+                throw new RuntimeException($msg['desc']);
+            }
+
+            $upload_rs = Img::uploadImg($file['tmp_name'], $file['name'],$_POST['id'], Img::TYPE_FLEA);
+            if ($upload_rs['status'] != 0) {
+                $upload_rs['msg'] .= "图片上传失败。";
+                $msg['status']=$upload_rs['status'];
+                $msg['msg']=$upload_rs['msg'];
+                throw new RuntimeException($msg['desc']);
+            }
+
+            $msg['status']=$upload_rs['status'];
+            $msg['msg']=$upload_rs['msg'];
+            $msg['data'][]=array('url'=>$upload_rs['url']);
 
         }catch (Exception $e){
             Yii::log($e->getMessage(),'error','application.firebuglog');
