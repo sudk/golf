@@ -332,11 +332,8 @@ class FleaController extends CMDBaseController
         $file = $_FILES['my_file'];
         if ($file["error"]>0) {
             $msg['status']=3;
-            $msg['msg']='上传失败:'.$file["error"];
+            $msg['msg']='上传失败，请重试上传一张更小一点的图片';
         }else{
-            Yii::log("-----------------",'info','application.firebuglog');
-            Yii::log(json_encode($file),'info','application.firebuglog');
-            Yii::log("-----------------",'info','application.firebuglog');
             $upload_rs = Img::uploadImg($file['tmp_name'], $file['name'],$_POST['id'], Img::TYPE_FLEA);
             if ($upload_rs['status'] != 0) {
                 $upload_rs['msg'] .= "图片上传失败。";
