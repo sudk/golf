@@ -13,7 +13,7 @@ class CourtFacilities extends CActiveRecord {
     const TYPE_SHOPING=4;
     const TYPE_MEETING=5;
     const TYPE_ORDER=6;
-    //1、主食；2、住宿；、3、娱乐；4、购物；5、会议；6、其它
+    //1、美食；2、住宿；3、娱乐；4、购物；5、会议；6、其它
 
     public static function model($className=__CLASS__){
         return parent::model($className);
