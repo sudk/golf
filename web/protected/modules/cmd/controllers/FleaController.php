@@ -327,13 +327,13 @@ class FleaController extends CMDBaseController
             if(!$_POST['id']){
                 $msg['status']=1;
                 $msg['desc']="ID不能为空！";
-                throw new RuntimeException($msg['desc']);
+                throw new Exception($msg['desc']);
             }
             $file = $_FILES['my_file'];
             if ($file["error"]>0) {
                 $msg['status']=3;
                 $msg['msg']='上传失败，请重试上传一张更小一点的图片';
-                throw new RuntimeException($msg['desc']);
+                throw new Exception($msg['desc']);
             }
 
             $f_type=$file['type'];
@@ -346,7 +346,7 @@ class FleaController extends CMDBaseController
             {
                 $msg['status']=4;
                 $msg['desc']="格式错误！";
-                throw new RuntimeException($msg['desc']);
+                throw new Exception($msg['desc']);
             }
 
             $upload_rs = Img::uploadImg($file['tmp_name'], $file['name'],$_POST['id'], Img::TYPE_FLEA);
@@ -354,7 +354,7 @@ class FleaController extends CMDBaseController
                 $upload_rs['msg'] .= "图片上传失败。";
                 $msg['status']=$upload_rs['status'];
                 $msg['msg']=$upload_rs['msg'];
-                throw new RuntimeException($msg['desc']);
+                throw new Exception($msg['desc']);
             }
 
             $msg['status']=$upload_rs['status'];
