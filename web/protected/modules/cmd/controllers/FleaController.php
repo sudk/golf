@@ -336,19 +336,19 @@ class FleaController extends CMDBaseController
                 throw new Exception($msg['desc']);
             }
 
-            $f_type=$file['type'];
-            $type=array(
-                'image/jpeg' => 'jpg',
-                'image/png' => 'png',
-                'image/gif' => 'gif',
-            );
-            Yii::log($f_type,'error','application.firebuglog');
-            if (!isset($type[$f_type]))
-            {
-                $msg['status']=4;
-                $msg['desc']="格式错误！";
-                throw new Exception($msg['desc']);
-            }
+//            $f_type=$file['type'];
+//            $type=array(
+//                'image/jpeg' => 'jpg',
+//                'image/png' => 'png',
+//                'image/gif' => 'gif',
+//            );
+//            Yii::log($f_type,'error','application.firebuglog');
+//            if (!isset($type[$f_type]))
+//            {
+//                $msg['status']=4;
+//                $msg['desc']="格式错误！";
+//                throw new Exception($msg['desc']);
+//            }
 
             $upload_rs = Img::uploadImg($file['tmp_name'], $file['name'],$_POST['id'], Img::TYPE_FLEA);
             if ($upload_rs['status'] != 0) {
