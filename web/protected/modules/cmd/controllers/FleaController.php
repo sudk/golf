@@ -336,16 +336,13 @@ class FleaController extends CMDBaseController
                 throw new RuntimeException($msg['desc']);
             }
 
-            $f_info = new finfo(FILEINFO_MIME_TYPE);
-            if (false === $ext = array_search(
-                    $f_info->file($file['tmp_name']),
-                    array(
-                        'jpg' => 'image/jpeg',
-                        'png' => 'image/png',
-                        'gif' => 'image/gif',
-                    ),
-                    true
-                ))
+            $f_type=$file['type'];
+            $type=array(
+                'image/jpeg' => 'jpg',
+                'image/png' => 'png',
+                'image/gif' => 'gif',
+            );
+            if (!isset($type[$f_type]))
             {
                 $msg['status']=4;
                 $msg['desc']="格式错误！";
