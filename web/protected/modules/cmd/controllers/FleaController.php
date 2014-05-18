@@ -342,6 +342,7 @@ class FleaController extends CMDBaseController
                 'image/png' => 'png',
                 'image/gif' => 'gif',
             );
+            Yii::log($f_type,'error','application.firebuglog');
             if (!isset($type[$f_type]))
             {
                 $msg['status']=4;
