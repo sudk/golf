@@ -173,7 +173,7 @@ class FleaController extends CMDBaseController
                     $command = $conn->createCommand($sql);
                     $command->bindParam(":relation_id",$id, PDO::PARAM_STR);
                     $command->bindParam(":type",$type, PDO::PARAM_STR);
-                    $command->bindParam(":img_url",$img, PDO::PARAM_STR);
+                    $command->bindParam(":img_url",Img::GetBasePath($img), PDO::PARAM_STR);
                     $command->bindParam(":record_time",$record_time, PDO::PARAM_STR);
                     $command->execute();
                 }
@@ -271,7 +271,7 @@ class FleaController extends CMDBaseController
                     $command = $conn->createCommand($sql);
                     $command->bindParam(":relation_id",Yii::app()->command->cmdObj->id, PDO::PARAM_STR);
                     $command->bindParam(":type",$type, PDO::PARAM_STR);
-                    $command->bindParam(":img_url",$img, PDO::PARAM_STR);
+                    $command->bindParam(":img_url",Img::GetBasePath($img), PDO::PARAM_STR);
                     $command->bindParam(":record_time",$record_time, PDO::PARAM_STR);
                     $command->execute();
                 }

@@ -307,6 +307,10 @@ class Img extends CActiveRecord {
             return "";
         }
     }
+
+    public static function GetBasePath($url){
+        return str_replace(Img::IMG_PATH,'',$url);
+    }
 }
 
 
