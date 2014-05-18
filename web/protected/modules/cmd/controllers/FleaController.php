@@ -332,7 +332,7 @@ class FleaController extends CMDBaseController
         $file = $_FILES['my_file'];
         if ($file["error"]>0) {
             $msg['status']=3;
-            $msg['msg']='上传失败';
+            $msg['msg']='上传失败:'.$file["error"];
         }else{
             Yii::log("-----------------",'info','application.firebuglog');
             Yii::log(json_encode($file),'info','application.firebuglog');
