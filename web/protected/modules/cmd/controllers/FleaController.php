@@ -372,7 +372,7 @@ class FleaController extends CMDBaseController
     public function actionGetid(){
         $id=Utils::GenerateSerialNumber();
         $msg['status']=0;
-        $msg['msg']='成功';
+        $msg['desc']='成功';
         $msg['data'][]=array('id'=>$id);
         echo json_encode($msg);
         return;
