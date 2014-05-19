@@ -1,5 +1,5 @@
 <div class="title-box">
-    <h1><span style="float:left;">会员卡列表</span><a href="./?r=user/card/new" style="float:right;"><span class="add_ico"></span><span>会员卡添加</span></a><a href="./?r=user/card/new" style="float:right;"><span class="add_ico"></span><span>批量添加</span></a></h1>
+    <h1><span style="float:left;">会员卡列表</span><a href="./?r=user/card/new" style="float:right;"><span class="add_ico"></span><span>会员卡添加</span></a><a href="./?r=user/card/batch" style="float:right;"><span class="add_ico"></span><span>批量添加</span></a></h1>
     <ul class="sift">
         <?php $this->renderPartial('_toolBox'); ?>
     </ul>

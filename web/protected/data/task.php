@@ -12,6 +12,9 @@ return array(
             'user/card/edit' ,
             'user/card/checkid' ,
             'user/card/del' ,
+            'user/card/batch',
+            'user/card/downtemplate',
+            
             'user/card/detail' ,
             'user/ucard/grid' ,
             'user/ucard/list' ,
@@ -42,6 +45,7 @@ return array(
         'children' => array(
             'user/card/grid' ,
             'user/card/list' ,
+            
            
             'user/card/detail' ,
             'user/ucard/grid' ,

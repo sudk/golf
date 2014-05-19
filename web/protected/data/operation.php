@@ -141,6 +141,9 @@ return array(
     'user/card/checkid' => array('type' => 0),
     'user/card/del' => array('type' => 0),
     'user/card/detail' => array('type' => 0),
+    'user/card/downtemplate' => array('type' => 0),
+    'user/card/batch' => array('type' => 0),
+    
     'user/ucard/grid' => array('type' => 0),
     'user/ucard/list' => array('type' => 0),
     'user/ucard/new' => array('type' => 0),

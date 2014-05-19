@@ -201,6 +201,69 @@ class CardController extends AuthBaseController
         }
         print_r(json_encode($msg));
     }
+    
+    
+    
+    public function actionBatch(){
+        $model=new Card('create');
+        $tmp_file = $_FILES['upfile'];
+        if(isset($tmp_file)){
+            
+            $data = new JPhpExcelReader($tmp_file['tmp_name']);
+            $count = $data->rowcount(0);
+            $succ_cnt = 0;
+            $error_cnt = 0;
+            $err_msg = "";
+            for ($i = 3; $i <= $count; $i++) {
+                $card = trim($data->val($i, 1, 0));
+                $name = trim($data->val($i,2,0));
+               
+
+                
+                if($card==""){
+                    continue;
+                }
+                
+                $model = new Card();
+                $model->id = $card;
+                $model->card_name = $name;
+                $model->record_time = date('Y-m-d H:i:s');
+                $rs = $model->save();
+                if($rs)
+                {
+                    $succ_cnt++;
+                }else{
+                    $error_cnt++;
+                    $err_msg .= "卡号为".$card."添加失败。";
+                }
+                
+            }
+            $msg['msg'] = "会员卡添加成功数量：".$succ_cnt.";失败数量:".$error_cnt.";".$err_msg;
+            if($succ_cnt > 0)
+            {
+                $msg['status'] = 1;
+            }else{
+                $msg['status'] = -1;
+            }
+          
+        }
+        $this->render("batch",array('model' => $model, 'msg' => $msg));
+    }
+    
+    /**
+     * 下载模板
+     */
+    public function actionDownTemplate()
+    {
+        $_file = Yii::app()->params['template_dir']."user_card_template.xls";
+        $file = fopen($_file,"r");
+        Header("Content-type: application/octet-stream");
+        Header("Accept-Ranges: bytes");
+        Header("Accept-Length: ".filesize($_file));
+        Header("Content-Disposition: attachment; filename=" . basename($_file));
+        echo fread($file,filesize($_file));
+        fclose($file);
+    }
 
 
 
