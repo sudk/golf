@@ -459,7 +459,9 @@ class Order extends CActiveRecord {
     public static function ChangeStatus(&$conn,$status,$order_id,$orderAmount=0){
 
         $model=Order::OrderInfo($order_id);
-
+        if($model['status']==$status){
+            return false;
+        }
         if($model['status']==Order::STATUS_TOBE_PAID&&$status==Order::STATUS_TOBE_SUCCESS){
             $sql = "update g_order set had_pay=:had_pay where order_id=:order_id";
             $command = $conn->createCommand($sql);
@@ -472,6 +474,7 @@ class Order extends CActiveRecord {
         $command->bindParam(":status",$status, PDO::PARAM_STR);
         $command->bindParam(":order_id",$order_id, PDO::PARAM_STR);
         $command->execute();
+            return $model;
     }
 
     public static function ChangePayMethod(&$conn,$pay_method,$order_id){
