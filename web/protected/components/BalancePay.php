@@ -45,13 +45,13 @@ class BalancePay extends BasePay
 
 
     //消费撤销接口
-    public function Void($orderNumber,$orderAmount,$qn=""){
+    public function Void($orderNumber,$orderAmount,$qn){
 
 
     }
 
     //退货接口
-    public function Refund($orderNumber,$orderAmount,$qn=""){
+    public function Refund($orderNumber,$orderAmount,$qn){
 
     }
 

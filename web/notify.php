@@ -8,9 +8,8 @@ mb_internal_encoding("UTF-8");
 
 // change the following paths if necessary
 $yii=dirname(__FILE__).'/framework/yii.php';
-$config=dirname(__FILE__).'/protected/config/main.php';
+$config=dirname(__FILE__).'/protected/config/notify.php';
 
-$config['defaultController']='notify';
 // remove the following lines when in production mode
 defined('YII_DEBUG') or define('YII_DEBUG',true);
 // specify how many levels of call stack should be shown in each log message

@@ -19,13 +19,13 @@ class upmp_config
     static $charset    		 		= "UTF-8"; // 字符编码
     static $sign_method 			= "MD5"; // 签名方法，目前仅支持MD5
     
-    static $mer_id     				= ""; // 商户号
-    static $security_key    		= ""; // 商户密钥
+    static $mer_id     				= "880000000001537"; // 商户号
+    static $security_key    		= "QlLP4WGEBa7KhRGUTE8Qn9lz7B6oPmSh"; // 商户密钥
     static $mer_back_end_url     	= "http://www.yourdomain.com/your_path/yourBackEndUrl"; // 后台通知地址
     static $mer_front_end_url     	= "http://www.yourdomain.com/your_path/yourFrontEndUrl"; // 前台通知地址
 
-    static $upmp_trade_url   	 	= "";
-    static $upmp_query_url    	 	= "";  
+    static $upmp_trade_url   	 	= "http://222.66.233.198:8080/gateway/merchant/trade";
+    static $upmp_query_url    	 	= "http://222.66.233.198:8080/gateway/merchant/query";
     
     const VERIFY_HTTPS_CERT 		= false;
     
