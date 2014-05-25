@@ -197,6 +197,7 @@ class UserController extends CMDBaseController
             if($token&&$token==Yii::app()->command->cmdObj->smstoken){
                 $model->passwd=crypt(Yii::app()->command->cmdObj->passwd);
                 $model->save();
+                Yii::app()->fcache->delete(Yii::app()->command->cmdObj->phone);
                 $msg['status']=0;
                 $msg['desc']="成功";
             }else{

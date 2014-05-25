@@ -122,8 +122,8 @@ class Sms extends CActiveRecord {
             ";
         $data_time=date("Y-m-d H:i:s");
         $command = $conn->createCommand($sql);
-        $command->bindParam(":phone",$content,PDO::PARAM_STR);
-        $command->bindParam(":content",$phone,PDO::PARAM_STR);
+        $command->bindParam(":phone",$phone,PDO::PARAM_STR);
+        $command->bindParam(":content",$content,PDO::PARAM_STR);
         $command->bindParam(":status",$status,PDO::PARAM_STR);
         $command->bindParam(":record_time",$data_time, PDO::PARAM_STR);
         $command->execute();
