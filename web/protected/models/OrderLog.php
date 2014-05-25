@@ -137,9 +137,9 @@ class OrderLog extends CActiveRecord {
             ->queryRow();
 
         $sql = "insert into ".$log_table."
-                   (order_id,user_id,`type`,relation_id,relation_name,tee_time,`count`,unitprice,amount,had_pay,pay_type,status,record_time,serial_number,agent_id,contact,phone)
+                   (order_id,user_id,`type`,relation_id,relation_name,tee_time,`count`,unitprice,amount,had_pay,pay_type,status,record_time,serial_number,agent_id,contact,phone,pay_method)
                      values
-                    (:order_id,:user_id,:type,:relation_id,:relation_name,:tee_time,:count,:unitprice,:amount,:had_pay,:pay_type,:status,:record_time,:serial_number,:agent_id,:contact,:phone)";
+                    (:order_id,:user_id,:type,:relation_id,:relation_name,:tee_time,:count,:unitprice,:amount,:had_pay,:pay_type,:status,:record_time,:serial_number,:agent_id,:contact,:phone,:pay_method)";
         $command = Yii::app()->db->createCommand($sql);
         $command->bindParam(":order_id",$row['order_id'], PDO::PARAM_STR);
         $command->bindParam(":user_id",$row['user_id'], PDO::PARAM_STR);
@@ -158,6 +158,7 @@ class OrderLog extends CActiveRecord {
         $command->bindParam(":agent_id",$row['agent_id'] , PDO::PARAM_STR);
         $command->bindParam(":contact",$row['contact'] , PDO::PARAM_STR);
         $command->bindParam(":phone",$row['phone'], PDO::PARAM_STR);
+        $command->bindParam(":pay_method",$row['pay_method'], PDO::PARAM_STR);
         $command->execute();
 
     }

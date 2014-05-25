@@ -444,7 +444,7 @@ class Order extends CActiveRecord {
             case Order::PAY_METHOD_BALANCE : $pay=new BalancePay();break;
             case Order::PAY_METHOD_UPMP : $pay=new UpmPay();break;
         }
-        return $pay->Purchase($amount,"支付:".$amount,$order_id);
+        return $pay->Purchase($amount,"支付:".$amount/100,$order_id);
     }
 
     public static function OrderInfo($orderNumber){
