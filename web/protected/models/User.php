@@ -187,7 +187,7 @@ class User extends CActiveRecord {
     	return $ar;
     }
 
-    public static function Deduct($conn,$amount){
+    public static function Deduct(&$conn,$amount){
         $id=Yii::app()->user->id;
         $msg=array('status'=>0,'desc'=>'成功');
         $row=Yii::app()->db->createCommand()

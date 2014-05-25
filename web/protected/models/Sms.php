@@ -27,7 +27,33 @@ class Sms extends CActiveRecord {
     }
 
     private function http_request ($url){
+        if (function_exists("curl_init")) {
+            $curl = curl_init();
+//            curl_setopt($curl, CURLOPT_POST, 1);
+//            curl_setopt($curl, CURLOPT_POSTFIELDS, $content);
+            curl_setopt($curl, CURLOPT_URL, $url);
+            curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($curl, CURLOPT_HEADER, false);
+            curl_setopt($curl, CURLOPT_TIMEOUT, 60); //seconds
 
+//             https verify
+//            curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, upmp_config::VERIFY_HTTPS_CERT);
+//            curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, upmp_config::VERIFY_HTTPS_CERT);
+
+            $ret_data = curl_exec($curl);
+
+            if (curl_errno($curl)) {
+                //printf("curl call error(%s): %s\n", curl_errno($curl), curl_error($curl));
+                curl_close($curl);
+                return false;
+            }
+            else {
+                curl_close($curl);
+                return $ret_data;
+            }
+        } else {
+            throw new Exception("[PHP] curl module is required");
+        }
     }
 
     private function getStatus($code){
@@ -44,6 +70,29 @@ class Sms extends CActiveRecord {
             "120"=>"系统升级"
         );
         return $ar[$code];
+    }
+
+    public function send($content,$phone,$tpl){
+        if(!$content){
+            return array('status'=>1,'desc'=>"内容不能为空");
+        }
+        if(!$phone){
+            return array('status'=>2,'desc'=>"电话号码不能为空");
+        }
+        if(!$tpl){
+            return array('status'=>3,'desc'=>"请指定模板");
+        }
+        $tpl=$this->tpl($tpl);
+        if($tpl){
+            $content=str_replace("param",$content,$tpl);
+            $url=self::URL;
+            $url=str_replace("num",$phone,$url);
+            $url.=$content;
+            $rs=$this->http_request($url);
+        }else{
+            return array('status'=>4,'desc'=>"模板不存在");
+        }
+
     }
 
     private function tpl($t){
