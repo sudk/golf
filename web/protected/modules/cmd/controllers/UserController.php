@@ -170,9 +170,10 @@ class UserController extends CMDBaseController
         }
         $model=User::model()->find("phone=:phone",array(":phone"=>Yii::app()->command->cmdObj->phone));
         if($model){
-            $token=rand(1000,9999);
+            //$token=rand(1000,9999);
+            $token=1111;
             $sms=new Sms();
-            $sms->send($token,Yii::app()->command->cmdObj->phone,1);
+            //$sms->send($token,Yii::app()->command->cmdObj->phone,1);
             Yii::app()->fcache->set(Yii::app()->command->cmdObj->phone,$token,60*5);
             $msg['status']=0;
             $msg['desc']="成功";

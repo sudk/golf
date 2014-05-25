@@ -127,7 +127,6 @@ class Sms extends CActiveRecord {
         $command->bindParam(":status",$status,PDO::PARAM_STR);
         $command->bindParam(":record_time",$data_time, PDO::PARAM_STR);
         $command->execute();
-        $conn->commit();
     }
 
    
