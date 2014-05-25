@@ -195,23 +195,23 @@ class OrderController extends CMDBaseController
 
         }
 
-        if(Order::PAY_METHOD_BALANCE==intval(Yii::app()->command->cmdObj->type)){
-            if(!isset(Yii::app()->command->cmdObj->passwd)||Yii::app()->command->cmdObj->passwd==''){
-                $msg['status']=4;
-                $msg['desc']="请输入密码！";
-                echo json_encode($msg);
-                return;
-            }else{
-                $identity = new MUserIdentity(trim(Yii::app()->command->cmdObj->phone), trim(Yii::app()->command->cmdObj->passwd));
-                $identity->authenticate();
-                if($identity->errorCode!=UserIdentity::ERROR_NONE){
-                    $msg['desc']="密码错误！";
-                    $msg['status']='5';
-                    echo json_encode($msg);
-                    return;
-                }
-            }
-        }
+//        if(Order::PAY_METHOD_BALANCE==intval(Yii::app()->command->cmdObj->type)){
+//            if(!isset(Yii::app()->command->cmdObj->passwd)||Yii::app()->command->cmdObj->passwd==''){
+//                $msg['status']=4;
+//                $msg['desc']="请输入登陆密码！";
+//                echo json_encode($msg);
+//                return;
+//            }else{
+//                $identity = new MUserIdentity(trim(Yii::app()->command->cmdObj->phone), trim(Yii::app()->command->cmdObj->passwd));
+//                $identity->authenticate();
+//                if($identity->errorCode!=UserIdentity::ERROR_NONE){
+//                    $msg['desc']="密码错误！";
+//                    $msg['status']='5';
+//                    echo json_encode($msg);
+//                    return;
+//                }
+//            }
+//        }
 
 
 
