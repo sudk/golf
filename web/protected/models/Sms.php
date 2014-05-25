@@ -21,8 +21,8 @@ class Sms extends CActiveRecord {
 
     public function rules(){
         return array(
-            array('order,type,type,start_time,end_time,creatorid,link_url,record_time', 'safe', 'on' => 'create'),
-            array('order,type,type,start_time,end_time,creatorid,link_url,record_time', 'safe', 'on' => 'modify'),
+            array('id,phone,content,status,record_time', 'safe', 'on' => 'create'),
+            array('id,phone,content,status,record_time', 'safe', 'on' => 'modify'),
          );
     }
 
@@ -89,6 +89,15 @@ class Sms extends CActiveRecord {
             $url=str_replace("num",$phone,$url);
             $url.=$content;
             $rs=$this->http_request($url);
+            if($rs){
+                $this->add($content,$phone,$rs);
+                if($rs=="100"){
+                    $rs=0;
+                }
+                return array('status'=>$rs,'desc'=>$this->getStatus($rs));
+            }else{
+                return array('status'=>5,'desc'=>'请求失败');
+            }
         }else{
             return array('status'=>4,'desc'=>"模板不存在");
         }
@@ -101,6 +110,24 @@ class Sms extends CActiveRecord {
             "2"=>"您的订单编码：param。如需帮助请联系客服。",
         );
         return $tpls[$t];
+    }
+
+    public function add($content,$phone,$status){
+        $conn=Yii::app()->db;
+        $sql = "
+                    insert into g_sms
+                    (phone,content,status,record_time)
+                     values
+                    (:phone,:content,:status,:record_time)
+            ";
+        $data_time=date("Y-m-d H:i:s");
+        $command = $conn->createCommand($sql);
+        $command->bindParam(":phone",$content,PDO::PARAM_STR);
+        $command->bindParam(":content",$phone,PDO::PARAM_STR);
+        $command->bindParam(":status",$status,PDO::PARAM_STR);
+        $command->bindParam(":record_time",$data_time, PDO::PARAM_STR);
+        $command->execute();
+        $conn->commit();
     }
 
    
