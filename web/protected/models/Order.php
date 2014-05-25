@@ -42,6 +42,8 @@ class Order extends CActiveRecord {
     CONST STATUS_REFUSE_REFUND = '7';
     
     public $court_phone;
+    public $next_status;
+    public $refund;
 
     public static function model($className=__CLASS__){
         return parent::model($className);
@@ -121,8 +123,7 @@ class Order extends CActiveRecord {
                     'desc'=>"未到场"
                 );
                 array_push($next, $tmp_next2);
-                $close_next['now_status'] = self::STATUS_TOBE_SUCCESS;
-                array_push($next,$close_next);
+                
                 break;
             case self::STATUS_WAIT_REFUND:
                 $tmp_next = array(

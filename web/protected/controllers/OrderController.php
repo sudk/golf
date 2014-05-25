@@ -134,6 +134,10 @@ class OrderController extends AuthBaseController
             if($rs){
                 $msg['msg']="修改成功！";
                 $msg['status']=1;
+                //修改完订单内容，需要记录日志
+                $serial_number = Utils::GenerateSerialNumber();
+                
+                OrderLog::Add($model->order_id, $serial_number);
                 //$model=new Staff('modify');
             }else{
                 $msg['msg']="修改失败！";
@@ -210,14 +214,57 @@ class OrderController extends AuthBaseController
     
     public function actionNextStatus()
     {
-        $id=trim($_POST['id']);
-        $now_status = trim($_POST['ns']);
-        $next_status = trim($_POST['s']);
-        $pay_type = trim($_POST['type']);
+        $id=trim($_REQUEST['id']);
+        $now_status = trim($_REQUEST['ns']);
+        $next_status = trim($_REQUEST['s']);
+        $pay_type = trim($_REQUEST['type']);
         $model = Order::model()->findByPk($id);
+        $model->next_status = $next_status;
         if(isset($_POST['Order']))
         {
+            $model->attributes = $_POST['Order'];
             
+            $now_status = $_POST['Order']['status'];
+            $next_status = $_POST['Order']['next_status'];
+            
+            if($now_status == Order::STATUS_WAIT_REFUND && $next_status == Order::STATUS_REFUND)
+            {
+                //走退款流程
+                $refund = array(
+                    'refund'=>$_POST['Order']['refund'],
+                    'desc'=>$_POST['Order']['desc'],
+                    'order_id'=>$_POST['Order']['order_id'],
+                );
+                
+                $rs = true;
+                if($rs){
+                    $msg['msg']="操作成功！";
+                    $msg['status']=1;
+                   
+                }else{
+                    $msg['msg']="操作失败！";
+                    $msg['status']=0;
+                }
+            }else
+            {
+                //其他情况下，直接修改order 订单内容，然后 添加日志。
+                $model->status = $next_status;
+                $model->desc = $_POST['Order']['desc'];
+                $rs = $model->save();
+                
+                if($rs){
+                    $msg['msg']="操作成功！";
+                    $msg['status']=1;
+                    //修改完订单内容，需要记录日志
+                    $serial_number = Utils::GenerateSerialNumber();
+
+                    OrderLog::Add($model->order_id, $serial_number);
+                    //$model=new Staff('modify');
+                }else{
+                    $msg['msg']="操作失败！";
+                    $msg['status']=0;
+                }
+            }
         }
         $this->layout = '//layouts/base';
         $this->render("next_status",array('model' => $model, 'msg' => $msg));
