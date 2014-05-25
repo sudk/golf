@@ -39,8 +39,8 @@ class TransRecord extends CActiveRecord {
         $rs = array(
             self::TYPE_COURT_PAY=>'订场',
             self::TYPE_COURT_CANCEL=>'订场撤销',
-            self::TYPE_TRIP_PAY=>'行程',
-            self::TYPE_TRIP_CANCEL=>'行程撤销',
+            self::TYPE_TRIP_PAY=>'套餐',
+            self::TYPE_TRIP_CANCEL=>'套餐撤销',
             self::TYPE_COMPETITION_PAY=>'赛事',
             self::TYPE_COMPETITION_CANCEL=>'赛事撤销',
             self::TYPE_RECHARGE_PAY=>'充值',

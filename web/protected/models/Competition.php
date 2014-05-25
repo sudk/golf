@@ -95,14 +95,16 @@ class Competition extends CActiveRecord {
 
         //$rows = CourtFacilities::model()->findAll($criteria);
         $rows=Yii::app()->db->createCommand()
-            ->select("g_competition.*,g_court.name court_name,g_agent.agent_name")
+            ->select("g_competition.*,g_court.name court_name,g_agent.agent_name,concat('".Img::IMG_PATH."',g_img.img_url) img")
             ->from("g_competition")
             ->leftJoin("g_court","g_court.court_id=g_competition.court_id")
             ->leftJoin("g_agent","g_agent.id=g_competition.agent_id")
+            ->leftJoin("g_img","g_competition.id=g_img.relation_id and g_img.type=".Img::TYPE_COMPETITION)
             ->where($condition,$params)
             ->order($order)
             ->limit($pageSize)
             ->offset($page * $pageSize)
+            ->group("g_competition.id")
             ->queryAll();
 
         $rs['status'] = 0;

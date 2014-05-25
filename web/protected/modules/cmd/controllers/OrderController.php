@@ -186,7 +186,7 @@ class OrderController extends CMDBaseController
             $msg['status']=2;
             $msg['desc']="订单ID不能为空！";
             echo json_encode($msg);
-
+            return;
         }
         if(!isset(Yii::app()->command->cmdObj->amount)||Yii::app()->command->cmdObj->amount==''){
             $msg['status']=3;
@@ -194,6 +194,27 @@ class OrderController extends CMDBaseController
             echo json_encode($msg);
 
         }
+
+        if(Order::PAY_METHOD_BALANCE==intval(Yii::app()->command->cmdObj->type)){
+            if(!isset(Yii::app()->command->cmdObj->passwd)||Yii::app()->command->cmdObj->passwd==''){
+                $msg['status']=4;
+                $msg['desc']="请输入密码！";
+                echo json_encode($msg);
+                return;
+            }else{
+                $identity = new MUserIdentity(trim(Yii::app()->command->cmdObj->phone), trim(Yii::app()->command->cmdObj->passwd));
+                $identity->authenticate();
+                if($identity->errorCode!=UserIdentity::ERROR_NONE){
+                    $msg['desc']="密码错误！";
+                    $msg['status']='5';
+                    echo json_encode($msg);
+                    return;
+                }
+            }
+        }
+
+
+
         $rs=Order::Pay(Yii::app()->command->cmdObj->order_id,Yii::app()->command->cmdObj->type,Yii::app()->command->cmdObj->amount);
         echo json_encode($rs);
         return;
