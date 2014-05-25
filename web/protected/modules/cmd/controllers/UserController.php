@@ -196,6 +196,7 @@ class UserController extends CMDBaseController
             $token=Yii::app()->fcache->get(Yii::app()->command->cmdObj->phone);
             if($token&&$token==Yii::app()->command->cmdObj->smstoken){
                 $model->passwd=crypt(Yii::app()->command->cmdObj->passwd);
+                $model->save();
                 $msg['status']=0;
                 $msg['desc']="成功";
             }else{
