@@ -101,7 +101,7 @@ class OrderController extends AuthBaseController
                 '人数'=>$model['count'],
                 '单价'=>(intval($model['unitprice'])/100)."元",
                 '实付'=>(intval($model['had_pay'])/100)."元",
-                '支付方式'=>$model['pay_method']?Order::getPayMethod($model['pay_method']):"",
+                '支付渠道'=>$model['pay_method']?Order::getPayMethod($model['pay_method']):"",
                 '备注'=>$model['desc'],
                     
             );
