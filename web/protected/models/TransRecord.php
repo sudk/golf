@@ -163,7 +163,6 @@ class TransRecord extends CActiveRecord {
     public static function getTable($settdate=""){
         if($settdate==""){
             $date_str=date("Ym");
-            //$date_str=substr($date_str,0,6);
             $table="g_transrecord_".$date_str;
         }else{
             $settdate=str_replace("-","",$settdate);
@@ -176,6 +175,16 @@ class TransRecord extends CActiveRecord {
             echo "";
         }
         return $table;
+    }
+
+    public static function GetBySerialNumber($serial_number,$trans_type){
+        $table=self::getTable(substr($serial_number,0,6));
+        $row = Yii::app()->db->createCommand()
+            ->select("*")
+            ->from($table)
+            ->where("serial_number='{$serial_number}' and status='".TransRecord::STATUS_SUCCESS."' and trans_type='".$trans_type."'")
+            ->queryRow();
+        return $row;
     }
 
     public static function Add(&$conn,$order_id,$type,$amount,$serial_number,$status,$re_serial_number="",$out_serial_number="",$user_id="",$operator_id=""){

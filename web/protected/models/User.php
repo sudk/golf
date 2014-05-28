@@ -192,9 +192,13 @@ class User extends CActiveRecord {
         self::ChangeBalance($conn,$amount,$id);
     }
 
-    public static function Recharge(&$conn,$amount,$id){
+    private static function ChangeBalance(&$conn,$amount,$id){
 
         $msg=array('status'=>0,'desc'=>'成功');
+        if(!trim($id)){
+            $msg['status']=3;
+            $msg['desc']='用户ID不能为空！';
+        }
         $row=Yii::app()->db->createCommand()
             ->select("*")
             ->from("g_user")
@@ -222,7 +226,7 @@ class User extends CActiveRecord {
         return $msg;
     }
 
-    private static function ChangeBalance(&$conn,$amount,$id){
+    public static function Recharge(&$conn,$amount,$id){
         self::ChangeBalance($conn,$amount,$id);
     }
 }

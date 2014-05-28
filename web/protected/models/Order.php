@@ -439,13 +439,53 @@ class Order extends CActiveRecord {
         }
     }
 
-    public static function Pay($order_id,$type,$amount){
+    public static function Pay($orderNumber,$type,$amount){
         $pay=Null;
         switch(strval($type)){
             case Order::PAY_METHOD_BALANCE : $pay=new BalancePay();break;
             case Order::PAY_METHOD_UPMP : $pay=new UpmPay();break;
         }
-        return $pay->Purchase($amount,"支付:".$amount/100,$order_id);
+        return $pay->Purchase($amount,"支付:".$amount/100,$orderNumber);
+    }
+
+    public static function Refund($orderNumber,$amount,$sn){
+        $order=Order::OrderInfo($orderNumber);
+        if(!$order){
+            return array('status'=>5,'desc'=>'订单不存在！');
+        }
+        if($order['status']<Order::STATUS_TOBE_SUCCESS){
+            return array('status'=>6,'desc'=>'订单没有过支付不能退款！');
+        }
+        $type=$order['type'];
+        $trans_type=TransRecord::GetPayTypeByOrderType($type);
+
+        $transRecord=TransRecord::GetBySerialNumber($sn,$trans_type);
+
+        if(!$transRecord){
+            return array('status'=>4,'desc'=>'没有任何的支付成功交易记录所以不能退款！');
+        }
+        $record_time=strtotime($transRecord['record_time']);
+        $now=time();
+        if(($now-$record_time)<86400){
+            return array('status'=>7,'desc'=>'支付成功后需要过24小时才能办理退款操作！');
+        }
+        if($amount<0||$amount>abs($transRecord['amount'])){
+            return array('status'=>8,'desc'=>'退款金额有误！');
+        }
+
+
+        $pay=Null;
+        switch(strval($type)){
+            case Order::PAY_METHOD_BALANCE :
+                $pay=new BalancePay();//余额支付
+                break;
+            case Order::PAY_METHOD_UPMP :
+                $pay=new UpmPay();//银联支付
+                $sn=$transRecord['out_serial_number'];
+                break;
+        }
+        return $pay->Refund($amount,$orderNumber,$sn);
+
     }
 
     public static function OrderInfo($orderNumber){

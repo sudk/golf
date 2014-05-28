@@ -110,7 +110,7 @@ class UpmPay extends BasePay
     }
 
     //退货接口
-    public function Refund($orderNumber,$orderAmount,$qn){
+    public function Refund($orderNumber,$orderAmount,$sn){
         //需要填入的部分
         $req['version']     	= upmp_config::$version; // 版本号
         $req['charset']     	= upmp_config::$charset; // 字符编码
@@ -121,7 +121,7 @@ class UpmPay extends BasePay
         $req['orderNumber'] 	= date("YmdHiss"); // 订单号（退货交易新订单号，非原交易订单号）
         $req['orderAmount'] 	= $orderAmount; // 订单金额
         $req['orderCurrency'] 	= "156"; // 交易币种(可选)
-        $req['qn'] 				= $qn; // 查询流水号（原订单支付成功后获取的流水号）
+        $req['qn'] 				= $sn; // 查询流水号（原订单支付成功后获取的流水号）
         $req['reqReserved'] 	= $orderNumber; // 请求方保留域(可选，用于透传商户信息)
 //
 //// 保留域填充方法
