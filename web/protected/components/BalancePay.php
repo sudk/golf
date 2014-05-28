@@ -102,7 +102,7 @@ class BalancePay extends BasePay
             $transaction->commit();
 
             //OrderLog::Add($orderNumber,$serial_number);
-            return array('status'=>0,'desc'=>'成功');
+            return array('status'=>0,'desc'=>'余额退款成功');
 
         }catch (Exception $e){
 

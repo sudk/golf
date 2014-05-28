@@ -133,7 +133,7 @@ class UpmPay extends BasePay
 
 // 商户的业务逻辑
         if($validResp){
-            return array('status'=>0,'desc'=>'成功');
+            return array('status'=>0,'desc'=>'已经成功向银行支付发起退款申请');
         }else{
             $respCode=$resp[upmp_config::RESPONSE_CODE];
             return array('status'=>$respCode,'msg'=>$resp[upmp_config::RESPONSE_MSG]);
