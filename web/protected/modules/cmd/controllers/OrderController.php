@@ -232,7 +232,7 @@ class OrderController extends CMDBaseController
             //OrderLog::Add($orderNumber,$serial_number);
             //return array('status'=>0,'desc'=>'成功');
             $msg['status']=0;
-            $msg['desc']="退款申请成功！";
+            $msg['desc']="退款申请成功，等待业务员受理！";
             echo json_encode($msg);
 
         }catch (Exception $e){

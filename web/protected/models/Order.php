@@ -448,6 +448,12 @@ class Order extends CActiveRecord {
         return $pay->Purchase($amount,"支付:".$amount/100,$orderNumber);
     }
 
+    /**
+     * @param $orderNumber 订单号
+     * @param $amount 退款金额
+     * @param $sn 交易流水号
+     * @return array
+     */
     public static function Refund($orderNumber,$amount,$sn){
         $order=Order::OrderInfo($orderNumber);
         if(!$order){
