@@ -31,7 +31,7 @@ class BalancePay extends BasePay
             $trans_type=TransRecord::GetPayTypeByOrderType($row['type']);
 
             TransRecord::Add($conn,$orderNumber,$trans_type,-$orderAmount,$serial_number,TransRecord::STATUS_SUCCESS,$re_serial_number="",$out_serial_number="",$user_id=Yii::app()->user->id,$operator_id="");
-            Order::ChangeDesc($conn,$orderNumber,"余额支付成功，支付金额：".$orderAmount);
+            Order::ChangeDesc($conn,$orderNumber,"余额支付成功，支付金额：".$orderAmount/100);
             $transaction->commit();
 
             OrderLog::Add($orderNumber,$serial_number);
@@ -97,7 +97,7 @@ class BalancePay extends BasePay
 
             TransRecord::Add($conn,$orderNumber,$trans_type,$orderAmount,$serial_number,TransRecord::STATUS_SUCCESS,$re_serial_number="",$out_serial_number="",$user_id="",$operator_id="");
 
-            Order::ChangeDesc($conn,$orderNumber,"余额退款成功，退款金额：".$orderAmount);
+            Order::ChangeDesc($conn,$orderNumber,"余额退款成功，退款金额：".$orderAmount/100);
 
             $transaction->commit();
 

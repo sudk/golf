@@ -160,7 +160,7 @@ class UpmPay extends BasePay
                     // 交易处理成功
                     if($params['transType']==upmp_config::TRANS_TYPE_PURCHASE){
                         //消费
-                        $desc="银联支付成功，支付金额：".$settleAmount;
+                        $desc="银联支付成功，支付金额：".$settleAmount/100;
                         $rs=Order::ChangeStatus($conn,Order::STATUS_TOBE_SUCCESS,$orderNumber,$settleAmount);
                         if($rs){
                             $trans_type=TransRecord::GetPayTypeByOrderType($rs['type']);
@@ -170,7 +170,7 @@ class UpmPay extends BasePay
                     if($params['transType']==upmp_config::TRANS_TYPE_VOID){
                         $orderNumber = $params['reqReserved'];
                         //消费撤销
-                        $desc="银联消费撤销成功，金额：".$settleAmount;
+                        $desc="银联消费撤销成功，金额：".$settleAmount/100;
                         $rs=Order::ChangeStatus($conn,Order::STATUS_TOBE_CANCEL,$orderNumber);
                         if($rs){
                             $trans_type=TransRecord::GetCancelTypeByOrderType($rs['type']);
@@ -180,7 +180,7 @@ class UpmPay extends BasePay
                     if($params['transType']==upmp_config::TRANS_TYPE_REFUND){
                         $orderNumber = $params['reqReserved'];
                         //退货
-                        $desc="银联退款成功，金额：".$settleAmount;
+                        $desc="银联退款成功，金额：".$settleAmount/100;
                         $rs=Order::ChangeStatus($conn,Order::STATUS_TOBE_CANCEL,$orderNumber);
                         if($rs){
                             $trans_type=TransRecord::GetCancelTypeByOrderType($rs['type']);
@@ -194,7 +194,7 @@ class UpmPay extends BasePay
                     //$order=Order::OrderInfo($orderNumber);
                     // 交易处理失败
                     if($params['transType']==upmp_config::TRANS_TYPE_PURCHASE){
-                        $desc="银联支付失败，支付金额：".$settleAmount;
+                        $desc="银联支付失败，支付金额：".$settleAmount/100;
                         $model=Order::OrderInfo($orderNumber);
                         $trans_type=TransRecord::GetPayTypeByOrderType($model['type']);
                         TransRecord::Add($conn,$orderNumber,$trans_type,-$settleAmount,$serial_number,TransRecord::STATUS_FALSE,$re_serial_number="",$qn,$user_id="",$operator_id="");
@@ -202,7 +202,7 @@ class UpmPay extends BasePay
                     if($params['transType']==upmp_config::TRANS_TYPE_VOID){
                         $orderNumber = $params['reqReserved'];
                         //消费撤销失败
-                        $desc="银联消费撤销失败，支付金额：".$settleAmount;
+                        $desc="银联消费撤销失败，支付金额：".$settleAmount/100;
                         $model=Order::OrderInfo($orderNumber);
                         $trans_type=TransRecord::GetCancelTypeByOrderType($model['type']);
                         TransRecord::Add($conn,$orderNumber,$trans_type,$settleAmount,$serial_number,TransRecord::STATUS_FALSE,$re_serial_number="",$qn,$user_id="",$operator_id="");
@@ -210,7 +210,7 @@ class UpmPay extends BasePay
                     if($params['transType']==upmp_config::TRANS_TYPE_REFUND){
                         $orderNumber = $params['reqReserved'];
                         //退货失败
-                        $desc="银联退款失败，支付金额：".$settleAmount;
+                        $desc="银联退款失败，支付金额：".$settleAmount/100;
                         $model=Order::OrderInfo($orderNumber);
                         $trans_type=TransRecord::GetCancelTypeByOrderType($model['type']);
                         TransRecord::Add($conn,$orderNumber,$trans_type,$settleAmount,$serial_number,TransRecord::STATUS_FALSE,$re_serial_number="",$qn,$user_id="",$operator_id="");
