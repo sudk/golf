@@ -1,7 +1,7 @@
 package com.jason.golf;
 
 import com.jason.golf.classes.GAccount;
-import com.jsaon.golf.R;
+import com.jason.golf.R;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -26,7 +26,7 @@ public class GAccountFragment extends Fragment implements OnClickListener {
 
 	LinearLayout mButtons, mUserInfo;
 
-	private TextView mBalance, mPoints, mPhone;
+	private TextView mBalance, mPoints, mPhone, mFlea;
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
@@ -50,6 +50,9 @@ public class GAccountFragment extends Fragment implements OnClickListener {
 		v.findViewById(R.id.account_register).setOnClickListener(this);
 		v.findViewById(R.id.account_change_pwd).setOnClickListener(this);
 		v.findViewById(R.id.account_recharge).setOnClickListener(this);
+		v.findViewById(R.id.account_my_flea).setOnClickListener(this);
+//		v.findViewById(R.id.account_court_estimate).setOnClickListener(this);
+		v.findViewById(R.id.account_trans_details).setOnClickListener(this);
 
 		mButtons = (LinearLayout) v.findViewById(R.id.account_buttons);
 		mUserInfo = (LinearLayout) v.findViewById(R.id.account_info);
@@ -129,7 +132,12 @@ public class GAccountFragment extends Fragment implements OnClickListener {
 			break;
 
 		case R.id.account_change_pwd:
-			startActivity(new Intent(getActivity(), GChangePwdActivity.class));
+			if (_account.isLogin()) {
+				startActivity(new Intent(getActivity(), GChangePwdActivity.class));
+			} else {
+				startLoginActivity();
+			}
+			
 			break;
 		case R.id.account_recharge:
 			if (_account.isLogin()) {
@@ -153,6 +161,37 @@ public class GAccountFragment extends Fragment implements OnClickListener {
 				startLoginActivity();
 			}
 
+			break;
+		case R.id.account_my_flea:
+			if (_account.isLogin()) {
+
+				Intent fleaIntent = new Intent(getActivity(), GFleeMarketActivity.class);
+				Bundle params = new Bundle();
+				params.putInt(GFleeMarketActivity.FRAGMENT_MARK,	GFleeMarketActivity.FRAGMENT_MARK_FLEE_MYLIST);
+				fleaIntent.putExtras(params);
+				startActivity(fleaIntent);
+				
+
+			} else {
+				startLoginActivity();
+			}
+			break;
+//		case R.id.account_court_estimate:
+//			
+//			Intent estimatIntent = new Intent(getActivity(), CourtEstimate.class);
+//			startActivity(estimatIntent);
+//			
+//			break;
+		case R.id.account_trans_details:
+			if (_account.isLogin()) {
+				Intent transIntent = new Intent(getActivity(), GTransrecordActivity.class);
+				Bundle params = new Bundle();
+				params.putInt(GTransrecordActivity.FRAGMENT, GTransrecordActivity.FRAGMENT_TRANSRECORD_LIST);
+				transIntent.putExtras(params);
+				startActivity(transIntent);
+			} else {
+				startLoginActivity();
+			}
 			break;
 		}
 

@@ -4,7 +4,7 @@ import com.jason.golf.GOrderActivity;
 import com.jason.golf.GOrderGenerateFragment;
 import com.jason.golf.classes.AgentsAdapter;
 import com.jason.golf.classes.GAgent;
-import com.jsaon.golf.R;
+import com.jason.golf.R;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -45,7 +45,7 @@ public class BookingOrderDialog extends Dialog implements android.view.View.OnCl
 		mTeetime = (TextView) findViewById(R.id.dialog_order_tee_time);
 		mTeetime.setText(_agent.getTeeTime());
 		
-		mCancelRemark = (TextView) findViewById(R.id.dialog_order_cancel_remark);
+		mCancelRemark = (TextView) findViewById(R.id.dialog_order_remark);
 		mCancelRemark.setText(_agent.getCancelRemark());
 		
 		mAmount = (TextView) findViewById(R.id.dialog_order_amount);
@@ -59,7 +59,7 @@ public class BookingOrderDialog extends Dialog implements android.view.View.OnCl
 	public void onClick(View arg0) {
 		// TODO Auto-generated method stub
 		switch(arg0.getId()){
-		case R.id.dialog_order_ok:
+		case R.id.dialog_refund_ok:
 			
 			Intent it = new Intent(getContext(), GOrderActivity.class);
 			Bundle params = new Bundle();

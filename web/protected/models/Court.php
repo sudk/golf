@@ -83,6 +83,16 @@ class Court extends CActiveRecord {
             $params['court_id'] = $args['court_id'];
         }
         
+        if ($args['model'] != ''){
+            $condition.= ' AND model=:model';
+            $params['model'] = $args['model'];
+        }
+        
+        if ($args['name'] != ''){
+            $condition.= ' AND name like :name';
+            $params['name'] = "%".$args['name']."%";
+        }
+        //var_dump($condition);
         
         
         $total_num = Court::model()->count($condition, $params); //总记录数
@@ -117,6 +127,78 @@ class Court extends CActiveRecord {
         $rs['rows'] = $rows;
 
         return $rs;
+    }
+    
+    /**
+     * 球场删除
+     * 包括 
+     * 球场信息
+     * 球场的图片
+     * 球场的评论
+     * 球场的附近设施
+     * 球场的比赛。
+     * 球场的预约信息
+     * @param type $court_id
+     * @return type
+     */
+    public static function deleteCourt($court_id)
+    {
+        if(!$court_id){
+            return array('status'=>false,'msg'=>'删除失败，球场不存在');
+        }
+        $conn=Yii::app()->db;
+        $transaction = $conn->beginTransaction();
+        
+        $info = $conn->createCommand()->select("*")->from("g_court")->where("court_id=:court_id",array('court_id'=>$court_id))->queryRow();
+        if(!info){
+            return array('status'=>false,'msg'=>'删除失败，球场不存在');
+        }
+        
+        $order_info = $conn->createCommand()->select("*")->from("g_order")->where("court_id=:court_id",array('court_id'=>$court_id))->queryRow();
+        if(!$order_info){
+            return array('status'=>false,'msg'=>'删除失败，本球场有预约信息');
+        }
+        
+        $comp_info = $conn->createCommand()->select("*")->from("g_competition")->where("court_id=:court_id",array('court_id'=>$court_id))->queryRow();
+        if(!$comp_info){
+            return array('status'=>false,'msg'=>'删除失败，本球场有赛事信息');
+        }
+        
+        try{
+            //球场
+            $sql = "delete from g_court where court_id=:court_id";
+            $command = $conn->createCommand($sql);
+            $command->bindParam(":court_id", $court_id, PDO::PARAM_STR);
+            $command->execute();
+            //图片
+            $sql = "delete from g_img where relation_id=:relation_id and type in('0','1','8')";
+            $command = $conn->createCommand($sql);
+            $command->bindParam(":relation_id", $court_id, PDO::PARAM_STR);
+            $command->execute();
+            //球场附近设施
+            $sql = "delete from g_court_facilities where court_id=:court_id";
+            $command = $conn->createCommand($sql);
+            $command->bindParam(":court_id", $court_id, PDO::PARAM_STR);
+            $command->execute();
+            //球场评论
+            $sql = "delete from g_comment where court_id=:court_id";
+            $command = $conn->createCommand($sql);
+            $command->bindParam(":court_id", $court_id, PDO::PARAM_STR);
+            $command->execute();         
+            
+            $transaction->commit();
+            //删除球场风景，球道，附近设施图片，logo图片
+            $rs = Img::delImg($court_id, '0');
+            $rs = Img::delImg($court_id, '1');
+            $rs = Img::delImg($court_id, '2');
+            $rs = Img::delImg($court_id, '8');
+            
+            return array('status'=>true,'msg'=>'删除成功');
+        } catch (Exception $ex) {
+            $transaction->rollBack();
+            return array('status'=>false,'desc'=>'删除失败，未知错误');
+        }
+        return array('status'=>true,'msg'=>'删除成功');
     }
 
     public static function Search($args = array()){
@@ -334,6 +416,97 @@ class Court extends CActiveRecord {
             }
         }
         return $rows;
+    }
+
+
+    public static function Sale($args = array()){
+
+        $condition = ' 1=1 ';
+        $params = array();
+
+        $condition.= ' AND g_court.city=:city ';
+        $params['city'] = $args->city;
+
+        if (isset($args->court_id)&&$args->court_id != ''){
+            $condition.= ' AND g_policy.court_id=:court_id ';
+            $params['court_id'] = $args->court_id;
+        }
+
+        if (isset($args->key_word)&&$args->key_word != ''){
+            $condition.= ' AND g_court.name like :key_word ';
+            $params['key_word'] = "%".$args->key_word."%";
+        }
+
+        $weeksToDates=Utils::WeeksToDates();
+
+        if (isset($args->day)&&$args->day != ''){
+            $d=$weeksToDates[$args->day];
+            $condition.= ' AND g_policy.start_date <= :date ';
+            $condition.= ' AND g_policy.end_date >= :date ';
+            $params['date'] = $d;
+
+            //$day=date("w",strtotime($args->date));
+            $condition.= ' AND ( g_policy_detail.day < 0 or g_policy_detail.day = :day )';
+            $params['day'] = $args->day;
+        }
+
+        $condition.= ' AND g_policy.type <= :type ';
+        $params['type'] = Policy::TYPE_FOVERABLE;
+
+
+        $condition.= " AND g_policy.status=".Policy::STATUS_NORMAL;
+        $condition.= ' AND g_policy_detail.status='.PolicyDetail::STATUS_NORMAL;
+
+        if(isset($args->long_lat)){
+            list($u_lon,$u_lat)=explode(",",$args->long_lat);
+        }
+
+
+        //print_r($condition);
+        //print_r($params);
+        $rows = Yii::app()->db->createCommand()
+            ->select("g_policy.*,g_court.name name,g_court.addr,g_court.lon lon,g_court.lat lat,g_policy_detail.price,g_policy_detail.day,g_policy_detail.start_time,g_policy_detail.end_time,g_agent.agent_name,g_img.img_url ico_img")
+            ->from("g_policy_detail")
+            ->leftJoin("g_policy","g_policy_detail.policy_id=g_policy.id")
+            ->leftJoin("g_court","g_policy.court_id=g_court.court_id")
+            ->leftJoin("g_agent","g_agent.id=g_policy.agent_id")
+            ->leftJoin("g_img","g_img.type=8 and g_img.relation_id=g_court.court_id")
+            ->where($condition,$params)
+            ->queryAll();
+
+        $rows_tmp=array();
+        $normal_price=array();
+        if($rows){
+            foreach($rows as $row){
+                if($row['type']==Policy::TYPE_NORMAL){
+                    $normal_price[$row['court_id']]=$row['price'];
+                }else{
+                    $rows_tmp[]=$row;
+                }
+            }
+        }
+
+
+        $return_rows=array();
+        if($rows_tmp){
+            foreach($rows_tmp as $row){
+                if(trim($row['lon'])&&trim($row['lat'])&&trim($u_lon)&&trim($u_lat)){
+                    $row['distance']=BaiduDistance::GetLongDistance($row['lon'],$row['lat'],$u_lon,$u_lat);
+                }else{
+                    $row['distance']="未知";
+                }
+                if($row['ico_img']){
+                    $row['ico_img']=Img::IMG_PATH.$row['ico_img'];
+                }
+                $row['normal_price']=$normal_price[$row['court_id']];
+                $row['date']=$weeksToDates[$args->day];
+
+                $return_rows[]=$row;
+            }
+        }
+
+        return $return_rows;
+
     }
 }
 

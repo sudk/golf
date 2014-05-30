@@ -2,7 +2,7 @@ package com.jason.golf;
 
 import com.jason.golf.classes.CityAdapter;
 import com.jason.golf.provider.GolfProviderConfig;
-import com.jsaon.golf.R;
+import com.jason.golf.R;
 
 import android.app.Activity;
 import android.content.Intent;

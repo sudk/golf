@@ -11,38 +11,43 @@ if (is_array($rows))
         $t->begin_row("onclick","getDetail(this,'{$row['order_id']}');");
         $link = "";
         $status = $row['status'];
-        $link .= CHtml::link('详细',"javascript:itemLog('{$row['order_id']}')", array());
+        $link .= CHtml::link('详情',"javascript:itemLog('{$row['order_id']}')", array());
         if(Yii::app()->user->type == Operator::TYPE_AGENT)
         {
-            $link .= CHtml::link('编辑状态',"javascript:itemEdit('{$row['order_id']}')", array());
+            $edit_array = array(Order::STATUS_TOBE_CONFIRM,Order::STATUS_TOBE_PAID);
+            if(in_array($status,$edit_array))
+            {
+                $link .= CHtml::link('编辑',"javascript:itemEdit('{$row['order_id']}')", array());
+            }
 
             if($status == Order::STATUS_TOBE_CANCEL)
             {
-                $link .= CHtml::link('删除',"javascript:itemDelete('{$row['order_id']}');", array());
+                //$link .= CHtml::link('删除',"javascript:itemDelete('{$row['order_id']}');", array());
+            }
+            
+            $next_opt = Order::getNextStatus($status, $row['pay_type']);
+            //var_dump($next_opt);var_dump($status);var_dump($row['pay_type']);
+            if(@count($next_opt)>0)
+            {
+                foreach($next_opt as $opt)
+                {
+                    $link .= CHtml::link($opt['desc'],"javascript:itemNextStatus('{$row['order_id']}','{$opt['now_status']}','{$opt['status']}','{$row['pay_type']}','{$opt['desc']}');", array());
+                }
             }
         }
         $status_text = "";
-        if($status == Order::STATUS_TOBE_CONFIRM)
-        {
-            $status_text = '<span style="color:green">'.$status_list[$status].'</span>';
-        }else if($status == Order::STATUS_TOBE_PAID)
-        {
-            $status_text = '<span style="color:blue">'.$status_list[$status].'</span>';
-        }
-        else if($status == Order::STATUS_TOBE_SUCCESS)
-        {
-            $status_text = '<span style="color:black">'.$status_list[$status].'</span>';
-        }
-        else if($status == Order::STATUS_TOBE_CANCEL)
-        {
-            $status_text = '<span style="color:gray">'.$status_list[$status].'</span>';
-        }
+        $status_text = '<span style="color:black;font-weight:bolder;">'.$status_list[$status].'</span>';
+        
+        
+        $amount = intval($row['amount']);
+        $amount = $amount!=0? floatval($amount/100):0;
+        $amount .= "元";
         
         $t->echo_td($row['order_id']);
         $t->echo_td($type_list[$row['type']]); //
         $t->echo_td($row['contact']); //
         $t->echo_td($row['relation_name']); //
-        $t->echo_td($row['amount']); //
+        $t->echo_td($amount); //
         $t->echo_td($pay_type[$row['pay_type']]); //
         $t->echo_td($status_text); //
         $t->echo_td($row['record_time']); //

@@ -15,91 +15,96 @@
         android:text="赛事名称"
         android:textColor="@android:color/black"
         android:textSize="18sp" />
-    
-    <LinearLayout
+
+    <View
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="3dip" >
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="赛事球场：" />
-
-        <TextView
-            android:id="@+id/competition_court"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="11123108912" />
-    </LinearLayout>
+        android:layout_height="1dip"
+        android:background="@drawable/block_divider" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="3dip" >
+        android:orientation="horizontal" >
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="代理商：" />
+        <ImageView
+            android:id="@+id/competition_img"
+            android:layout_width="60dip"
+            android:layout_height="60dip"
+            android:layout_margin="5dip"
+            android:src="@drawable/test_golf" />
 
-        <TextView
-            android:id="@+id/competition_agent"
-            android:layout_width="0dp"
+        <LinearLayout
+            android:layout_width="0dip"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="10dip"
+            android:layout_marginRight="10dip"
             android:layout_weight="1"
-            android:text="11123108912" />
-    </LinearLayout>
+            android:orientation="vertical" >
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="3dip" >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="2dip" >
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="开球时间：" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="球场："
+                    android:textSize="15sp" />
 
-        <TextView
-            android:id="@+id/competition_date"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="2014年5月10日" />
-    </LinearLayout>
+                <TextView
+                    android:id="@+id/competition_court"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="11123108912"
+                    android:textSize="15sp" />
+            </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="5dip" >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="2dip" >
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="订单总价：" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="时间："
+                    android:textSize="15sp" />
 
-        <TextView
-            android:id="@+id/competition_amount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Amount"
-            android:textColor="@color/money"
-            android:textSize="15sp" />
+                <TextView
+                    android:id="@+id/competition_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="2014年5月10日"
+                    android:textColor="@color/basecolor"
+                    android:textSize="15sp" />
+            </LinearLayout>
 
-        <TextView
-            android:id="@+id/competition_pay_type"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="6dip"
-            android:layout_weight="1"
-            android:text="支付类型"
-            android:textSize="16sp" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="2dip" >
+
+                <TextView
+                    android:id="@+id/competition_pay_type"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="支付类型"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/competition_amount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dip"
+                    android:text="Amount"
+                    android:textColor="@color/money"
+                    android:textSize="15sp" />
+            </LinearLayout>
+        </LinearLayout>
     </LinearLayout>
 
 </LinearLayout>

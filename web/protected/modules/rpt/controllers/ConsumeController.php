@@ -21,14 +21,14 @@ class ConsumeController extends AuthBaseController
         $t = new SimpleGrid($this->gridId);
         $t->url = 'index.php?r=rpt/consume/grid';
         $t->updateDom = 'datagrid';
-        $t->set_header('序号', '30', '');
-        $t->set_header('交易类型', '60', '');
-        $t->set_header('流水号', '100', '');
-        $t->set_header('交易金额', '60', '');
-        $t->set_header('关联流水号', '100', '');
-        $t->set_header('客户编号', '80', '');
-        $t->set_header('交易状态', '80', '');
-        $t->set_header('记录时间', '100', '');
+        $t->set_header('序号', '5%', '');
+        $t->set_header('交易类型', '10%', '');
+        $t->set_header('流水号', '15%', '');
+        $t->set_header('交易金额', '10%', '');
+        $t->set_header('关联流水号', '15%', '');
+        $t->set_header('客户编号', '10%', '');
+        $t->set_header('交易状态', '10%', '');
+        $t->set_header('记录时间', '15%', '');
         return $t;
     }
 

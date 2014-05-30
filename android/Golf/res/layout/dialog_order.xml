@@ -92,7 +92,7 @@
             android:textSize="13sp" />
 
         <TextView
-            android:id="@+id/dialog_order_cancel_remark"
+            android:id="@+id/dialog_order_remark"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dip"

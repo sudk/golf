@@ -3,11 +3,14 @@ package com.jason.golf;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.jason.controller.AppInfoContent;
 import com.jason.controller.GThreadExecutor;
 import com.jason.controller.HttpCallback;
 import com.jason.controller.HttpRequest;
-import com.jsaon.golf.R;
+import com.jason.golf.dialog.WarnDialog;
+import com.jason.golf.R;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Handler.Callback;
@@ -43,6 +46,7 @@ public class GChangePwdActivity extends ActionBarActivity implements
 		setContentView(R.layout.activity_change_pwd);
 		ActionBar bar = getSupportActionBar();
 		bar.setTitle(R.string.account_changepwd);
+		bar.setIcon(R.drawable.actionbar_icon);
 		int change = bar.getDisplayOptions() ^ ActionBar.DISPLAY_HOME_AS_UP;
 		bar.setDisplayOptions(change, ActionBar.DISPLAY_HOME_AS_UP);
 
@@ -124,13 +128,51 @@ public class GChangePwdActivity extends ActionBarActivity implements
 			}
 
 			HttpRequest r = new HttpRequest(this, params, new HttpCallback() {
+				
+				
+
+				@Override
+				public void faildData(int code, String res) {
+					// TODO Auto-generated method stub
+					
+					WarnDialog dialog = new WarnDialog(GChangePwdActivity.this);
+					dialog.setTitle(R.string.account_changepwd).setMessage(res)
+					.setPositiveBtn(R.string.confirm, new DialogInterface.OnClickListener() {
+						
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							// TODO Auto-generated method stub
+						}
+					});
+					dialog.show(getSupportFragmentManager(), "ChPwdFaild");
+					
+					super.faildData(code, res);
+				}
 
 				@Override
 				public void sucessData(String res) {
 					// TODO Auto-generated method stub
 					mGetSmsCode.setEnabled(false);
 					mHandler.sendEmptyMessage(MESSAGE_TIMING);
+					
+					
+					WarnDialog dialog = new WarnDialog(GChangePwdActivity.this);
+					dialog.setTitle(R.string.account_changepwd).setMessage(R.string.account_has_chang_pwd)
+					.setPositiveBtn(R.string.confirm, new DialogInterface.OnClickListener() {
+						
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							// TODO Auto-generated method stub
+							AppInfoContent.saveAccount(GChangePwdActivity.this, mPhone.getText().toString(), "");
+							finish();
+						}
+					});
+					dialog.show(getSupportFragmentManager(), "ChPwdSuccess");
+					
+					
+					
 					super.sucessData(res);
+					
 				}
 
 			});

@@ -7,6 +7,18 @@
  */
 class TransRecord extends CActiveRecord {
 
+    const TYPE_COURT_PAY=10;//订场
+    const TYPE_COURT_CANCEL=11;//订场撤销
+    const TYPE_TRIP_PAY=20;
+    const TYPE_TRIP_CANCEL=21;
+    const TYPE_COMPETITION_PAY=30;
+    const TYPE_COMPETITION_CANCEL=31;
+    const TYPE_RECHARGE_PAY=40;
+    const TYPE_RECHARGE_CANCEL=41;
+
+    const STATUS_SUCCESS="00";
+    const STATUS_PROCESS="01";
+    const STATUS_FALSE="02";
 
     public static function model($className=__CLASS__){
         return parent::model($className);
@@ -25,24 +37,47 @@ class TransRecord extends CActiveRecord {
     public static function getTransType($s = "")
     {
         $rs = array(
-            '10'=>'订场',
-            '11'=>'订场撤销',
-            '20'=>'行程',
-            '21'=>'行程撤销',
-            '30'=>'赛事',
-            '31'=>'赛事撤销',
-            '40'=>'充值',
-            '41'=>'充值撤销',
+            self::TYPE_COURT_PAY=>'订场',
+            self::TYPE_COURT_CANCEL=>'订场撤销',
+            self::TYPE_TRIP_PAY=>'行程',
+            self::TYPE_TRIP_CANCEL=>'行程撤销',
+            self::TYPE_COMPETITION_PAY=>'赛事',
+            self::TYPE_COMPETITION_CANCEL=>'赛事撤销',
+            self::TYPE_RECHARGE_PAY=>'充值',
+            self::TYPE_RECHARGE_CANCEL=>'充值撤销',
         );
         
         return $s == "" ? $rs : $rs[$s];
+    }
+
+    //通过订单类型，转换成交易类型
+    public static function GetPayTypeByOrderType($order_type){
+        $rs = array(
+            Order::TYPE_COURT=>self::TYPE_COURT_PAY,
+            Order::TYPE_TRIP=>self::TYPE_TRIP_PAY,
+            Order::TYPE_COMPETITION=>self::TYPE_COMPETITION_PAY,
+            Order::TYPE_RECHARGE=>self::TYPE_RECHARGE_PAY,
+        );
+        return $rs[$order_type];
+    }
+
+    //通过订单类型，转换成交易类型
+    public static function GetCancelTypeByOrderType($order_type){
+        $rs = array(
+            Order::TYPE_COURT=>self::TYPE_COURT_CANCEL,
+            Order::TYPE_TRIP=>self::TYPE_TRIP_CANCEL,
+            Order::TYPE_COMPETITION=>self::TYPE_COMPETITION_CANCEL,
+            Order::TYPE_RECHARGE=>self::TYPE_RECHARGE_CANCEL,
+        );
+        return $rs[$order_type];
     }
     
     public static function getStatus($s="")
     {
         $rs = array(
-            '0'=>'操作成功',
-            '9'=>'操作失败',
+            self::STATUS_SUCCESS=>'交易成功',
+            self::STATUS_PROCESS=>'处理中',
+            self::STATUS_FALSE=>'交易失败',
         );
         
         return $s == "" ? $rs : $rs[$s];
@@ -142,8 +177,27 @@ class TransRecord extends CActiveRecord {
         }
         return $table;
     }
-    
-   
+
+    public static function Add(&$conn,$order_id,$type,$amount,$serial_number,$status,$re_serial_number="",$out_serial_number="",$user_id="",$operator_id=""){
+        $record_time=date("Y-m-d H:i:s");
+        //$user_id=Yii::app()->user->id;
+        $sql = "insert into ".self::getTable()."
+                   (order_id,serial_number,trans_type,amount,re_serial_number,status,user_id,operator_id,out_serial_number,record_time)
+                     values
+                   (:order_id,:serial_number,:trans_type,:amount,:re_serial_number,:status,:user_id,:operator_id,:out_serial_number,:record_time)";
+        $command = $conn->createCommand($sql);
+        $command->bindParam(":order_id",$order_id, PDO::PARAM_STR);
+        $command->bindParam(":serial_number",$serial_number, PDO::PARAM_STR);
+        $command->bindParam(":trans_type",$type, PDO::PARAM_STR);
+        $command->bindParam(":amount",$amount, PDO::PARAM_STR);
+        $command->bindParam(":re_serial_number",$re_serial_number, PDO::PARAM_STR);
+        $command->bindParam(":status",$status, PDO::PARAM_STR);
+        $command->bindParam(":user_id",$user_id, PDO::PARAM_STR);
+        $command->bindParam(":operator_id",$operator_id, PDO::PARAM_STR);
+        $command->bindParam(":out_serial_number",$out_serial_number, PDO::PARAM_STR);
+        $command->bindParam(":record_time",$record_time, PDO::PARAM_STR);
+        $command->execute();
+    }
 }
 
 

@@ -1,5 +1,6 @@
 package com.jason.golf;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -8,10 +9,17 @@ import com.jason.controller.HttpCallback;
 import com.jason.controller.HttpRequest;
 import com.jason.golf.classes.GAccount;
 import com.jason.golf.classes.GOrder;
+import com.jason.golf.dialog.PayBalanceDialog;
+import com.jason.golf.dialog.PayBalanceDialog.IPayBalanceListener;
+import com.jason.golf.dialog.RefundOrderDialog;
+import com.jason.golf.dialog.RefundOrderDialog.IRefundListener;
 import com.jason.golf.dialog.WarnDialog;
-import com.jsaon.golf.R;
+import com.jason.golf.R;
+import com.unionpay.UPPayAssistEx;
 
+import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -28,17 +36,32 @@ public class GOrderDetailsFragment extends Fragment implements OnClickListener {
 	private static final String Pay_Balance = "1";
 	private static final String Pay_Yinlian = "2";
 	
+	
+	private static GOrderDetailsFragment F ;
+	
+	
+	public static GOrderDetailsFragment Instance() {
+		
+		if(F == null)
+			F = new GOrderDetailsFragment();
+		return F;
+	}
+	
+	
+	
+	
 	private String _orderId, _amount;
 	
 	private TextView mCourtName, mTeeTime, mOrderType, mCount, mAmount, mPaytype, mStatus, mContact, mPhone ;
 	
-	private Button mCancel, mPayBalance;
+	private Button mCancel, mPayBalance, mPayUP, mCourtEstimate, mRefund;
 	
 	private LinearLayout mPayButtons;
+	
+	private String _estimateCourtId, _estimateCourtName;
 
-	public static GOrderDetailsFragment Instance() {
-		return new GOrderDetailsFragment();
-	}
+	
+	
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
@@ -80,18 +103,166 @@ public class GOrderDetailsFragment extends Fragment implements OnClickListener {
 		mPayBalance = (Button) v.findViewById(R.id.order_detail_pay_balance);
 		mPayBalance.setOnClickListener(this);
 		
+		mPayUP = (Button) v.findViewById(R.id.order_detail_pay_yinlian);
+		mPayUP.setOnClickListener(this);
+		
+		mRefund = (Button) v.findViewById(R.id.order_detail_refund);
+		mRefund.setOnClickListener(this);
+		
+		mCourtEstimate = (Button) v.findViewById(R.id.order_court_estimate);
+		mCourtEstimate.setOnClickListener(this);
+		
 		queryOrder();
 		return v;
 	}
+	
+	@Override
+	public void onClick(View v) {
+		// TODO Auto-generated method stub
+		switch(v.getId()){
+		case R.id.order_detail_cancel:
+			
+			WarnDialog cancelDialog = new WarnDialog(getActivity());
+			cancelDialog.setTitle(R.string.cancel_order).setMessage(R.string.is_cancel_order)
+			.setPositiveBtn(R.string.confirm, new DialogInterface.OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface arg0, int arg1) {
+					// TODO Auto-generated method stub
+					cancelTheOrder();
+				}
+			})
+			.setNegativeBtn(R.string.cancel, new DialogInterface.OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					// TODO Auto-generated method stub
+					
+				}
+			});
+			
+			cancelDialog.show(getFragmentManager(), "CancelOrder");
+			break;
+		case R.id.order_detail_pay_balance:
+			
+			
+			PayBalanceDialog payBalanceDialog = new PayBalanceDialog(getActivity());
+			payBalanceDialog.setOnRefundListener(new IPayBalanceListener() {
+				
+				@Override
+				public void onPay(String password) {
+					// TODO Auto-generated method stub
+					payOrderBalance(password);
+				}
+			});
+			
+			payBalanceDialog.show();
+			
+			
+			break;
+		case R.id.order_detail_pay_yinlian:
+			payOrderUP();
+			
+			
+			break;
+		case R.id.order_detail_refund:
+			
+			
+			RefundOrderDialog refundDialog = new RefundOrderDialog(getActivity(), mAmount.getText().toString());
+			refundDialog.setOnRefundListener(new IRefundListener() {
+				
+				@Override
+				public void onRefund(String desc) {
+					// TODO Auto-generated method stub
+					payOrderRefund(desc);
+				}
+			});
+			
+			refundDialog.show();
+			
+			
+			break;
+			
+		case R.id.order_court_estimate:
+		{
+			Intent estimatIntent = new Intent(getActivity(), CourtEstimate.class);
+			Bundle params = new Bundle();
+			params.putString(CourtEstimate.KEY_COURT_ID,   _estimateCourtId );
+			params.putString(CourtEstimate.KEY_COURT_NAME, _estimateCourtName );
+			estimatIntent.putExtras(params);
+			startActivity(estimatIntent);
+		}
+			break;
+			
+		}
+		
+	}
 
 	
+	/*
+	 * 
+	 * 
+	 *  退款
+	 * 
+	 * 
+	 */
+	
+	private void payOrderRefund(String desc) {
+		// TODO Auto-generated method stub
+		JSONObject params = new JSONObject();
+		try {
+			params.put("cmd", "order/applyrefund");
+			params.put("order_id", _orderId);
+			params.put("desc", desc);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		HttpRequest r = new HttpRequest(getActivity(), params,new HttpCallback() {
+
+			@Override
+			public void sucessData(String res) {
+				// TODO Auto-generated method stub
+				super.sucessData(res);
+				queryOrder();
+			}
+
+			@Override
+			public void faildData(int code, String res) {
+				// TODO Auto-generated method stub
+				super.faildData(code, res);
+				
+
+				WarnDialog refundDialog = new WarnDialog(getActivity());
+				refundDialog.setTitle(R.string.refund).setMessage(res)
+				.setPositiveBtn(R.string.confirm, new DialogInterface.OnClickListener() {
+					
+					@Override
+					public void onClick(DialogInterface arg0, int arg1) {
+						// TODO Auto-generated method stub
+						
+					}
+				});
+				
+				refundDialog.show(getFragmentManager(), "RefundFaild");
+				
+			}
+			
+			
+			
+		});
+		
+		GThreadExecutor.execute(r);
+	}
+
 	/*
 	 * 
 	 * 查询订单详情
 	 * 
 	 * 
 	 */
-	private void queryOrder() {
+	public void queryOrder() {
 		// TODO Auto-generated method stub
 		JSONObject params = new JSONObject();
 
@@ -118,11 +289,19 @@ public class GOrderDetailsFragment extends Fragment implements OnClickListener {
 						String payType, status;
 						
 						JSONObject data = new JSONObject(res);
+						
+						_estimateCourtId = data.getString("relation_id");
+						_estimateCourtName = data.getString("relation_name");
+						
 						mCourtName.setText(data.getString("relation_name"));
 						mTeeTime.setText(data.getString("tee_time"));
+						mContact.setText(data.getString("contact"));
+						mPhone.setText(data.getString("phone"));
+						
 						mOrderType.setText(GOrder.GetOrderTypeDes(data.getString("type")));
 						
 						mCount.setText(data.getString("count"));
+						
 						_amount = data.getString("amount");
 						float amount =  Float.parseFloat(_amount);
 						mAmount.setText(String.format("￥%.2f",amount/100));
@@ -132,29 +311,36 @@ public class GOrderDetailsFragment extends Fragment implements OnClickListener {
 						mPaytype.setText(GOrder.GetPayTypeDes(payType));
 						
 						//status : 0、待确认；1、待付款；2、完成预约；3、撤销 ，4、未到场  5、订单完成
+						//0、等待确认；1、等待付款；2、付款完成；3、交易关闭 ，4-未到场  5-交易成功，6-等待退款 7-拒绝退款 8-退款中
 						status = data.getString("status");
 						mStatus.setText(GOrder.GetStatusDes(status));
 						
-						mContact.setText(data.getString("contact"));
-						mPhone.setText(data.getString("phone"));
-						
-						
-						// 判断是否显示"支付"按钮
-						if("1".equals(payType) || "2".equals(payType)){
-							if("1".equals(status)){
-								mPayButtons.setVisibility(ViewGroup.VISIBLE);
-							}else{
-								mPayButtons.setVisibility(ViewGroup.GONE);
-							}
-						}else{
+						// "等待付款"状态 —— 显示"支付"按钮
+						if ("1".equals(status)) {
+							mPayButtons.setVisibility(ViewGroup.VISIBLE);
+						} else {
 							mPayButtons.setVisibility(ViewGroup.GONE);
 						}
 						
-						//判断是否显示"取消"按钮
+						//"等待确认"和"等待付款"状态 —— 显示"撤销订单"按钮
 						if("0".equals(status) || "1".equals(status)){
 							mCancel.setVisibility(View.VISIBLE);
 						}else{
 							mCancel.setVisibility(View.GONE);
+						}
+						
+						//"完成预约"状态——显示"退款"按钮
+						if("2".equals(status)){
+							mRefund.setVisibility(View.VISIBLE);
+						}else{
+							mRefund.setVisibility(View.GONE);
+						}
+						
+						//"交易完成"状态 —— 显示"评价"按钮
+						if("5".equals(status)){
+							mCourtEstimate.setVisibility(View.VISIBLE);
+						}else{
+							mCourtEstimate.setVisibility(View.GONE);
 						}
 						
 					} catch (JSONException e) {
@@ -231,14 +417,17 @@ public class GOrderDetailsFragment extends Fragment implements OnClickListener {
 	 * 
 	 * 
 	 */
-	private void payOrder(String payChannel) {
+	private void payOrderBalance(String password) {
 		// TODO Auto-generated method stub
 		JSONObject params = new JSONObject();
 		try {
 			params.put("cmd", "order/pay");
 			params.put("order_id", _orderId);
-			params.put("type", payChannel);
+			params.put("type", "1");
 			params.put("amount", _amount);
+			
+			params.put("passwrod", password);
+			
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -289,21 +478,89 @@ public class GOrderDetailsFragment extends Fragment implements OnClickListener {
 	}
 
 
-	@Override
-	public void onClick(View v) {
+	private void payOrderUP() {
 		// TODO Auto-generated method stub
-		switch(v.getId()){
-		case R.id.order_detail_cancel:
-			cancelTheOrder();
-			break;
-		case R.id.order_detail_pay_balance:
-			payOrder(Pay_Balance);
-			break;
-		case R.id.order_detail_pay_yinlian:
-			payOrder(Pay_Yinlian);
-			break;
+		JSONObject params = new JSONObject();
+		try {
+			params.put("cmd", "order/pay");
+			params.put("order_id", _orderId);
+			params.put("type", "2");
+			params.put("amount", _amount);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		
-	}
+		HttpRequest r = new HttpRequest(getActivity(), params,new HttpCallback() {
 
+			@Override
+			public void sucessData(String res) {
+				// TODO Auto-generated method stub
+				super.sucessData(res);
+				
+				
+				try {
+					JSONArray data = new JSONArray(res);
+					JSONObject obj = data.getJSONObject(0);
+					String tn = obj.getString("tn");
+					
+					int ret = UPPayAssistEx.startPay(getActivity(), null, null, tn, "01");
+					
+					if (ret == UPPayAssistEx.PLUGIN_NOT_FOUND) {
+			            // 需要重新安装控件
+			            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+			            builder.setTitle("提示");
+			            builder.setMessage("完成购买需要安装银联支付控件，是否安装？");
+
+			            builder.setNegativeButton("确定",
+			                    new DialogInterface.OnClickListener() {
+			                        @Override
+			                        public void onClick(DialogInterface dialog, int which) {
+			                        	UPPayAssistEx.installUPPayPlugin(getActivity());
+			                        }
+			                    });
+
+			            builder.setPositiveButton("取消",
+			                    new DialogInterface.OnClickListener() {
+
+			                        @Override
+			                        public void onClick(DialogInterface dialog, int which) {
+			                            dialog.dismiss();
+			                        }
+			                    });
+			            builder.create().show();
+
+			        }
+					
+					
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+//				
+				
+			}
+
+			@Override
+			public void faildData(int code, String res) {
+				// TODO Auto-generated method stub
+				super.faildData(code, res);
+				WarnDialog dialog = new WarnDialog(getActivity());
+				dialog.setTitle(R.string.order).setMessage(res)
+				.setPositiveBtn(R.string.confirm, new DialogInterface.OnClickListener() {
+					
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						// TODO Auto-generated method stub
+					}
+				});
+				dialog.show(getFragmentManager(), "PayOrderFaild");
+			}
+			
+		});
+		
+		GThreadExecutor.execute(r);
+	}
+	
 }

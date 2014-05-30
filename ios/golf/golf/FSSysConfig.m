@@ -18,6 +18,8 @@
         _os=@"2";
         _model=@"iphone4s";
         _deviceid=@"0a8b5c4d6d7e4939c80c8326788868d8";
+        _nowOrderId=nil;
+        _isFromWriteOrderLogin=NO;
     }
     return self;
 }

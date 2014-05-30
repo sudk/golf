@@ -25,15 +25,15 @@ class PriceController extends AuthBaseController
         $t->url = 'index.php?r=price/grid';
         $t->updateDom = 'datagrid';
      
-        $t->set_header('球场', '100', '');
-        $t->set_header('服务项目', '70', '');
-        $t->set_header('周一至周日', '150', ''); 
+        $t->set_header('球场', '20%', '');
+        $t->set_header('服务项目', '10%', '');
+        $t->set_header('周一至周日', '20%', ''); 
               
-        $t->set_header('状态', '50', '');
-        $t->set_header('正常报价', '70', '');
-        $t->set_header('优惠报价', '70', '');
-        $t->set_header('特殊报价', '70', '');
-        $t->set_header('有效期', '70', '');
+        $t->set_header('状态', '10%', '');
+        $t->set_header('正常报价', '10%', '');
+        $t->set_header('优惠报价', '10%', '');
+        $t->set_header('特殊报价', '10%', '');
+        $t->set_header('有效期', '10%', '');
         return $t;
     }
 
@@ -102,7 +102,8 @@ class PriceController extends AuthBaseController
                             'start_time'=>'',
                             'end_time'=>'',
                             'price'=>$_POST[$i.'_price'],
-                            'status'=>$_POST[$i."_status"]
+                            'status'=>$_POST[$i."_status"],
+                            'record_time'=>date('Y-m-d H:i:s')
                         );
                         array_push($week_day[$i], $day);
                         if(isset($_POST[$i.'_start_time']))
@@ -141,17 +142,7 @@ class PriceController extends AuthBaseController
                 for($i = 1; $i <=7 ; $i++)
                 {
                     $week_day[$i] = array();
-                    if($_POST[$i."_price"] !="")
-                    {
-                        $day = array(
-                            'day'=>$i."",
-                            'start_time'=>'',
-                            'end_time'=>'',
-                            'price'=>$_POST[$i.'_price'],
-                            'status'=>$_POST[$i."_status"]
-                        );
-                        array_push($week_day[$i], $day);
-                    }
+                    
                     if(isset($_POST[$i.'_start_time']))
                     {
                         //print_r($_POST[$i.'_start_time']);
@@ -279,7 +270,8 @@ class PriceController extends AuthBaseController
                             'start_time'=>'',
                             'end_time'=>'',
                             'price'=>$_POST[$i.'_price'],
-                            'status'=>$_POST[$i."_status"]
+                            'status'=>$_POST[$i."_status"],
+                            'record_time'=>date('Y-m-d H:i:s')
                         );
                         array_push($week_day[$i], $day);
                         if(isset($_POST[$i.'_start_time']))
@@ -314,17 +306,7 @@ class PriceController extends AuthBaseController
                 for($i = 1; $i <=7 ; $i++)
                 {
                     $week_day[$i] = array();
-                    if($_POST[$i."_price"] !="")
-                    {
-                        $day = array(
-                            'day'=>$i."",
-                            'start_time'=>'',
-                            'end_time'=>'',
-                            'price'=>$_POST[$i.'_price'],
-                            'status'=>$_POST[$i."_status"]
-                        );
-                        array_push($week_day[$i], $day);
-                    }
+                    
                     if(isset($_POST[$i.'_start_time']))
                     {
                         //print_r($_POST[$i.'_start_time']);
@@ -473,6 +455,50 @@ class PriceController extends AuthBaseController
         print_r(json_encode($msg));
     }
     
+    
+    public function actionCustomDetail()
+    {
+        $id = $_POST['id'];
+        $rows =  Yii::app()->db->createCommand()
+            ->select("*")
+            ->from("g_policy_detail st")
+            ->where("st.policy_id='{$id}' and start_time!=''")
+            ->queryAll();
+            //var_dump($rows);
+        $msg['status'] = true;
+        $desc = "";
+        $week = array(
+            '1'=>'周一',
+            '2'=>'周二',
+            '3'=>'周三',
+            '4'=>'周四',
+            '5'=>'周五',
+            '6'=>'周六',
+            '0'=>'周日',
+        );
+        if($rows)
+        {
+            foreach($rows as $row)
+            {
+                $start_time = substr($row['start_time'],0,2).":".substr($row['start_time'],2,2);
+                $end_time = substr($row['end_time'],0,2).":".substr($row['end_time'],2,2);
+                $desc .= $week[$row['day']]."(".$start_time."-".$end_time."):".($row['price']/100)."<br/>";
+            }
+        }
+        if ($rows) {
+        
+            $detail=array(
+               '详细'=>$desc
+               
+            );
+            $msg['detail']=Utils::MakeDetailTable($detail);
+        } else {
+            $msg['status'] = false;
+            $msg['detail'] = "获取报价单信息失败！";
+        }
+        print_r(json_encode($msg));
+    }
+    
     /**
      * 表头
      * @return SimpleGrid
@@ -482,14 +508,14 @@ class PriceController extends AuthBaseController
         $t = new SimpleGrid($this->pGridId);
         $t->url = 'index.php?r=price/policygrid';
         $t->updateDom = 'datagrid';
-        $t->set_header('开始日期', '100', '');
-        $t->set_header('结束日期', '100', '');
+        $t->set_header('开始日期', '10%', '');
+        $t->set_header('结束日期', '10%', '');
         //$t->set_header('', '70', '');
-        $t->set_header('服务项目', '70', '');
-        $t->set_header('预订须知', '100', '');
-        $t->set_header('取消规则', '100', '');
-        $t->set_header('周一至周日', '150', ''); 
-        $t->set_header('操作', '150', '');
+        $t->set_header('服务项目', '15%', '');
+        $t->set_header('预订须知', '15%', '');
+        $t->set_header('取消规则', '15%', '');
+        $t->set_header('周一至周日', '25%', ''); 
+        $t->set_header('操作', '10%', '');
 
         return $t;
     }
@@ -536,14 +562,15 @@ class PriceController extends AuthBaseController
         $t = new SimpleGrid($this->cGridId);
         $t->url = 'index.php?r=price/cusotmgrid';
         $t->updateDom = 'datagrid';
-        $t->set_header('开始日期', '100', '');
-        $t->set_header('结束日期', '100', '');
+       
+        $t->set_header('开始日期', '10%', '');
+        $t->set_header('结束日期', '10%', '');
         //$t->set_header('', '70', '');
-        $t->set_header('服务项目', '70', '');
-        $t->set_header('预订须知', '100', '');
-        $t->set_header('取消规则', '100', '');
-        $t->set_header('周一至周日', '150', ''); 
-        $t->set_header('操作', '150', '');
+        $t->set_header('服务项目', '15%', '');
+        $t->set_header('预订须知', '15%', '');
+        $t->set_header('取消规则', '15%', '');
+        $t->set_header('优惠报价', '25%', ''); 
+        $t->set_header('操作', '10%', '');
 
         return $t;
     }
@@ -590,13 +617,15 @@ class PriceController extends AuthBaseController
         $t = new SimpleGrid($this->sGridId);
         $t->url = 'index.php?r=price/specialgrid';
         $t->updateDom = 'datagrid';
-        $t->set_header('开始日期', '100', '');
-        $t->set_header('结束日期', '100', '');
-        $t->set_header('服务项目', '70', '');
-        $t->set_header('预订须知', '100', '');
-        $t->set_header('取消规则', '100', '');
-        $t->set_header('默认价格', '150', ''); 
-        $t->set_header('操作', '150', '');
+        $t->set_header('开始日期', '10%', '');
+        $t->set_header('结束日期', '10%', '');
+        //$t->set_header('', '70', '');
+        $t->set_header('服务项目', '15%', '');
+        $t->set_header('预订须知', '15%', '');
+        $t->set_header('取消规则', '15%', '');
+        $t->set_header('默认价格', '25%', ''); 
+        $t->set_header('操作', '10%', '');
+        
 
         return $t;
     }
@@ -923,7 +952,7 @@ class PriceController extends AuthBaseController
         }
         $success_cnt = 0;
         
-        for($a=2;$a<$count;$a++) {
+        for($a=2;$a<=$count;$a++) {
             $court_name = trim($data->val($a,1,0));
             $court_id = trim($data->val($a,2,0));
             $is_green = trim($data->val($a,3,0));

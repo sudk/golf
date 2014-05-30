@@ -70,6 +70,9 @@ return array(
             'order/edit' ,
             'order/lgrid' ,
             'order/log' ,
+            'order/nextstatus',
+            'order/confirmstatus',
+            'order/del',
         ),
         'bizRules' => '',
         'data' => ''
@@ -110,6 +113,7 @@ return array(
             'court/comment' ,
             'court/commentlist' ,
             'court/mycomment' ,
+            'court/mycommentlist',
             
             ),
         'bizRules' => '',
@@ -148,6 +152,7 @@ return array(
                 'price/del' ,
                 'price/delpolicydetail' ,
                 'price/detail' ,
+                'price/customdetail',
                 'price/policygrid' ,
                 'price/policy' ,
                 'price/customgrid' ,

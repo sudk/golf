@@ -123,6 +123,44 @@ class OrderLog extends CActiveRecord {
         }
         return $table;
     }
+
+    public static function Add($order_id,$serial_number){
+        $record_time=date("Y-m-d H:i:s");
+        $log_table="g_order_log_".date("Ym");
+
+        Yii::app()->db->createCommand('create table if not exists `'.$log_table.'` like g_order_log_')->execute();
+
+        $row=Yii::app()->db->createCommand()
+            ->select("*")
+            ->from("g_order")
+            ->where("order_id=:order_id",array("order_id"=>$order_id))
+            ->queryRow();
+
+        $sql = "insert into ".$log_table."
+                   (order_id,user_id,`type`,relation_id,relation_name,tee_time,`count`,unitprice,amount,had_pay,pay_type,status,record_time,serial_number,agent_id,contact,phone)
+                     values
+                    (:order_id,:user_id,:type,:relation_id,:relation_name,:tee_time,:count,:unitprice,:amount,:had_pay,:pay_type,:status,:record_time,:serial_number,:agent_id,:contact,:phone)";
+        $command = Yii::app()->db->createCommand($sql);
+        $command->bindParam(":order_id",$row['order_id'], PDO::PARAM_STR);
+        $command->bindParam(":user_id",$row['user_id'], PDO::PARAM_STR);
+        $command->bindParam(":type",$row['type'], PDO::PARAM_STR);
+        $command->bindParam(":relation_id",$row['relation_id'], PDO::PARAM_STR);
+        $command->bindParam(":relation_name",$row['relation_name'], PDO::PARAM_STR);
+        $command->bindParam(":tee_time",$row['tee_time'], PDO::PARAM_STR);
+        $command->bindParam(":count",$row['count'], PDO::PARAM_STR);
+        $command->bindParam(":unitprice",$row['unitprice'], PDO::PARAM_STR);
+        $command->bindParam(":amount",$row['amount'], PDO::PARAM_STR);
+        $command->bindParam(":had_pay",$row['had_pay'], PDO::PARAM_STR);
+        $command->bindParam(":pay_type",$row['pay_type'], PDO::PARAM_STR);
+        $command->bindParam(":status",$row['status'], PDO::PARAM_STR);
+        $command->bindParam(":record_time",$record_time, PDO::PARAM_STR);
+        $command->bindParam(":serial_number",$serial_number, PDO::PARAM_STR);
+        $command->bindParam(":agent_id",$row['agent_id'] , PDO::PARAM_STR);
+        $command->bindParam(":contact",$row['contact'] , PDO::PARAM_STR);
+        $command->bindParam(":phone",$row['phone'], PDO::PARAM_STR);
+        $command->execute();
+
+    }
     
    
 }

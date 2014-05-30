@@ -1,25 +1,49 @@
 package com.jason.golf.classes;
 
+import java.util.ArrayList;
+
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 public class GGood {
 
-	private String id;
-	private String title;
-	private String city;
-	private String desc;
-	private String price;
-	private String contact;
-	private String phone;
-	private String record_time;
-	private String status;
-	private String imgs;
+	private String _id;
+	private String _title;
+	private String _city;
+	private String _desc;
+	private String _price;
+	private String _contact;
+	private String _phone;
+	private String _record_time;
+	private String _status;
+	private ArrayList<String> _imgs;
 	
 	public boolean initialize(JSONObject item) {
 		// TODO Auto-generated method stub
 		
-		
-		
+		try {
+			_id = item.getString("id");
+			_title = item.getString("title");
+			_city = item.getString("city");
+			_desc = item.getString("desc");
+			_price = item.getString("price");
+			_contact = item.getString("contact");
+			_phone = item.getString("phone");
+			_record_time = item.getString("record_time");
+			
+			JSONArray imgs = item.getJSONArray("imgs");
+			_imgs = new ArrayList<String>();
+			for(int i=0,length=imgs.length(); i<length; i++){
+				_imgs.add((String) imgs.get(i));
+			}
+			
+			_status = item.getString("status");
+			
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			return false;
+		}
 		
 		
 		return true;
@@ -27,84 +51,79 @@ public class GGood {
 
 
 	public String getId() {
-		return id;
+		return _id;
 	}
 
 	public void setId(String id) {
-		this.id = id;
+		this._id = id;
 	}
 
 	public String getTitle() {
-		return title;
+		return _title;
 	}
 
 	public void setTitle(String title) {
-		this.title = title;
+		this._title = title;
 	}
 
 	public String getCity() {
-		return city;
+		return _city;
 	}
 
 	public void setCity(String city) {
-		this.city = city;
+		this._city = city;
 	}
 
 	public String getDesc() {
-		return desc;
+		return _desc;
 	}
 
 	public void setDesc(String desc) {
-		this.desc = desc;
+		this._desc = desc;
 	}
 
 	public String getPrice() {
-		return price;
+		return _price;
 	}
 
 	public void setPrice(String price) {
-		this.price = price;
+		this._price = price;
 	}
 
 	public String getContact() {
-		return contact;
+		return _contact;
 	}
 
 	public void setContact(String contact) {
-		this.contact = contact;
+		this._contact = contact;
 	}
 
 	public String getPhone() {
-		return phone;
+		return _phone;
 	}
 
 	public void setPhone(String phone) {
-		this.phone = phone;
+		this._phone = phone;
 	}
 
 	public String getRecord_time() {
-		return record_time;
+		return _record_time;
 	}
 
 	public void setRecord_time(String record_time) {
-		this.record_time = record_time;
+		this._record_time = record_time;
 	}
 
 	public String getStatus() {
-		return status;
+		return _status;
 	}
 
 	public void setStatus(String status) {
-		this.status = status;
+		this._status = status;
 	}
 
-	public String getImgs() {
-		return imgs;
+	public ArrayList<String> getImgs() {
+		return _imgs;
 	}
-
-	public void setImgs(String imgs) {
-		this.imgs = imgs;
-	}
-
 	
 }

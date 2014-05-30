@@ -23,14 +23,14 @@ class UinfoController extends AuthBaseController
         $t->url = 'index.php?r=user/uinfo/grid';
         $t->updateDom = 'datagrid';
        
-        $t->set_header('姓名', '40', '');
-        $t->set_header('电话', '60', '');
-        $t->set_header('会员卡号', '60', '');
-        $t->set_header('账户余额', '60', '','');
-        $t->set_header('账户积分', '60', '','');
-        $t->set_header('所在城市', '60', '','');
-        $t->set_header('状态', '30', '');
-        $t->set_header('操作', '100', '');
+        $t->set_header('姓名', '15%', '');
+        $t->set_header('电话', '10%', '');
+        $t->set_header('会员卡号', '20%', '');
+        $t->set_header('账户余额', '15%', '','');
+        $t->set_header('账户积分', '10%', '','');
+        $t->set_header('所在城市', '10%', '','');
+        $t->set_header('状态', '10%', '');
+        $t->set_header('操作', '10%', '');
         return $t;
     }
 

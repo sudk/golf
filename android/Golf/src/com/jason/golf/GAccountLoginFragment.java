@@ -3,13 +3,16 @@ package com.jason.golf;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.jason.controller.AppInfoContent;
 import com.jason.controller.GThreadExecutor;
 import com.jason.controller.HttpCallback;
 import com.jason.controller.HttpRequest;
 import com.jason.golf.classes.GAccount;
 import com.jason.golf.dialog.ProgressDialog;
-import com.jsaon.golf.R;
+import com.jason.golf.dialog.WarnDialog;
+import com.jason.golf.R;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -56,16 +59,17 @@ public class GAccountLoginFragment extends Fragment implements OnClickListener {
 		mPhone = (EditText) v.findViewById(R.id.loginid_edit);
 		mPassword = (EditText) v.findViewById(R.id.password_edit);
 		
+		mPhone.setText(AppInfoContent.getLoginid(getActivity()));
+		mPassword.setText(AppInfoContent.getPassword(getActivity()));
+		
 		mLogin = (Button) v.findViewById(R.id.login_button);
 		mLogin.setOnClickListener(this);
 		mRegister = (Button) v.findViewById(R.id.register_button);
 		mRegister.setOnClickListener(this);
 		
-//		ActionBarActivity activity = (ActionBarActivity) getActivity();
-//		ActionBar bar = activity.getSupportActionBar();
-//		bar.setTitle(R.string.login_title);
-//		int change = bar.getDisplayOptions() ^ ActionBar.DISPLAY_HOME_AS_UP;
-//	    bar.setDisplayOptions(change, ActionBar.DISPLAY_HOME_AS_UP);
+		ActionBarActivity activity = (ActionBarActivity) getActivity();
+		ActionBar bar = activity.getSupportActionBar();
+		bar.setTitle(R.string.login_title);
 		
 		return v;
 	}
@@ -94,6 +98,23 @@ public class GAccountLoginFragment extends Fragment implements OnClickListener {
 			
 			
 			Runnable r = new HttpRequest(getActivity(), p, new HttpCallback() {
+				
+				@Override
+				public void faildData(int code, String res) {
+					// TODO Auto-generated method stub
+					super.faildData(code, res);
+					
+					WarnDialog dialog = new WarnDialog(getActivity());
+					dialog.setTitle(R.string.login_title).setMessage(res)
+					.setPositiveBtn(R.string.confirm, new DialogInterface.OnClickListener() {
+						
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							// TODO Auto-generated method stub
+						}
+					});
+					dialog.show(getFragmentManager(), "LoginFaild");
+				}
 
 				@Override
 				public void sucessData(String res) {
@@ -120,6 +141,8 @@ public class GAccountLoginFragment extends Fragment implements OnClickListener {
 						acc.setBalance(data.getString("balance"));
 						acc.setPoint(data.getString("point"));
 						getActivity().finish();
+						
+						AppInfoContent.saveAccount(getActivity(), mPhone.getText().toString(), mPassword.getText().toString());
 						
 					} catch (JSONException e) {
 						// TODO Auto-generated catch block

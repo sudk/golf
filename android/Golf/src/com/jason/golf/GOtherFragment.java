@@ -12,7 +12,7 @@ import com.jason.controller.HttpCallback;
 import com.jason.controller.HttpRequest;
 import com.jason.golf.classes.AdvertisementAdapter;
 import com.jason.golf.classes.GAdver;
-import com.jsaon.golf.R;
+import com.jason.golf.R;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -29,6 +29,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
+import android.webkit.WebView.FindListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -39,8 +40,6 @@ public class GOtherFragment extends Fragment implements OnClickListener {
 	private ArrayList<ImageView> mDots;
 	private AdvertisementAdapter mAdapter;
 
-	private GridLayout mButtonsGrid;
-	
 	private ArrayList<GAdver> _advers;
 	
 	private Handler mHandler;
@@ -123,15 +122,24 @@ public class GOtherFragment extends Fragment implements OnClickListener {
 		
 		queryAders();
 		
-		mButtonsGrid = (GridLayout) v.findViewById(R.id.grid_buttons);
 		DisplayMetrics m = getActivity().getResources().getDisplayMetrics();
 		int widthPixels = m.widthPixels;
-		int paddingLeft = mButtonsGrid.getPaddingLeft();
-		int paddingRight = mButtonsGrid.getPaddingRight();
-		int width = (widthPixels - paddingLeft - paddingRight) / mButtonsGrid.getColumnCount() - 2 * 2; 
+		int width = (widthPixels ) / 3 - 2 * 2 - 2 * 2; 
 		
-		for(int i=0, length=mButtonsGrid.getChildCount(); i < length ; i++){
-			View child = mButtonsGrid.getChildAt(i);
+		LinearLayout mButtons = (LinearLayout) v.findViewById(R.id.buttons1);
+		
+		for(int i=0, length=mButtons.getChildCount(); i < length ; i++){
+			View child = mButtons.getChildAt(i);
+			LayoutParams params = child.getLayoutParams(); 
+			params.height = width;
+            params.width = width;
+            child.setLayoutParams(params);
+		}
+		
+		mButtons = (LinearLayout) v.findViewById(R.id.buttons2);
+		
+		for(int i=0, length=mButtons.getChildCount(); i < length ; i++){
+			View child = mButtons.getChildAt(i);
 			LayoutParams params = child.getLayoutParams(); 
 			params.height = width;
             params.width = width;
@@ -143,6 +151,7 @@ public class GOtherFragment extends Fragment implements OnClickListener {
 		v.findViewById(R.id.grid_sale).setOnClickListener(this);
 		v.findViewById(R.id.grid_ranking).setOnClickListener(this);
 		v.findViewById(R.id.grid_competition).setOnClickListener(this);
+		v.findViewById(R.id.grid_merchant).setOnClickListener(this);
 		
 		return v;
 	}
@@ -276,7 +285,16 @@ public class GOtherFragment extends Fragment implements OnClickListener {
 			competitionIntent.putExtras(params);
 			startActivity(competitionIntent);
 			break;
-		
+			
+		case R.id.grid_merchant:
+			
+			Intent merchantIntent = new Intent(getActivity(), GMerchantActivity.class);
+			Bundle merParams = new Bundle();
+			merParams.putInt(GMerchantActivity.FRAGMENT_MARK, GMerchantActivity.MERCHANT_LIST);
+			merchantIntent.putExtras(merParams);
+			startActivity(merchantIntent);
+			
+			break;
 		}
 	}
 	

@@ -17,7 +17,7 @@ import com.jason.golf.classes.GTrip;
 import com.jason.golf.classes.OrderAdapter;
 import com.jason.golf.classes.TripsAdapter;
 import com.jason.golf.provider.GolfProviderConfig;
-import com.jsaon.golf.R;
+import com.jason.golf.R;
 
 import android.app.Activity;
 import android.app.DownloadManager.Query;

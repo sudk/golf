@@ -16,14 +16,21 @@ import org.json.JSONObject;
 import com.jason.controller.GThreadExecutor;
 import com.jason.controller.HttpCallback;
 import com.jason.controller.HttpRequest;
+import com.jason.golf.classes.AdvertisementAdapter;
 import com.jason.golf.classes.AgentsAdapter;
+import com.jason.golf.classes.CourtImgsAdapter;
+import com.jason.golf.classes.GAdver;
 import com.jason.golf.classes.GAgent;
 import com.jason.golf.classes.GCourt;
-import com.jsaon.golf.R;
+import com.jason.golf.R;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -31,6 +38,7 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -40,6 +48,12 @@ public class GCourtInfoBriefFragment extends Fragment implements OnClickListener
 	private static final String KEY_COURT_ID = "court_id";
 	public static final String KEY_DATE = "key_date";
 	public static final String KEY_TIME = "key_time";
+	
+	private ViewPager mCourtImgs;
+	private CourtImgsAdapter mAdapter;
+	private Handler mHandler;
+	private int mViewPagerCurrentPosition;
+	private ArrayList<String> _imgs;
 	
 	private TextView mAgentDate, mAgentTime;
 	private TextView mCourtAddr, mCourtBrief;
@@ -53,6 +67,9 @@ public class GCourtInfoBriefFragment extends Fragment implements OnClickListener
 	private String _courtId;
 	
 	private int _year, _month, _day, _hour, _minute;
+	
+	private GCourt _court; 
+	
 	
 	public static GCourtInfoBriefFragment Instance(String courtId, String date, String time){
 		GCourtInfoBriefFragment fragment = new GCourtInfoBriefFragment();
@@ -69,6 +86,7 @@ public class GCourtInfoBriefFragment extends Fragment implements OnClickListener
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		
+		_imgs = new ArrayList<String>();
 		_agents = new ArrayList<GAgent>();
 		
 		_courtId = getArguments().getString(KEY_COURT_ID);
@@ -103,6 +121,50 @@ public class GCourtInfoBriefFragment extends Fragment implements OnClickListener
 		// TODO Auto-generated method stub
 		
 		View v = inflater.inflate(R.layout.fragment_court_info_brief, null);
+		
+		mCourtImgs = (ViewPager) v.findViewById(R.id.court_imgs);
+		
+		mAdapter = new CourtImgsAdapter(getActivity(),_imgs);
+		mCourtImgs.setAdapter(mAdapter);
+		mCourtImgs.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+			
+			@Override
+			public void onPageSelected(int position) {
+				// TODO Auto-generated method stub
+				mViewPagerCurrentPosition = position;
+			}
+			
+			@Override
+			public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
+			
+			@Override
+			public void onPageScrollStateChanged(int arg0) {}
+		});
+		
+		mHandler = new Handler(new Handler.Callback() {
+			
+			@Override
+			public boolean handleMessage(Message msg) {
+				// TODO Auto-generated method stub
+				if (msg.what == 1) {
+					int count = mAdapter.getCount();
+					if (count > 1){
+						mCourtImgs.setCurrentItem(( ++ mViewPagerCurrentPosition ) % count, true);
+					}
+				}
+				mHandler.removeMessages(1);
+				mHandler.sendEmptyMessageDelayed(1,	5000);
+				return false;
+			}
+		});
+		mHandler.sendEmptyMessageDelayed(1, 5000);
+		
+		
+		
+		
+		
+		
+		
 		
 		mAgentDate = (TextView) v.findViewById(R.id.agent_date);
 		mAgentDate.setOnClickListener(this);
@@ -234,42 +296,44 @@ public class GCourtInfoBriefFragment extends Fragment implements OnClickListener
 				try {
 					JSONObject data = new JSONObject(res);
 					
-					GCourt court = new GCourt();
-					court.setId(data.getString("court_id"));
-					court.setName(data.getString("name"));
-					court.setAddress(data.getString("addr"));
-					court.setModel(data.getString("model"));
-					court.setCreateYear(data.getString("create_year"));
-					court.setArea(data.getString("area"));
-					court.setGreenGrass(data.getString("green_grass"));
-					court.setCourtData(data.getString("court_data"));
-					court.setDesigner(data.getString("designer"));
-					court.setFairwayLength(data.getString("fairway_length"));
-					court.setFairwayGrass(data.getString("fairway_grass"));
-					court.setPhone(data.getString("phone"));
-					court.setRemark(data.getString("remark"));
-					court.setFacilities(data.getString("facilities"));
+					_court = new GCourt();
+					_court.setId(data.getString("court_id"));
+					_court.setName(data.getString("name"));
+					_court.setAddress(data.getString("addr"));
+					_court.setModel(data.getString("model"));
+					_court.setCreateYear(data.getString("create_year"));
+					_court.setArea(data.getString("area"));
+					_court.setGreenGrass(data.getString("green_grass"));
+					_court.setCourtData(data.getString("court_data"));
+					_court.setDesigner(data.getString("designer"));
+					_court.setFairwayLength(data.getString("fairway_length"));
+					_court.setFairwayGrass(data.getString("fairway_grass"));
+					_court.setPhone(data.getString("phone"));
+					_court.setRemark(data.getString("remark"));
+					_court.setFacilities(data.getString("facilities"));
 
 					JSONArray fi = data.getJSONArray("fairway_imgs");
 					
 					for(int fi_i=0, fi_length=fi.length(); fi_i<fi_length; fi_i++){
 						
-						court.addFairwayImg((String) fi.get(fi_i));
+						_court.addFairwayImg((String) fi.get(fi_i));
 					}
 					
 					
 					JSONArray ci = data.getJSONArray("court_imgs");
 					for(int ci_i=0, ci_length=ci.length(); ci_i<ci_length; ci_i++){
 						
-						court.addCourtImg((String) ci.get(ci_i));
+						_court.addCourtImg((String) ci.get(ci_i));
 					}
 					
-					GCourtInfoActivity a = (GCourtInfoActivity) getActivity();
-					a.setCourt(court);
+					mAdapter.swapData(_court.getCourtImgs());
 					
-					System.out.println(court.toString());
-					mCourtAddr.setText(court.getAddress());
-					mCourtBrief.setText(court.getRemark());
+					GCourtInfoActivity a = (GCourtInfoActivity) getActivity();
+					a.setCourt(_court);
+					
+					System.out.println(_court.toString());
+					mCourtAddr.setText(_court.getAddress());
+					mCourtBrief.setText(_court.getRemark());
 					
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
@@ -428,7 +492,12 @@ public class GCourtInfoBriefFragment extends Fragment implements OnClickListener
 		case R.id.court_addr:
 		case R.id.court_addr_triangle:
 			
-			
+			//打开地图
+			Intent mapIntent = new Intent(getActivity(), MapActivity.class);
+			Bundle params = new Bundle();
+			params.putString(MapActivity.KEY_COURT_ADDR, _court.getAddress());
+			mapIntent.putExtras(params);
+			startActivity(mapIntent);
 			
 			break;
 			

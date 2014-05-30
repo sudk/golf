@@ -23,15 +23,15 @@ class OrderController extends AuthBaseController
         $t = new SimpleGrid($this->gridId);
         $t->url = 'index.php?r=order/grid';
         $t->updateDom = 'datagrid';
-        $t->set_header('订单编号', '100', '');
-        $t->set_header('订单类型', '70', '');   
-        $t->set_header('下单人', '60', '');
-        $t->set_header('商品名称', '100', '');
-        $t->set_header('订单金额', '100', '');
-        $t->set_header('支付方式', '100', '');
-        $t->set_header('状态', '100', '');
-        $t->set_header('下单时间', '100', '');
-        $t->set_header('操作', '100', '');
+        $t->set_header('订单编号', '15%', '');
+        $t->set_header('订单类型', '10%', '');   
+        $t->set_header('下单人', '8%', '');
+        $t->set_header('商品名称', '15%', '');
+        $t->set_header('订单金额', '8%', '');
+        $t->set_header('支付方式', '8%', '');
+        $t->set_header('状态', '8%', '');
+        $t->set_header('下单时间', '8%', '');
+        $t->set_header('操作', '20%', '');
         return $t;
     }
 
@@ -48,6 +48,10 @@ class OrderController extends AuthBaseController
         if ($_REQUEST['q_value'])
         {
             $args[$_REQUEST['q_by']] = $_REQUEST['q_value'];
+        }
+        
+        if($args['order_id'] == "订单编号"){
+            $args['order_id'] = "";
         }
 
         $t = $this->genDataGrid();
@@ -95,8 +99,9 @@ class OrderController extends AuthBaseController
                 '客户电话'=>$model['phone'],
                '打球时间'=>$model['tee_time'],
                 '人数'=>$model['count'],
-                '单价'=>$model['unitprice'],
-                '必须支付'=>$model['had_pay'],
+                '单价'=>(intval($model['unitprice'])/100)."元",
+                '实付'=>(intval($model['had_pay'])/100)."元",
+                '支付方式'=>$model['pay_method']?Order::getPayMethod($model['pay_method']):"",
                 '备注'=>$model['desc'],
                     
             );
@@ -119,8 +124,12 @@ class OrderController extends AuthBaseController
         if($_POST['Order'])
         {
             $model->attributes = $_POST['Order'];
-            $model->status = $_POST['Order']['status'];
-            //var_dump($model->attributes);var_dump($_POST['Order']);
+            $model->amount = intval($_POST['Order']['amount'])*100;
+            $model->contact = trim($_POST['Order']['contact']);
+            $model->phone = trim($_POST['Order']['phone']);
+            $model->count = trim($_POST['Order']['count']);
+            $model->tee_time = trim($_POST['Order']['tee_time']);
+            
             $rs = $model->save();
             if($rs){
                 $msg['msg']="修改成功！";
@@ -130,18 +139,10 @@ class OrderController extends AuthBaseController
                 $msg['msg']="修改失败！";
                 $msg['status']=0;
             }
-        }else{
-            $status = $model->status;
-            $next_status = "";
-            if($status == Order::STATUS_TOBE_CONFIRM){
-                $next_status = Order::STATUS_TOBE_PAID;
-            }else if($status == Order::STATUS_TOBE_PAID)
-            {
-                $next_status = Order::STATUS_TOBE_SUCCESS;
-            }
-            
-            $model->status = $next_status;
         }
+        $model->amount = intval($model->amount)/100;
+        $model->unitprice = intval($model->unitprice)/100;
+        
         $this->layout = '//layouts/base';
         $this->render("edit",array('model' => $model, 'msg' => $msg));
     }
@@ -156,13 +157,14 @@ class OrderController extends AuthBaseController
         $t = new SimpleGrid($this->lGridId);
         $t->url = 'index.php?r=order/lgrid';
         $t->updateDom = 'datagrid';
-        $t->set_header('编号', '50', '');
-        $t->set_header('记录时间', '100', '');
-        $t->set_header('订单编号', '100', '');
-        $t->set_header('状态', '70', '');   
-        $t->set_header('操作人', '60', '');
-        $t->set_header('操作类型', '100', '');
-        $t->set_header('流水号', '100', '');
+        $t->set_header('编号', '5%', '');
+        $t->set_header('记录时间', '20%', '');
+        //$t->set_header('订单编号', '15%', '');
+        $t->set_header('状态', '15%', '');   
+//        $t->set_header('操作人', '20%', '');
+//        $t->set_header('操作类型', '20%', '');
+        $t->set_header('流水号', '20%', '');
+        $t->set_header('备注', '40%', '');
         
         return $t;
     }
@@ -203,6 +205,56 @@ class OrderController extends AuthBaseController
         $order_id = trim($_GET['id']);
         $_SESSION['cur_order_log'] = $order_id;
         $this->render('log_list',array('order_id'=>$order_id));
+    }
+    
+    
+    public function actionNextStatus()
+    {
+        $id=trim($_POST['id']);
+        $now_status = trim($_POST['ns']);
+        $next_status = trim($_POST['s']);
+        $pay_type = trim($_POST['type']);
+        $model = Order::model()->findByPk($id);
+        if(isset($_POST['Order']))
+        {
+            
+        }
+        $this->layout = '//layouts/base';
+        $this->render("next_status",array('model' => $model, 'msg' => $msg));
+    }
+    
+    /**
+     * 修改订单状态
+     * 主要是只修改状态，不用填写新的信息。
+     */
+    public function actionConfirmStatus()
+    {
+        $id=trim($_POST['id']);
+        $now_status = trim($_POST['ns']);
+        $next_status = trim($_POST['s']);
+        $pay_type = trim($_POST['type']);
+        
+        
+        $rs = Order::dealOrderStatus($id,$now_status,$next_status,$pay_type);
+        
+       
+        print_r(json_encode($rs));
+    }
+    
+    /**
+     * 保留删除功能
+     */
+    public function actionDel()
+    {
+        $id=$_POST['id'];
+        $rs = true;
+        if($rs){
+            $msg['status']=true;
+        }else{
+            $msg['status']=false;
+        }
+       
+        print_r(json_encode($msg));
     }
 	
 

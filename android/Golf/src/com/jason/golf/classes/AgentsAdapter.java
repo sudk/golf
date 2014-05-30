@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import com.jason.golf.GAccountActivity;
 import com.jason.golf.GolfAppliaction;
 import com.jason.golf.dialog.BookingOrderDialog;
-import com.jsaon.golf.R;
+import com.jason.golf.R;
 
 import android.content.Context;
 import android.content.Intent;

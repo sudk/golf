@@ -18,8 +18,9 @@ public class GOrder {
 	}
 	
 	public static String GetOrderTypeDes(String payType){
-//		订单类型，0、订场；1、行程；3、赛事报名；
 		String res = "";
+		
+//		订单类型，0、订场；1、行程；2、赛事报名；3、充值
 
 		if ("0".equals(payType))
 			res = "预定球场";
@@ -27,29 +28,48 @@ public class GOrder {
 			res = "预定行程";
 		if ("2".equals(payType))
 			res = "赛事报名";
+		if ("3".equals(payType))
+			res = "充值";
 
 		return res;
 		
 	}
 	
 	public static String GetStatusDes(String status){
-		
-//		0、待确认；1、待付款；2、完成预约；3、撤销 ，4、未到场  5、交易完成
+
+		/**
+	     * 状态流程
+	     * 0、等待确认；1、等待付款；2、付款完成；3、交易关闭 ，4-未到场  5-交易成功，6-等待退款 7-拒绝退款 8-退款中
+	     * 1）需要预付款的订单，需要完成上面的流程；无需预付款的，“等待确认”  到  “交易成功”
+	     * 2）在“等待确认”，“等待付款”时，客户可以随时 关闭交易。
+	     * 3）“付款完成”，客户想取消订单，只能【申请退款】，填写退款原因。
+	     * 4）客户未到场，则有 代理商 修改状态 “未到场”，可能需要执行一个返还部分款项的操作。订单结束
+	     * 5）客户打球完，代理商 修改状态 “交易成功”。订单结束
+	     * 6）客户申请退款，状态为“等待退款”。代理商审核通过，则执行退款流程，状态为“退款中”。退款完成，状态为“交易成功”。订单结束
+	     * 7）客户申请退款，代理商审核不通过，状态为“拒绝退款”。 订单结束。
+	     * 8)代理商 可以在任何时候 关闭订单。“交易关闭”，已经付款的，执行退款流程
+	     */
 		
 		String res = "";
 
 		if ("0".equals(status))
-			res = "待确认";
+			res = "等待确认";
 		if ("1".equals(status))
-			res = "待付款";
+			res = "等待付款";
 		if ("2".equals(status))
-			res = "完成预约";
+			res = "付款完成";
 		if ("3".equals(status))
-			res = "撤销";
+			res = "交易关闭";
 		if ("4".equals(status))
 			res = "未到场";
 		if ("5".equals(status))
-			res = "交易完成";
+			res = "交易成功";
+		if ("6".equals(status))
+			res = "等待退款";
+		if ("7".equals(status))
+			res = "拒绝退款";
+		if ("8".equals(status))
+			res = "退款中";
 
 		return res;
 		

@@ -88,13 +88,13 @@ class Adv extends CActiveRecord {
 
         
         if ($args['order'] != ''){
-            $condition.=' AND order = :order';
-            $params['facilite_name'] = $args['order'];
+            $condition.=' AND `order` = :order';
+            $params['order'] = intval($args['order']);
         }
         
         
         if ($args['type'] != ''){
-            $condition.=' AND type=:type';
+            $condition.=' AND `type`=:type';
             $params['type'] = $args['type'];
         }
         
@@ -137,21 +137,17 @@ class Adv extends CActiveRecord {
     public static function Adv_list($type) {
 
         $rows=Yii::app()->db->createCommand()
-            ->select("g_adv.id,g_adv.link_url,concat('".Img::IMG_PATH."',g_img.img_url)")
+            ->select("g_adv.id,g_adv.link_url,concat('".Img::IMG_PATH."',g_img.img_url) img")
             ->from("g_adv")
             ->leftJoin("g_img","g_img.type=7 and g_adv.id=g_img.relation_id")
             ->where("g_adv.type=:type and g_adv.status=0 and g_adv.start_time <= :date and g_adv.end_time >= :date",array("type"=>$type,'date'=>date("Y-m-d")))
-            ->order("`order`")
+            ->order("order")
             ->limit(4)
             ->queryAll();
         return $rows;
 
     }
-    
-    
-    
-    
-    
+
 }
 
 

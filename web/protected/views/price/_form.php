@@ -38,13 +38,13 @@ if($__model__=="edit"){
             }
             if($detail_row['start_time'] == "" && $detail_row['end_time'] == ""){
                 
-                $price_row[$day."_default"] = $detail_row['price'];
+                $price_row[$day."_default"] = intval($detail_row['price'])/100;
                 $status_row[$day."_default"] = $detail_row['status'];
             }else{
                 $price_row[$day][] = array(
                     'start_time'=>$detail_row['start_time'],
                     'end_time'=>$detail_row['end_time'],
-                    'price'=>$detail_row['price'],
+                    'price'=>intval($detail_row['price'])/100,
                     'id'=>$detail_row['id']
                     );
             }
@@ -135,85 +135,104 @@ if($__model__=="edit"){
     if($type == Policy::TYPE_SPECIAL)
     {
         $week_day = array();
-    }
-    if(@count($week_day) > 0)
+    }else if($type == Policy::TYPE_NORMAL)
     {
-        foreach($week_day as $key=>$value)
+        if(@count($week_day) > 0)
         {
-    ?>
-    <tr>
-        <td class="maxname"><?php echo $value;?>默认价：</td>
-        <td class="mivalue">
-           <input type="text" name="<?php echo $key;?>_price" value="<?php echo $price_row[$key."_default"];?>" class="input_text"/>
-        </td> 
-        <td class="maxname">
-            <input type="checkbox" name="<?php echo $key;?>_disable" value="1" onclick="javascript:check(this,'<?php echo $key;?>');" <?php echo $status_row[$key.'_default']=='1'?" checked":"";?>/><label>禁止预订</label>
-            <input type="hidden" name="<?php echo $key;?>_status" id="<?php echo $key;?>_status" value="<?php echo $status_row[$key.'_default']?$status_row[$key.'_default']:0;?>"/>
-        </td>
-        <td class="mivalue">
-            <?php
-            if($type == Policy::TYPE_FOVERABLE)
+            foreach($week_day as $key=>$value)
             {
-            ?>
-            <a href="javascript:void(0);" onclick="addTimePeriod('<?php echo $key;?>');"><span class="add_ico"></span></a>
-            <?php
+        ?>
+        <tr>
+            <td class="maxname"><?php echo $value;?>默认价：</td>
+            <td class="mivalue">
+               <input type="text" name="<?php echo $key;?>_price" value="<?php echo $price_row[$key."_default"];?>" class="input_text"/>
+            </td> 
+            <td class="maxname">
+                <input type="checkbox" name="<?php echo $key;?>_disable" value="1" onclick="javascript:check(this,'<?php echo $key;?>');" <?php echo $status_row[$key.'_default']=='1'?" checked":"";?>/><label>禁止预订</label>
+                <input type="hidden" name="<?php echo $key;?>_status" id="<?php echo $key;?>_status" value="<?php echo $status_row[$key.'_default']?$status_row[$key.'_default']:0;?>"/>
+            </td>
+            <td class="mivalue">
+                &nbsp;
+            </td>
+        </tr>
+        
+        <?php
             }
-            ?>
-        </td>
-    </tr>
-    <?php
-    $num = 0;
-    
-    if(isset($price_row) && isset($price_row[$key]))
+        }
+    }else if($type == Policy::TYPE_FOVERABLE)
     {
-        $num = @count($price_row[$key]);
-    }
-    //var_dump($num);
-    ?>
-    <tr style="<?php if($num==0){?>display:none;<?php }?>" id="<?php echo $key;?>_tr">
-        <td class="maxname"></td>
-        <td class="mivalue" colspan="3"  id="<?php echo $key;?>_td">
-            <?php
-            if($num > 0)
+        if(@count($week_day) > 0)
+        {
+            foreach($week_day as $key=>$value)
             {
-                foreach($price_row[$key] as $detail_price)
+        ?>
+        <tr>
+            <td class="maxname"><?php echo $value;?>优惠价：</td>
+            <td class="mivalue">
+                <a href="javascript:void(0);" onclick="addTimePeriod('<?php echo $key;?>');"><span class="add_ico"></span></a>            &nbsp;   
+            </td> 
+            <td class="maxname">
+                &nbsp;
+            </td>
+            <td class="mivalue">               
+                &nbsp;
+            </td>
+        </tr>
+        <?php
+        $num = 0;
+
+        if(isset($price_row) && isset($price_row[$key]))
+        {
+            $num = @count($price_row[$key]);
+        }
+        //var_dump($num);
+        ?>
+        <tr style="<?php if($num==0){?>display:none;<?php }?>" id="<?php echo $key;?>_tr">
+            <td class="maxname"></td>
+            <td class="mivalue" colspan="3"  id="<?php echo $key;?>_td">
+                <?php
+                if($num > 0)
                 {
-                    ?>
-                    <p>
-                    <span>开始时间：</span>
-                    <select name="<?php echo $key;?>_start_time[]" style="width:100px;">
-                    <?php
-                    $time_array = Yii::app()->params['time_array'];
-                    foreach($time_array as $k=>$v){
+                    foreach($price_row[$key] as $detail_price)
+                    {
                         ?>
-                        <option value="<?php echo $k;?>" <?php if($detail_price['start_time'] == $k){ echo " selected";}?>><?php echo $v;?></option>
+                        <p>
+                        <span>开始时间：</span>
+                        <select name="<?php echo $key;?>_start_time[]" style="width:100px;">
                         <?php
-                    }
-                    ?>
-                    </select>
-                    <span>结束时间：</span>
-                    <select name="<?php echo $key;?>_end_time[]" style="width:100px;">
-                    <?php
-                    foreach($time_array as $k=>$v){
+                        $time_array = Yii::app()->params['time_array'];
+                        foreach($time_array as $k=>$v){
+                            ?>
+                            <option value="<?php echo $k;?>" <?php if($detail_price['start_time'] == $k){ echo " selected";}?>><?php echo $v;?></option>
+                            <?php
+                        }
                         ?>
-                        <option value="<?php echo $k;?>" <?php if($detail_price['end_time'] == $k){ echo " selected";}?>><?php echo $v;?></option>
+                        </select>
+                        <span>结束时间：</span>
+                        <select name="<?php echo $key;?>_end_time[]" style="width:100px;">
                         <?php
+                        foreach($time_array as $k=>$v){
+                            ?>
+                            <option value="<?php echo $k;?>" <?php if($detail_price['end_time'] == $k){ echo " selected";}?>><?php echo $v;?></option>
+                            <?php
+                        }
+                        ?>
+                        </select>
+                        <span>价格:</span>
+                        <input type="text" name="<?php echo $key;?>_d_price[]" value="<?php echo $detail_price['price']?>" style="width:100px;"/>
+                        <a href="javascript:void(0);" onclick="javascript:delItemFromDB(this,'<?php echo $detail_price['id'];?>');"><span class="del_ico"></span></a>
+                        </p> 
+                         <?php
                     }
-                    ?>
-                    </select>
-                    <span>价格:</span>
-                    <input type="text" name="<?php echo $key;?>_d_price[]" value="<?php echo $detail_price['price']?>" style="width:100px;"/>
-                    <a href="javascript:void(0);" onclick="javascript:delItemFromDB(this,'<?php echo $detail_price['id'];?>');"><span class="del_ico"></span></a>
-                    </p> 
-                     <?php
                 }
+                ?>
+            </td>
+        </tr>
+        <?php
             }
-            ?>
-        </td>
-    </tr>
-    <?php
         }
     }
+    
     if($type == Policy::TYPE_SPECIAL)
     {
         

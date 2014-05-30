@@ -21,12 +21,12 @@ class NewsController extends AuthBaseController
         $t = new SimpleGrid($this->gridId);
         $t->url = 'index.php?r=service/news/grid';
         $t->updateDom = 'datagrid';
-        $t->set_header('序号', '30', '');
-        $t->set_header('标题', '120', '');
-        $t->set_header('状态', '100', '');
-        $t->set_header('创建者', '100', '');
-        $t->set_header('录入时间', '100', '');
-        $t->set_header('操作', '100', '');
+        $t->set_header('序号', '5%', '');
+        $t->set_header('标题', '40%', '');
+        $t->set_header('状态', '10%', '');
+        $t->set_header('创建者', '10%', '');
+        $t->set_header('录入时间', '20%', '');
+        $t->set_header('操作', '15%', '');
         return $t;
     }
 

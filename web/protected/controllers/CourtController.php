@@ -9,6 +9,7 @@ class CourtController extends AuthBaseController
     public $gridId = 'list';
     public $picGridId = 'pic_list';
     public $cGridId = 'comment_list';
+    public $mcGridId = 'my_comment_list';
     public $pageSize = 100;
     public $module_id = 'court';
     
@@ -23,11 +24,11 @@ class CourtController extends AuthBaseController
         $t = new SimpleGrid($this->gridId);
         $t->url = 'index.php?r=court/grid';
         $t->updateDom = 'datagrid';
-        $t->set_header('球场名称', '100', '');
-        $t->set_header('球场模式', '70', '');   
-        $t->set_header('球场电话', '60', '');
-        $t->set_header('球场地址', '100', '');
-        $t->set_header('操作', '100', '');
+        $t->set_header('球场名称', '30%', '');
+        $t->set_header('球场模式', '10%', '');   
+        $t->set_header('球场电话', '10%', '');
+        $t->set_header('球场地址', '30%', '');
+        $t->set_header('操作', '20%', '');
         return $t;
     }
 
@@ -46,6 +47,7 @@ class CourtController extends AuthBaseController
             $args[$_REQUEST['q_by']] = $_REQUEST['q_value'];
         }
 
+        //var_dump($args);
         $t = $this->genDataGrid();
 
         $list = Court::queryList($page, $this->pageSize, $args);
@@ -306,9 +308,9 @@ class CourtController extends AuthBaseController
         $t = new SimpleGrid($this->picGridId);
         $t->url = 'index.php?r=court/piclist';
         $t->updateDom = 'datagrid';
-        $t->set_header('图片类型', '100', '');
-        $t->set_header('图片', '100', '');   
-        $t->set_header('操作', '100', '');
+        $t->set_header('图片类型', '20%', '');
+        $t->set_header('图片', '60%', '');   
+        $t->set_header('操作', '20%', '');
         return $t;
     }
 
@@ -327,8 +329,13 @@ class CourtController extends AuthBaseController
 
         $t = $this->genPicDataGrid();
         
+        if(!isset($args['relation_id']))
+        {
+            $args['relation_id'] = $_SESSION['cur_court_id'];
+        }
+        
         $args['from'] = 'court';
-
+        //var_dump($args);
         $list = Img::queryList($page, $this->pageSize, $args);
 
         $this->renderPartial('_piclist', array('t' => $t, 'rows' => $list['rows'], 'cnt' => $list['total_num'], 'curpage' => $list['page_num']));
@@ -432,13 +439,14 @@ class CourtController extends AuthBaseController
         $url = $info['img_url'];
         $rs = Img::model()->deleteByPk($id);
         //var_dump($rs);
-        $data['status'] = 0;
+        $data['status'] = 1;
         $data['msg'] = "";
         if($rs)
         {
             $this->delImg($url);
             
         }else{
+            $data['status'] = 0;
             $data['msg'] = "删除失败。";
         }
         
@@ -506,9 +514,9 @@ class CourtController extends AuthBaseController
      * 保存头像
      * 180x180 50x50 30x30三个尺寸
      */
-    function saveThumbnails($file_name,$file_name_small){
+    function saveThumbnails($file_name,$file_name_small,$img_size=56){
       
-        $middle_size = 56;     
+        $middle_size = $img_size;     
         $src = $file_name;
         //$suffix = strtolower($suffix);
         
@@ -599,22 +607,23 @@ class CourtController extends AuthBaseController
      */
     private function genCDataGrid()
     {
+        
         $t = new SimpleGrid($this->cGridId);
         $t->url = 'index.php?r=court/commentlist';
         $t->updateDom = 'datagrid';
-        $t->set_header('球场名称', '200', '');
-        $t->set_header('服务', '50', '');   
-        $t->set_header('设计', '50', '');   
-        $t->set_header('设施', '50', '');   
-        $t->set_header('草坪', '50', '');        
-        $t->set_header('评分人', '100', '');  
-        $t->set_header('评分时间', '100', '');  
-        $t->set_header('备注', '100', '');  
+        $t->set_header('球场名称', '20%', '');
+        $t->set_header('服务', '10%', '');   
+        $t->set_header('设计', '10%', '');   
+        $t->set_header('设施', '10%', '');   
+        $t->set_header('草坪', '10%', '');        
+        $t->set_header('评分人', '10%', '');  
+        $t->set_header('评分时间', '15%', '');  
+        $t->set_header('备注', '15%', '');  
         return $t;
     }
 
     
-    public function actionCommentList($cur_court_id=null)
+    public function actionCommentList()
     {
         $page = $_GET['page'] == '' ? 0 : $_GET['page']; //当前页码
         $_GET['page']=$_GET['page']+1;
@@ -625,10 +634,8 @@ class CourtController extends AuthBaseController
         {
             $args[$_REQUEST['q_by']] = $_REQUEST['q_value'];
         }
-        if($cur_court_id!=null)
-        {
-            $args['court_id'] = $cur_court_id;
-        }
+        
+        
         $t = $this->genCDataGrid();
         //var_dump($args);
         $list = Comment::queryList($page, $this->pageSize, $args);
@@ -658,6 +665,63 @@ class CourtController extends AuthBaseController
         $_SESSION['cur_court_name'] = $name;
         
         $this->render('my_comment',array('cur_court_id'=>$id));
+    }
+    
+    
+    /**
+     * 表头
+     * @return SimpleGrid
+     */
+    private function genMCDataGrid()
+    {
+        
+        $t = new SimpleGrid($this->mcGridId);
+        $t->url = 'index.php?r=court/mycommentlist';
+        $t->updateDom = 'datagrid';
+        $t->set_header('球场名称', '20%', '');
+        $t->set_header('服务', '10%', '');   
+        $t->set_header('设计', '10%', '');   
+        $t->set_header('设施', '10%', '');   
+        $t->set_header('草坪', '10%', '');        
+        $t->set_header('评分人', '10%', '');  
+        $t->set_header('评分时间', '15%', '');  
+        $t->set_header('备注', '15%', '');  
+        return $t;
+    }
+
+    
+    public function actionMyCommentList($cur_court_id=null)
+    {
+        $page = $_GET['page'] == '' ? 0 : $_GET['page']; //当前页码
+        $_GET['page']=$_GET['page']+1;
+        $args = $_GET['q']; //查询条件
+
+
+        if ($_REQUEST['q_value'])
+        {
+            $args[$_REQUEST['q_by']] = $_REQUEST['q_value'];
+        }
+        
+        if($cur_court_id!=null)
+        {
+            $args['court_id'] = $cur_court_id;
+            
+        }
+        $t = $this->genMCDataGrid();
+        //var_dump($args);
+        $list = Comment::queryList($page, $this->pageSize, $args);
+        
+        if($list['rows'])
+        {
+            $court_list = Court::getCourtArray();
+            foreach($list['rows'] as $key=>$row)
+            {
+                $court_id = $row['court_id'];
+                $list['rows'][$key]['court_name'] = $court_list[$court_id];
+            }
+        }
+
+        $this->renderPartial('_mycomment', array('t' => $t, 'rows' => $list['rows'], 'cnt' => $list['total_num'], 'curpage' => $list['page_num']));
     }
 
 

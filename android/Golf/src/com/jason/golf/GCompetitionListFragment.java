@@ -15,7 +15,7 @@ import com.jason.golf.classes.CompetitionAdapter;
 import com.jason.golf.classes.GCompetition;
 import com.jason.golf.classes.GOrder;
 import com.jason.golf.classes.OrderAdapter;
-import com.jsaon.golf.R;
+import com.jason.golf.R;
 
 import android.app.DownloadManager.Query;
 import android.os.Bundle;
@@ -165,6 +165,7 @@ public class GCompetitionListFragment extends Fragment implements OnItemClickLis
 						competition.setFeeInclude(item.getString("fee_include"));
 						competition.setFeeNotInclude(item.getString("fee_not_include"));
 						competition.setFeeType(item.getString("fee_type"));
+						competition.setImg(item.getString("img"));
 						
 						_competitions.add(competition);
 					}

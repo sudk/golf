@@ -1,6 +1,6 @@
 package com.jason.golf.classes;
 
-import com.jsaon.golf.R;
+import com.jason.golf.R;
 
 import android.widget.LinearLayout;
 import android.content.Context;

@@ -24,23 +24,15 @@
             android:orientation="horizontal" />
     </RelativeLayout>
 
-    <android.support.v7.widget.GridLayout
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/grid_buttons"
+    <LinearLayout
+        android:id="@+id/buttons1"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:paddingBottom="@dimen/button_grid_vertical_margin"
-        android:paddingLeft="@dimen/button_grid_horizontal_margin"
-        android:paddingRight="@dimen/button_grid_horizontal_margin"
-        android:paddingTop="@dimen/button_grid_vertical_margin"
-        app:alignmentMode="alignMargins"
-        app:columnCount="3"
-        app:columnOrderPreserved="false"
-        app:useDefaultMargins="false" >
+        android:layout_height="wrap_content" >
 
-       <TextView
+        <TextView
             android:id="@+id/grid_preferential"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_margin="2dip"
             android:background="#00a0ea"
             android:gravity="center"
@@ -50,39 +42,67 @@
 
         <TextView
             android:id="@+id/grid_trip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_margin="2dip"
             android:background="#8587c0"
             android:gravity="center"
-            android:text="@string/trip"
+            android:text="@string/combo"
             android:textColor="@android:color/white"
             android:textSize="32sp" />
 
         <TextView
             android:id="@+id/grid_sale"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_margin="2dip"
-            android:gravity="center"
             android:background="#2454a6"
+            android:gravity="center"
             android:text="@string/sale"
             android:textColor="@android:color/white"
             android:textSize="32sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/buttons2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
 
         <TextView
             android:id="@+id/grid_ranking"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_margin="2dip"
             android:background="#0ba29b"
             android:gravity="center"
             android:text="@string/ranking"
             android:textColor="@android:color/white"
-            android:textSize="28sp" />
-        
+            android:textSize="27sp" />
+
         <TextView
             android:id="@+id/grid_competition"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_margin="2dip"
+            android:layout_weight="1"
             android:background="#EEDC82"
             android:gravity="center"
             android:text="@string/competition"
             android:textColor="@android:color/white"
-            android:textSize="28sp" />
-    </android.support.v7.widget.GridLayout>
+            android:textSize="27sp" />
+
+        <TextView
+            android:id="@+id/grid_merchant"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="2dip"
+            android:layout_weight="1"
+            android:background="#EEDC82"
+            android:gravity="center"
+            android:text="@string/merchant"
+            android:textColor="@android:color/white"
+            android:singleLine="true"
+            android:textSize="27sp" />
+    </LinearLayout>
 
 </LinearLayout>

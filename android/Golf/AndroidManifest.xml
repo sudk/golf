@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.jsaon.golf"
+    package="com.jason.golf"
     android:versionCode="1"
     android:versionName="1.0" >
 
@@ -13,6 +13,17 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.VIBRATE" />
+
+    <permission android:name="android.permission.BAIDU_LOCATION_SERVICE" >
+    </permission>
+
+    <uses-permission android:name="android.permission.BAIDU_LOCATION_SERVICE" >
+    </uses-permission>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" >
+    </uses-permission>
+    <uses-permission android:name="android.permission.ACCESS_MOCK_LOCATION" >
+    </uses-permission>
+    <uses-permission android:name="android.permission.ACCESS_GPS" />
 
     <!-- 这个权限用于进行网络定位 -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" >
@@ -43,6 +54,10 @@
     <!-- 允许应用读取低级别的系统日志文件 -->
     <uses-permission android:name="android.permission.READ_LOGS" >
     </uses-permission>
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
 
     <application
         android:name="com.jason.golf.GolfAppliaction"
@@ -54,7 +69,8 @@
         <!-- 百度key -->
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
-            android:value="Yp7dH4trRDXGpSWw6lYpnoH3" />
+            android:value="Yp7dH4trRDXGpSWw6lYpnoH3" >
+        </meta-data>
 
         <activity
             android:name="com.jason.golf.MainActivity"
@@ -109,10 +125,30 @@
             android:name="com.jason.golf.GTripsActivity"
             android:screenOrientation="portrait" >
         </activity>
-        
         <activity
             android:name="com.jason.golf.GFleeMarketActivity"
             android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.jason.golf.GMerchantActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.jason.golf.CourtEstimate"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.jason.golf.GTransrecordActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.jason.golf.GCompetitionActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.jason.golf.MapActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="sensor" >
         </activity>
 
         <!-- 百度地图 -->
@@ -121,9 +157,13 @@
             android:enabled="true"
             android:process=":remote" >
         </service>
-
-        <activity android:name="com.jason.golf.GCompetitionActivity" >
-        </activity>
     </application>
+
+    <supports-screens
+        android:anyDensity="true"
+        android:largeScreens="true"
+        android:normalScreens="true"
+        android:resizeable="true"
+        android:smallScreens="true" />
 
 </manifest>

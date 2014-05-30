@@ -13,7 +13,7 @@ if (is_array($rows))
         $t->echo_td($num); 
         $t->echo_td($trans_type[$row['trans_type']]); //学校编号
         $t->echo_td($row['serial_number']);
-        $t->echo_td($row['amount']);
+        $t->echo_td((intval($row['amount'])/100)."元");
         $t->echo_td($row['re_serial_number']);
         $t->echo_td($row['user_id']);
         $t->echo_td($status[$row['status']]);

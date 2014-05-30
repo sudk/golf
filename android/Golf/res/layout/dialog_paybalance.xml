@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/dialog_order_background"
+    android:gravity="center"
+    android:orientation="vertical" >
+    
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="5dip" >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="支付"
+            android:textStyle="bold"
+            android:textColor="#696969"
+            android:textSize="19sp" />
+
+        <EditText
+            android:id="@+id/dialog_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dip"
+            android:gravity="top"
+            android:hint="请输入登录密码"
+            android:textColor="@android:color/black"
+            android:lineSpacingMultiplier="1.2"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#ffffbb33"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/dialog_refund_cancel"
+            style="@style/DialogOrderBlueButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="10dip"
+            android:text="取消" />
+
+        <Button
+            android:id="@+id/dialog_refund_ok"
+            style="@style/DialogOrderOrangeButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="10dip"
+            android:text="退款" />
+        
+    </LinearLayout>
+</LinearLayout>

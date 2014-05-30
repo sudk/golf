@@ -241,7 +241,9 @@ class Policy extends CActiveRecord {
                 }
                 foreach($day_row as $row)
                 {
-                $sql = "insert into g_policy_detail(policy_id,day,start_time,end_time,price,record_time,status)
+                    $row['record_time'] = $row['record_time'] == null ? date("Y-m-d H:i:s"):$row['record_time'];
+                    $row['price'] = intval($row['price'])*100;
+                    $sql = "insert into g_policy_detail(policy_id,day,start_time,end_time,price,record_time,status)
                     values('{$policy_id}','{$day}','{$row['start_time']}','{$row['end_time']}','{$row['price']}','{$row['record_time']}','{$row['status']}')";
                 //var_dump($sql);
                 $connection->createCommand($sql)->execute();
@@ -300,7 +302,9 @@ class Policy extends CActiveRecord {
                 }
                 foreach($day_row as $row)
                 {
-                $sql = "insert into g_policy_detail(policy_id,day,start_time,end_time,price,record_time,status)
+                    $row['record_time'] = $row['record_time'] == null ? date("Y-m-d H:i:s"):$row['record_time'];
+                    $row['price'] = intval($row['price'])*100;
+                    $sql = "insert into g_policy_detail(policy_id,day,start_time,end_time,price,record_time,status)
                     values('{$policy_id}','{$day}','{$row['start_time']}','{$row['end_time']}','{$row['price']}','{$row['record_time']}','{$row['status']}')";
                 //var_dump($sql);
                 $connection->createCommand($sql)->execute();

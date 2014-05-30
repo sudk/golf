@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import net.tsz.afinal.FinalBitmap;
 
 import com.jason.golf.classes.GCourt;
-import com.jsaon.golf.R;
+import com.jason.golf.R;
 
 import android.content.Context;
 import android.os.Bundle;

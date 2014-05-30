@@ -31,6 +31,9 @@ public class HttpConnection {
 	}
 
 	public HttpResponse sendRequestInPost(String command_url, String req, String session, Handler handler) {
+		
+		Message startMsg = handler.obtainMessage(10000);
+		handler.sendMessage(startMsg);
 
 		HttpResponse res = new HttpResponse();
 		HttpURLConnection urlConnection = null;
@@ -99,6 +102,8 @@ public class HttpConnection {
 			if(handler != null){
 				Message msg = handler.obtainMessage(res.responseCode, res.content);
 				handler.sendMessage(msg);
+				
+				handler.sendEmptyMessage(10001);
 			}
 		}
 		

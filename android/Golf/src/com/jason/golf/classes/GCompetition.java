@@ -25,8 +25,9 @@ public class GCompetition {
 	private String _feeType;
 	private String _courtName;
 	private String _courtId;
+	private String _img;
 
-	private ArrayList<String> _img;
+	private ArrayList<String> _imgs;
 
 	public boolean init(JSONObject data) {
 
@@ -67,8 +68,14 @@ public class GCompetition {
 			setCourtName(data.getString("court_name"));
 			setAgentName(data.getString("agent_name"));
 			
-			JSONArray imgs = data.getJSONArray("imgs");
-			setImg(imgs);
+			if (data.has("img")) {
+				setImg(data.getString("img"));
+			}
+
+			if (data.has("imgs")) {
+				JSONArray imgs = data.getJSONArray("imgs");
+				setImgs(imgs);
+			}
 
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
@@ -78,18 +85,26 @@ public class GCompetition {
 		return true;
 	}
 
-	public ArrayList<String> getImg() {
+	public String getImg() {
 		return _img;
 	}
 
-	public void setImg(JSONArray img) throws JSONException {
-		if(_img == null){
-			_img = new ArrayList<String>();
+	public void setImg(String img) {
+		this._img = img;
+	}
+
+	public ArrayList<String> getImgs() {
+		return _imgs;
+	}
+
+	public void setImgs(JSONArray imgs) throws JSONException {
+		if (_img == null) {
+			_imgs = new ArrayList<String>();
 		}
-		_img.clear();
-		
-		for(int i=0, length=img.length(); i<length; i++){
-			_img.add(img.getString(i));
+		_imgs.clear();
+
+		for (int i = 0, length = imgs.length(); i < length; i++) {
+			_imgs.add(imgs.getString(i));
 		}
 	}
 
@@ -224,5 +239,19 @@ public class GCompetition {
 
 		return res;
 	}
+
+	@Override
+	public String toString() {
+		return "GCompetition [_id=" + _id + ", _agentId=" + _agentId
+				+ ", _agentName=" + _agentName + ", _name=" + _name
+				+ ", _desc=" + _desc + ", _fee=" + _fee + ", _startDate="
+				+ _startDate + ", _endDate=" + _endDate + ", _plan=" + _plan
+				+ ", _feeInclude=" + _feeInclude + ", _feeNotInclude="
+				+ _feeNotInclude + ", _feeType=" + _feeType + ", _courtName="
+				+ _courtName + ", _courtId=" + _courtId + ", _img=" + _img
+				+ ", _imgs=" + _imgs + "]";
+	}
+	
+	
 
 }

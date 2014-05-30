@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dip"
+        android:layout_margin="10dip"
+        android:layout_weight="1"
+        android:scrollbars="none"
+        android:background="@drawable/block_background" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dip"
+                android:orientation="horizontal" >
+
+                <TextView
+                    style="@style/FleeInfoTitle"
+                    android:layout_width="0dip"
+                    android:layout_height="match_parent"
+                    android:text="标题：" />
+
+                <EditText
+                    android:id="@+id/flee_title"
+                    style="@style/FleeInfoEditText"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/flee_new_good_title" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dip"
+                android:layout_marginLeft="10dip"
+                android:layout_marginRight="10dip"
+                android:background="@drawable/block_divider" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dip"
+                android:orientation="horizontal" >
+
+                <TextView
+                    style="@style/FleeInfoTitle"
+                    android:layout_width="0dip"
+                    android:layout_height="match_parent"
+                    android:text="价格：" />
+
+                <EditText
+                    android:id="@+id/flee_price"
+                    style="@style/FleeInfoEditText"
+                    android:layout_width="0dip"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/money"
+                    android:hint="@string/flee_new_good_price"
+                    android:inputType="numberDecimal" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dip"
+                android:layout_marginLeft="10dip"
+                android:layout_marginRight="10dip"
+                android:background="@drawable/block_divider" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dip"
+                android:orientation="horizontal" >
+
+                <TextView
+                    style="@style/FleeInfoTitle"
+                    android:layout_width="0dip"
+                    android:layout_height="match_parent"
+                    android:text="联系人：" />
+
+                <EditText
+                    android:id="@+id/flee_contact"
+                    style="@style/FleeInfoEditText"
+                    android:layout_width="0dip"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/flee_new_good_contact" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dip"
+                android:layout_marginLeft="10dip"
+                android:layout_marginRight="10dip"
+                android:background="@drawable/block_divider" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dip"
+                android:orientation="horizontal" >
+
+                <TextView
+                    style="@style/FleeInfoTitle"
+                    android:layout_width="0dip"
+                    android:layout_height="match_parent"
+                    android:text="手机号：" />
+
+                <EditText
+                    android:id="@+id/flee_phone"
+                    style="@style/FleeInfoEditText"
+                    android:layout_width="0dip"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/flee_new_good_phone"
+                    android:inputType="phone" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dip"
+                android:layout_marginLeft="10dip"
+                android:layout_marginRight="10dip"
+                android:background="@drawable/block_divider" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dip"
+                android:orientation="horizontal" >
+
+                <TextView
+                    style="@style/FleeInfoTitle"
+                    android:layout_width="0dip"
+                    android:layout_height="match_parent"
+                    android:text="城市：" />
+
+                <TextView
+                    android:id="@+id/flee_city"
+                    style="@style/FleeInfoEditText"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:drawableRight="@drawable/ic_37_triange"
+                    android:text="选择城市" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dip"
+                android:layout_marginLeft="10dip"
+                android:layout_marginRight="10dip"
+                android:background="@drawable/block_divider" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dip"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="2dip" >
+
+                <TextView
+                    style="@style/FleeInfoTitle"
+                    android:layout_width="0dip"
+                    android:layout_height="wrap_content"
+                    android:text="照片："
+                    android:textColor="@color/titlecolor" />
+
+                <LinearLayout
+                    android:id="@+id/flee_images"
+                    android:layout_width="0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="7"
+                    android:orientation="horizontal" >
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/flee_add_img"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="+" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dip"
+                android:layout_marginLeft="10dip"
+                android:layout_marginRight="10dip"
+                android:background="@drawable/block_divider" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dip"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="3dip"
+                    android:drawablePadding="10dip"
+                    android:gravity="center_vertical"
+                    android:text="物品描述："
+                    android:textColor="@color/titlecolor"
+                    android:textSize="16sp" />
+
+                <EditText
+                    android:id="@+id/flee_desc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="top"
+                    android:hint="@string/flee_new_good_desc"
+                    android:lineSpacingMultiplier="1.5"
+                    android:lines="5"
+                    android:textSize="17sp" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <Button
+        android:id="@+id/flee_submit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dip"
+        android:textColor="@color/white"
+        android:background="@drawable/button_background"
+        android:text="保存" />
+
+</LinearLayout>

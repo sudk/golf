@@ -147,6 +147,23 @@
                     android:text="内容" />
             </LinearLayout>
         </LinearLayout>
+        
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dip"
+            android:background="@drawable/block_background"
+            android:orientation="horizontal"
+            android:padding="4dip" >
+
+            <TextView
+                android:id="@+id/court_comment"
+                style="@style/CourtDetailContent"
+                android:drawableRight="@drawable/ic_37_triange"
+				android:text="@string/court_comment"
+                android:textColor="#7c7c7c"
+                android:textSize="15sp" />
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -165,7 +182,8 @@
                 style="@style/CourtDetailContent"
                 android:drawableRight="@drawable/ic_37_triange"
                 android:text="内容"
-                android:textColor="@color/basecolor" />
+                android:textColor="@color/basecolor"
+                android:textSize="15sp" />
         </LinearLayout>
 
         <LinearLayout

@@ -58,6 +58,20 @@
     [rankingBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [rankingBtn addTarget:self action:@selector(rankingMethod) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:rankingBtn];
+    
+    UIButton *merchantsBtn=[[UIButton alloc]initWithFrame:CGRectMake(115, _adScrollView.frame.origin.y+_adScrollView.frame.size.height+100, 90, 80)];
+    [merchantsBtn setBackgroundColor:[Utils colorWithHexString:@"#129289"]];
+    [merchantsBtn setTitle:@"特约\n商户" forState:UIControlStateNormal];
+    [merchantsBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [merchantsBtn addTarget:self action:@selector(merchantsMethod) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:merchantsBtn];
+    
+    UIButton *newsBtn=[[UIButton alloc]initWithFrame:CGRectMake(220, _adScrollView.frame.origin.y+_adScrollView.frame.size.height+100, 90, 80)];
+    [newsBtn setBackgroundColor:[Utils colorWithHexString:@"#129289"]];
+    [newsBtn setTitle:@"新闻" forState:UIControlStateNormal];
+    [newsBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [newsBtn addTarget:self action:@selector(newsMethod) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:newsBtn];
 }
 
 - (void)didReceiveMemoryWarning
@@ -172,6 +186,14 @@
     
 }
 -(void)rankingMethod
+{
+    
+}
+-(void)merchantsMethod
+{
+    
+}
+-(void)newsMethod
 {
     
 }

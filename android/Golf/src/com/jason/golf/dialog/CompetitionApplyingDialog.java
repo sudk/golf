@@ -4,7 +4,7 @@ import com.jason.golf.GOrderActivity;
 import com.jason.golf.GOrderGenerateFragment;
 import com.jason.golf.classes.AgentsAdapter;
 import com.jason.golf.classes.GCompetition;
-import com.jsaon.golf.R;
+import com.jason.golf.R;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -63,7 +63,7 @@ public class CompetitionApplyingDialog extends Dialog implements android.view.Vi
 	public void onClick(View arg0) {
 		// TODO Auto-generated method stub
 		switch(arg0.getId()){
-		case R.id.dialog_order_ok:
+		case R.id.dialog_refund_ok:
 			
 			Intent it = new Intent(getContext(), GOrderActivity.class);
 			Bundle params = new Bundle();

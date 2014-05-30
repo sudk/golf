@@ -2,7 +2,7 @@ package com.jason.golf.classes;
 
 import com.jason.golf.provider.GolfProvider;
 import com.jason.golf.provider.GolfProviderConfig;
-import com.jsaon.golf.R;
+import com.jason.golf.R;
 
 import android.content.ContentResolver;
 import android.content.Context;

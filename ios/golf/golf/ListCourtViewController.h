@@ -17,4 +17,6 @@
 @property(nonatomic,strong)NSString *dateStr;
 @property(nonatomic,strong)NSString *timeStr;
 @property(nonatomic,strong)CourtDetailViewController *courtDetailVc;
+@property(nonatomic,strong)NSDate *selectDate;
+
 @end

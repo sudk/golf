@@ -13,7 +13,7 @@ import com.jason.controller.HttpCallback;
 import com.jason.controller.HttpRequest;
 import com.jason.golf.classes.GOrder;
 import com.jason.golf.classes.OrderAdapter;
-import com.jsaon.golf.R;
+import com.jason.golf.R;
 
 import android.app.DownloadManager.Query;
 import android.os.Bundle;

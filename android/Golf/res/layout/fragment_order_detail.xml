@@ -183,5 +183,27 @@
         android:layout_marginTop="10dip"
         android:text="取消订单"
         android:visibility="gone" />
+    
+    <Button
+        android:id="@+id/order_detail_refund"
+        style="@style/OrangeButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="3dip"
+        android:layout_marginRight="3dip"
+        android:layout_marginTop="10dip"
+        android:text="申请退款"
+        android:visibility="gone" />
+    
+    <Button
+        android:id="@+id/order_court_estimate"
+        style="@style/OrangeButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="3dip"
+        android:layout_marginRight="3dip"
+        android:layout_marginTop="10dip"
+        android:text="球场评价"
+        android:visibility="gone" />
 
 </LinearLayout>

@@ -14,11 +14,12 @@
             android:layout_width="match_parent"
             android:layout_height="120dip" >
 
-            <ImageView
+            <android.support.v4.view.ViewPager
+                android:id="@+id/court_imgs"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="centerCrop"
-                android:src="@drawable/brif_img" />
+                android:layout_height="match_parent" >
+            </android.support.v4.view.ViewPager>
+
         </RelativeLayout>
 
         <LinearLayout

@@ -15,7 +15,7 @@ import com.jason.golf.classes.GAccount;
 import com.jason.golf.classes.SearchCourtBean;
 import com.jason.golf.classes.SearchCourtListAdapter;
 import com.jason.golf.provider.GolfProviderConfig;
-import com.jsaon.golf.R;
+import com.jason.golf.R;
 
 import android.content.ContentResolver;
 import android.content.Intent;

@@ -2,7 +2,7 @@ package com.jason.golf;
 
 import java.util.ArrayList;
 
-import com.jsaon.golf.R;
+import com.jason.golf.R;
 
 import android.content.Context;
 import android.os.Bundle;

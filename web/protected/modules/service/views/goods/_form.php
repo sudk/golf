@@ -24,7 +24,7 @@ $form = $this->beginWidget('SimpleForm', array(
         <td class="maxname">标题：</td>
         <td class="mivalue"><?php echo htmlspecialchars($model->title); ?></td>
         <td class="maxname">价格：</td>
-        <td class="mivalue"><?php echo $model->price;?></td>
+        <td class="mivalue"><?php echo intval($model->price)/100;?>元</td>
     </tr>
     <tr>
         <td class="maxname">所在城市：</td>

@@ -11,7 +11,7 @@ import com.jason.controller.GThreadExecutor;
 import com.jason.controller.HttpCallback;
 import com.jason.controller.HttpRequest;
 import com.jason.golf.classes.GTrip;
-import com.jsaon.golf.R;
+import com.jason.golf.R;
 
 import android.content.Intent;
 import android.os.Bundle;

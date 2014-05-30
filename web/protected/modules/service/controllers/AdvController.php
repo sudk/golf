@@ -19,13 +19,14 @@ class AdvController extends AuthBaseController {
         $t = new SimpleGrid($this->gridId);
         $t->url = 'index.php?r=service/adv/grid';
         $t->updateDom = 'datagrid';
-        $t->set_header('序号', '30', '');
-        $t->set_header('广告权重', '60', '');
-        $t->set_header('广告类型', '60', '');
-        $t->set_header('广告图片', '130', '');
-        $t->set_header('有效期', '100', '');
-        $t->set_header('状态', '100', '');
-        $t->set_header('操作', '100', '');
+        $t->set_header('序号', '5%', '');
+        $t->set_header('广告权重', '10%', '');
+        $t->set_header('广告类型', '10%', '');
+        $t->set_header('广告图片', '20%', '');
+        $t->set_header('有效期', '25%', '');
+        $t->set_header('关联网址', '15%', '');
+        $t->set_header('状态', '5%', '');
+        $t->set_header('操作', '10%', '');
         return $t;
     }
 
@@ -80,12 +81,11 @@ class AdvController extends AuthBaseController {
 
                     $file = $_FILES['adv_img'];
                     if (is_uploaded_file($file['tmp_name'])) {
-                        $upload_rs = Img::uploadImg($file['tmp_name'], $file['name'], $rs, Img::TYPE_ADV);
+                        $upload_rs = Img::uploadImg($file['tmp_name'], $file['name'], $model->id, Img::TYPE_ADV);
                         if ($upload_rs['status'] != 0) {
                             $msg['msg'] .= "广告图片上传失败。";
                         }
-                        $model->link_url = $upload_rs['url'];
-                        $model->save();
+                        
                     }
 
 
@@ -131,9 +131,6 @@ class AdvController extends AuthBaseController {
                     if ($upload_rs['status'] != 0) {
                         $msg['msg'] .= "商户图片上传失败。";
                     }
-
-                    $model->link_url = $upload_rs['url'];
-                    $model->save();
                 }
             } else {
                 $msg['msg'] = "修改失败！";

@@ -1,0 +1,52 @@
+<LinearLayout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="10dip" >
+
+    <TextView
+        android:id="@+id/record_sn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:text="流水号"
+        android:textSize="18sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/record_tran_type"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="交易类型"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/record_amount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="发生额"
+            android:textSize="12sp" />
+    </LinearLayout>
+    
+    <TextView
+            android:id="@+id/record_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="交易状态"
+            android:textSize="12sp" />
+    
+    <TextView
+            android:id="@+id/record_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="记录时间"
+            android:textSize="12sp" />
+
+</LinearLayout>

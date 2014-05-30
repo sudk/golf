@@ -51,7 +51,16 @@ if($__model__!="edit"){
         <td class="maxname">有效期截止时间：</td>
         <td class="mivalue"><?php echo $form->activeTextField($model, 'end_time', array('title' => '本项必填', 'class' => 'input_text Wdate', "onfocus"=>"WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',skin:'whyGreen',errDealMode:0})"), 'required'); ?></td>  
     </tr>
-   
+   <tr>
+        
+        <td class="maxname">关联网址：</td>
+        <td class="mivalue" colspan="3">
+            <?php
+                echo $form->activeTextField($model, 'link_url', array('title' => '本项必填', 'class' => ' input_text'), 'required&url');         
+            ?>
+            <span>网址格式：http://www.baidu.com</span>
+        </td>
+    </tr>
     
     <tr>
         
@@ -61,17 +70,21 @@ if($__model__!="edit"){
         </td>
     </tr>
     <?php
-    if($__model__ == 'edit' && $model->link_url!=null)
+    if($__model__ == 'edit')
     {
+        $img_info = Img::model()->find("relation_id='{$model->id}' and type='".Img::TYPE_ADV."'");
+        if($img_info)
+        {
     ?>
     <tr>
         
         <td class="maxname">图片：</td>
         <td class="mivalue" colspan="3">
-            <img src="index.php?r=court/loadpic&name=<?php echo $model->link_url;?>" style="width:50px;height:50px;"/>
+            <img src="index.php?r=court/loadpic&name=<?php echo $img_info['img_url'];?>" style="width:100px;height:100px;"/>
         </td>
     </tr>
     <?php
+        }
     }
     ?>
     <tr class="btnBox">

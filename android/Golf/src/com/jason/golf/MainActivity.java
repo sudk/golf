@@ -7,7 +7,7 @@ import com.baidu.location.LocationClientOption;
 import com.baidu.location.LocationClientOption.LocationMode;
 import com.jason.golf.classes.GAccount;
 import com.jason.golf.dialog.WarnDialog;
-import com.jsaon.golf.R;
+import com.jason.golf.R;
 
 import android.support.v4.app.FragmentTabHost;
 import android.support.v7.app.ActionBar;

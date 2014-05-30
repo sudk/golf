@@ -21,12 +21,12 @@ class TranslogController extends AuthBaseController
         $t = new SimpleGrid($this->gridId);
         $t->url = 'index.php?r=log/translog/grid';
         $t->updateDom = 'datagrid';
-        $t->set_header('序号', '30', '');
-        $t->set_header('商户编号', '60', 'posid');
-        $t->set_header('清算日期', '60', '');
-        $t->set_header('日志描述', '130', '');
-        $t->set_header('类型', '80', '');
-        $t->set_header('记录时间', '80', '');
+        $t->set_header('序号', '5%', '');
+        $t->set_header('商户编号', '20%', '');
+        $t->set_header('清算日期', '15%', '');
+        $t->set_header('日志描述', '35%', '');
+        $t->set_header('类型', '10%', '');
+        $t->set_header('记录时间', '15%', '');
         return $t;
     }
 

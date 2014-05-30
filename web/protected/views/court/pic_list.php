@@ -5,7 +5,7 @@
         if(Yii::app()->user->type == Operator::TYPE_SYS)
         {
         ?>
-        <a href="./?r=court/newPic" style="float:right;margin-left: 15px;"><span class="add_ico"></span><span>球场图片添加</span></a>
+        <a href="./?r=court/newpic" style="float:right;margin-left: 15px;"><span class="add_ico"></span><span>球场图片添加</span></a>
         <?php
         }
         ?>
@@ -33,7 +33,7 @@
             dataType:"json",
             type:"POST",
             success:function(data){
-                if(data.status){
+                if(data.status==1){
                     alert("删除成功！");
                     itemQuery();
                 }else{

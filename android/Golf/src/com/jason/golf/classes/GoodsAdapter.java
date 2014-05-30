@@ -2,7 +2,9 @@ package com.jason.golf.classes;
 
 import java.util.ArrayList;
 
-import com.jsaon.golf.R;
+import net.tsz.afinal.FinalBitmap;
+
+import com.jason.golf.R;
 
 import android.content.Context;
 import android.text.TextUtils;
@@ -11,36 +13,41 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class GoodsAdapter extends BaseAdapter {
 	
-	private ArrayList<GGood> _orders; 
+	private ArrayList<GGood> _goods; 
 	private Context _context;
 	private LayoutInflater _inflater;
+	private FinalBitmap _fb;
 
-	public GoodsAdapter(Context ctx, ArrayList<GGood> agents) {
+	public GoodsAdapter(Context ctx, ArrayList<GGood> goods) {
 		// TODO Auto-generated constructor stub
 		_context = ctx;
 		_inflater = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		_orders = new ArrayList<GGood>();
+		_goods = new ArrayList<GGood>();
 		
-		if(agents != null){
-			_orders.addAll(agents);
+		if(goods != null){
+			_goods.addAll(goods);
 		}
 		
+
+		_fb = FinalBitmap.create(_context);
+		_fb.configLoadingImage(R.drawable.ic_launcher);
 	}
 
 	@Override
 	public int getCount() {
 		// TODO Auto-generated method stub
-		return _orders.size();
+		return _goods.size();
 	}
 
 	@Override
 	public Object getItem(int position) {
 		// TODO Auto-generated method stub
-		return _orders.get(position);
+		return _goods.get(position);
 	}
 
 	@Override
@@ -55,14 +62,13 @@ public class GoodsAdapter extends BaseAdapter {
 		View v;
 		ViewHolder holder;
 		if(convertView == null){
-			v = _inflater.inflate(R.layout.goods_list_item, null);
+			v = _inflater.inflate(R.layout.fragment_flee_market_list_item, null);
 			holder = new ViewHolder();
 
-			
-			
-			
-			
-			
+			holder._title = (TextView) v.findViewById(R.id.good_title);
+			holder._date = (TextView) v.findViewById(R.id.good_date);
+			holder._contact = (TextView) v.findViewById(R.id.good_contact);
+			holder._img = (ImageView) v.findViewById(R.id.good_img);
 			
 			v.setTag(holder);
 		}else{
@@ -70,32 +76,33 @@ public class GoodsAdapter extends BaseAdapter {
 			holder = (ViewHolder) v.getTag();
 		}
 		
-		GGood order = _orders.get(position);
+		GGood good= _goods.get(position);
 		
-
+		holder._title.setText(good.getTitle());
+		holder._date.setText(good.getRecord_time());
+		holder._contact.setText(good.getContact());
 		
-		
-		
+		_fb.display(holder._img, good.getImgs().get(0));
 		
 		return v;
 	}
 	
 	public void addData(ArrayList<GGood> data){
-		_orders.addAll(_orders.size(), data);
+		_goods.addAll(_goods.size(), data);
 		notifyDataSetChanged();
 	}
 	
 	public void swapData(ArrayList<GGood> data){
-		_orders.clear();
-		_orders.addAll(data);
+		_goods.clear();
+		_goods.addAll(data);
 		notifyDataSetChanged();
 	}
 	
 	private class ViewHolder{
-		public TextView _name;
+		public ImageView _img;
+		public TextView _title;
+		public TextView _contact;
 		public TextView _date;
-		public TextView _image;
-		public TextView _payType;
 	}
 
 }

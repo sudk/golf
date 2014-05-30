@@ -21,16 +21,16 @@ class OrderController extends CMDBaseController
             ),
         );
     }
-    public function init()
+    public function beforeAction($action)
     {
-        parent::init();
         if(Yii::app()->user->isGuest){
             $msg['status']=-1;
             $msg['desc']="用户未登陆！";
             echo json_encode($msg);
-            return;
+            return false;
+        }else{
+            return true;
         }
-
     }
 
     public function actionList(){
@@ -118,7 +118,7 @@ class OrderController extends CMDBaseController
             echo json_encode($msg);
             return;
         }
-        if(!Yii::app()->command->cmdObj->pay_type){
+        if(!isset(Yii::app()->command->cmdObj->pay_type)||Yii::app()->command->cmdObj->pay_type==''){
             $msg['status']=9;
             $msg['desc']="支付类型不能为空！";
             echo json_encode($msg);
@@ -173,6 +173,31 @@ class OrderController extends CMDBaseController
         }
         echo json_encode($msg);
         return;
+    }
+
+    public function actionPay(){
+        if(!isset(Yii::app()->command->cmdObj->type)||Yii::app()->command->cmdObj->type==''){
+            $msg['status']=1;
+            $msg['desc']="支付类型不能为空！";
+            echo json_encode($msg);
+            return;
+        }
+        if(!isset(Yii::app()->command->cmdObj->order_id)||Yii::app()->command->cmdObj->order_id==''){
+            $msg['status']=2;
+            $msg['desc']="订单ID不能为空！";
+            echo json_encode($msg);
+
+        }
+        if(!isset(Yii::app()->command->cmdObj->amount)||Yii::app()->command->cmdObj->amount==''){
+            $msg['status']=3;
+            $msg['desc']="支付金额不能为空！";
+            echo json_encode($msg);
+
+        }
+        $rs=Order::Pay(Yii::app()->command->cmdObj->order_id,Yii::app()->command->cmdObj->type,Yii::app()->command->cmdObj->amount);
+        echo json_encode($rs);
+        return;
+
     }
 
 }

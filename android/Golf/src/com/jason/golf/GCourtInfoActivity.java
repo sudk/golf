@@ -1,7 +1,7 @@
 package com.jason.golf;
 
 import com.jason.golf.classes.GCourt;
-import com.jsaon.golf.R;
+import com.jason.golf.R;
 
 import android.content.Intent;
 import android.os.Bundle;

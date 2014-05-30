@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">青之鸟高尔夫</string>
+    <string name="app_name">高球生活</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_get_city">当前城市</string>
     
     <string name="action_create">新建</string>
+    <string name="action_bar_search">搜索</string>
 
     <!-- MainActivity -->
     <string name="court">球场</string>
@@ -19,6 +20,7 @@
     <string name="sale">寄卖</string>
     <string name="ranking">排行榜</string>
     <string name="competition">赛事</string>
+    <string name="merchant">特约商户</string>
 
     <!-- 用户信息 -->
     <string name="account_manager">账户管理</string>
@@ -45,9 +47,22 @@
     <string name="account_withdraw">余额提现</string>
     <string name="consumption_details">消费明细</string>
     <string name="account_changepwd">修改密码</string>
+    <string name="account_has_chang_pwd">完成修改密码</string>
+    <string name="account_my_flea">我的寄卖</string>
+    <string name="account_my_estimate">我的评论</string>
     <string name="account_logout">退出账户</string>
     
-    
+    <!-- 寄卖 -->
+    <string name="flee_new_good_title">输入标题</string>
+    <string name="flee_new_good_desc">简要描述寄卖货品</string>
+    <string name="flee_new_good_price">输入价格，单位：元</string>
+    <string name="flee_new_good_contact">输入联系人</string>
+    <string name="flee_new_good_phone">输入联系电话</string>
+    <string name="flee_action_new">新建</string>
+    <string name="flee_action_edit">编辑</string>
+    <string name="flee_action_del">删除</string>
+    <string name="flee_cancel_good">取消寄卖</string>
+    <string name="flee_cancel_good_sucess">您的寄卖物品已经下架。</string>
 
     <!-- 球场搜索 -->
     <string name="search_court">搜索球场</string>
@@ -69,6 +84,7 @@
     <string name="court_fairway_grass">球场草种</string>
     <string name="court_facilities">球场设施</string>
     <string name="court_phone">球场电话</string>
+    <string name="court_comment">球场评论</string>
     <string name="court_brief">球场简介</string>
     <string name="court_fairway_imags">球道图片</string>
     
@@ -77,6 +93,13 @@
     <string name="order">订单</string>
     <string name="order_successful">订单提交成功！</string>
     <string name="order_psy_successful">订单支付成功！</string>
+    <string name="estimat_court_successful">完成评论。</string>
+    <string name="refund">退款</string>
+    <string name="is_refund">是否退款？</string>
+    <string name="cancel_order">撤销订单</string>
+    <string name="is_cancel_order">是否撤销订单？</string>
+    <string name="pay">支付</string>
+    <string name="is_pay">是否支付？</string>
     
     <!-- 赛事 -->
     <string name="comptition">赛事</string>
@@ -98,7 +121,7 @@
     <!-- XListView -->
     <string name="xlistview_header_hint_normal">下拉刷新</string>
     <string name="xlistview_header_hint_ready">松开刷新数据</string>
-    <string name="xlistview_header_hint_loading">正在加载...</string>
+    <string name="xlistview_header_hint_loading">正在加载</string>
     <string name="xlistview_header_last_time">上次更新时间：</string>
     <string name="xlistview_footer_hint_normal">查看更多</string>
     <string name="xlistview_footer_hint_ready">松开载入更多</string>

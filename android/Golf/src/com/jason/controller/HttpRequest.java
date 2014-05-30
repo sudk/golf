@@ -6,11 +6,12 @@ import org.json.JSONObject;
 
 import com.jason.golf.GolfAppliaction;
 import com.jason.golf.classes.GAccount;
+import com.jason.golf.dialog.ProgressDialog;
 import com.jason.golf.dialog.WarnDialog;
 import com.jason.network.HttpConnection;
 import com.jason.network.HttpResponse;
 import com.jason.network.ProtocolDefinition;
-import com.jsaon.golf.R;
+import com.jason.golf.R;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -22,6 +23,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
 import android.util.Log;
+import android.widget.ProgressBar;
 
 public class HttpRequest implements Runnable, Callback {
 	private static final String TAG = "HttpRequest";
@@ -30,6 +32,7 @@ public class HttpRequest implements Runnable, Callback {
 	private JSONObject _params;
 	private Handler _handler;
 	private HttpCallback _callBack;
+	private ProgressDialog _progressDialog;
 
 	public HttpRequest(FragmentActivity context, JSONObject params, HttpCallback callBack) {
 		_fgAct = context;
@@ -56,6 +59,32 @@ public class HttpRequest implements Runnable, Callback {
 	public boolean handleMessage(Message msg) {
 		// TODO Auto-generated method stub
 		switch(msg.what){
+		case 10000:
+			
+			_progressDialog = new ProgressDialog(_fgAct);
+			_progressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+				
+				@Override
+				public void onCancel(DialogInterface dialog) {
+					// TODO Auto-generated method stub
+					_callBack = null;
+				}
+			})
+			.setOnDismissListener(new DialogInterface.OnDismissListener() {
+				
+				@Override
+				public void onDismiss(DialogInterface dialog) {
+					// TODO Auto-generated method stub
+					_callBack = null;
+				}
+			});
+			
+			_progressDialog.show(_fgAct.getSupportFragmentManager(), "ProgressBarDialog");
+			break;
+			
+		case 10001:
+			_progressDialog.dismissAllowingStateLoss();
+			break;
 		case 200:
 			
 			String res = (String) msg.obj;
@@ -67,6 +96,7 @@ public class HttpRequest implements Runnable, Callback {
 					
 					int status = resObj.getInt("status");
 					String des = resObj.getString("desc");
+//					String des = "此处有错！！";
 					
 					switch(status){
 					case 0:
@@ -183,6 +213,11 @@ public class HttpRequest implements Runnable, Callback {
 		default:
 			if(_callBack != null) _callBack.other((String) msg.obj);
 		}
+		
+		
+		
+		
+		
 		
 		return false;
 	}

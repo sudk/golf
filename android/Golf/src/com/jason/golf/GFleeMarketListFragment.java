@@ -19,18 +19,21 @@ import com.jason.golf.classes.GoodsAdapter;
 import com.jason.golf.classes.OrderAdapter;
 import com.jason.golf.classes.TripsAdapter;
 import com.jason.golf.provider.GolfProviderConfig;
-import com.jsaon.golf.R;
+import com.jason.golf.R;
 
 import android.app.Activity;
 import android.app.DownloadManager.Query;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.SearchView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -39,7 +42,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.AutoCompleteTextView;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -50,12 +55,14 @@ public class GFleeMarketListFragment extends Fragment implements OnItemClickList
 	private static final int REQUESTCODE = 1001;
 
 	private ArrayList<GGood> _goods;
-	private PullToRefreshListView mOrders;
+	private PullToRefreshListView mGoods;
 	private GoodsAdapter mAdapter;
 	
 	private String _cityId;
 
 	private int _page = 0;
+	
+	private String _title;
 
 	public static GFleeMarketListFragment Instance() {
 		return new GFleeMarketListFragment();
@@ -80,9 +87,9 @@ public class GFleeMarketListFragment extends Fragment implements OnItemClickList
 			Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		View v = inflater.inflate(R.layout.fragment_flee_market_list, null);
-		mOrders = (PullToRefreshListView) v.findViewById(R.id.flee_list);
-		mOrders.getRefreshableView().setOnItemClickListener(this);
-		mOrders.setOnRefreshListener(new PullToRefreshListView.OnRefreshListener<ListView>() {
+		mGoods = (PullToRefreshListView) v.findViewById(R.id.goods_list);
+		mGoods.getRefreshableView().setOnItemClickListener(this);
+		mGoods.setOnRefreshListener(new PullToRefreshListView.OnRefreshListener<ListView>() {
 
 			@Override
 			public void onRefresh(PullToRefreshBase<ListView> refreshView) {
@@ -91,17 +98,18 @@ public class GFleeMarketListFragment extends Fragment implements OnItemClickList
 			}
 		});
 
-		mOrders.setOnLastItemVisibleListener(new PullToRefreshListView.OnLastItemVisibleListener() {
+		mGoods.setOnLastItemVisibleListener(new PullToRefreshListView.OnLastItemVisibleListener() {
 
 			@Override
 			public void onLastItemVisible() {
 				// TODO Auto-generated method stub
+				_title = "";
 				queryGoods(_page, false);
 			}
 		});
 
 		mAdapter = new GoodsAdapter(getActivity(), _goods);
-		mOrders.setAdapter(mAdapter);
+		mGoods.setAdapter(mAdapter);
 		
 		queryGoods(0, true);
 
@@ -114,24 +122,55 @@ public class GFleeMarketListFragment extends Fragment implements OnItemClickList
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		// TODO Auto-generated method stub
 		
-		inflater.inflate(R.menu.trip_list_menu, menu);
 		
-		super.onCreateOptionsMenu(menu, inflater);
+		 inflater.inflate(R.menu.flee_list_menu,  menu);
+	        
+	        SearchView searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.action_search));
+	        searchView.setOnQueryTextListener(mOnQueryTextListener);
+	        searchView.setOnCloseListener(new SearchView.OnCloseListener() {
+				
+				@Override
+				public boolean onClose() {
+					// TODO Auto-generated method stub
+					queryGoods(0, true);
+					return false;
+				}
+			});
+	        searchView.setQueryHint("输入关键字");
+	        
+	        AutoCompleteTextView search_text = (AutoCompleteTextView) searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
+	        search_text.setTextColor(Color.WHITE);
+	        
+	        ImageView searchButton = (ImageView) searchView.findViewById(android.support.v7.appcompat.R.id.search_button);
+	        searchButton.setImageResource(R.drawable.ic_search);
+//	        ImageView searchMagButton = (ImageView) searchView.findViewById(android.support.v7.appcompat.R.id.search_mag_icon);
+//	        searchMagButton.setImageResource(R.drawable.ic_search);
+	        ImageView searchCloseButton = (ImageView) searchView.findViewById(android.support.v7.appcompat.R.id.search_close_btn);
+	        searchCloseButton.setImageResource(R.drawable.ic_close);
+	        
+			super.onCreateOptionsMenu(menu, inflater);
+		
 	}
 	
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		// TODO Auto-generated method stub
-		System.out.println("onOptionsItemSelected" + item.getItemId());
-		
-		switch(item.getItemId()){
-		case R.id.menu_getlocation:
-			startActivityForResult(new Intent(getActivity(), SelectCityActivity.class), REQUESTCODE);
-			break;
-		}
-		
-		return super.onOptionsItemSelected(item);
-	}
+	 // The following callbacks are called for the SearchView.OnQueryChangeListener
+    // For more about using SearchView, see src/.../view/SearchView1.java and SearchView2.java
+    private final SearchView.OnQueryTextListener mOnQueryTextListener =
+            new SearchView.OnQueryTextListener() {
+        @Override
+        public boolean onQueryTextChange(String newText) {
+            return true;
+        }
+
+        @Override
+        public boolean onQueryTextSubmit(String query) {
+        	_title = query;
+        	queryGoods(0, true);
+            return true;
+        }
+    };
+
+	
+	
 	
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -212,13 +251,11 @@ public class GFleeMarketListFragment extends Fragment implements OnItemClickList
 
 		}
 		
-
+		
 		try {
 			
-			params.put("cmd", "trip/list");
-			params.put("start_date", "");
-			params.put("end_date", "");
-			params.put("trip_name", "");
+			params.put("cmd", "flea/list");
+			params.put("title", _title);
 			params.put("city", city_id);
 			params.put("_pg_", String.format("%d", page));
 
@@ -234,7 +271,7 @@ public class GFleeMarketListFragment extends Fragment implements OnItemClickList
 					public void finalWork() {
 						// TODO Auto-generated method stub
 						super.finalWork();
-						mOrders.onRefreshComplete();
+						mGoods.onRefreshComplete();
 					}
 
 					@Override
@@ -263,6 +300,7 @@ public class GFleeMarketListFragment extends Fragment implements OnItemClickList
 							} else {
 								mAdapter.addData(_goods);
 							}
+							
 							_page++;
 
 						} catch (JSONException e) {
@@ -293,19 +331,21 @@ public class GFleeMarketListFragment extends Fragment implements OnItemClickList
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,	long id) {
 		// TODO Auto-generated method stub
-//		System.out.println(String.format("postion is %d", position));
-//		GOrder order = (GOrder) mAdapter.getItem(position - 1);
-//
-//		Bundle params = new Bundle();
-//		params.putString(GOrderDetailsFragment.KEY_ORDER_ID, order.getOrderId());
-//
-//		Fragment detailFragment = GOrderDetailsFragment.Instance();
-//		detailFragment.setArguments(params);
-//
-//		FragmentTransaction transaction = getFragmentManager().beginTransaction();
-//		transaction.replace(R.id.container, detailFragment);
-//		transaction.addToBackStack(null);
-//		// Commit the transaction
-//		transaction.commit();
+		System.out.println(String.format("postion is %d", position));
+		GGood good = (GGood) mAdapter.getItem(position - 1);
+
+		Bundle params = new Bundle();
+		params.putString(GFleeMarketInfoFragment.KEY_GOOD_ID, good.getId());
+		params.putBoolean(GFleeMarketInfoFragment.KEY_ENABLE_EDIT, false);
+
+		Fragment detailFragment = GFleeMarketInfoFragment.Instance();
+		detailFragment.setArguments(params);
+
+		FragmentTransaction transaction = getFragmentManager().beginTransaction();
+		transaction.replace(R.id.container, detailFragment);
+		transaction.addToBackStack(null);
+		
+		// Commit the transaction
+		transaction.commit();
 	}
 }

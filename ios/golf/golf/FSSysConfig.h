@@ -15,5 +15,7 @@
 @property(nonatomic,strong)NSString *os;
 @property(nonatomic,strong)NSString *model;
 @property(nonatomic,strong)NSString *deviceid;
+@property(nonatomic,strong)NSString *nowOrderId;//当前提交的订单号
+@property(nonatomic,assign)BOOL isFromWriteOrderLogin;
 +(FSSysConfig*)getInstance;
 @end

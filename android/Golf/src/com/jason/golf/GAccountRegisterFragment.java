@@ -3,13 +3,14 @@ package com.jason.golf;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.jason.controller.AppInfoContent;
 import com.jason.controller.GThreadExecutor;
 import com.jason.controller.HttpCallback;
 import com.jason.controller.HttpRequest;
 import com.jason.golf.classes.GAccount;
 import com.jason.golf.dialog.ProgressDialog;
 import com.jason.golf.dialog.WarnDialog;
-import com.jsaon.golf.R;
+import com.jason.golf.R;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -25,9 +26,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
-public class GAccountRegisterFragment extends Fragment implements
-		OnClickListener, TextWatcher {
-
+public class GAccountRegisterFragment extends Fragment implements OnClickListener, TextWatcher {
+	
 	public static GAccountRegisterFragment Instance() {
 		GAccountRegisterFragment fragment = new GAccountRegisterFragment();
 
@@ -72,11 +72,9 @@ public class GAccountRegisterFragment extends Fragment implements
 		mRegisterSubmit.setOnClickListener(this);
 		mRegisterSubmit.setEnabled(false);
 		
-		// ActionBarActivity activity = (ActionBarActivity) getActivity();
-		// ActionBar bar = activity.getSupportActionBar();
-		// bar.setTitle(R.string.register_title);
-		// int change = bar.getDisplayOptions() ^ ActionBar.DISPLAY_HOME_AS_UP;
-		// bar.setDisplayOptions(change, ActionBar.DISPLAY_HOME_AS_UP);
+		 ActionBarActivity activity = (ActionBarActivity) getActivity();
+		 ActionBar bar = activity.getSupportActionBar();
+		 bar.setTitle(R.string.register_title);
 
 		return v;
 	}
@@ -162,6 +160,7 @@ public class GAccountRegisterFragment extends Fragment implements
 								acc.setBalance(data.getString("balance"));
 								acc.setPoint(data.getString("point"));
 								
+								AppInfoContent.saveAccount(getActivity(), mPhone.getText().toString(), mPassword.getText().toString());
 								
 								WarnDialog dialog = new WarnDialog(getActivity());
 								

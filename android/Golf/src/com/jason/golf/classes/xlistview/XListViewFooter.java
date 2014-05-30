@@ -6,7 +6,7 @@
  */
 package com.jason.golf.classes.xlistview;
 
-import com.jsaon.golf.R;
+import com.jason.golf.R;
 
 import android.content.Context;
 import android.util.AttributeSet;

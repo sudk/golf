@@ -17,7 +17,7 @@
     var itemNew = function (id,tag) {
         tipsWindown(
             "编辑报价单信息", // title：窗口标题
-            "iframe:index.php?r=price/newPolicy&id=" + id+'&tag='+tag, // Url：弹窗所加截的页面路径
+            "iframe:index.php?r=price/newpolicy&id=" + id+'&tag='+tag, // Url：弹窗所加截的页面路径
             "900", // width：窗体宽度
             "720", // height：窗体高度
             "true", // drag：是否可以拖动（ture为是,false为否）

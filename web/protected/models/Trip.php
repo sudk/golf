@@ -72,36 +72,45 @@ class Trip extends CActiveRecord {
 
         
         if ($args['pay_type'] != ''){
-            $condition.=' AND pay_type = :pay_type';
+            $condition.=' AND g_trip.pay_type = :pay_type';
             $params['pay_type'] = $args['pay_type'];
         }
         
         
         if ($args['court_id'] != ''){
-            $condition.=' AND court_id=:court_id';
+            $condition.=' AND g_trip.court_id=:court_id';
             $params['court_id'] = $args['court_id'];
+        }
+
+        if ($args['city'] != ''){
+            $condition.=' AND g_trip.city=:city';
+            $params['city'] = $args['city'];
         }
         
         if ($args['agent_id'] != ''){
-            $condition.=' AND agent_id=:agent_id';
+            $condition.=' AND g_trip.agent_id=:agent_id';
             $params['agent_id'] = $args['agent_id'];
         }
         
         if ($args['trip_name'] != ''){
-            $condition.=' AND trip_name like :trip_name';
+            $condition.=' AND g_trip.trip_name like :trip_name';
             $params['trip_name'] = "%".$args['trip_name']."%";
         }
 
-
+        
         $total_num = Yii::app()->db->createCommand()
             ->select("count(1)")
             ->from("g_trip")
+            ->leftJoin("g_court","g_trip.court_id=g_court.court_id")
+            ->leftJoin("g_agent","g_trip.agent_id=g_agent.id")
             ->where($condition,$params)
             ->queryScalar();
-        $order = 'record_time  DESC';
+        $order = 'g_trip.record_time DESC';
         $rows=Yii::app()->db->createCommand()
-            ->select("*")
+            ->select("g_trip.*,g_court.name court_name,g_agent.agent_name")
             ->from("g_trip")
+            ->leftJoin("g_court","g_trip.court_id=g_court.court_id")
+            ->leftJoin("g_agent","g_trip.agent_id=g_agent.id")
             ->where($condition,$params)
             ->order($order)
             ->limit($pageSize)
@@ -126,15 +135,17 @@ class Trip extends CActiveRecord {
 
 
         if ($id != ''){
-            $condition.=' AND id = :id';
+            $condition.=' AND g_trip.id = :id';
             $params['id'] =$id;
         }else{
             return false;
         }
 
         $row=Yii::app()->db->createCommand()
-            ->select("*")
+            ->select("g_trip.*,g_court.name court_name,g_agent.agent_name")
             ->from("g_trip")
+            ->leftJoin("g_court","g_trip.court_id=g_court.court_id")
+            ->leftJoin("g_agent","g_trip.agent_id=g_agent.id")
             ->where($condition,$params)
             ->queryRow();
         if($row){

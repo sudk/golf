@@ -10,7 +10,7 @@ import mirko.android.datetimepicker.time.TimePickerDialog.OnTimeSetListener;
 import net.tsz.afinal.FinalBitmap;
 
 import com.jason.golf.provider.GolfProviderConfig;
-import com.jsaon.golf.R;
+import com.jason.golf.R;
 
 import android.content.ContentResolver;
 import android.content.Intent;

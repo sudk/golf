@@ -1,8 +1,8 @@
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery.qtip-1.0.0-rc3.min.js"></script>
-<div class="clearfix" id='msg'>
-    <div class="index_c"  style="width:460px;">
+<div class="clearfix" id='msg' style="width: 100%">
+    <div class="index_c"  style="width:49%;">
         <div class="index_c_main">
-            <h1 style="width:460px;"><img src="images/icons/index_1.png" />消息中心 <span style="margin-left: 230px;"><a href="index.php?r=msg/inbox/list">更多...</a></span></h1>
+            <h1 style="width: auto;"><a href="index.php?r=msg/inbox/list"><img src="images/icons/index_1.png" />消息中心 </a></h1>
             <div class="clear"></div>
             <ul class="list" style="overflow-y:auto;height:181px;">
                 <?php
@@ -23,9 +23,9 @@
          
     </div>
     
-    <div class="index_c ml10">
-        <div class="index_c_main" style="width: 465px;">
-            <h1 style="width:460px;"><img src="images/icons/index_3.png" />公告中心 <span style="margin-left: 230px;"><a href="index.php?r=msg/inbox/list">更多...</a></span></h1>
+    <div class="index_c ml10" style="width: 50%;">
+        <div class="index_c_main" >
+            <h1 style="width:auto;"><a href="index.php?r=msg/inbox/list"><img src="images/icons/index_3.png" />公告中心 </a></h1>
             <div class="clear"></div>
             <ul class="list" style="overflow-y:auto;height:181px;">
                 <?php
@@ -45,7 +45,7 @@
     </div>
 </div>
 <div class="index_c_big">
-	<div class="index_c_big_top"></div>
+	
 	<div class="index_c_big_main">
 		<ul>
             <li>
@@ -68,7 +68,6 @@
  
         </ul>
     </div>
-	<div class="index_c_big_bottom"></div>
 </div>
 <script type="text/javascript">
     // Create the tooltips only on document load

@@ -5,8 +5,12 @@ import java.util.ArrayList;
 import net.tsz.afinal.FinalBitmap;
 
 import com.jason.golf.classes.GCourt;
-import com.jsaon.golf.R;
+import com.jason.golf.dialog.WarnDialog;
+import com.jason.golf.R;
 
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -21,7 +25,7 @@ import android.widget.TextView;
 
 public class GCourtInfoDetailsFragment extends Fragment implements OnClickListener {
 	
-	TextView mModel, mCreatYear, mCourtArea, mGreenGrass, mData, mDesigner, mFairwayLength, mFairwayGrass, mPhone, mBrief, mFacilities;
+	TextView mModel, mCreatYear, mCourtArea, mGreenGrass, mData, mDesigner, mFairwayLength, mFairwayGrass, mPhone, mBrief, mFacilities, mComment;
 	LinearLayout mImages;
 	FinalBitmap _fb;
 
@@ -41,7 +45,6 @@ public class GCourtInfoDetailsFragment extends Fragment implements OnClickListen
 	public void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-		hasOptionsMenu();
 		_fb = FinalBitmap.create(getActivity());
 		_fb.configLoadingImage(R.drawable.test_golf);
 	}
@@ -61,8 +64,12 @@ public class GCourtInfoDetailsFragment extends Fragment implements OnClickListen
 		mFairwayLength = (TextView) v.findViewById(R.id.court_fairway_length);
 		mFairwayGrass = (TextView) v.findViewById(R.id.court_fairway_grass);
 		mPhone = (TextView) v.findViewById(R.id.court_phone);
+		mPhone.setOnClickListener(this);
 		mBrief = (TextView) v.findViewById(R.id.court_brief);
 		mFacilities = (TextView) v.findViewById(R.id.court_facilities);
+		
+		mComment = (TextView) v.findViewById(R.id.court_comment);
+		mComment.setOnClickListener(this);
 		
 		GCourtInfoActivity a = (GCourtInfoActivity) getActivity();
 		GCourt court = a.getCourt();
@@ -130,6 +137,47 @@ public class GCourtInfoDetailsFragment extends Fragment implements OnClickListen
 			
 			break;
 		case R.id.court_phone:
+			
+			WarnDialog dialog = new WarnDialog(getActivity());
+			
+			dialog.setTitle(R.string.phone)
+			.setMessage(String.format("是否拨打客服电话%s?", mPhone.getText()))
+			.setPositiveBtn("拨打", new DialogInterface.OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface arg0, int arg1) {
+					// TODO Auto-generated method stub
+					Uri uri=Uri.parse("tel:"+ mPhone.getText());   //拨打电话号码的URI格式
+					Intent it=new Intent();   //实例化Intent
+					it.setAction(Intent.ACTION_CALL);   //指定Action
+					it.setData(uri);   //设置数据
+					startActivity(it);//启动Acitivity
+				}
+			}).setNegativeBtn(R.string.cancel, new DialogInterface.OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface arg0, int arg1) {
+					// TODO Auto-generated method stub
+					
+				}
+			}).show(getFragmentManager(), "DialTel");
+			
+			break;
+		case R.id.court_comment:
+			
+			GCourtInfoActivity a = (GCourtInfoActivity) getActivity();
+			GCourt court = a.getCourt();
+			
+			Bundle params = new Bundle();
+			params.putString(GCourtInfoCommentsFragment.KEY_COURT_ID, court.getId());
+			
+			Fragment commentFragment = GCourtInfoCommentsFragment.Instance();
+			commentFragment.setArguments(params);
+			
+			FragmentTransaction commTransaction = getFragmentManager().beginTransaction();
+			commTransaction.replace(R.id.container, commentFragment);
+			commTransaction.addToBackStack(null);
+			commTransaction.commit();
 			
 			break;
 		}

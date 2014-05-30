@@ -1,6 +1,6 @@
 package com.jason.golf;
 
-import com.jsaon.golf.R;
+import com.jason.golf.R;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;

@@ -11,7 +11,7 @@ import com.jason.golf.classes.AddAndSubView;
 import com.jason.golf.classes.GAgent;
 import com.jason.golf.classes.GCompetition;
 import com.jason.golf.dialog.WarnDialog;
-import com.jsaon.golf.R;
+import com.jason.golf.R;
 
 import android.content.DialogInterface;
 import android.content.Intent;

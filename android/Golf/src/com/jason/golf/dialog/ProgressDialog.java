@@ -3,6 +3,7 @@ package com.jason.golf.dialog;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.text.TextUtils;
@@ -10,10 +11,15 @@ import android.text.TextUtils;
 @SuppressLint("ValidFragment")
 public class ProgressDialog extends DialogFragment {
 	
+	private DialogInterface.OnCancelListener _cancelListener;
+	private DialogInterface.OnDismissListener _dismissListener;
+	
 	Context _context;
 	
 	CharSequence _title;
 	CharSequence _message;
+	
+	android.app.ProgressDialog dialog;
 	
 	private static ProgressDialog _dialog;
 	
@@ -47,6 +53,20 @@ public class ProgressDialog extends DialogFragment {
 		return this;
 	}
 	
+	public ProgressDialog setOnCancelListener(DialogInterface.OnCancelListener listener){
+		_cancelListener = listener;
+		return this;
+	}
+	
+	public ProgressDialog setOnDismissListener(DialogInterface.OnDismissListener listener){
+		_dismissListener = listener;
+		return this;
+	}
+	
+	public boolean isShow(){
+		return dialog.isShowing();
+	}
+
 	@Override
 	public Dialog onCreateDialog(final Bundle savedInstanceState) {
 	    android.app.ProgressDialog dialog = new android.app.ProgressDialog (getActivity());
@@ -57,8 +77,18 @@ public class ProgressDialog extends DialogFragment {
 	    if(!TextUtils.isEmpty(_message)){
 	    	dialog.setMessage(_message);
 	    }
+	    
+	    if(_cancelListener != null){
+	    	dialog.setOnCancelListener(_cancelListener);
+	    }
+	    
+	    if(_dismissListener != null){
+	    	dialog.setOnDismissListener(_dismissListener);
+	    }
+	    
 	    dialog.setCanceledOnTouchOutside(false);
 	    dialog.setCancelable(false);
+	    
 	    return dialog;
 	}
 

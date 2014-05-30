@@ -5,7 +5,7 @@ import java.util.zip.Inflater;
 
 import net.tsz.afinal.FinalBitmap;
 
-import com.jsaon.golf.R;
+import com.jason.golf.R;
 
 import android.content.Context;
 import android.view.LayoutInflater;
