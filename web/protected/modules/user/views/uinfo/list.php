@@ -26,6 +26,10 @@
         );
     }
     
+    var itemMyCard = function(id,name){
+        window.location.href = encodeURI("index.php?r=user/uinfo/mycard&id="+id+"&name="+name);
+    }
+    
     var itemDelete = function(id,name){
         if(!confirm("确认要删除:"+name+"吗？")){return ;}
         $.ajax({

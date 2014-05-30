@@ -1,7 +1,7 @@
 <?php
 /**
  * --请填写模块名称--
- *
+ *用户的会员卡信息
  * @author #guohao 
  * @copyright Copyright &copy; 2003-2009 TrunkBow Co., Inc
  */
@@ -21,8 +21,8 @@ class Card extends CActiveRecord {
     public function rules(){
         return array(
              //安全性
-            array('id,card_name,desc', 'safe', 'on' => 'create'),
-            array('id,card_name,desc', 'safe', 'on' => 'modify'),
+            array('id,card_name,desc,user_id,card_no', 'safe', 'on' => 'create'),
+            array('id,card_name,desc,user_id,card_no', 'safe', 'on' => 'modify'),
 
             //array('password', 'compare', 'compareAttribute'=>'passwordc', 'on'=>'create,modify'),
          );
@@ -51,6 +51,16 @@ class Card extends CActiveRecord {
         if ($args['card_name'] != ''){
             $condition.=' AND card_name like :card_name';
             $params['card_name'] = "%".$args['card_name']."%";
+        }
+        
+        if ($args['card_no'] != ''){
+            $condition.=' AND card_no like :card_no';
+            $params['card_no'] = "%".$args['card_no']."%";
+        }
+        
+        if ($args['user_id'] != ''){
+            $condition.= ' AND user_id=:user_id';
+            $params['user_id'] = $args['user_id'];
         }
         
         
@@ -93,8 +103,8 @@ class Card extends CActiveRecord {
         $condition="";
         $params=array();
         if ($type != ''){
-            $condition.=' type = :type';
-            $params['type'] =$type;
+            $condition.=' card_no = :card_no';
+            $params['card_no'] =$type;
         }else{
             return false;
         }

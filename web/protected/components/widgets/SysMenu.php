@@ -19,12 +19,10 @@ class SysMenu extends CWidget
         //会员管理
         $sub_menu = array();
         if(Yii::app()->user->checkAccess("user/uinfo/list"))      
-            $sub_menu[] = array("title" => "会员信息管理", "url" => "./?r=user/uinfo/list", "match" => array('user\/uinfo\/list','user\/uinfo\/edit','operator\/operator\/detail'));
+            $sub_menu[] = array("title" => "会员信息管理", "url" => "./?r=user/uinfo/list", "match" => array('user\/uinfo\/list','user\/uinfo\/edit','operator\/operator\/detail','user\/uinfo\/mycard','user\/uinfo\/newcard'));
         if(Yii::app()->user->checkAccess("user/uscore/list"))    
             $sub_menu[] = array("title" => "会员成绩管理", "url" => "./?r=user/uscore/list", "match" => array('user\/uscore\/list','user\/uscore\/detail','user\/uscore\/edit'));    
         //$sub_menu[] = array("title" => "会员卡片管理", "url" => "./?r=user/ucard/list", "match" => 'user\/ucard\/list');
-        if(Yii::app()->user->checkAccess("user/card/list"))    
-            $sub_menu[] = array("title" => "会员卡片管理", "url" => "./?r=user/card/list", "match" => array('user\/card\/list','user\/card\/edit','user\/card\/new','user\/card\/batch'));
         
         if(count($sub_menu))
         $menus['user'] = array("title" => "会员管理", "url" => "./?r=user/uinfo/list", "child" => $sub_menu);
@@ -151,6 +149,11 @@ class SysMenu extends CWidget
         {
             $url = $url==""?"index.php?r=service/goods/detail":$url;
             array_push($match, 'service\/goods\/detail');
+        }
+        if(Yii::app()->user->checkAccess("service/goods/newgoods"))
+        {
+            $url = $url==""?"index.php?r=service/goods/newgoods":$url;
+            array_push($match, 'service\/goods\/newgoods');
         }
         if(@count($match)>0)
             $sub_menu[] = array("title" => "寄卖", "url" => $url, "match" => $match);  

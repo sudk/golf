@@ -6,25 +6,7 @@ return array(
         'display'=>true,
         'description' => '会员管理',
         'children' => array(
-             'user/card/grid' ,
-            'user/card/list' ,
-            'user/card/new' ,
-            'user/card/edit' ,
-            'user/card/checkid' ,
-            'user/card/del' ,
-            'user/card/batch',
-            'user/card/downtemplate',
-            
-            'user/card/detail' ,
-            'user/ucard/grid' ,
-            'user/ucard/list' ,
-            'user/ucard/new' ,
-            'user/ucard/edit' ,
-            'user/ucard/editpri' ,
-            'user/ucard/checkid' ,
-            'user/ucard/checkloginid' ,
-            'user/ucard/del' ,
-            'user/ucard/detail' ,
+             
             'user/uinfo/grid' ,
             'user/uinfo/list' ,
             'user/uinfo/edit' ,
@@ -34,6 +16,11 @@ return array(
             'user/uscore/grid' ,
             'user/uscore/list' ,
             'user/uscore/detail' ,
+            'user/uinfo/mycard',
+            'user/uinfo/cardlist',
+            'user/uinfo/newcard',
+            'user/uinfo/delcard',
+           
         ),
         'bizRules' => '',
         'data' => ''
@@ -43,18 +30,13 @@ return array(
         'display'=>true,
         'description' => '会员管理-查看',
         'children' => array(
-            'user/card/grid' ,
-            'user/card/list' ,
             
-           
-            'user/card/detail' ,
-            'user/ucard/grid' ,
-            'user/ucard/list' ,
-            'user/ucard/detail' ,
             
             'user/uinfo/grid' ,
             'user/uinfo/list' ,
             'user/uinfo/detail' ,
+            'user/uinfo/mycard',
+            'user/uinfo/cardlist',
             
             'user/uscore/grid' ,
             'user/uscore/list' ,
@@ -237,6 +219,24 @@ return array(
         'bizRules' => '',
         'data' => ''
     ),
+    
+    'service_goods' => array(
+        'type' => CAuthItem::TYPE_TASK,
+        'display'=>true,
+        'description' => '特色服务-官方寄卖',
+        'children' => array(
+           
+            'service/goods/grid' ,
+            'service/goods/list' ,
+            'service/goods/detail' ,
+            'service/goods/del' ,
+            'service/goods/newgoods',
+            'service/goods/checkid',
+        ),
+        'bizRules' => '',
+        'data' => ''
+    ),
+    
     'service_mcht' => array(
         'type' => CAuthItem::TYPE_TASK,
         'display'=>true,

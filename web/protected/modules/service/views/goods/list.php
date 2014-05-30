@@ -1,6 +1,15 @@
 <div id="content">
     <div class="title-box">
-        <h1>寄卖商品信息管理
+        <h1><span style="float:left;">寄卖商品信息管理</span>
+            <?php
+        
+        if(Yii::app()->user->type == Operator::TYPE_AGENT  && Yii::app()->user->agent_id == '1')
+        {
+        ?>
+            <a href="./?r=service/goods/newgoods" style="float:right;margin-left: 15px;"><span class="add_ico"></span><span>商品添加</span></a>
+            <?php
+        }
+        ?>
         </h1>
         <ul class="sift">
             <?php $this->renderPartial('_toolBox'); ?>

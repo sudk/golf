@@ -32,8 +32,13 @@ if($__model__!="edit"){
     <tr>
         <td class="maxname">姓名：</td>
         <td class="mivalue"><?php echo $form->activeTextField($model, 'user_name', array('title' => '本项必填', 'class' => 'input_text', 'maxlength' => 32), 'required'); ?></td>
-        <td class="maxname">会员卡：</td>
-        <td class="mivalue"><?php echo $form->activeTextField($model, 'card_no', array('title' => '本项必填', 'class' => 'input_text', 'maxlength' => 32), ''); ?></td>
+        <td class="maxname">是否VIP客户</td>
+        <td class="mivalue"><?php 
+        $radio_list  = array(
+            '0'=>'否',
+            '1'=>'是'
+        );
+        echo $form->activeRadioButtonList($model, 'card_no',$radio_list, array('title' => '本项必填', 'class' => 'input_text'), 'required'); ?></td>
     </tr>
     
     <tr>

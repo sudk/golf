@@ -1,11 +1,10 @@
 <form name="_query_form" id="_query_form" action="javascript:itemQuery(0);">
     <li>
         <span class="sift-title">搜索：</span>
-        <select name="q_by">
-            <option value="id">卡号</option>
-            <option value="card_name">卡名称</option>
-        </select>
-        <input name="q_value" type="text" class="grayTips" />
+        
+        <span style="float:left; margin:0 3px; margin-top:-3px;">卡片编号</span>
+        <input type="text" name="q[card_no]" value="" class="input_text"/>
+        <input type="hidden" name="q[user_id]" value="<?php echo $_SESSION['cur_user_id'];?>"/>
         <input type="submit" value="" class="search_btn"/>
     </li>
     
@@ -19,7 +18,7 @@
     var itemQuery = function(){
         var length=arguments.length;
         if(length==1){
-            <?=$this->gridId?>.page = arguments[0];
+            <?=$this->cardGridId?>.page = arguments[0];
         }
         var objs = document.getElementById("_query_form").elements;
         var i = 0;
@@ -30,8 +29,8 @@
             obj = objs.item(i);
             url += '&' + obj.name + '=' + obj.value;
         }
-<?php echo $this->gridId; ?>.condition = url;
-<?php echo $this->gridId; ?>.refresh();
+<?php echo $this->cardGridId; ?>.condition = url;
+<?php echo $this->cardGridId; ?>.refresh();
     }
 
 </script>

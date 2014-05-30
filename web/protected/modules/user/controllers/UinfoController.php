@@ -10,6 +10,7 @@ class UinfoController extends AuthBaseController
 
     public $defaultAction = 'list';
     public $gridId = 'list';
+    public $cardGridId = 'card_list';
     public $pageSize = 100;
     public $module_id = 'user';
 
@@ -25,12 +26,12 @@ class UinfoController extends AuthBaseController
        
         $t->set_header('姓名', '15%', '');
         $t->set_header('电话', '10%', '');
-        $t->set_header('会员卡号', '20%', '');
+        //$t->set_header('会员卡号', '20%', '');
         $t->set_header('账户余额', '15%', '','');
         $t->set_header('账户积分', '10%', '','');
         $t->set_header('所在城市', '10%', '','');
         $t->set_header('状态', '10%', '');
-        $t->set_header('操作', '10%', '');
+        $t->set_header('操作', '30%', '');
         return $t;
     }
 
@@ -171,6 +172,128 @@ class UinfoController extends AuthBaseController
             $msg['status'] = false;
             $msg['detail'] = "获取会员信息失败！";
         }
+        print_r(json_encode($msg));
+    }
+    
+    
+    public function actionMyCard()
+    {
+        $id = trim($_GET['id']);
+        $name=trim($_GET['name']);
+        
+        $_SESSION['cur_user_id'] = $id;
+        $_SESSION['cur_user_name'] = $name;
+        
+        $this->render('card_list');
+    }
+    
+    /**
+     * 表头
+     * @return SimpleGrid
+     */
+    private function genCardDataGrid()
+    {
+        $t = new SimpleGrid($this->cardGridId);
+        $t->url = 'index.php?r=user/uinfo/cardlist';
+        $t->updateDom = 'datagrid';
+        $t->set_header('卡号', '20%', '');
+        $t->set_header('卡名称', '20%', '');   
+        $t->set_header('卡图片', '40%', '');   
+        $t->set_header('操作', '20%', '');
+        return $t;
+    }
+
+    
+    public function actionCardList()
+    {
+        $page = $_GET['page'] == '' ? 0 : $_GET['page']; //当前页码
+        $_GET['page']=$_GET['page']+1;
+        $args = $_GET['q']; //查询条件
+
+
+        if ($_REQUEST['q_value'])
+        {
+            $args[$_REQUEST['q_by']] = $_REQUEST['q_value'];
+        }
+
+        $t = $this->genCardDataGrid();
+        
+        if(!isset($args['user_id']))
+        {
+            $args['user_id'] = $_SESSION['cur_user_id'];
+        }
+        
+        
+        //var_dump($args);
+        $list = Card::queryList($page, $this->pageSize, $args);
+
+        $this->renderPartial('_cardlist', array('t' => $t, 'rows' => $list['rows'], 'cnt' => $list['total_num'], 'curpage' => $list['page_num']));
+    }
+    
+    
+    public function actionNewCard() {
+        $model = new Card('create');
+        $id = trim($_REQUEST['id']);
+        if ($_POST['Card']) {
+            $model->attributes = $_POST['Card'];
+            
+            $model->record_time = date("Y-m-d H:i:s");
+            $model->id = date("YmdHis").  rand(100000, 999999);
+
+            try {
+                $rs = $model->save();
+                if ($rs) {
+                    $msg['msg'] = "添加成功！";
+                    $msg['status'] = 1;
+
+                    $file = $_FILES['card_img'];
+                    if (is_uploaded_file($file['tmp_name'])) {
+                        $upload_rs = Img::uploadImg($file['tmp_name'], $file['name'], $model->id, Img::TYPE_CARD);
+                        if ($upload_rs['status'] != 0) {
+                            $msg['msg'] .= "图片上传失败。";
+                        }
+                        
+                    }
+
+
+
+                    $model = new Card('create');
+                } else {
+                    $msg['msg'] = "添加失败！";
+                    $msg['status'] = -1;
+                }
+            } catch (Exception $e) {
+                if ($e->errorInfo[0] == 23000) {
+                    $msg['msg'] = "未知错误！";
+                    $msg['status'] = -1;
+                }
+            }
+        }else{
+            $model->user_id = $id;
+        }
+        $this->render("new_card", array('model' => $model, 'msg' => $msg));
+    }
+
+
+    /**
+     * 商户删除
+     * 包括 
+     * 商户信息
+     * 球场的图片
+     */
+    public function actionDelCard() {
+        $id = $_POST['id'];
+        $model = Card::model()->findByPk($id);
+        //先删除
+        $rs = $model->deleteByPk($id);
+        if ($rs) {
+            //del img
+            $img_rs = Img::delImg($id, Img::TYPE_CARD);
+            $msg['status'] = true;
+        } else {
+            $msg['status'] = false;
+        }
+
         print_r(json_encode($msg));
     }
 

@@ -52,6 +52,11 @@ class GoodsController extends AuthBaseController
             $args['title'] = "";
         }
         
+        if(Yii::app()->user->type == Operator::TYPE_AGENT  && Yii::app()->user->agent_id == '1')
+        {
+            $args['user_id'] = Yii::app()->user->agent_id;
+        }
+        
 
         $t = $this->genDataGrid();
         $this->saveUrl();
@@ -123,10 +128,152 @@ class GoodsController extends AuthBaseController
         $rs = Flea::model()->deleteByPk($id);
         if($rs)
         {
+            //del img
+            $img_rs = Img::delImg($id, Img::TYPE_FLEA);
             echo  json_encode(array('status'=>0));exit;
         }
         
         echo  json_encode(array('status'=>-1));exit;
+    }
+    
+    private function checkName($name)
+    {
+        $cnt=  Flea::model()->count("title='".trim($name)."'");
+            //print_r($operator);
+        if($cnt > 0){
+            return false;
+        }else{
+            return true;
+        }
+    }
+    public function actionNewGoods(){
+        $model=new Flea('create');
+        if($_POST['Flea']){
+            $model->attributes=$_POST['Flea'];
+            
+            //先判断name是否重复
+            if(!$this->checkName($_POST['Flea']['title']))
+            {
+                $msg['msg']="添加失败！新闻名称重复";
+                $msg['status']=-1;
+            }else
+            {
+                $agent_id = Yii::app()->user->agent_id ;
+                $agent_info = Agent::model()->find("id='{$agent_id}'");
+                if(!$agent_info)
+                {
+                    $msg['msg']="添加失败！";
+                    $msg['status']=-1;
+                }else
+                {
+                    $model->title = $_POST['Flea']['title'];
+                    $model->price = intval($_POST['Flea']['price'])*100;
+                    $model->desc = $_POST['Flea']['desc'];
+                    $model->record_time=date("Y-m-d H:i:s");
+                    $model->status = '0';
+                    $model->phone = $agent_info['phone'];
+                    $model->contact = $agent_info['contactor'];
+                    $model->user_id = Yii::app()->user->agent_id;
+                    $model->check_id = Yii::app()->user->id;
+                    $model->check_time=date("Y-m-d H:i:s");
+                    $id = "O".date('YmdHis').rand(100000,999999);//官方商品
+                    $model->id = $id;
+                    //var_dump($_POST['Flea']);var_dump($model->attributes);exit;
+                    try{
+                        $rs=$model->save();
+                        if($rs){
+                            $msg['msg']="添加成功！";
+                            $msg['status']=1;
+
+                            $upload_img_msg = $this->uploadImgOfGoods($_FILES['upfile'],$id);
+                            $msg['msg'] .=$upload_img_msg;
+
+                            $model=new Flea('create');
+                        }else{
+                            $msg['msg']="添加失败！";
+                            $msg['status']=-1;
+                        }
+                    }catch (Exception $e){
+                        if($e->errorInfo[0]==23000){
+                            $msg['msg']="未知错误！";
+                            $msg['status']=-1;
+                        }
+
+                    }
+                }
+                
+
+                
+            }
+        }
+        $this->render("new",array('model' => $model, 'msg' => $msg));
+    }
+    
+    /**
+     * 上传赛事图片
+     * @param type $files
+     * @param type $relation_id
+     * @return string
+     */
+    private  function uploadImgOfGoods($files,$relation_id)
+    {
+            $succ_num = 0;
+            $false_num = 0;
+            $up_msg = "";
+            //$files = $_FILES['upfile'];
+            $msg = "";
+            if(isset($files))
+            {
+                //var_dump($files['error']);
+                foreach($files['error'] as $k=>$v)
+                {
+                    if($v == 0)
+                    {
+                        //sleep(1);
+                        //可以上传
+                        $rs = Img::uploadImg($files['tmp_name'][$k],$files['name'][$k],$relation_id,Img::TYPE_FLEA);
+                        //var_dump($rs);
+                        if($rs['status'] == 0)
+                        {
+                            $up_msg .="第".($k+1)."张图片上传成功.";
+                            $succ_num++;
+                            
+                        }else{
+                            $up_msg .= "第".($k+1)."张图片上传失败.";
+                            Img::delSimpleImg($rs['url']);
+                            $false_num++;
+                        }
+                    }  else 
+                    {
+                        $up_msg .= "第".($k+1)."张图片上传失败.";
+                        $false_num++;
+                    }
+                }
+                
+                $msg = $succ_num>0?"上传成功。":"上传失败。";
+                $msg .= $succ_num>0?"成功数量:".$succ_num.",":"";
+                $msg .= $false_num>0?"失败数量:".$false_num.",":"";
+                $msg .= $up_msg;
+                
+            }
+            return $msg;
+    }
+    
+    public function actionCheckid(){
+        $id=$_GET['id'];
+        $data['status']=true;
+        if($id){
+            $cnt=  Flea::model()->count("title='".trim($id)."'");
+            //print_r($operator);
+            if($cnt > 0){
+                $data['msg']=2;
+            }else{
+                $data['msg']=0;
+            }
+        }else{
+            $data['status']=false;
+        }
+        print_r(json_encode($data));
     }
 
 }

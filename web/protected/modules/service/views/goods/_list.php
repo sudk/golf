@@ -9,6 +9,12 @@ if (is_array($rows)) {
         $num = ($curpage - 1) * $this->pageSize + $j++;
 
         $link = CHtml::link('详细',"javascript:itemEdit('{$row['id']}')", array());
+        $id_pre = substr($row['id'],0,1);
+        if(Yii::app()->user->type == Operator::TYPE_AGENT && Yii::app()->user->agent_id == '1' && $id_pre == 'O')
+        {
+            $l_title = htmlspecialchars($row['title']);
+            $link .= CHtml::link('删除',"javascript:itemDelete('{$row['id']}','{$l_title}')", array());
+        }
         
         $price = intval($row['price']);
         $price = $price==0?0:floatval($price/100);

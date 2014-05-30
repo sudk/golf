@@ -64,6 +64,13 @@ class Flea extends CActiveRecord {
             $condition.=' AND status=:status';
             $params['status'] = $args['status'];
         }
+        
+        if ($args['user_id'] != ''){
+            $condition.=' AND user_id=:user_id';
+            $params['user_id'] = $args['user_id'];
+        }
+        
+        
         $total_num = Flea::model()->count($condition, $params); //总记录数
 
         $criteria = new CDbCriteria();
