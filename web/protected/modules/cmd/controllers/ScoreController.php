@@ -316,8 +316,11 @@ class ScoreController extends CMDBaseController
             $msg['desc']="成功";
         }catch(Exception $e){
             $transaction->rollBack();
-            $msg['status']=8;
+            $msg['status']=$e->getCode();
             $msg['desc']="保存失败";
+            if($msg['status']=="23000"){
+                $msg['desc']="洞号:".Yii::app()->command->cmdObj->hole_no."重复记分";
+            }
         }
         echo json_encode($msg);
         return;
