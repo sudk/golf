@@ -44,42 +44,7 @@ class Score extends CActiveRecord {
             $condition.= ' AND court_id=:court_id';
             $params['court_id'] = $args['court_id'];
         }
-        $sub_sql = "";
-        if ($args['user_name'] != ''){
-            $sub_sql .= $sub_sql==""?"":" AND ";
-            $sub_sql.="  user_name like '%".$args['user_name']."%'";
-           
-        }
-        if ($args['phone'] != ''){
-            $sub_sql .= $sub_sql==""?"":" AND ";
-            $sub_sql.="  phone = '".$args['phone']."'";
-           
-        }
-        
-        if ($args['card_no'] != ''){
-            $sub_sql .= $sub_sql==""?"":" AND ";
-            $sub_sql.="  card_no = '".$args['card_no']."'";
-           
-        }
-        
-        if($sub_sql != "")
-        {
-            $rows = User::model()->findAll($sub_sql);
-            if(@count($rows) > 0)
-            {
-                $condition .= " AND user_id in ('";
-                foreach($rows as $row)
-                {
-                    $condition .= $row['user_id']."','";
-                }
-                
-                $condition  = substr($condition, 0, strlen($condition)-2);
-                
-                $condition .= ")";
-                
-            }
-        }
-        
+
         
         $total_num = Score::model()->count($condition, $params); //总记录数
 
@@ -120,16 +85,15 @@ class Score extends CActiveRecord {
         $condition = ' 1=1 ';
         $params = array();
 
-        if (isset($args->user_id)&&$args->user_id != ''){
-            $condition.=' AND user_id = :user_id';
-            $params['user_id'] = $args->user_id;
-        }
+        $condition.=' AND user_id = :user_id';
+        $params['user_id'] = Yii::app()->user->id;
 
         $order = 'record_time DESC';
         //print_r($args);
         $rows=Yii::app()->db->createCommand()
-            ->select("*")
+            ->select("g_score.*,g_court.name court_name")
             ->from("g_score")
+            ->leftJoin("g_court","g_score.court_id=g_court.court_id")
             ->where($condition,$params)
             ->order($order)
             ->limit($pageSize)
@@ -141,8 +105,9 @@ class Score extends CActiveRecord {
 
     public static function Info($id) {
         $row=Yii::app()->db->createCommand()
-            ->select("*")
+            ->select("g_score.*,g_court.name court_name")
             ->from("g_score")
+            ->leftJoin("g_court","g_score.court_id=g_court.court_id")
             ->where("id=:id",array(":id"=>$id))
             ->queryRow();
         return $row;

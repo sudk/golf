@@ -490,6 +490,7 @@ class Order extends CActiveRecord {
                 $sn=$transRecord['out_serial_number'];
                 break;
         }
+        
         return $pay->Refund($amount,$orderNumber,$sn);
 
     }

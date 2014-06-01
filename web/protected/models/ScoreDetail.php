@@ -44,44 +44,9 @@ class ScoreDetail extends CActiveRecord {
             $condition.= ' AND court_id=:court_id';
             $params['court_id'] = $args['court_id'];
         }
-        $sub_sql = "";
-        if ($args['user_name'] != ''){
-            $sub_sql .= $sub_sql==""?"":" AND ";
-            $sub_sql.="  user_name like '%".$args['user_name']."%'";
-           
-        }
-        if ($args['phone'] != ''){
-            $sub_sql .= $sub_sql==""?"":" AND ";
-            $sub_sql.="  phone = '".$args['phone']."'";
-           
-        }
-        
-        if ($args['card_no'] != ''){
-            $sub_sql .= $sub_sql==""?"":" AND ";
-            $sub_sql.="  card_no = '".$args['card_no']."'";
-           
-        }
-        
-        if($sub_sql != "")
-        {
-            $rows = User::model()->findAll($sub_sql);
-            if(@count($rows) > 0)
-            {
-                $condition .= " AND user_id in ('";
-                foreach($rows as $row)
-                {
-                    $condition .= $row['user_id']."','";
-                }
-                
-                $condition  = substr($condition, 0, strlen($condition)-2);
-                
-                $condition .= ")";
-                
-            }
-        }
         
         
-        $total_num = Score::model()->count($condition, $params); //总记录数
+        $total_num = ScoreDetail::model()->count($condition, $params); //总记录数
 
         $criteria = new CDbCriteria();
         
@@ -102,7 +67,7 @@ class ScoreDetail extends CActiveRecord {
         $pages->setCurrentPage($page);
         $pages->applyLimit($criteria);
 
-        $rows = Score::model()->findAll($criteria);
+        $rows = ScoreDetail::model()->findAll($criteria);
 
         $rs['status'] = 0;
         $rs['desc'] = '成功';
@@ -113,6 +78,39 @@ class ScoreDetail extends CActiveRecord {
         $rs['rows'] = $rows;
 
         return $rs;
+    }
+
+    public static function InfoList($page, $pageSize, $args = array()) {
+
+        $condition = ' 1=1 ';
+        $params = array();
+
+        if (isset($args->score_id)&&$args->score_id != ''){
+            $condition.=' AND score_id = :score_id';
+            $params['score_id'] = $args->score_id;
+        }
+
+        $order = 'hole_no';
+
+        $rows=Yii::app()->db->createCommand()
+            ->select("*")
+            ->from("g_score_detail")
+            ->where($condition,$params)
+            ->order($order)
+            ->limit($pageSize)
+            ->offset($page * $pageSize)
+            ->queryAll();
+
+        return $rows;
+    }
+
+    public static function Info($id) {
+        $row=Yii::app()->db->createCommand()
+            ->select("*")
+            ->from("g_score_detail")
+            ->where("id=:id",array(":id"=>$id))
+            ->queryRow();
+        return $row;
     }
 }
 

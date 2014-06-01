@@ -1,27 +1,17 @@
 <?php
 
 /**
- * 赛事
+ * 记分
  * @author sudk
  */
 class ScoreController extends CMDBaseController
 {
     public function accessRules() {
-        return array(
-            array('allow',
-                'actions' => array('info','Bandcard'),
-                'users' => array('@'),
-            ),
-            array('allow',
-                'users' => array('*'),
-            ),
-            array('deny',
-                'actions' => array(),
-            ),
-        );
+        return array('login' => array('list','create','update','del','dlist','dcreate','dupdate','ddel'));
     }
 
     public function actionList(){
+
         if(Yii::app()->command->cmdObj->_pg_==null||Yii::app()->command->cmdObj->_pg_==""){
             $msg['status']=1;
             $msg['desc']="分页参数不能为空！";
@@ -29,30 +19,7 @@ class ScoreController extends CMDBaseController
             return;
         }
 
-        $rows=Flea::InfoList(Yii::app()->command->cmdObj->_pg_,$this->pageSize,Yii::app()->command->cmdObj);
-        if(count($rows)){
-            $msg['status']=0;
-            $msg['desc']="成功";
-            $msg['_pg_']=Yii::app()->command->cmdObj->_pg_;
-            $msg['data']=$rows;
-        }else{
-            $msg['status']=4;
-            $msg['desc']="没有数据";
-        }
-        echo json_encode($msg);
-        return;
-
-    }
-
-    public function actionMylist(){
-        if(Yii::app()->command->cmdObj->_pg_==null||Yii::app()->command->cmdObj->_pg_==""){
-            $msg['status']=1;
-            $msg['desc']="分页参数不能为空！";
-            echo json_encode($msg);
-            return;
-        }
-
-        $rows=Flea::MyInfoList(Yii::app()->command->cmdObj->_pg_,$this->pageSize,Yii::app()->command->cmdObj);
+        $rows=Score::InfoList(Yii::app()->command->cmdObj->_pg_,$this->pageSize,Yii::app()->command->cmdObj);
         if(count($rows)){
             $msg['status']=0;
             $msg['desc']="成功";
@@ -74,7 +41,7 @@ class ScoreController extends CMDBaseController
             echo json_encode($msg);
             return;
         }
-        $row=Flea::Info(Yii::app()->command->cmdObj->id);
+        $row=Score::Info(Yii::app()->command->cmdObj->id);
         if($row){
             $msg['status']=0;
             $msg['desc']="成功";
@@ -88,48 +55,31 @@ class ScoreController extends CMDBaseController
     }
 
     public function actionCreate(){
-        if(!isset(Yii::app()->command->cmdObj->id)||Yii::app()->command->cmdObj->id==''){
+
+        if(!isset(Yii::app()->command->cmdObj->court_id)||Yii::app()->command->cmdObj->court_id==''){
             $msg['status']=1;
-            $msg['desc']="ID不能为空！";
+            $msg['desc']="球场不能为空！";
             echo json_encode($msg);
             return;
         }
-        if(!isset(Yii::app()->command->cmdObj->title)||Yii::app()->command->cmdObj->title==''){
+
+        if(!isset(Yii::app()->command->cmdObj->holes)||Yii::app()->command->cmdObj->holes==''){
             $msg['status']=2;
-            $msg['desc']="标题不能为空！";
+            $msg['desc']="球洞数不能为空！";
             echo json_encode($msg);
             return;
         }
 
-        if(!isset(Yii::app()->command->cmdObj->city)||Yii::app()->command->cmdObj->city==''){
+        if(!isset(Yii::app()->command->cmdObj->fee_time)||Yii::app()->command->cmdObj->fee_time==''){
             $msg['status']=3;
-            $msg['desc']="城市不能为空！";
+            $msg['desc']="打球时间不能为空！";
             echo json_encode($msg);
             return;
         }
 
-        if(!isset(Yii::app()->command->cmdObj->desc)||Yii::app()->command->cmdObj->desc==''){
+        if(!isset(Yii::app()->command->cmdObj->is_show)||Yii::app()->command->cmdObj->is_show==''){
             $msg['status']=4;
-            $msg['desc']="商户描述不能为空！";
-            echo json_encode($msg);
-            return;
-        }
-
-        if(!isset(Yii::app()->command->cmdObj->price)||Yii::app()->command->cmdObj->price==''){
-            $msg['status']=5;
-            $msg['desc']="价格不能为空！";
-            echo json_encode($msg);
-            return;
-        }
-        if(!isset(Yii::app()->command->cmdObj->contact)||Yii::app()->command->cmdObj->contact==''){
-            $msg['status']=6;
-            $msg['desc']="联系人不能为空！";
-            echo json_encode($msg);
-            return;
-        }
-        if(!isset(Yii::app()->command->cmdObj->phone)||Yii::app()->command->cmdObj->phone==''){
-            $msg['status']=7;
-            $msg['desc']="电话不能为空！";
+            $msg['desc']="是否保密不能为空！";
             echo json_encode($msg);
             return;
         }
@@ -137,40 +87,24 @@ class ScoreController extends CMDBaseController
         $user_id=Yii::app()->user->id;
         $conn=Yii::app()->db;
         $transaction = $conn->beginTransaction();
-//        $id=date("YmdHis").rand(100000,999999);
-        $id=Yii::app()->command->cmdObj->id;
+        $id=Utils::GenerateSerialNumber();
+        $record_time=date("Y-m-d H:i:s");
         try{
-            $record_time=date("Y-m-d H:i:s");
-            $sql="insert into g_flea (id,title,`city`,`desc`,price,record_time,user_id,phone,contact) values (:id,:title,:city,:desc,:price,:record_time,:user_id,:phone,:contact)";
+            $sql="insert into g_score (id,court_id,user_id,holes,fee_time,team_menbers,is_show,record_time) values (:id,:court_id,:user_id,:holes,:fee_time,:team_menbers,:is_show,:record_time)";
             $command = $conn->createCommand($sql);
             $command->bindParam(":id",$id, PDO::PARAM_STR);
-            $command->bindParam(":title", Yii::app()->command->cmdObj->title, PDO::PARAM_STR);
-            $command->bindParam(":city", Yii::app()->command->cmdObj->city, PDO::PARAM_STR);
-            $command->bindParam(":desc", Yii::app()->command->cmdObj->desc, PDO::PARAM_STR);
-            $command->bindParam(":price", Yii::app()->command->cmdObj->price, PDO::PARAM_STR);
-            $command->bindParam(":phone", Yii::app()->command->cmdObj->phone, PDO::PARAM_STR);
-            $command->bindParam(":contact", Yii::app()->command->cmdObj->contact, PDO::PARAM_STR);
+            $command->bindParam(":court_id", Yii::app()->command->cmdObj->court_id, PDO::PARAM_STR);
+            $command->bindParam(":user_id",$user_id, PDO::PARAM_STR);
+            $command->bindParam(":holes", Yii::app()->command->cmdObj->holes, PDO::PARAM_STR);
+            $command->bindParam(":fee_time", Yii::app()->command->cmdObj->fee_time, PDO::PARAM_STR);
+            $command->bindParam(":team_menbers", Yii::app()->command->cmdObj->team_menbers, PDO::PARAM_STR);
+            $command->bindParam(":is_show", Yii::app()->command->cmdObj->is_show, PDO::PARAM_STR);
             $command->bindParam(":record_time",$record_time, PDO::PARAM_STR);
-            $command->bindParam(":user_id", $user_id, PDO::PARAM_STR);
             $command->execute();
-            if(!isset(Yii::app()->command->cmdObj->imgs)&&count(Yii::app()->command->cmdObj->imgs)){
-                $type=Img::TYPE_FLEA;
-                foreach(Yii::app()->command->cmdObj->imgs as $img){
-                    $img=str_replace(Img::IMG_PATH,'',$img);
-                    $sql="insert into g_img (relation_id,`type`,`img_url`,record_time) values (:relation_id,:type,:img_url,:record_time)";
-                    $command = $conn->createCommand($sql);
-                    $command->bindParam(":relation_id",$id, PDO::PARAM_STR);
-                    $command->bindParam(":type",$type, PDO::PARAM_STR);
-                    $command->bindParam(":img_url",$img, PDO::PARAM_STR);
-                    $command->bindParam(":record_time",$record_time, PDO::PARAM_STR);
-                    $command->execute();
-                }
-            }
             $transaction->commit();
             $msg['status']=0;
-            $msg['desc']="成功，等管理员审核后才能显示。";
+            $msg['desc']="成功";
         }catch (Exception $e){
-            //print_r($e);
             $transaction->rollBack();
             $msg['status']=8;
             $msg['desc']="保存失败";
@@ -180,93 +114,57 @@ class ScoreController extends CMDBaseController
     }
 
     public function actionUpdate(){
-        if(!isset(Yii::app()->command->cmdObj->id)||Yii::app()->command->cmdObj->id==''){
+        if(!isset(Yii::app()->command->cmdObj->court_id)||Yii::app()->command->cmdObj->court_id==''){
             $msg['status']=1;
+            $msg['desc']="球场不能为空！";
+            echo json_encode($msg);
+            return;
+        }
+
+        if(!isset(Yii::app()->command->cmdObj->holes)||Yii::app()->command->cmdObj->holes==''){
+            $msg['status']=2;
+            $msg['desc']="球洞数不能为空！";
+            echo json_encode($msg);
+            return;
+        }
+
+        if(!isset(Yii::app()->command->cmdObj->fee_time)||Yii::app()->command->cmdObj->fee_time==''){
+            $msg['status']=3;
+            $msg['desc']="打球时间不能为空！";
+            echo json_encode($msg);
+            return;
+        }
+
+        if(!isset(Yii::app()->command->cmdObj->is_show)||Yii::app()->command->cmdObj->is_show==''){
+            $msg['status']=4;
+            $msg['desc']="是否保密不能为空！";
+            echo json_encode($msg);
+            return;
+        }
+        if(!isset(Yii::app()->command->cmdObj->id)||Yii::app()->command->cmdObj->id==''){
+            $msg['status']=5;
             $msg['desc']="ID不能为空！";
             echo json_encode($msg);
             return;
         }
-        if(!isset(Yii::app()->command->cmdObj->title)||Yii::app()->command->cmdObj->title==''){
-            $msg['status']=2;
-            $msg['desc']="标题不能为空！";
-            echo json_encode($msg);
-            return;
-        }
 
-        if(!isset(Yii::app()->command->cmdObj->city)||Yii::app()->command->cmdObj->city==''){
-            $msg['status']=3;
-            $msg['desc']="城市不能为空！";
-            echo json_encode($msg);
-            return;
-        }
-
-        if(!isset(Yii::app()->command->cmdObj->desc)||Yii::app()->command->cmdObj->desc==''){
-            $msg['status']=4;
-            $msg['desc']="商户描述不能为空！";
-            echo json_encode($msg);
-            return;
-        }
-
-        if(!isset(Yii::app()->command->cmdObj->price)||Yii::app()->command->cmdObj->price==''){
-            $msg['status']=5;
-            $msg['desc']="价格不能为空！";
-            echo json_encode($msg);
-            return;
-        }
-        if(!isset(Yii::app()->command->cmdObj->contact)||Yii::app()->command->cmdObj->contact==''){
-            $msg['status']=6;
-            $msg['desc']="联系人不能为空！";
-            echo json_encode($msg);
-            return;
-        }
-        if(!isset(Yii::app()->command->cmdObj->phone)||Yii::app()->command->cmdObj->phone==''){
-
-            $msg['status']=7;
-            $msg['desc']="电话不能为空！";
-            echo json_encode($msg);
-            return;
-        }
         $conn=Yii::app()->db;
         $transaction = $conn->beginTransaction();
-        $record_time=date("Y-m-d H:i:s");
-        $status=Flea::STATUS_UNAUDITED;
+        $user_id=Yii::app()->user->id;
         try{
-            $sql="update g_flea set title=:title,city=:city,`desc`=:desc,price=:price,status=:status,record_time=:record_time,phone=:phone,contact=:contact,check_id='',check_time='' where id=:id";
+            $sql="update g_score set court_id=:court_id,user_id=:user_id,holes=:holes,fee_time=:fee_time,team_menbers=:team_menbers,is_show=:is_show where id=:id";
             $command = $conn->createCommand($sql);
-            $command->bindParam(":title", Yii::app()->command->cmdObj->title, PDO::PARAM_STR);
-            $command->bindParam(":city", Yii::app()->command->cmdObj->city, PDO::PARAM_STR);
-            $command->bindParam(":desc", Yii::app()->command->cmdObj->desc, PDO::PARAM_STR);
-            $command->bindParam(":price", Yii::app()->command->cmdObj->price, PDO::PARAM_STR);
-            $command->bindParam(":phone", Yii::app()->command->cmdObj->phone, PDO::PARAM_STR);
-            $command->bindParam(":contact", Yii::app()->command->cmdObj->contact, PDO::PARAM_STR);
-            $command->bindParam(":status",$status, PDO::PARAM_STR);
-            $command->bindParam(":record_time",$record_time, PDO::PARAM_STR);
-            $command->bindParam(":id", Yii::app()->command->cmdObj->id, PDO::PARAM_STR);
+            $command->bindParam(":court_id", Yii::app()->command->cmdObj->court_id, PDO::PARAM_STR);
+            $command->bindParam(":user_id",$user_id, PDO::PARAM_STR);
+            $command->bindParam(":holes", Yii::app()->command->cmdObj->holes, PDO::PARAM_STR);
+            $command->bindParam(":fee_time", Yii::app()->command->cmdObj->fee_time, PDO::PARAM_STR);
+            $command->bindParam(":team_menbers", Yii::app()->command->cmdObj->team_menbers, PDO::PARAM_STR);
+            $command->bindParam(":is_show", Yii::app()->command->cmdObj->is_show, PDO::PARAM_STR);
+            $command->bindParam(":id",Yii::app()->command->cmdObj->id, PDO::PARAM_STR);
             $command->execute();
-
-            $type=Img::TYPE_FLEA;
-            $sql="delete from g_img where relation_id=:relation_id and type=:type";
-            $command = $conn->createCommand($sql);
-            $command->bindParam(":relation_id",Yii::app()->command->cmdObj->id, PDO::PARAM_STR);
-            $command->bindParam(":type",$type, PDO::PARAM_STR);
-            $command->execute();
-
-            if(!isset(Yii::app()->command->cmdObj->imgs)&&count(Yii::app()->command->cmdObj->imgs)){
-
-                foreach(Yii::app()->command->cmdObj->imgs as $img){
-                    $img=str_replace(Img::IMG_PATH,'',$img);
-                    $sql="insert into g_img (relation_id,`type`,`img_url`,record_time) values (:relation_id,:type,:img_url,:record_time)";
-                    $command = $conn->createCommand($sql);
-                    $command->bindParam(":relation_id",Yii::app()->command->cmdObj->id, PDO::PARAM_STR);
-                    $command->bindParam(":type",$type, PDO::PARAM_STR);
-                    $command->bindParam(":img_url",$img, PDO::PARAM_STR);
-                    $command->bindParam(":record_time",$record_time, PDO::PARAM_STR);
-                    $command->execute();
-                }
-            }
             $transaction->commit();
             $msg['status']=0;
-            $msg['desc']="成功，等管理员审核后才能显示。";
+            $msg['desc']="成功";
         }catch (Exception $e){
             $transaction->rollBack();
             $msg['status']=8;
@@ -275,6 +173,7 @@ class ScoreController extends CMDBaseController
         echo json_encode($msg);
         return;
     }
+
     public function actionDel(){
         if(!isset(Yii::app()->command->cmdObj->id)||Yii::app()->command->cmdObj->id==''){
             $msg['status']=1;
@@ -286,53 +185,242 @@ class ScoreController extends CMDBaseController
         $conn=Yii::app()->db;
         $transaction = $conn->beginTransaction();
         try{
-            $sql="delete from g_flea where id=:id";
+            $sql="delete from g_score where id=:id";
             $command = $conn->createCommand($sql);
             $command->bindParam(":id",Yii::app()->command->cmdObj->id, PDO::PARAM_STR);
             $command->execute();
 
-            $type=Img::TYPE_FLEA;
-            $sql="delete from g_img where relation_id=:relation_id and type=:type";
+            $sql="delete from g_score_detail where score_id=:score_id";
             $command = $conn->createCommand($sql);
-            $command->bindParam(":relation_id",Yii::app()->command->cmdObj->id, PDO::PARAM_STR);
-            $command->bindParam(":type",$type, PDO::PARAM_STR);
+            $command->bindParam(":score_id",Yii::app()->command->cmdObj->id, PDO::PARAM_STR);
             $command->execute();
 
             $transaction->commit();
             $msg['status']=0;
-            $msg['desc']="成功，等管理员审核后才能显示。";
+            $msg['desc']="成功";
         }catch (Exception $e){
             $transaction->rollBack();
             $msg['status']=7;
-            $msg['desc']="保存失败";
+            $msg['desc']="删除失败";
         }
         echo json_encode($msg);
         return;
     }
-    public function actionUpload(){
-        if(!$_POST['id']){
+
+    public function actionDlist(){
+        if(Yii::app()->command->cmdObj->_pg_==null||Yii::app()->command->cmdObj->_pg_==""){
+            $msg['status']=1;
+            $msg['desc']="分页参数不能为空！";
+            echo json_encode($msg);
+            return;
+        }
+        if(Yii::app()->command->cmdObj->score_id==null||Yii::app()->command->cmdObj->score_id==""){
+            $msg['status']=1;
+            $msg['desc']="打球ID不能为空！";
+            echo json_encode($msg);
+            return;
+        }
+
+        $rows=ScoreDetail::InfoList(Yii::app()->command->cmdObj->_pg_,$this->pageSize,Yii::app()->command->cmdObj);
+        if(count($rows)){
+            $msg['status']=0;
+            $msg['desc']="成功";
+            $msg['_pg_']=Yii::app()->command->cmdObj->_pg_;
+            $msg['data']=$rows;
+        }else{
+            $msg['status']=4;
+            $msg['desc']="没有数据";
+        }
+        echo json_encode($msg);
+        return;
+
+    }
+
+    public function actionDinfo(){
+        if(!Yii::app()->command->cmdObj->id){
             $msg['status']=1;
             $msg['desc']="ID不能为空！";
             echo json_encode($msg);
             return;
         }
-        $file = $_FILES['my_file'];
-        if ($file["error"]>0) {
-            $msg['status']=3;
-            $msg['msg']='上传失败';
+        $row=ScoreDetail::Info(Yii::app()->command->cmdObj->id);
+        if($row){
+            $msg['status']=0;
+            $msg['desc']="成功";
+            $msg['data']=$row;
         }else{
-            $upload_rs = Img::uploadImg($file['tmp_name'], $file['name'],$_POST['id'], Img::TYPE_FLEA);
-            if ($upload_rs['status'] != 0) {
-                $upload_rs['msg'] .= "图片上传失败。";
-                $msg['status']=$upload_rs['status'];
-                $msg['msg']=$upload_rs['msg'];
-            }else{
-                $msg['status']=$upload_rs['status'];
-                $msg['msg']=$upload_rs['msg'];
-                $msg['data'][]=array('url'=>$upload_rs['url']);
-            }
+            $msg['status']=4;
+            $msg['desc']="没有数据";
         }
         echo json_encode($msg);
         return;
     }
+
+    public function actionDcreate(){
+
+        if(!isset(Yii::app()->command->cmdObj->score_id)||Yii::app()->command->cmdObj->score_id==''){
+            $msg['status']=1;
+            $msg['desc']="球场不能为空！";
+            echo json_encode($msg);
+            return;
+        }
+
+        if(!isset(Yii::app()->command->cmdObj->hole_no)||Yii::app()->command->cmdObj->hole_no==''){
+            $msg['status']=2;
+            $msg['desc']="洞号不能为空！";
+            echo json_encode($msg);
+            return;
+        }
+
+        if(!isset(Yii::app()->command->cmdObj->tee)||Yii::app()->command->cmdObj->tee==''){
+            $msg['status']=3;
+            $msg['desc']="T台不能为空！";
+            echo json_encode($msg);
+            return;
+        }
+
+        if(!isset(Yii::app()->command->cmdObj->standard_bar)||Yii::app()->command->cmdObj->standard_bar==''){
+            $msg['status']=5;
+            $msg['desc']="标准杆数不能为空！";
+            echo json_encode($msg);
+            return;
+        }
+        if(!isset(Yii::app()->command->cmdObj->lang_bar)||Yii::app()->command->cmdObj->lang_bar==''){
+            $msg['status']=6;
+            $msg['desc']="长杆数不能为空！";
+            echo json_encode($msg);
+            return;
+        }
+        if(!isset(Yii::app()->command->cmdObj->push_bar)||Yii::app()->command->cmdObj->push_bar==''){
+            $msg['status']=7;
+            $msg['desc']="推杆数不能为空！";
+            echo json_encode($msg);
+            return;
+        }
+        $conn=Yii::app()->db;
+        $transaction = $conn->beginTransaction();
+        $record_time=date("Y-m-d H:i:s");
+        try{
+            $sql="insert into g_score_detail (score_id,hole_no,tee,standard_bar,lang_bar,push_bar,record_time) values (:score_id,:hole_no,:tee,:standard_bar,:lang_bar,:push_bar,:record_time)";
+            $command = $conn->createCommand($sql);
+            $command->bindParam(":score_id", Yii::app()->command->cmdObj->score_id, PDO::PARAM_STR);
+            $command->bindParam(":hole_no",Yii::app()->command->cmdObj->hole_no, PDO::PARAM_STR);
+            $command->bindParam(":tee", Yii::app()->command->cmdObj->tee, PDO::PARAM_STR);
+            $command->bindParam(":standard_bar", Yii::app()->command->cmdObj->standard_bar, PDO::PARAM_STR);
+            $command->bindParam(":lang_bar", Yii::app()->command->cmdObj->lang_bar, PDO::PARAM_STR);
+            $command->bindParam(":push_bar", Yii::app()->command->cmdObj->push_bar, PDO::PARAM_STR);
+            $command->bindParam(":record_time",$record_time, PDO::PARAM_STR);
+            $command->execute();
+            $transaction->commit();
+            $msg['status']=0;
+            $msg['desc']="成功";
+        }catch(Exception $e){
+            $transaction->rollBack();
+            $msg['status']=8;
+            $msg['desc']="保存失败";
+        }
+        echo json_encode($msg);
+        return;
+    }
+
+    public function actionDupdate(){
+        if(!isset(Yii::app()->command->cmdObj->score_id)||Yii::app()->command->cmdObj->score_id==''){
+            $msg['status']=1;
+            $msg['desc']="球场不能为空！";
+            echo json_encode($msg);
+            return;
+        }
+
+        if(!isset(Yii::app()->command->cmdObj->hole_no)||Yii::app()->command->cmdObj->hole_no==''){
+            $msg['status']=2;
+            $msg['desc']="洞号不能为空！";
+            echo json_encode($msg);
+            return;
+        }
+
+        if(!isset(Yii::app()->command->cmdObj->tee)||Yii::app()->command->cmdObj->tee==''){
+            $msg['status']=3;
+            $msg['desc']="T台不能为空！";
+            echo json_encode($msg);
+            return;
+        }
+
+        if(!isset(Yii::app()->command->cmdObj->standard_bar)||Yii::app()->command->cmdObj->standard_bar==''){
+            $msg['status']=5;
+            $msg['desc']="标准杆数不能为空！";
+            echo json_encode($msg);
+            return;
+        }
+        if(!isset(Yii::app()->command->cmdObj->lang_bar)||Yii::app()->command->cmdObj->lang_bar==''){
+            $msg['status']=6;
+            $msg['desc']="长杆数不能为空！";
+            echo json_encode($msg);
+            return;
+        }
+        if(!isset(Yii::app()->command->cmdObj->push_bar)||Yii::app()->command->cmdObj->push_bar==''){
+            $msg['status']=7;
+            $msg['desc']="推杆数不能为空！";
+            echo json_encode($msg);
+            return;
+        }
+        if(!isset(Yii::app()->command->cmdObj->id)||Yii::app()->command->cmdObj->id==''){
+            $msg['status']=5;
+            $msg['desc']="ID不能为空！";
+            echo json_encode($msg);
+            return;
+        }
+
+        $conn=Yii::app()->db;
+        $transaction = $conn->beginTransaction();
+        try{
+            $sql="update g_score_detail set score_id=:score_id,hole_no=:hole_no,tee=:tee,standard_bar=:standard_bar,lang_bar=:lang_bar,push_bar=:push_bar where id=:id";
+            $command = $conn->createCommand($sql);
+            $command->bindParam(":score_id", Yii::app()->command->cmdObj->score_id, PDO::PARAM_STR);
+            $command->bindParam(":hole_no",Yii::app()->command->cmdObj->hole_no, PDO::PARAM_STR);
+            $command->bindParam(":tee", Yii::app()->command->cmdObj->tee, PDO::PARAM_STR);
+            $command->bindParam(":standard_bar", Yii::app()->command->cmdObj->standard_bar, PDO::PARAM_STR);
+            $command->bindParam(":lang_bar", Yii::app()->command->cmdObj->lang_bar, PDO::PARAM_STR);
+            $command->bindParam(":push_bar", Yii::app()->command->cmdObj->push_bar, PDO::PARAM_STR);
+            $command->bindParam(":id",Yii::app()->command->cmdObj->id, PDO::PARAM_STR);
+            $command->execute();
+            $transaction->commit();
+            $msg['status']=0;
+            $msg['desc']="成功";
+        }catch (Exception $e){
+            $transaction->rollBack();
+            $msg['status']=8;
+            $msg['desc']="保存失败";
+        }
+        echo json_encode($msg);
+        return;
+    }
+
+    public function actionDdel(){
+        if(!isset(Yii::app()->command->cmdObj->id)||Yii::app()->command->cmdObj->id==''){
+            $msg['status']=1;
+            $msg['desc']="ID不能为空！";
+            echo json_encode($msg);
+            return;
+        }
+
+        $conn=Yii::app()->db;
+        $transaction = $conn->beginTransaction();
+        try{
+            $sql="delete from g_score_detail where id=:id";
+            $command = $conn->createCommand($sql);
+            $command->bindParam(":id",Yii::app()->command->cmdObj->id, PDO::PARAM_STR);
+            $command->execute();
+
+            $transaction->commit();
+            $msg['status']=0;
+            $msg['desc']="成功";
+        }catch (Exception $e){
+            $transaction->rollBack();
+            $msg['status']=7;
+            $msg['desc']="删除失败";
+        }
+        echo json_encode($msg);
+        return;
+    }
+
 }
