@@ -229,20 +229,17 @@ class OrderController extends AuthBaseController
             
             if($now_status == Order::STATUS_WAIT_REFUND && $next_status == Order::STATUS_REFUND)
             {
-                //走退款流程
-                $refund = array(
-                    'refund'=>$_POST['Order']['refund'],
-                    'desc'=>$_POST['Order']['desc'],
-                    'order_id'=>$_POST['Order']['order_id'],
-                );
-                
-                $rs = true;
-                if($rs){
+                //走退款流程           
+                $sn = Utils::GenerateSerialNumber();
+                $rs = Order::Refund($_POST['Order']['order_id'], $_POST['Order']['refund'], $sn);
+                if($rs['status'] == 0){
+                             
                     $msg['msg']="操作成功！";
                     $msg['status']=1;
-                   
+                    //add log
+                    OrderLog::Add($_POST['Order']['order_id'], $sn);
                 }else{
-                    $msg['msg']="操作失败！";
+                    $msg['msg']="操作失败！".$rs['desc'];
                     $msg['status']=0;
                 }
             }else
