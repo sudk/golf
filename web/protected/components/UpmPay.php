@@ -130,7 +130,9 @@ class UpmPay extends BasePay
 
         $resp = array ();
         $validResp = UpmpService::trade($req, $resp);
-
+        Yii::log("------------1","info");
+        Yii::log(json_encode($resp),"info");
+        Yii::log("1------------","info");
 // 商户的业务逻辑
         if($validResp){
             return array('status'=>0,'desc'=>'已经成功向银行支付发起退款申请');
