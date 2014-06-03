@@ -11,6 +11,7 @@
     }
 </style>
 <?php
+//var_dump($msg);
 if ($msg['status']) {
     $class = Utils::getMessageType($msg['status']);
     echo "<div class='{$class}' id='msg' style='width:700px;'>{$msg['msg']}</div>";

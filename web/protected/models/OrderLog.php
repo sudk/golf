@@ -164,6 +164,24 @@ class OrderLog extends CActiveRecord {
 
     }
     
+    /**
+     * 获取订单操作日志记录
+     * @param type $order_id
+     * @param type $status
+     * @param type $table
+     * @return type array
+     */
+    public static function getLogInfo($order_id,$status,$month)
+    {
+        $row=Yii::app()->db->createCommand()
+            ->select("*")
+            ->from("g_order_log_".$month)
+            ->where("order_id=:order_id and status=:status",array("order_id"=>$order_id,'status'=>$status))
+            ->queryRow();
+        
+        return $row;
+    }
+    
    
 }
 
