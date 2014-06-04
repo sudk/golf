@@ -230,33 +230,27 @@ class OrderController extends AuthBaseController
             if($now_status == Order::STATUS_WAIT_REFUND && $next_status == Order::STATUS_REFUND)
             {
                 //走退款流程  
-                //获取支付成功时的交易流水号
-                $record_time = str_replace("-","",$model->record_time);
-                $check_month = substr($record_time,0,6);
-                $log_info = OrderLog::getLogInfo($_POST['Order']['order_id'], Order::STATUS_TOBE_SUCCESS, $check_month);
-                if($log_info)
-                {
-                    $sn = $log_info['serial_number'];
+                
+                $order_id = $_POST['Order']['order_id'];
+                
+                $sn = "";
 
-                    $refund = intval($_POST['Order']['refund'])*100;
-                    //var_dump($sn);var_dump($_POST['Order']['order_id']);var_dump($refund);exit;
-                    $rs = Order::Refund($_POST['Order']['order_id'], $refund, $sn);
-                    //var_dump($rs);
-                    if($rs['status'] == 0){
+                $refund = intval($_POST['Order']['refund'])*100;
+                //var_dump($sn);var_dump($_POST['Order']['order_id']);var_dump($refund);exit;
+                $rs = Order::Refund($order_id, $refund, $sn);
+                //var_dump($rs);
+                if($rs['status'] == 0){
 
-                        $msg['msg']="操作成功！";
-                        $msg['status']=1;
-                        //add log
-                        OrderLog::Add($_POST['Order']['order_id'], $sn);
-                    }else{
-                        $msg['msg']="操作失败！".$rs['desc'];
-                        $msg['status']=-1;
-                    }
-                }else
-                {
-                    $msg['msg']="操作失败！订单没有支付过，不能退款！";
+                    $msg['msg']="操作成功！";
+                    $msg['status']=1;
+                    //add log
+                    OrderLog::Add($order_id, $sn);
+                }else{
+                    $msg['msg']="操作失败！".$rs['desc'];
                     $msg['status']=-1;
                 }
+                
+                
             }else
             {
                 //其他情况下，直接修改order 订单内容，然后 添加日志。
