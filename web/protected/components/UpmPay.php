@@ -122,11 +122,11 @@ class UpmPay extends BasePay
         $req['orderAmount'] 	= $orderAmount; // 订单金额
         $req['orderCurrency'] 	= "156"; // 交易币种(可选)
         $req['qn'] 				= $sn; // 查询流水号（原订单支付成功后获取的流水号）
-        $req['reqReserved'] 	= $orderNumber; // 请求方保留域(可选，用于透传商户信息)
+        //$req['reqReserved'] 	= $orderNumber; // 请求方保留域(可选，用于透传商户信息)
 //
 //// 保留域填充方法
-//        $merReserved['test']   	= "test";
-//        $req['merReserved']   	= UpmpService::buildReserved($merReserved); // 商户保留域(可选)
+        $merReserved['order_id']   	= $orderNumber;
+        $req['merReserved']   	= UpmpService::buildReserved($merReserved); // 商户保留域(可选)
 
         $resp = array ();
         $validResp = UpmpService::trade($req, $resp);
@@ -135,10 +135,15 @@ class UpmPay extends BasePay
         Yii::log("1------------","info");
 // 商户的业务逻辑
         if($validResp){
-            return array('status'=>0,'desc'=>'已经成功向银行支付发起退款申请');
+            if($resp[upmp_config::RESPONSE_CODE]==upmp_config::RESPONSE_CODE_SUCCESS){
+                return array('status'=>0,'desc'=>'已经成功向银行支付发起退款申请');
+            }else{
+                print_r($resp);
+                $respCode=$resp[upmp_config::RESPONSE_CODE];
+                return array('status'=>$respCode,'msg'=>$resp[upmp_config::RESPONSE_MSG]);
+            }
         }else{
-            $respCode=$resp[upmp_config::RESPONSE_CODE];
-            return array('status'=>$respCode,'msg'=>$resp[upmp_config::RESPONSE_MSG]);
+            return array('status'=>20,'desc'=>'银行请求退款申请失败');
         }
 
     }
@@ -180,7 +185,7 @@ class UpmPay extends BasePay
                         }
                     }
                     if($params['transType']==upmp_config::TRANS_TYPE_REFUND){
-                        $orderNumber = $params['reqReserved'];
+                        $orderNumber = $params['merReserved']['order_id'];
                         //退货
                         $desc="银联退款成功，金额：".$settleAmount/100;
                         $rs=Order::ChangeStatus($conn,Order::STATUS_TOBE_CANCEL,$orderNumber);

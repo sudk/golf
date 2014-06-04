@@ -187,6 +187,16 @@ class TransRecord extends CActiveRecord {
         return $row;
     }
 
+    public static function GetByOrderNumber($order_id,$trans_type){
+        $table=self::getTable(substr($order_id,0,6));
+        $row = Yii::app()->db->createCommand()
+            ->select("*")
+            ->from($table)
+            ->where("order_id='{$order_id}' and status='".TransRecord::STATUS_SUCCESS."' and trans_type='".$trans_type."'")
+            ->queryRow();
+        return $row;
+    }
+
     public static function Add(&$conn,$order_id,$type,$amount,$serial_number,$status,$re_serial_number="",$out_serial_number="",$user_id="",$operator_id=""){
         $record_time=date("Y-m-d H:i:s");
         //$user_id=Yii::app()->user->id;

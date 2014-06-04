@@ -233,18 +233,18 @@ class OrderController extends AuthBaseController
                 
                 $order_id = $_POST['Order']['order_id'];
                 
-                $sn = "";
+                //$sn = "";
 
                 $refund = intval($_POST['Order']['refund'])*100;
                 //var_dump($sn);var_dump($_POST['Order']['order_id']);var_dump($refund);exit;
-                $rs = Order::Refund($order_id, $refund, $sn);
+                $rs = Order::Refund($order_id,$refund);
                 //var_dump($rs);
                 if($rs['status'] == 0){
 
                     $msg['msg']="操作成功！";
                     $msg['status']=1;
                     //add log
-                    OrderLog::Add($order_id, $sn);
+                    //OrderLog::Add($order_id, $sn);
                 }else{
                     $msg['msg']="操作失败！".$rs['desc'];
                     $msg['status']=-1;

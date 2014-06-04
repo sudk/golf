@@ -454,19 +454,20 @@ class Order extends CActiveRecord {
      * @param $sn 交易流水号
      * @return array
      */
-    public static function Refund($orderNumber,$amount,$sn){
+    public static function Refund($orderNumber,$amount){
         $order=Order::OrderInfo($orderNumber);
         if(!$order){
             return array('status'=>5,'desc'=>'订单不存在！');
         }
-        if($order['status']<Order::STATUS_TOBE_SUCCESS){
+
+        if( $order['status'] < Order::STATUS_TOBE_SUCCESS ){
             return array('status'=>6,'desc'=>'订单没有过支付不能退款！');
         }
         $type=$order['type'];
         $trans_type=TransRecord::GetPayTypeByOrderType($type);
 
-        $transRecord=TransRecord::GetBySerialNumber($sn,$trans_type);
-
+        $transRecord=TransRecord::GetByOrderNumber($orderNumber,$trans_type);
+        //print_r($transRecord);
         if(!$transRecord){
             return array('status'=>4,'desc'=>'没有任何的支付成功交易记录所以不能退款！');
         }
@@ -479,9 +480,10 @@ class Order extends CActiveRecord {
             return array('status'=>8,'desc'=>'退款金额有误！');
         }
 
-
+        $sn=$transRecord['serial_number'];
+        $pay_method=$order['pay_method'];
         $pay=Null;
-        switch(strval($type)){
+        switch($pay_method){
             case Order::PAY_METHOD_BALANCE :
                 $pay=new BalancePay();//余额支付
                 break;
@@ -489,6 +491,8 @@ class Order extends CActiveRecord {
                 $pay=new UpmPay();//银联支付
                 $sn=$transRecord['out_serial_number'];
                 break;
+            default:
+                return array('status'=>9,'desc'=>'不支持该支付类型！');
         }
         
         return $pay->Refund($amount,$orderNumber,$sn);
