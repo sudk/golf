@@ -118,11 +118,10 @@ class UpmPay extends BasePay
         $req['merId']       	= upmp_config::$mer_id; // 商户代码
         $req['backEndUrl']      = upmp_config::$mer_back_end_url; // 通知URL
         $req['orderTime']   	= date("YmdHis"); // 交易开始日期时间yyyyMMddHHmmss（退货交易新交易日期，非原交易日期）
-        $req['orderNumber'] 	= date("YmdHiss"); // 订单号（退货交易新订单号，非原交易订单号）
+        $req['orderNumber'] 	= date("YmdHis"); // 订单号（退货交易新订单号，非原交易订单号）
         $req['orderAmount'] 	= $orderAmount; // 订单金额
         $req['orderCurrency'] 	= "156"; // 交易币种(可选)
         $req['qn'] 				= $sn; // 查询流水号（原订单支付成功后获取的流水号）
-        //$req['reqReserved'] 	= $orderNumber; // 请求方保留域(可选，用于透传商户信息)
 //
 //// 保留域填充方法
         $merReserved['order_id']   	= $orderNumber;

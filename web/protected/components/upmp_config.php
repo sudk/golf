@@ -24,8 +24,8 @@ class upmp_config
     static $mer_back_end_url     	= "http://115.28.77.119/notify.php"; // 后台通知地址
     static $mer_front_end_url     	= "http://115.28.77.119/notify.php"; // 前台通知地址
 
-    static $upmp_trade_url   	 	= "http://222.66.233.198:8080/gateway/merchant/trade";
-    static $upmp_query_url    	 	= "http://222.66.233.198:8080/gateway/merchant/query";
+    static $upmp_trade_url   	 	= "http://202.101.25.178:8080/gateway/merchant/trade";
+    static $upmp_query_url    	 	= "http://202.101.25.178:8080/gateway/merchant/query";
     
     const VERIFY_HTTPS_CERT 		= false;
     
