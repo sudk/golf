@@ -25,7 +25,7 @@ if (is_array($rows))
                 //$link .= CHtml::link('删除',"javascript:itemDelete('{$row['order_id']}');", array());
             }
             
-            $next_opt = Order::getNextStatus($status, $row['pay_type']);
+            $next_opt = Order::getNextStatus($status, $row['pay_type'],$row['type']);
             //var_dump($next_opt);var_dump($status);var_dump($row['pay_type']);
             if(@count($next_opt)>0)
             {

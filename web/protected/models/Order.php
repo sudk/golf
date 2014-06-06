@@ -12,6 +12,7 @@ class Order extends CActiveRecord {
     const TYPE_TRIP = '1';
     const TYPE_COMPETITION = '2';
     const TYPE_RECHARGE = '3';
+    const TYPE_VIP = '4';//暂时没用
 
     /**
      * 支付方法
@@ -67,7 +68,7 @@ class Order extends CActiveRecord {
      * @param type $pay_type
      * @return boolean
      */
-    public static function getNextStatus($cur_status='0',$pay_type='0')
+    public static function getNextStatus($cur_status='0',$pay_type='0',$type='0')
     {
         if($cur_status==null)
         {
@@ -116,12 +117,19 @@ class Order extends CActiveRecord {
                     'status'=>self::STATUS_ORDER_OVER,
                     'desc'=>"交易成功"
                 );
-                array_push($next, $tmp_next);
-                $tmp_next2 = array(
-                    'now_status'=>self::STATUS_TOBE_SUCCESS,
-                    'status'=>self::STATUS_NOT_PRESENT,
-                    'desc'=>"未到场"
+                $no_present = array(
+                    self::TYPE_RECHARGE,
+                    self::TYPE_VIP
                 );
+                if(!in_array($type,$no_present))
+                {
+                    array_push($next, $tmp_next);
+                    $tmp_next2 = array(
+                        'now_status'=>self::STATUS_TOBE_SUCCESS,
+                        'status'=>self::STATUS_NOT_PRESENT,
+                        'desc'=>"未到场"
+                    );
+                }
                 array_push($next, $tmp_next2);
                 
                 break;
