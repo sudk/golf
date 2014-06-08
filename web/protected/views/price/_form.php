@@ -39,13 +39,17 @@ if($__model__=="edit"){
             if($detail_row['start_time'] == "" && $detail_row['end_time'] == ""){
                 
                 $price_row[$day."_default"] = intval($detail_row['price'])/100;
+                $price_row[$day."_vip"] = intval($detail_row['vip_price'])/100;
+                $price_row[$day."_pledge"] = intval($detail_row['pledge_price'])/100;
                 $status_row[$day."_default"] = $detail_row['status'];
             }else{
                 $price_row[$day][] = array(
                     'start_time'=>$detail_row['start_time'],
                     'end_time'=>$detail_row['end_time'],
                     'price'=>intval($detail_row['price'])/100,
-                    'id'=>$detail_row['id']
+                    'id'=>$detail_row['id'],
+                    'vip'=>intval($detail_row['vip_price'])/100,
+                    'pledge'=>intval($detail_row['pledge_price'])/100,
                     );
             }
             
@@ -155,6 +159,17 @@ if($__model__=="edit"){
                 &nbsp;
             </td>
         </tr>
+        <tr>
+            <td class="maxname">VIP价：</td>
+            <td class="mivalue">
+               <input type="text" name="<?php echo $key;?>_vip_price" value="<?php echo $price_row[$key."_vip"];?>" class="input_text"/>
+            </td> 
+            <td class="maxname pledge_td1">押金：</td>
+            <td class="mivalue pledge_td2">
+               <input type="text" name="<?php echo $key;?>_pledge_price" value="<?php echo $price_row[$key."_pledge"];?>" class="input_text"/>
+            </td> 
+        </tr>
+        
         
         <?php
             }
@@ -220,6 +235,11 @@ if($__model__=="edit"){
                         </select>
                         <span>价格:</span>
                         <input type="text" name="<?php echo $key;?>_d_price[]" value="<?php echo $detail_price['price']?>" style="width:100px;"/>
+                        <br/>
+                        <span>VIP价格:</span>
+                        <input type="text" name="<?php echo $key;?>_d_vprice[]" value="<?php echo $detail_price['vip']?>" style="width:100px;"/>
+                        <span class="pledge_td1">预付金:</span>
+                        <input type="text" name="<?php echo $key;?>_d_pprice[]" value="<?php echo $detail_price['pledge']?>" style="width:100px;" class="pledge_td2"/>
                         <a href="javascript:void(0);" onclick="javascript:delItemFromDB(this,'<?php echo $detail_price['id'];?>');"><span class="del_ico"></span></a>
                         </p> 
                          <?php
@@ -252,6 +272,16 @@ if($__model__=="edit"){
             -->
         </td>
     </tr>
+    <tr>
+            <td class="maxname">VIP价：</td>
+            <td class="mivalue">
+               <input type="text" name="default_vip" value="<?php echo $price_row["-1_vip"];?>" class="input_text"/>
+            </td> 
+            <td class="maxname pledge_td1">押金：</td>
+            <td class="mivalue pledge_td2">
+               <input type="text" name="default_pledge" value="<?php echo $price_row["-1_pledge"];?>" class="input_text"/>
+            </td> 
+        </tr>
          <?php
     }
     ?>
@@ -303,10 +333,39 @@ if($__model__=="edit"){
 <?php $this->endWidget();?>
 <script type="text/javascript" src="js/JQdate/WdatePicker.js"></script>
 <script type="text/javascript">
-    
+    jQuery(".pledge_td1").hide();
+    jQuery(".pledge_td2").hide();
+    <?php
+    if($__model__ == 'edit'){
+    ?>
+    var pay_type = '<?php echo $model->pay_type?>';
+    if(pay_type == '2'){
+        jQuery(".pledge_td1").html("预付金：").show();
+        jQuery(".pledge_td2").show();
+    }else if(pay_type == '0'){
+        jQuery(".pledge_td1").html("押金：").show();
+        jQuery(".pledge_td2").show();
+    }
+    <?php
+    }
+    ?>
+    jQuery("input[name='Policy[pay_type]']").change(function(){
+        var v = jQuery(this).val();
+        alert(v);
+        if( v == '2'){
+            jQuery(".pledge_td1").html("预付金：").show();
+            jQuery(".pledge_td2").show();
+        }else if(v == '0'){
+            jQuery(".pledge_td1").html("押金：").show();
+            jQuery(".pledge_td2").show();
+        }else{
+            jQuery(".pledge_td1").hide();
+            jQuery(".pledge_td2").hide();
+        }
+    });
     function addTimePeriod(id){
         jQuery("#"+id+"_tr").show();
-        var content = '<p>';
+        var content = '<p style="margin-bottom:5px;">';
                 content += '<span>开始时间：</span>';
                 content += '<select name="'+id+'_start_time[]" style="width:100px;">';
                 <?php
@@ -330,9 +389,26 @@ if($__model__=="edit"){
                 content +='</select>';
                 content += '<span>价格:</span>';
                 content +='<input type="text" name="'+id+'_d_price[]" value="0" style="width:100px;"/>';
+                content += '<br/>';
+                content += '<span>VIP价格:</span>';
+                content +='<input type="text" name="'+id+'_d_vprice[]" value="0" style="width:100px;"/>';
+                var pledge = jQuery("input[name='Policy[pay_type]']:checked").val();
+                alert(pledge);
+                if(pledge  == '2'){
+                    content += '<span class="pledge_td1">预付金：</span>';
+                    content +='<input type="text" name="'+id+'_d_pprice[]" value="0" style="width:100px;" class="pledge_td2"/>';
+                }else{
+                    content += '<span class="pledge_td1">押金：</span>';
+                    content +='<input type="text" name="'+id+'_d_pprice[]" value="0" style="width:100px;" class="pledge_td2"/>';
+                    
+                }
                 content += '<a href="javascript:void(0);" onclick="javascript:delItem(this);"><span class="del_ico"></span></a>';
                 content += '</p>';
         jQuery("#"+id+"_td").append(content);
+        if(pledge == '1'){
+            jQuery(".pledge_td1").hide();
+            jQuery(".pledge_td2").hide();
+        }
     }
     //直接删除页面的内容
     function delItem(obj){

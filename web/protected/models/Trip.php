@@ -34,7 +34,7 @@ class Trip extends CActiveRecord {
        $rs = array(
            '0'=>'现付',
            '1'=>'全额预付',
-           '2'=>'押金',
+           '2'=>'部分预付',
          
        );
        

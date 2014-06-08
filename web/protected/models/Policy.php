@@ -243,8 +243,10 @@ class Policy extends CActiveRecord {
                 {
                     $row['record_time'] = $row['record_time'] == null ? date("Y-m-d H:i:s"):$row['record_time'];
                     $row['price'] = intval($row['price'])*100;
-                    $sql = "insert into g_policy_detail(policy_id,day,start_time,end_time,price,record_time,status)
-                    values('{$policy_id}','{$day}','{$row['start_time']}','{$row['end_time']}','{$row['price']}','{$row['record_time']}','{$row['status']}')";
+                    $row['vip_price'] = intval($row['vip_price'])*100;
+                    $row['pledge_price'] = intval($row['pledge_price'])*100;
+                    $sql = "insert into g_policy_detail(policy_id,day,start_time,end_time,price,record_time,status,vip_price,pledge_price)
+                    values('{$policy_id}','{$day}','{$row['start_time']}','{$row['end_time']}','{$row['price']}','{$row['record_time']}','{$row['status']}','{$row['vip_price']}','{$row['pledge_price']}')";
                 //var_dump($sql);
                 $connection->createCommand($sql)->execute();
                 }
@@ -304,8 +306,10 @@ class Policy extends CActiveRecord {
                 {
                     $row['record_time'] = $row['record_time'] == null ? date("Y-m-d H:i:s"):$row['record_time'];
                     $row['price'] = intval($row['price'])*100;
-                    $sql = "insert into g_policy_detail(policy_id,day,start_time,end_time,price,record_time,status)
-                    values('{$policy_id}','{$day}','{$row['start_time']}','{$row['end_time']}','{$row['price']}','{$row['record_time']}','{$row['status']}')";
+                    $row['vip_price'] = intval($row['vip_price'])*100;
+                    $row['pledge_price'] = intval($row['pledge_price'])*100;
+                    $sql = "insert into g_policy_detail(policy_id,day,start_time,end_time,price,record_time,status,vip_price,pledge_price)
+                    values('{$policy_id}','{$day}','{$row['start_time']}','{$row['end_time']}','{$row['price']}','{$row['record_time']}','{$row['status']}','{$row['vip_price']}','{$row['pledge_price']}')";
                 //var_dump($sql);
                 $connection->createCommand($sql)->execute();
                 }
@@ -397,8 +401,8 @@ class Policy extends CActiveRecord {
                             is_tip,pay_type,type,status,'{$record_time}','{$creatorid}' from g_policy where id ='{$old_id}'";
                         $connection->createCommand($sql)->execute();
                         //insert Plicy Detail
-                        $sql = "insert into g_policy_detail(policy_id,day,start_time,end_time,price,record_time,status)
-                                select '{$id}',day,start_time,end_time,price,'{$record_time}',status from g_policy_detail where policy_id='{$old_id}'";
+                        $sql = "insert into g_policy_detail(policy_id,day,start_time,end_time,price,record_time,status,vip_price,pledge_price)
+                                select '{$id}',day,start_time,end_time,price,'{$record_time}',status,vip_price,pledge_price from g_policy_detail where policy_id='{$old_id}'";
                             //var_dump($sql);
                         $connection->createCommand($sql)->execute();
                         

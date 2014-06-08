@@ -16,8 +16,8 @@ if (is_array($rows))
         $week = PolicyDetail::getWeek();
         if($random_row)
         {
-            $start_time = substr($random_row['start_time'],0,2).":".substr($random_row['start_time'],2,2);
-            $end_time = substr($random_row['end_time'],0,2).":".substr($random_row['end_time'],2,2);
+            $start_time = $random_row['start_time'];//substr($random_row['start_time'],0,2).":".substr($random_row['start_time'],2,2);
+            $end_time = $random_row['end_time'];//substr($random_row['end_time'],0,2).":".substr($random_row['end_time'],2,2);
             $price_text = $week[$random_row['day']]."(".$start_time."-".$end_time."):".($random_row['price']/100)."...";;
         }
         
