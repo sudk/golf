@@ -61,17 +61,17 @@ if($__model__=="edit"){
 ?>
 <table class="formList">
     <tr>
-        <td class="maxname">起始日期：</td>
+        <td class="maxname">起始日期:</td>
         <td class="mivalue">
            <?php
                 echo $form->activeTextField($model, 'start_date', array('title' => '本项必填','value'=>($model->start_date?$model->start_date:date('Y-m-01')), 'class' => 'Wdate input_text',"onfocus"=>"WdatePicker({dateFmt:'yyyy-MM-dd',skin:'whyGreen',errDealMode:0})"), '');         
             ?>
         </td>
-        <td class="maxname">截止日期：</td>
+        <td class="maxname">截止日期:</td>
         <td class="mivalue"><?php echo $form->activeTextField($model, 'end_date', array('title' => '本项必填','value'=>($model->end_date?$model->end_date:date('Y-m-t')), 'class' => 'Wdate input_text',"onfocus"=>"WdatePicker({dateFmt:'yyyy-MM-dd',skin:'whyGreen',errDealMode:0})"), ''); ?></td>  
     </tr>
     <tr>
-        <td class="maxname">球场名称：</td>
+        <td class="maxname">球场名称:</td>
         <td class="mivalue">
            <?php
                 $court_list = Court::getCourtArray();
@@ -80,7 +80,7 @@ if($__model__=="edit"){
                 //echo $form->activeDropDownList($model, 'court_id',Court::getCourtArray(), array('title' => '本项必填', 'class' => 'input_text'), 'required');         
             ?>
         </td>
-        <td class="maxname">报价单类型：</td>
+        <td class="maxname">报价单类型:</td>
         <td class="mivalue">
            <?php
                 //echo $form->activeRadioButtonList($model, 'type',  Policy::getType(), array('title' => '本项必填', 'class' => 'input_text','template'=>'<span class="check">{input}{label}</span>','separator'=>' '), 'required'); 
@@ -91,39 +91,39 @@ if($__model__=="edit"){
         </td>
     </tr>
     <tr>
-        <td class="maxname">支付方式：</td>
+        <td class="maxname">支付方式:</td>
         <td class="mivalue">
            <?php
                 echo $form->activeRadioButtonList($model, 'pay_type',Trip::getPayType(), array('title' => '本项必填', 'class' => 'input_text','template'=>'<span class="check">{input}{label}</span>','separator'=>' '), 'required');         
             ?>
         </td>
-        <td class="maxname">包含18洞果岭：</td>
+        <td class="maxname">包含18洞果岭:</td>
         <td class="mivalue"><?php 
         $flag_list = Policy::getYesOrNot();
         echo $form->activeRadioButtonList($model, 'is_green',$flag_list, array('title' => '本项必填', 'class' => 'input_text','value'=>'0','template'=>'<span class="check">{input}{label}</span>','separator'=>' '), 'required'); ?></td>  
     </tr>
     <tr>
-        <td class="maxname">包含球童：</td>
+        <td class="maxname">包含球童:</td>
         <td class="mivalue">
            <?php
                echo $form->activeRadioButtonList($model, 'is_caddie',$flag_list, array('title' => '本项必填', 'class' => 'input_text','template'=>'<span class="check">{input}{label}</span>','separator'=>' '), 'required'); ?></td> 
-        <td class="maxname">包含球车：</td>
+        <td class="maxname">包含球车:</td>
         <td class="mivalue"><?php echo $form->activeRadioButtonList($model, 'is_car',$flag_list, array('title' => '本项必填', 'class' => 'input_text','template'=>'<span class="check">{input}{label}</span>','separator'=>' '), 'required'); ?></td> 
     </tr>
     <tr>
-        <td class="maxname">包含衣柜：</td>
+        <td class="maxname">包含衣柜:</td>
         <td class="mivalue">
            <?php
              echo $form->activeRadioButtonList($model, 'is_wardrobe',$flag_list, array('title' => '本项必填', 'class' => 'input_text','template'=>'<span class="check">{input}{label}</span>','separator'=>' '), 'required'); ?></td> 
-        <td class="maxname">包含简餐：</td>
+        <td class="maxname">包含简餐:</td>
         <td class="mivalue"><?php echo $form->activeRadioButtonList($model, 'is_meal',$flag_list, array('title' => '本项必填', 'class' => 'input_text','template'=>'<span class="check">{input}{label}</span>','separator'=>' '), 'required'); ?></td> 
     </tr>
     <tr class="line">
-        <td class="maxname">包含保险：</td>
+        <td class="maxname">包含保险:</td>
         <td class="mivalue">
            <?php
                echo $form->activeRadioButtonList($model, 'is_insurance',$flag_list, array('title' => '本项必填', 'class' => 'input_text','template'=>'<span class="check">{input}{label}</span>','separator'=>' '), 'required'); ?></td> 
-        <td class="maxname">包含小费：</td>
+        <td class="maxname">包含小费:</td>
         <td class="mivalue"><?php echo $form->activeRadioButtonList($model, 'is_tip',$flag_list, array('title' => '本项必填', 'class' => 'input_text','template'=>'<span class="check">{input}{label}</span>','separator'=>' '), 'required'); ?></td> 
     </tr>
     <?php
@@ -147,24 +147,25 @@ if($__model__=="edit"){
             {
         ?>
         <tr>
-            <td class="maxname"><?php echo $value;?>默认价：</td>
+            <td class="maxname"><?php echo $value;?>默认价:</td>
             <td class="mivalue">
                <input type="text" name="<?php echo $key;?>_price" value="<?php echo $price_row[$key."_default"];?>" class="input_text"/>
             </td> 
             <td class="maxname">
-                <input type="checkbox" name="<?php echo $key;?>_disable" value="1" onclick="javascript:check(this,'<?php echo $key;?>');" <?php echo $status_row[$key.'_default']=='1'?" checked":"";?>/><label>禁止预订</label>
-                <input type="hidden" name="<?php echo $key;?>_status" id="<?php echo $key;?>_status" value="<?php echo $status_row[$key.'_default']?$status_row[$key.'_default']:0;?>"/>
-            </td>
-            <td class="mivalue">
                 &nbsp;
+                 </td>
+            <td class="mivalue">
+                &nbsp;<input type="checkbox" name="<?php echo $key;?>_disable" id="<?php echo $key;?>_disable" value="1" onclick="javascript:check(this,'<?php echo $key;?>');" <?php echo $status_row[$key.'_default']=='1'?" checked":"";?>/><label for="<?php echo $key;?>_disable">禁止预订</label>
+                <input type="hidden" name="<?php echo $key;?>_status" id="<?php echo $key;?>_status" value="<?php echo $status_row[$key.'_default']?$status_row[$key.'_default']:0;?>"/>
+           
             </td>
         </tr>
         <tr>
-            <td class="maxname">VIP价：</td>
+            <td class="maxname">VIP价:</td>
             <td class="mivalue">
                <input type="text" name="<?php echo $key;?>_vip_price" value="<?php echo $price_row[$key."_vip"];?>" class="input_text"/>
             </td> 
-            <td class="maxname pledge_td1">押金：</td>
+            <td class="maxname pledge_td1">押金:</td>
             <td class="mivalue pledge_td2">
                <input type="text" name="<?php echo $key;?>_pledge_price" value="<?php echo $price_row[$key."_pledge"];?>" class="input_text"/>
             </td> 
@@ -182,7 +183,7 @@ if($__model__=="edit"){
             {
         ?>
         <tr>
-            <td class="maxname"><?php echo $value;?>优惠价：</td>
+            <td class="maxname"><?php echo $value;?>优惠价:</td>
             <td class="mivalue">
                 <a href="javascript:void(0);" onclick="addTimePeriod('<?php echo $key;?>');"><span class="add_ico"></span></a>            &nbsp;   
             </td> 
@@ -211,9 +212,9 @@ if($__model__=="edit"){
                     foreach($price_row[$key] as $detail_price)
                     {
                         ?>
-                        <p>
-                        <span>开始时间：</span>
-                        <select name="<?php echo $key;?>_start_time[]" style="width:100px;">
+                        <p style="margin-bottom:5px;">
+                        <span>开始时间:</span>
+                        <select name="<?php echo $key;?>_start_time[]" style="width:60px;">
                         <?php
                         $time_array = Yii::app()->params['time_array'];
                         foreach($time_array as $k=>$v){
@@ -223,8 +224,8 @@ if($__model__=="edit"){
                         }
                         ?>
                         </select>
-                        <span>结束时间：</span>
-                        <select name="<?php echo $key;?>_end_time[]" style="width:100px;">
+                        <span>结束时间:</span>
+                        <select name="<?php echo $key;?>_end_time[]" style="width:60px;">
                         <?php
                         foreach($time_array as $k=>$v){
                             ?>
@@ -234,12 +235,12 @@ if($__model__=="edit"){
                         ?>
                         </select>
                         <span>价格:</span>
-                        <input type="text" name="<?php echo $key;?>_d_price[]" value="<?php echo $detail_price['price']?>" style="width:100px;"/>
-                        <br/>
+                        <input type="text" name="<?php echo $key;?>_d_price[]" value="<?php echo $detail_price['price']?>" style="width:50px;"/>
+                        
                         <span>VIP价格:</span>
-                        <input type="text" name="<?php echo $key;?>_d_vprice[]" value="<?php echo $detail_price['vip']?>" style="width:100px;"/>
+                        <input type="text" name="<?php echo $key;?>_d_vprice[]" value="<?php echo $detail_price['vip']?>" style="width:50px;"/>
                         <span class="pledge_td1">预付金:</span>
-                        <input type="text" name="<?php echo $key;?>_d_pprice[]" value="<?php echo $detail_price['pledge']?>" style="width:100px;" class="pledge_td2"/>
+                        <input type="text" name="<?php echo $key;?>_d_pprice[]" value="<?php echo $detail_price['pledge']?>" style="width:50px;" class="pledge_td2"/>
                         <a href="javascript:void(0);" onclick="javascript:delItemFromDB(this,'<?php echo $detail_price['id'];?>');"><span class="del_ico"></span></a>
                         </p> 
                          <?php
@@ -258,26 +259,24 @@ if($__model__=="edit"){
         
         ?>
     <tr>
-        <td class="maxname">默认价：</td>
+        <td class="maxname">默认价:</td>
         <td class="mivalue">
            <input type="text" name="default_price" value="<?php echo $price_row['-1_default'];?>" class="input_text"/>
         </td> 
         <td class="maxname">
-            <input type="checkbox" name="default_disable" value="1" onclick="javascript:check(this,'default');" <?php echo $status_row['-1_default']=='1'?" checked":"";?>/><label>禁止预订</label>
-            <input type="hidden" name="default_status" id="default_status" value="<?php $status_row['-1_default']?$status_row['-1_default']:0;?>"/>
+            &nbsp;
         </td>
         <td class="mivalue">
-<!--            
-            <a href="javascript:void(0);" onclick="addTimePeriod('<?php echo $key;?>');"><span class="add_ico"></span></a>
-            -->
+            <input type="checkbox" name="default_disable" id="default_disable" value="1" onclick="javascript:check(this,'default');" <?php echo $status_row['-1_default']=='1'?" checked":"";?>/><label for="default_disable">禁止预订</label>
+            <input type="hidden" name="default_status" id="default_status" value="<?php $status_row['-1_default']?$status_row['-1_default']:0;?>"/>
         </td>
     </tr>
     <tr>
-            <td class="maxname">VIP价：</td>
+            <td class="maxname">VIP价:</td>
             <td class="mivalue">
                <input type="text" name="default_vip" value="<?php echo $price_row["-1_vip"];?>" class="input_text"/>
             </td> 
-            <td class="maxname pledge_td1">押金：</td>
+            <td class="maxname pledge_td1">押金:</td>
             <td class="mivalue pledge_td2">
                <input type="text" name="default_pledge" value="<?php echo $price_row["-1_pledge"];?>" class="input_text"/>
             </td> 
@@ -286,7 +285,7 @@ if($__model__=="edit"){
     }
     ?>
     <tr>
-        <td class="maxname">预订须知：</td>
+        <td class="maxname">预订须知:</td>
         <td class="mivalue" colspan="3">
            <?php
                 echo $form->activeTextArea($model, 'remark', array('title' => '本项必填',"style"=>'height:40px;','class'=>'grayTips'), 'required');         
@@ -295,7 +294,7 @@ if($__model__=="edit"){
         </td>
     </tr>
     <tr>
-        <td class="maxname">取消规则：</td>
+        <td class="maxname">取消规则:</td>
         <td class="mivalue" colspan="3">
             <?php echo $form->activeTextArea($model, 'cancel_remark', array('title' => '本项必填','style'=>'height:40px;'), 'required'); ?>
             <p>取消，减人需要提前x天，当天取消是否罚款。</p>
@@ -307,7 +306,7 @@ if($__model__=="edit"){
     {
         ?>
         <tr>
-        <td class="maxname">状态：</td>
+        <td class="maxname">状态:</td>
         <td class="mivalue" colspan="3">
            <?php
                 echo $form->activeRadioButtonList($model, 'status',  Policy::GetStatus(), array('title' => '本项必填', 'class' => 'input_text'), 'required');         
@@ -340,10 +339,10 @@ if($__model__=="edit"){
     ?>
     var pay_type = '<?php echo $model->pay_type?>';
     if(pay_type == '2'){
-        jQuery(".pledge_td1").html("预付金：").show();
+        jQuery(".pledge_td1").html("预付金:").show();
         jQuery(".pledge_td2").show();
     }else if(pay_type == '0'){
-        jQuery(".pledge_td1").html("押金：").show();
+        jQuery(".pledge_td1").html("押金:").show();
         jQuery(".pledge_td2").show();
     }
     <?php
@@ -351,12 +350,12 @@ if($__model__=="edit"){
     ?>
     jQuery("input[name='Policy[pay_type]']").change(function(){
         var v = jQuery(this).val();
-        alert(v);
+        //alert(v);
         if( v == '2'){
-            jQuery(".pledge_td1").html("预付金：").show();
+            jQuery(".pledge_td1").html("预付金:").show();
             jQuery(".pledge_td2").show();
         }else if(v == '0'){
-            jQuery(".pledge_td1").html("押金：").show();
+            jQuery(".pledge_td1").html("押金:").show();
             jQuery(".pledge_td2").show();
         }else{
             jQuery(".pledge_td1").hide();
@@ -366,8 +365,8 @@ if($__model__=="edit"){
     function addTimePeriod(id){
         jQuery("#"+id+"_tr").show();
         var content = '<p style="margin-bottom:5px;">';
-                content += '<span>开始时间：</span>';
-                content += '<select name="'+id+'_start_time[]" style="width:100px;">';
+                content += '<span style="margin-right:3px;">开始时间:</span>';
+                content += '<select name="'+id+'_start_time[]" style="width:60px;">';
                 <?php
                 $time_array = Yii::app()->params['time_array'];
                 foreach($time_array as $k=>$v){
@@ -377,8 +376,8 @@ if($__model__=="edit"){
                 }
                 ?>
                 content += '</select>';
-                content += '<span>结束时间：</span>';
-                content += '<select name="'+id+'_end_time[]" style="width:100px;">';
+                content += '<span  style="margin-left:3px;margin-right:4px;">结束时间:</span>';
+                content += '<select name="'+id+'_end_time[]" style="width:60px;">';
                 <?php
                 foreach($time_array as $k=>$v){
                     ?>
@@ -387,22 +386,22 @@ if($__model__=="edit"){
                 }
                 ?>
                 content +='</select>';
-                content += '<span>价格:</span>';
-                content +='<input type="text" name="'+id+'_d_price[]" value="0" style="width:100px;"/>';
-                content += '<br/>';
-                content += '<span>VIP价格:</span>';
-                content +='<input type="text" name="'+id+'_d_vprice[]" value="0" style="width:100px;"/>';
+                content += '<span  style="margin-left:3px;margin-right:4px;">价格:</span>';
+                content +='<input type="text" name="'+id+'_d_price[]" value="0" style="width:50px;"/>';
+                
+                content += '<span  style="margin-left:3px;margin-right:5px;">VIP价格:</span>';
+                content +='<input type="text" name="'+id+'_d_vprice[]" value="0" style="width:50px;"/>';
                 var pledge = jQuery("input[name='Policy[pay_type]']:checked").val();
-                alert(pledge);
+                //alert(pledge);
                 if(pledge  == '2'){
-                    content += '<span class="pledge_td1">预付金：</span>';
-                    content +='<input type="text" name="'+id+'_d_pprice[]" value="0" style="width:100px;" class="pledge_td2"/>';
+                    content += '<span class="pledge_td1"  style="margin-left:3px;margin-right:5px;">预付金:</span>';
+                    content +='<input type="text" name="'+id+'_d_pprice[]" value="0" style="width:50px;" class="pledge_td2"/>';
                 }else{
-                    content += '<span class="pledge_td1">押金：</span>';
-                    content +='<input type="text" name="'+id+'_d_pprice[]" value="0" style="width:100px;" class="pledge_td2"/>';
+                    content += '<span class="pledge_td1"  style="margin-left:3px;margin-right:5px;">押金:</span>';
+                    content +='<input type="text" name="'+id+'_d_pprice[]" value="0" style="width:50px;" class="pledge_td2"/>';
                     
                 }
-                content += '<a href="javascript:void(0);" onclick="javascript:delItem(this);"><span class="del_ico"></span></a>';
+                content += '<a href="javascript:void(0);" onclick="javascript:delItem(this);" style="margin-left:5px;"><span class="del_ico"></span></a>';
                 content += '</p>';
         jQuery("#"+id+"_td").append(content);
         if(pledge == '1'){

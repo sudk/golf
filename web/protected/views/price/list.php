@@ -34,7 +34,7 @@
     
     function loadTemplate(tag){
         tipsWindown(
-            "编辑报价单信息", // title：窗口标题
+            "批量导入报价单", // title：窗口标题
             "iframe:index.php?r=price/loadtemplate&tag="+tag, // Url：弹窗所加截的页面路径
             "700", // width：窗体宽度
             "520", // height：窗体高度
