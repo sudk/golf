@@ -73,6 +73,22 @@ class CourtController extends CMDBaseController
         return;
     }
 
+    public function actionList(){
+
+        $rows=Court::InfoList(Yii::app()->command->cmdObj->_pg_,$this->pageSize,Yii::app()->command->cmdObj);
+        if($rows){
+            $msg['status']=0;
+            $msg['desc']="成功";
+            $msg['_pg_']=Yii::app()->command->cmdObj->_pg_;
+            $msg['data']=$rows;
+        }else{
+            $msg['status']=4;
+            $msg['desc']="没有数据";
+        }
+        echo json_encode($msg);
+        return;
+    }
+
     public function actionPrice(){
         if(!Yii::app()->command->cmdObj->court_id){
             $msg['status']=1;

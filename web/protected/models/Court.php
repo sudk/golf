@@ -418,6 +418,45 @@ class Court extends CActiveRecord {
         return $rows;
     }
 
+    public static function InfoList($page, $pageSize, $args = array()) {
+
+        $condition = ' 1=1 ';
+        $params = array();
+
+        if (isset($args->court_id)&&$args->court_id != ''){
+            $condition.=' AND court_id = :court_id';
+            $params['court_id'] = $args->court_id;
+        }
+
+        if (isset($args->name)&&$args->name != ''){
+            $condition.= ' AND name like :name';
+            $params['name'] = "%".$args['name']."%";
+        }
+
+        if (isset($args->city)&&$args->city != ''){
+            $condition.= ' AND city = :city';
+            $params['city'] = $args->city;
+        }
+
+
+        $order = 'record_time  DESC';
+
+        $rows=Yii::app()->db->createCommand()
+            ->select("court_id,city,name")
+            ->from("g_court")
+            ->where($condition,$params)
+            ->order($order)
+            ->limit($pageSize)
+            ->offset($page * $pageSize)
+            ->queryAll();
+
+        $rs['status'] = 0;
+        $rs['desc'] = '成功';
+        $rs['rows'] = $rows;
+
+        return $rs;
+    }
+
 
     public static function Sale($args = array()){
 

@@ -214,7 +214,7 @@ class OrderController extends CMDBaseController
             echo json_encode($msg);
             return;
         }
-        $order=Order::Info(Yii::app()->command->cmdObj->order_id);
+        $order=Order::Info(Yii::app()->command->cmdOibj->order_id);
         $status=$order['status'];
         if($status!=Order::STATUS_TOBE_SUCCESS){
             $msg['status']=5;
