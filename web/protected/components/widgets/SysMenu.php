@@ -20,8 +20,8 @@ class SysMenu extends CWidget
         $sub_menu = array();
         if(Yii::app()->user->checkAccess("user/uinfo/list"))      
             $sub_menu[] = array("title" => "会员信息管理", "url" => "./?r=user/uinfo/list", "match" => array('user\/uinfo\/list','user\/uinfo\/edit','operator\/operator\/detail','user\/uinfo\/mycard','user\/uinfo\/newcard'));
-        if(Yii::app()->user->checkAccess("user/uscore/list"))    
-            $sub_menu[] = array("title" => "会员成绩管理", "url" => "./?r=user/uscore/list", "match" => array('user\/uscore\/list','user\/uscore\/detail','user\/uscore\/edit'));    
+//        if(Yii::app()->user->checkAccess("user/uscore/list"))    
+//            $sub_menu[] = array("title" => "会员成绩管理", "url" => "./?r=user/uscore/list", "match" => array('user\/uscore\/list','user\/uscore\/detail','user\/uscore\/edit'));    
         //$sub_menu[] = array("title" => "会员卡片管理", "url" => "./?r=user/ucard/list", "match" => 'user\/ucard\/list');
         
         if(count($sub_menu))
