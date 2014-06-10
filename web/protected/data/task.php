@@ -16,6 +16,8 @@ return array(
             'user/uscore/grid' ,
             'user/uscore/list' ,
             'user/uscore/detail' ,
+            'user/uscore/dgrid',
+            'user/uscore/scoredetail',
             'user/uinfo/mycard',
             'user/uinfo/cardlist',
             'user/uinfo/newcard',
@@ -41,6 +43,8 @@ return array(
             'user/uscore/grid' ,
             'user/uscore/list' ,
             'user/uscore/detail' ,
+            'user/uscore/dgrid',
+            'user/uscore/scoredetail',
         ),
         'bizRules' => '',
         'data' => ''

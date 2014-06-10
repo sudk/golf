@@ -174,6 +174,8 @@ return array(
     'user/uscore/grid' => array('type' => 0),
     'user/uscore/list' => array('type' => 0),
     'user/uscore/detail' => array('type' => 0),
+    'user/uscore/dgrid' => array('type' => 0),
+    'user/uscore/scoredetail' => array('type' => 0),
     'service/adv/grid' => array('type' => 0),
     'service/adv/list' => array('type' => 0),
     'service/adv/new' => array('type' => 0),

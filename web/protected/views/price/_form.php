@@ -214,7 +214,7 @@ if($__model__=="edit"){
                         ?>
                         <p style="margin-bottom:5px;">
                         <span>开始时间:</span>
-                        <select name="<?php echo $key;?>_start_time[]" style="width:60px;">
+                        <select name="<?php echo $key;?>_start_time[]" style="width:70px;">
                         <?php
                         $time_array = Yii::app()->params['time_array'];
                         foreach($time_array as $k=>$v){
@@ -225,7 +225,7 @@ if($__model__=="edit"){
                         ?>
                         </select>
                         <span>结束时间:</span>
-                        <select name="<?php echo $key;?>_end_time[]" style="width:60px;">
+                        <select name="<?php echo $key;?>_end_time[]" style="width:70px;">
                         <?php
                         foreach($time_array as $k=>$v){
                             ?>
@@ -366,7 +366,7 @@ if($__model__=="edit"){
         jQuery("#"+id+"_tr").show();
         var content = '<p style="margin-bottom:5px;">';
                 content += '<span style="margin-right:3px;">开始时间:</span>';
-                content += '<select name="'+id+'_start_time[]" style="width:60px;">';
+                content += '<select name="'+id+'_start_time[]" style="width:70px;">';
                 <?php
                 $time_array = Yii::app()->params['time_array'];
                 foreach($time_array as $k=>$v){
@@ -377,7 +377,7 @@ if($__model__=="edit"){
                 ?>
                 content += '</select>';
                 content += '<span  style="margin-left:3px;margin-right:4px;">结束时间:</span>';
-                content += '<select name="'+id+'_end_time[]" style="width:60px;">';
+                content += '<select name="'+id+'_end_time[]" style="width:70px;">';
                 <?php
                 foreach($time_array as $k=>$v){
                     ?>
