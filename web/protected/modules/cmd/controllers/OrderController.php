@@ -202,6 +202,7 @@ class OrderController extends CMDBaseController
     }
 
     public function actionApplyrefund(){
+
         if(!isset(Yii::app()->command->cmdObj->order_id)||Yii::app()->command->cmdObj->order_id==''){
             $msg['status']=2;
             $msg['desc']="订单ID不能为空！";
@@ -214,7 +215,8 @@ class OrderController extends CMDBaseController
             echo json_encode($msg);
             return;
         }
-        $order=Order::Info(Yii::app()->command->cmdOibj->order_id);
+        $order=Order::Info(Yii::app()->command->cmdObj->order_id);
+
         $status=$order['status'];
         if($status!=Order::STATUS_TOBE_SUCCESS){
             $msg['status']=5;
