@@ -11,7 +11,7 @@ return array(
         'display'=>true,
         'children' => array(
             'user',
-            'order_r',
+            'order',
             'court',
             //'price',
             'service_comp',

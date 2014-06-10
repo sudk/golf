@@ -28,6 +28,8 @@ if (is_array($rows))
         else if($status == Order::STATUS_TOBE_CANCEL)
         {
             $status_text = '<span style="color:gray">'.$status_list[$status].'</span>';
+        }else{
+            $status_text = '<span style="color:black">'.$status_list[$status].'</span>';
         }
         $desc = "<div style='width:200px;'>";
         $desc .= $row['desc'];
