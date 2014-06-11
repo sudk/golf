@@ -10,8 +10,8 @@ class UpmPay extends BasePay
     public function Purchase($orderAmount,$orderDescription,$order_id){
 
         $pay_method=Order::PAY_METHOD_UPMP;
-
-        $out_order_number=Utils::GenerateSerialNumber();
+        //支付时内部订单和外部订单一样可以防止重复支付
+        $out_order_number=$order_id;
         $req['version']     		= upmp_config::$version; // 版本号
         $req['charset']     		= upmp_config::$charset; // 字符编码
         $req['transType']   		= "01"; // 交易类型
