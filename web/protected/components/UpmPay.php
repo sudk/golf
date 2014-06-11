@@ -23,8 +23,8 @@ class UpmPay extends BasePay
         $req['orderNumber'] 		= $out_order_number; //订单号(商户根据自己需要生成订单号)
         $req['orderAmount'] 		= $orderAmount; // 订单金额
         $req['orderCurrency'] 		= "156"; // 交易币种(可选)
-        $merReserved['order_id']   	= $order_id;
-        $req['merReserved']   	= UpmpService::buildReserved($merReserved); // 商户保留域(可选)
+        $req['reqReserved']   	= $order_id;
+        //$req['reqReserved']   	= UpmpService::buildReserved($merReserved); // 商户保留域(可选)
 
         $resp = array ();
         $validResp = UpmpService::trade($req, $resp);
@@ -125,10 +125,10 @@ class UpmPay extends BasePay
         $req['orderAmount'] 	= $orderAmount; // 订单金额
         $req['orderCurrency'] 	= "156"; // 交易币种(可选)
         $req['qn'] 				= $sn; // 查询流水号（原订单支付成功后获取的流水号）
-
+        $req['reqReserved']   	= $order_id;
         // 保留域填充方法
-        $merReserved['order_id']   	= $order_id;
-        $req['merReserved']   	= UpmpService::buildReserved($merReserved);
+        //$merReserved['order_id']   	= $order_id;
+        //$req['reqReserved']   	= UpmpService::buildReserved($merReserved);
 
         $resp = array ();
         $validResp = UpmpService::trade($req, $resp);
@@ -171,7 +171,7 @@ class UpmPay extends BasePay
                 //请在这里加上商户的业务逻辑程序代码
                 $transStatus = $params['transStatus'];// 交易状态
                 $out_order_number = $params['orderNumber'];
-                $order_id = $params['merReserved']['order_id'];
+                $order_id = $params['reqReserved'];
                 $settleAmount = $params['settleAmount'];
                 $serial_number=Utils::GenerateSerialNumber();
                 $qn=$params['qn'];
