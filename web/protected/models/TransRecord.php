@@ -197,13 +197,14 @@ class TransRecord extends CActiveRecord {
         return $row;
     }
 
-    public static function Add(&$conn,$order_id,$type,$amount,$serial_number,$status,$re_serial_number="",$out_serial_number="",$user_id="",$operator_id=""){
-        $record_time=date("Y-m-d H:i:s");
-        //$user_id=Yii::app()->user->id;
-        $sql = "insert into ".self::getTable()."
-                   (order_id,serial_number,trans_type,amount,re_serial_number,status,user_id,operator_id,out_serial_number,record_time)
+    public static function Add(&$conn,$order_id,$type,$amount,$serial_number,$status,$re_serial_number="",$out_serial_number="",$user_id="",$operator_id="",$out_order_number="",$record_time=""){
+        if(!$record_time){
+            $record_time=date("YmdHis");
+        }
+        $sql = "insert into ".self::getTable($order_id)."
+                   (order_id,serial_number,trans_type,amount,re_serial_number,status,user_id,operator_id,out_serial_number,record_time,out_order_number)
                      values
-                   (:order_id,:serial_number,:trans_type,:amount,:re_serial_number,:status,:user_id,:operator_id,:out_serial_number,:record_time)";
+                   (:order_id,:serial_number,:trans_type,:amount,:re_serial_number,:status,:user_id,:operator_id,:out_serial_number,:record_time,:out_order_number)";
         $command = $conn->createCommand($sql);
         $command->bindParam(":order_id",$order_id, PDO::PARAM_STR);
         $command->bindParam(":serial_number",$serial_number, PDO::PARAM_STR);
@@ -215,6 +216,16 @@ class TransRecord extends CActiveRecord {
         $command->bindParam(":operator_id",$operator_id, PDO::PARAM_STR);
         $command->bindParam(":out_serial_number",$out_serial_number, PDO::PARAM_STR);
         $command->bindParam(":record_time",$record_time, PDO::PARAM_STR);
+        $command->bindParam(":out_order_number",$out_order_number, PDO::PARAM_STR);
+        $command->execute();
+    }
+
+    public static function ChangeStatusByOutOrderNumber(&$conn,$order_id,$out_order_number,$out_serial_number,$status){
+        $sql = "update ".self::getTable($order_id)." set status=:status,out_serial_number=:out_serial_number where out_order_number=:out_order_number";
+        $command = $conn->createCommand($sql);
+        $command->bindParam(":status",$status, PDO::PARAM_STR);
+        $command->bindParam(":out_serial_number",$out_serial_number, PDO::PARAM_STR);
+        $command->bindParam(":out_order_number",$out_order_number, PDO::PARAM_STR);
         $command->execute();
     }
 }

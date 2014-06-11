@@ -430,7 +430,7 @@ class Court extends CActiveRecord {
 
         if (isset($args->name)&&$args->name != ''){
             $condition.= ' AND name like :name';
-            $params['name'] = "%".$args['name']."%";
+            $params['name'] = "%".$args->name."%";
         }
 
         if (isset($args->city)&&$args->city != ''){

@@ -546,11 +546,15 @@ class Order extends CActiveRecord {
     }
 
     public static function ChangePayMethod(&$conn,$pay_method,$order_id){
+        $model=Order::OrderInfo($order_id);
+
         $sql = "update g_order set pay_method=:pay_method where order_id=:order_id";
         $command = $conn->createCommand($sql);
         $command->bindParam(":pay_method",$pay_method, PDO::PARAM_STR);
         $command->bindParam(":order_id",$order_id, PDO::PARAM_STR);
         $command->execute();
+
+        return $model;
     }
     
     /**
