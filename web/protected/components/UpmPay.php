@@ -164,7 +164,7 @@ class UpmPay extends BasePay
     }
 
     public function Notice($params){
-        Yii::log(json_encode($params),"debug",'application');
+        Yii::log(json_encode($params),"info",'application.un_pay_log');
         if (UpmpService::verifySignature($params)){// 服务器签名验证成功
             if($params[upmp_config::RESPONSE_CODE]!=upmp_config::RESPONSE_CODE_SUCCESS){ echo "fail"; return false;}
             try{
