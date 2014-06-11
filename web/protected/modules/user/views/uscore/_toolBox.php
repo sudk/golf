@@ -2,9 +2,7 @@
     <li>
         <span class="sift-title">搜索：</span>
         <select name="q_by">
-            <option value="card_no">会员卡号</option>
-            <option value="user_name">会员姓名</option>
-            <option value="phone">手机号</option>
+            <option value="phone">用户手机号</option>
         </select>
         <input name="q_value" type="text" class="grayTips" />
         <span style="float:left; margin:0 3px; margin-top:-3px;">所在球场</span>
@@ -31,6 +29,9 @@
              
   }); 
 
+    var itemDetail = function(id){
+        window.location.href = 'index.php?r=user/uscore/scoredetail&id='+id;
+    }
     var itemQuery = function(){
         var length=arguments.length;
         if(length==1){

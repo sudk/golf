@@ -8,6 +8,8 @@
 class Score extends CActiveRecord {
 
    
+    const SHOW_YES = '1';
+    const SHOW_NO = '0';
     
 
     public static function model($className=__CLASS__){
@@ -25,7 +27,13 @@ class Score extends CActiveRecord {
     }
 
 
-    
+    public static function getIsShow()
+    {
+        return array(
+            self::SHOW_YES =>'是',
+            self::SHOW_NO =>'否'
+        );
+    }
 
 
     /**
@@ -44,30 +52,37 @@ class Score extends CActiveRecord {
             $condition.= ' AND court_id=:court_id';
             $params['court_id'] = $args['court_id'];
         }
-
         
-        $total_num = Score::model()->count($condition, $params); //总记录数
-
-        $criteria = new CDbCriteria();
+        if ($args['user_id'] != ''){
+            $condition.= ' AND g_score.user_id=:user_id';
+            $params['user_id'] = $args['user_id'];
+        }
         
-    	if($_REQUEST['q_order']==''){
-            $criteria->order = 'record_time  DESC';
-        }else{
-            if(substr($_REQUEST['q_order'],-1)=='~')
-                $criteria->order = substr($_REQUEST['q_order'],0,-1).' DESC';
-            else
-                $criteria->order = $_REQUEST['q_order'].' ASC';
+        if($args['phone']!="")
+        {
+            $condition.= ' AND g_user.phone=:phone';
+            $params['phone'] = $args['phone'];
         }
 
-        $criteria->condition = $condition;
-        $criteria->params = $params;
-
-        $pages = new CPagination($total_num);
-        $pages->pageSize = $pageSize;
-        $pages->setCurrentPage($page);
-        $pages->applyLimit($criteria);
-
-        $rows = Score::model()->findAll($criteria);
+        $total_num=Yii::app()->db->createCommand()
+            ->select("count(1)")
+            ->from("g_score")
+            ->leftJoin("g_user","g_score.user_id=g_user.user_id")
+            ->where($condition,$params)
+            
+            ->queryScalar();
+      
+        $order = 'g_score.record_time DESC';
+        //print_r($args);
+        $rows=Yii::app()->db->createCommand()
+            ->select("g_score.*,g_user.phone user_phone")
+            ->from("g_score")
+            ->leftJoin("g_user","g_score.user_id=g_user.user_id")
+            ->where($condition,$params)
+            ->order($order)
+            ->limit($pageSize)
+            ->offset($page * $pageSize)
+            ->queryAll();
 
         $rs['status'] = 0;
         $rs['desc'] = '成功';

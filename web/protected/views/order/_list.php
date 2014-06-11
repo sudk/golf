@@ -12,7 +12,7 @@ if (is_array($rows))
         $link = "";
         $status = $row['status'];
         $link .= CHtml::link('详情',"javascript:itemLog('{$row['order_id']}')", array());
-        if(Yii::app()->user->type == Operator::TYPE_AGENT)
+        if(true)
         {
             $edit_array = array(Order::STATUS_TOBE_CONFIRM,Order::STATUS_TOBE_PAID);
             if(in_array($status,$edit_array))

@@ -16,6 +16,8 @@ return array(
             'user/uscore/grid' ,
             'user/uscore/list' ,
             'user/uscore/detail' ,
+            'user/uscore/dgrid',
+            'user/uscore/scoredetail',
             'user/uinfo/mycard',
             'user/uinfo/cardlist',
             'user/uinfo/newcard',
@@ -41,6 +43,8 @@ return array(
             'user/uscore/grid' ,
             'user/uscore/list' ,
             'user/uscore/detail' ,
+            'user/uscore/dgrid',
+            'user/uscore/scoredetail',
         ),
         'bizRules' => '',
         'data' => ''
@@ -177,7 +181,7 @@ return array(
     'service_comp' => array(
         'type' => CAuthItem::TYPE_TASK,
         'display'=>true,
-        'description' => '特色服务-赛事管理',
+        'description' => '特色服务-套餐管理',
         'children' => array(
             'service/competition/grid' ,
             'service/competition/list' ,
@@ -212,7 +216,7 @@ return array(
            
             'service/goods/grid' ,
             'service/goods/list' ,
-            'service/goods/audit' ,
+            'service/goods/audit',
             'service/goods/detail' ,
             'service/goods/del' ,
         ),
@@ -220,22 +224,7 @@ return array(
         'data' => ''
     ),
     
-    'service_goods' => array(
-        'type' => CAuthItem::TYPE_TASK,
-        'display'=>true,
-        'description' => '特色服务-官方寄卖',
-        'children' => array(
-           
-            'service/goods/grid' ,
-            'service/goods/list' ,
-            'service/goods/detail' ,
-            'service/goods/del' ,
-            'service/goods/newgoods',
-            'service/goods/checkid',
-        ),
-        'bizRules' => '',
-        'data' => ''
-    ),
+    
     
     'service_mcht' => array(
         'type' => CAuthItem::TYPE_TASK,

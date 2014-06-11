@@ -25,8 +25,17 @@ class ScoreDetail extends CActiveRecord {
     }
 
 
-    
-
+    //Tee台；1、黑Tee；2、金Tee；3、蓝Tee；4、白Tee；5、红Tee
+    public static function getTee()
+    {
+        return array(
+            '1'=>'黑Tee',
+            '2'=>'金Tee',
+            '3'=>'蓝Tee',
+            '4'=>'白Tee',
+            '5'=>'红Tee',
+        );
+    }
 
     /**
      * 查询
@@ -40,24 +49,17 @@ class ScoreDetail extends CActiveRecord {
         $condition = ' 1=1 ';
         $params = array();
 
-        if ($args['court_id'] != ''){
-            $condition.= ' AND court_id=:court_id';
-            $params['court_id'] = $args['court_id'];
+        if ($args['score_id'] != ''){
+            $condition.= ' AND score_id=:score_id';
+            $params['score_id'] = $args['score_id'];
         }
         
         
         $total_num = ScoreDetail::model()->count($condition, $params); //总记录数
 
         $criteria = new CDbCriteria();
-        
-    	if($_REQUEST['q_order']==''){
-            $criteria->order = 'record_time  DESC';
-        }else{
-            if(substr($_REQUEST['q_order'],-1)=='~')
-                $criteria->order = substr($_REQUEST['q_order'],0,-1).' DESC';
-            else
-                $criteria->order = $_REQUEST['q_order'].' ASC';
-        }
+        $criteria->order = 'record_time  DESC';
+    	
 
         $criteria->condition = $condition;
         $criteria->params = $params;
