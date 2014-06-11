@@ -51,6 +51,7 @@ class FleaController extends CMDBaseController
             $msg['status']=4;
             $msg['desc']="没有数据";
         }
+        Yii::log(json_encode($msg),'info','application.flea_data_test');
         echo json_encode($msg);
         return;
 
