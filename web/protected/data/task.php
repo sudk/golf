@@ -22,6 +22,7 @@ return array(
             'user/uinfo/cardlist',
             'user/uinfo/newcard',
             'user/uinfo/delcard',
+            'user/uscore/export',
            
         ),
         'bizRules' => '',
@@ -63,6 +64,7 @@ return array(
             'order/nextstatus',
             'order/confirmstatus',
             'order/del',
+            'order/export',
         ),
         'bizRules' => '',
         'data' => ''

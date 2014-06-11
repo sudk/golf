@@ -21,6 +21,16 @@
         </select>
         
         <input type="submit" value="" class="search_btn"/>
+        <?php
+        if(Yii::app()->user->checkAccess("user/uscore/export"))
+        {
+        ?>
+        <span>
+            <a href="javascript:void(0);" style="margin-left: 10px;margin-top: -3px;" onclick="javascript:exportScore();">导出订单</a>
+        </span>
+        <?php
+        }
+        ?>
     </li>
 </form>
 <script type="text/javascript" src="js/JQdate/WdatePicker.js"></script>
@@ -48,6 +58,24 @@
         }
 <?php echo $this->gridId; ?>.condition = url;
 <?php echo $this->gridId; ?>.refresh();
+    }
+    
+    
+    var exportScore = function()
+    {
+        var objs = document.getElementById("_query_form").elements;
+        var i = 0;
+        var cnt = objs.length;
+        var obj;
+        var url = 'index.php?r=user/uscore/export';
+        for (i = 0; i < cnt; i++) {
+            obj = objs.item(i);
+            url += '&' + obj.name + '=' + obj.value;
+        }
+        //window.location.target = '_blank';
+        //window.location.href = url;
+        window.open(url,"_blank");
+        
     }
 
 </script>

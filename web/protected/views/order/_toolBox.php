@@ -53,6 +53,16 @@
         
         <input name="q[order_id]" type="text" class="grayTips" value="订单编号"/>
         <input type="submit" value="" class="search_btn"/>
+        <?php
+        if(Yii::app()->user->checkAccess("order/export"))
+        {
+        ?>
+        <span>
+            <a href="javascript:void(0);" style="margin-left: 10px;margin-top: -3px;" onclick="javascript:exportOrder();">导出订单</a>
+        </span>
+        <?php
+        }
+        ?>
     </li>
     
 </form>
@@ -78,6 +88,24 @@
         }
 <?php echo $this->gridId; ?>.condition = url;
 <?php echo $this->gridId; ?>.refresh();
+    }
+    
+    
+    var exportOrder = function()
+    {
+        var objs = document.getElementById("_query_form").elements;
+        var i = 0;
+        var cnt = objs.length;
+        var obj;
+        var url = 'index.php?r=order/export';
+        for (i = 0; i < cnt; i++) {
+            obj = objs.item(i);
+            url += '&' + obj.name + '=' + obj.value;
+        }
+        //window.location.target = '_blank';
+        //window.location.href = url;
+        window.open(url,"_blank");
+        
     }
 
 </script>
