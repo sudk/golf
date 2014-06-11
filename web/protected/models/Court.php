@@ -449,12 +449,7 @@ class Court extends CActiveRecord {
             ->limit($pageSize)
             ->offset($page * $pageSize)
             ->queryAll();
-
-        $rs['status'] = 0;
-        $rs['desc'] = '成功';
-        $rs['rows'] = $rows;
-
-        return $rs;
+        return $rows;
     }
 
 
