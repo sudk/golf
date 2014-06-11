@@ -7,30 +7,7 @@
 class FleaController extends CMDBaseController
 {
     public function accessRules() {
-        return array(
-            array('allow',
-                'actions' => array('info','Bandcard'),
-                'users' => array('@'),
-            ),
-            array('allow',
-                'users' => array('*'),
-            ),
-            array('deny',
-                'actions' => array(),
-            ),
-        );
-    }
-
-    public function beforeAction($action)
-    {
-        if(Yii::app()->user->isGuest){
-            $msg['status']=-1;
-            $msg['desc']="用户未登陆！";
-            echo json_encode($msg);
-            return false;
-        }else{
-            return true;
-        }
+        return array('login' => array('mylist','create','update','del'));
     }
 
     public function actionList(){
@@ -51,7 +28,7 @@ class FleaController extends CMDBaseController
             $msg['status']=4;
             $msg['desc']="没有数据";
         }
-        Yii::log(json_encode($msg),'info','application.flea_data_test');
+        //Yii::log(json_encode($msg),'info','application.flea_data_test');
         echo json_encode($msg);
         return;
 
