@@ -224,6 +224,7 @@ class OrderController extends CMDBaseController
             echo json_encode($msg);
             return;
         }
+
         $conn=Yii::app()->db;
         $transaction = $conn->beginTransaction();
         $status=Order::STATUS_WAIT_REFUND;

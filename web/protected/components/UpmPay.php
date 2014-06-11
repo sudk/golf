@@ -126,18 +126,18 @@ class UpmPay extends BasePay
 //// 保留域填充方法
         $merReserved['order_id']   	= $orderNumber;
         $req['merReserved']   	= UpmpService::buildReserved($merReserved); // 商户保留域(可选)
-
+        //print_r($req);
         $resp = array ();
         $validResp = UpmpService::trade($req, $resp);
-        Yii::log("------------1","info");
-        Yii::log(json_encode($resp),"info");
-        Yii::log("1------------","info");
+        //Yii::log("------------1","info");
+        //Yii::log(json_encode($resp),"info");
+        //Yii::log("1------------","info");
 // 商户的业务逻辑
         if($validResp){
             if($resp[upmp_config::RESPONSE_CODE]==upmp_config::RESPONSE_CODE_SUCCESS){
                 return array('status'=>0,'desc'=>'已经成功向银行支付发起退款申请');
             }else{
-                print_r($resp);
+                //print_r($resp);
                 $respCode=$resp[upmp_config::RESPONSE_CODE];
                 return array('status'=>$respCode,'msg'=>$resp[upmp_config::RESPONSE_MSG]);
             }

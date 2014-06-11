@@ -503,7 +503,7 @@ class Order extends CActiveRecord {
                 return array('status'=>9,'desc'=>'不支持该支付类型！');
         }
         
-        return $pay->Refund($amount,$orderNumber,$sn);
+        return $pay->Refund($orderNumber,$amount,$sn);
 
     }
 
