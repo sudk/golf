@@ -7,14 +7,19 @@
  */
 class TransRecord extends CActiveRecord {
 
-    const TYPE_COURT_PAY=10;//订场
-    const TYPE_COURT_CANCEL=11;//订场撤销
-    const TYPE_TRIP_PAY=20;
-    const TYPE_TRIP_CANCEL=21;
-    const TYPE_COMPETITION_PAY=30;
-    const TYPE_COMPETITION_CANCEL=31;
-    const TYPE_RECHARGE_PAY=40;
-    const TYPE_RECHARGE_CANCEL=41;
+//    const TYPE_COURT_PAY=10;//订场
+//    const TYPE_COURT_CANCEL=11;//订场撤销
+//    const TYPE_TRIP_PAY=20;
+//    const TYPE_TRIP_CANCEL=21;
+//    const TYPE_COMPETITION_PAY=30;
+//    const TYPE_COMPETITION_CANCEL=31;
+//    const TYPE_RECHARGE_PAY=40;
+//    const TYPE_RECHARGE_CANCEL=41;
+
+    const TRANS_TYPE_PURCHASE="01";//消费
+    const TRANS_TYPE_VOID="31";//消费撤销
+    const TRANS_TYPE_REFUND="04";//退货
+    const TRANS_TYPE_RECHARGE="90";//充值
 
     const STATUS_SUCCESS="00";
     const STATUS_PROCESS="01";
@@ -37,14 +42,10 @@ class TransRecord extends CActiveRecord {
     public static function getTransType($s = "")
     {
         $rs = array(
-            self::TYPE_COURT_PAY=>'订场',
-            self::TYPE_COURT_CANCEL=>'订场撤销',
-            self::TYPE_TRIP_PAY=>'套餐',
-            self::TYPE_TRIP_CANCEL=>'套餐撤销',
-            self::TYPE_COMPETITION_PAY=>'赛事',
-            self::TYPE_COMPETITION_CANCEL=>'赛事撤销',
-            self::TYPE_RECHARGE_PAY=>'充值',
-            self::TYPE_RECHARGE_CANCEL=>'充值撤销',
+            self::TRANS_TYPE_PURCHASE=>'消费',
+            self::TRANS_TYPE_VOID=>'消费撤销',
+            self::TRANS_TYPE_REFUND=>'退货',
+            self::TRANS_TYPE_RECHARGE=>'充值',
         );
         
         return $s == "" ? $rs : $rs[$s];
@@ -52,24 +53,12 @@ class TransRecord extends CActiveRecord {
 
     //通过订单类型，转换成交易类型
     public static function GetPayTypeByOrderType($order_type){
-        $rs = array(
-            Order::TYPE_COURT=>self::TYPE_COURT_PAY,
-            Order::TYPE_TRIP=>self::TYPE_TRIP_PAY,
-            Order::TYPE_COMPETITION=>self::TYPE_COMPETITION_PAY,
-            Order::TYPE_RECHARGE=>self::TYPE_RECHARGE_PAY,
-        );
-        return $rs[$order_type];
+        return self::TRANS_TYPE_PURCHASE;
     }
 
     //通过订单类型，转换成交易类型
     public static function GetCancelTypeByOrderType($order_type){
-        $rs = array(
-            Order::TYPE_COURT=>self::TYPE_COURT_CANCEL,
-            Order::TYPE_TRIP=>self::TYPE_TRIP_CANCEL,
-            Order::TYPE_COMPETITION=>self::TYPE_COMPETITION_CANCEL,
-            Order::TYPE_RECHARGE=>self::TYPE_RECHARGE_CANCEL,
-        );
-        return $rs[$order_type];
+        return self::TRANS_TYPE_REFUND;
     }
     
     public static function getStatus($s="")
@@ -228,6 +217,7 @@ class TransRecord extends CActiveRecord {
         $command->bindParam(":out_order_number",$out_order_number, PDO::PARAM_STR);
         $command->execute();
     }
+
 }
 
 

@@ -215,7 +215,7 @@ class ScoreController extends CMDBaseController
             return;
         }
         if(Yii::app()->command->cmdObj->score_id==null||Yii::app()->command->cmdObj->score_id==""){
-            $msg['status']=1;
+            $msg['status']=2;
             $msg['desc']="打球ID不能为空！";
             echo json_encode($msg);
             return;

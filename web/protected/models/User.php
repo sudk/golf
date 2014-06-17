@@ -204,6 +204,11 @@ class User extends CActiveRecord {
             ->from("g_user")
             ->where("user_id=:user_id",array("user_id"=>$id))
             ->queryRow();
+        if(!$row){
+            $msg['status']=4;
+            $msg['desc']='用户不存在！';
+            return $msg;
+        }
         $balance=$row['balance'];
 
         if($row['status']!=User::STATUS_NORMAL){
@@ -229,6 +234,50 @@ class User extends CActiveRecord {
     public static function Recharge(&$conn,$amount,$id){
         self::ChangeBalance($conn,$amount,$id);
     }
+
+    public static function AddVipNumber(&$conn,$number,$id){
+        $msg=array('status'=>0,'desc'=>'成功');
+        if(!trim($id)){
+            $msg['status']=4;
+            $msg['desc']='用户ID不能为空！';
+        }
+
+        $row=Yii::app()->db->createCommand()
+            ->select("*")
+            ->from("g_user")
+            ->where("user_id=:user_id",array("user_id"=>$id))
+            ->queryRow();
+
+        if(!$row){
+            $msg['status']=5;
+            $msg['desc']='用户不存在！';
+            return $msg;
+        }
+
+        $card_no=$row['card_no'];
+
+        if($row['status']!=User::STATUS_NORMAL){
+            $msg['status']=6;
+            $msg['desc']='账户状态异常！';
+            return $msg;
+        }
+
+        if(trim($card_no)){
+            $msg['status']=7;
+            $msg['desc']='用户已经是vip身份！';
+            return $msg;
+        }
+
+        $sql = "update g_user set card_no=:card_no where user_id=:user_id";
+        $command = $conn->createCommand($sql);
+        $command->bindParam(":card_no",$number, PDO::PARAM_STR);
+        $command->bindParam(":user_id",$id, PDO::PARAM_STR);
+        $command->execute();
+
+        return $msg;
+    }
+
+
 }
 
 

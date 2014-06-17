@@ -246,7 +246,7 @@ class Court extends CActiveRecord {
         //print_r($condition);
         //print_r($params);
         $rows = Yii::app()->db->createCommand()
-            ->select("g_policy.*,g_court.name name,g_court.addr,g_court.lon lon,g_court.lat lat,g_policy_detail.price,g_policy_detail.day,g_policy_detail.start_time,g_policy_detail.end_time,g_agent.agent_name,g_img.img_url ico_img")
+            ->select("g_policy.*,g_court.name name,g_court.addr,g_court.lon lon,g_court.lat lat,g_policy_detail.price,g_policy_detail.vip_price,g_policy_detail.pledge_price,g_policy_detail.day,g_policy_detail.start_time,g_policy_detail.end_time,g_agent.agent_name,g_img.img_url ico_img")
             ->from("g_policy_detail")
             ->leftJoin("g_policy","g_policy_detail.policy_id=g_policy.id")
             ->leftJoin("g_court","g_policy.court_id=g_court.court_id")
@@ -371,7 +371,7 @@ class Court extends CActiveRecord {
         $condition.= ' AND g_policy_detail.status='.PolicyDetail::STATUS_NORMAL;
 
         $rows = Yii::app()->db->createCommand()
-            ->select("g_policy.*,g_court.name court_name,g_policy_detail.price,g_policy_detail.day,g_policy_detail.start_time,g_policy_detail.end_time,g_agent.agent_name")
+            ->select("g_policy.*,g_court.name court_name,g_policy_detail.price,g_policy_detail.vip_price,g_policy_detail.pledge_price,g_policy_detail.day,g_policy_detail.start_time,g_policy_detail.end_time,g_agent.agent_name")
             ->from("g_policy_detail")
             ->leftJoin("g_policy","g_policy_detail.policy_id=g_policy.id")
             ->leftJoin("g_court","g_policy.court_id=g_court.court_id")

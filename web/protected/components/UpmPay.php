@@ -182,7 +182,23 @@ class UpmPay extends BasePay
                     // 交易处理成功
                     if($params['transType']==upmp_config::TRANS_TYPE_PURCHASE){
                         $desc="银联支付成功，支付金额：".$settleAmount/100;
-                        Order::ChangeStatus($conn,Order::STATUS_TOBE_SUCCESS,$order_id,$settleAmount);
+                        $order=Order::ChangeStatus($conn,Order::STATUS_TOBE_SUCCESS,$order_id,$settleAmount);
+
+                        //如果是购买VIP则给用户生成VIP卡号
+                        if($order['type']==Order::TYPE_VIP){
+                            $number=SysSetting::GetNewVipNumber();
+                            User::AddVipNumber($conn,$number,$order['user_id']);
+                            $desc="银联支付,购买VIP,支付成功，支付金额：".$settleAmount/100;
+                        }
+
+                        //如果是充值则给用户余额账户充上金额
+                        if($order['type']==Order::TYPE_RECHARGE){
+                            User::Recharge($conn,$settleAmount,$order['user_id']);
+                            $desc="银联支付，为账户余额充值，支付成功，支付金额：".$settleAmount/100;
+                            $d=date("YmdHis");
+                            TransRecord::Add($conn,$order_id,TransRecord::TRANS_TYPE_RECHARGE,$settleAmount,$out_order_number,TransRecord::STATUS_SUCCESS,$re_serial_number="",$out_serial_number=$qn,$user_id="",$operator_id="",$out_order_number,$d);
+                        }
+
                     }
                     if($params['transType']==upmp_config::TRANS_TYPE_VOID){
                         $desc="银联消费撤销成功，金额：".$settleAmount/100;

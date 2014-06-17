@@ -12,7 +12,7 @@ class Order extends CActiveRecord {
     const TYPE_TRIP = '1';
     const TYPE_COMPETITION = '2';
     const TYPE_RECHARGE = '3';
-    const TYPE_VIP = '4';//暂时没用
+    const TYPE_VIP = '4';//购买VIP
 
     /**
      * 支付方法
@@ -174,6 +174,7 @@ class Order extends CActiveRecord {
             self::TYPE_TRIP=>'预约行程',
             self::TYPE_COMPETITION=>'赛事报名',
             self::TYPE_RECHARGE=>'充值',
+            self::TYPE_VIP=>"购买VIP",
         );
         
         return $type?$rs[$type]:$rs;
