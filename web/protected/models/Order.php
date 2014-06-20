@@ -311,6 +311,10 @@ class Order extends CActiveRecord {
         try{
             $had_pay=0;
             $status=Order::STATUS_TOBE_CONFIRM;
+            //如果是充值和购买VIP类型的订单刚不需要确认。
+            if($args->type==Order::TYPE_RECHARGE||$args->type==Order::TYPE_VIP){
+                $status=Order::STATUS_TOBE_PAID;
+            }
             $sql = "
                     insert into g_order
                     (order_id,user_id,`type`,relation_id,relation_name,tee_time,`count`,unitprice,amount,had_pay,pay_type,status,record_time,agent_id,contact,phone)
