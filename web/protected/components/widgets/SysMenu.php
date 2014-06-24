@@ -165,8 +165,8 @@ class SysMenu extends CWidget
             $sub_menu[] = array("title" => "广告管理", "url" => "./?r=service/adv/list", "match" => array('service\/adv\/list','service\/adv\/new','service\/adv\/detail'));
         if(Yii::app()->user->checkAccess("service/competition/list"))
             $sub_menu[] = array("title" => "赛事管理", "url" => "./?r=service/competition/list", "match" => array('service\/competition\/list','service\/competition\/new','service\/competition\/detail'));
-        if(Yii::app()->user->checkAccess("service/news/list"))
-            $sub_menu[] = array("title" => "新闻管理", "url" => "./?r=service/news/list", "match" => array('service\/news\/list','service\/news\/new','service\/news\/detail'));
+//        if(Yii::app()->user->checkAccess("service/news/list"))
+//            $sub_menu[] = array("title" => "新闻管理", "url" => "./?r=service/news/list", "match" => array('service\/news\/list','service\/news\/new','service\/news\/detail'));
         if(count($sub_menu))
             $menus['service'] = array("title" => "特色服务", "url" => "./?r=service/route/list", "child" => $sub_menu);
 
