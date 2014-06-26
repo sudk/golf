@@ -2,51 +2,111 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal"
-    android:paddingLeft="5dip"
-    android:paddingRight="5dip" 
-    android:gravity="center_vertical">
+    android:layout_centerVertical="true"
+    android:background="@drawable/block_background"
+    android:orientation="vertical"
+    android:padding="10dip" >
+
+    <TextView
+        android:id="@+id/combo_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="3dip"
+        android:text="套餐名称"
+        android:textColor="@android:color/black"
+        android:textSize="18sp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dip"
+        android:background="@drawable/block_divider" />
 
     <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:gravity="center_vertical"
-        android:orientation="vertical"
-        android:padding="5dip" >
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
 
-        <TextView
-            android:id="@+id/trip_list_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dip"
-            android:layout_marginRight="5dip"
-            android:gravity="center_vertical"
-            android:singleLine="true"
-            android:ellipsize="end"
-            android:text="1111"
-            android:textSize="16sp" />
+        <ImageView
+            android:id="@+id/combo_img"
+            android:layout_width="60dip"
+            android:layout_height="60dip"
+            android:layout_margin="5dip"
+            android:src="@drawable/test_golf" />
 
-        <TextView
-            android:id="@+id/trip_list_date"
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dip"
             android:layout_marginRight="10dip"
-            android:gravity="center_vertical"
-            android:text="1111"
-            android:textColor="#c7c7c7"
-            android:textSize="16sp" />
-    </LinearLayout>
+            android:layout_weight="1"
+            android:orientation="vertical" >
 
-    <TextView
-        android:id="@+id/trip_list_price"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:padding="5dip"
-        android:text="￥500"
-        android:textColor="#ff8605"
-        android:textSize="20sp" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="2dip" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="球场："
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/combo_court"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:text="11123108912"
+                    android:textSize="15sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="2dip" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="时间："
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/combo_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:text="2014年5月10日"
+                    android:textColor="@color/basecolor"
+                    android:textSize="15sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="2dip" >
+
+                <TextView
+                    android:id="@+id/combo_pay_type"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="支付类型"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/combo_amount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dip"
+                    android:text="Amount"
+                    android:textColor="@color/money"
+                    android:textSize="15sp" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
 
 </LinearLayout>

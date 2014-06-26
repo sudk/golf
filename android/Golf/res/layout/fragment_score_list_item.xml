@@ -1,0 +1,73 @@
+<FrameLayout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:id="@+id/back"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#e9e9e9"
+        android:gravity="right"
+        android:orientation="horizontal"
+        android:tag="back" >
+        
+
+        <Button
+            android:id="@+id/edit"
+            style="@style/RectangleOrangeButton"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/edit" />
+
+        <Button
+            android:id="@+id/delete"
+            style="@style/RectangleOrangeButton"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/delete" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/front"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#e9e9e9"
+        android:orientation="vertical"
+        android:padding="10dip"
+        android:tag="front" >
+
+        <TextView
+            android:id="@+id/courtname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:text="球场名称"
+            android:textSize="16sp"
+            android:layout_marginBottom="5dip" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/teammembers"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="队友"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tee时间"
+                android:textSize="14sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+</FrameLayout>

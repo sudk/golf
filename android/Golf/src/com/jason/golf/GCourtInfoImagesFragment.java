@@ -43,13 +43,13 @@ public class GCourtInfoImagesFragment extends Fragment {
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		GCourtInfoActivity a = (GCourtInfoActivity) getActivity();
 		GCourt court = a.getCourt();
-		
 		mAdapter = new ImageAdapter(getActivity(), court.getFairwayImgs());
+		
+		getActivity().getActionBar().setTitle(R.string.court_fairway_imags);
 		
 		View v = inflater.inflate(R.layout.fragment_court_info_imgs, null);
 		mImages = (ViewPager) v.findViewById(R.id.fairway_imgs);

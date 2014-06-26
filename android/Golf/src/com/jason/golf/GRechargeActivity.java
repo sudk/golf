@@ -14,7 +14,9 @@ import com.jason.golf.classes.GAccount;
 import com.jason.golf.classes.GAdver;
 import com.jason.golf.dialog.WarnDialog;
 import com.jason.golf.R;
+import com.unionpay.UPPayAssistEx;
 
+import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
@@ -33,11 +35,8 @@ public class GRechargeActivity extends ActionBarActivity implements
 		OnCheckedChangeListener, OnClickListener, TextWatcher {
 
 	private RadioGroup mListAmount;
-
 	private EditText mCustomAmount;
-	
 	private int _amount;
-	
 	private Button mRecharge;
 
 	@Override
@@ -101,13 +100,10 @@ public class GRechargeActivity extends ActionBarActivity implements
 			mCustomAmount.setVisibility(View.GONE);
 			break;
 		case R.id.amount_custom:
-			
 			String str = mCustomAmount.getText().toString();
-			
 			if(!TextUtils.isEmpty(str)){
 				_amount = Integer.parseInt(str);
 			}
-			
 			mCustomAmount.setVisibility(View.VISIBLE);
 			break;
 		default:
@@ -141,14 +137,14 @@ public class GRechargeActivity extends ActionBarActivity implements
 		
 		try {
 			params.put("cmd"           , "order/create");
-			params.put("type"          ,"3" );
+			params.put("type"          ,"3" );//订单类型，0、订场；1、行程；2、赛事报名；3、充值；4、购买VIP
 			params.put("relation_id"   , acc.getId());
 			params.put("relation_name" , acc.getId());
 			params.put("tee_time"      , sdf.format(date));
 			params.put("count"         , String.format("%d", 1));
 			params.put("unitprice"     , String.format("%d", amount * 100));
 			params.put("amount"        , String.format("%d", amount * 100));
-			params.put("pay_type"      , "2");
+			params.put("pay_type"      , "1");//支付方式：0为现付，1为全额预付，2为押金
 			params.put("contact"       , acc.getId());
 			params.put("phone"         , acc.getPhone());
 			params.put("agent_id"      , "1");
@@ -169,13 +165,10 @@ public class GRechargeActivity extends ActionBarActivity implements
 				try {
 					JSONArray data = new JSONArray(res);
 					
+					JSONObject obj = data.getJSONObject(0);
+					String orderid = obj.getString("order_id");
 					
-					
-					
-					
-					
-					
-					
+					payOrder(orderid);
 					
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
@@ -209,6 +202,94 @@ public class GRechargeActivity extends ActionBarActivity implements
 		
 		GThreadExecutor.execute(r);
 		
+	}
+	
+	private void payOrder(String orderId) {
+
+		// TODO Auto-generated method stub
+		JSONObject params = new JSONObject();
+		try {
+			params.put("cmd", "order/pay");
+			params.put("order_id", orderId);
+			params.put("type", "2");
+			params.put("amount", String.format("%d", _amount * 100));
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		HttpRequest r = new HttpRequest(this, params, new HttpCallback() {
+
+			@Override
+			public void sucessData(String res) {
+				// TODO Auto-generated method stub
+				super.sucessData(res);
+
+				try {
+					JSONArray data = new JSONArray(res);
+					JSONObject obj = data.getJSONObject(0);
+					String tn = obj.getString("tn");
+
+					int ret = UPPayAssistEx.startPay(GRechargeActivity.this,
+							null, null, tn, "01");
+
+					if (ret == UPPayAssistEx.PLUGIN_NOT_FOUND) {
+						// 需要重新安装控件
+						AlertDialog.Builder builder = new AlertDialog.Builder(
+								GRechargeActivity.this);
+						builder.setTitle("提示");
+						builder.setMessage("完成购买需要安装银联支付控件，是否安装？");
+
+						builder.setNegativeButton("确定",
+								new DialogInterface.OnClickListener() {
+									@Override
+									public void onClick(DialogInterface dialog,	int which) {
+										UPPayAssistEx.installUPPayPlugin(GRechargeActivity.this);
+									}
+								});
+
+						builder.setPositiveButton("取消",
+								new DialogInterface.OnClickListener() {
+
+									@Override
+									public void onClick(DialogInterface dialog,	int which) {
+										dialog.dismiss();
+									}
+								});
+						builder.create().show();
+
+					}
+
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+				//
+
+			}
+
+			@Override
+			public void faildData(int code, String res) {
+				// TODO Auto-generated method stub
+				super.faildData(code, res);
+				WarnDialog dialog = new WarnDialog(GRechargeActivity.this);
+				dialog.setTitle(R.string.order)
+						.setMessage(res)
+						.setPositiveBtn(R.string.confirm,
+								new DialogInterface.OnClickListener() {
+
+									@Override
+									public void onClick(DialogInterface dialog,	int which) {
+										// TODO Auto-generated method stub
+									}
+								});
+				dialog.show(getSupportFragmentManager(), "PayOrderFaild");
+			}
+
+		});
+
+		GThreadExecutor.execute(r);
 	}
 
 	@Override

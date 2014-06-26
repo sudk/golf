@@ -5,4 +5,13 @@
     <color name="markedness">#FF3030</color>
     <color name="titlecolor">#8B8682</color>
     <color name="contentcolor">#8B8989</color>
+    
+    <color name="background">#f2f6f7</color>
+    
+    <color name="black">#000000</color>
+    <color name="gold">#de9931</color>
+    <color name="blue">#0000FF</color>
+    <color name="white">#FFFFFF</color>
+    <color name="red">#FF0000</color>
+    
 </resources>

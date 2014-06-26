@@ -50,9 +50,11 @@ public class GCourtInfoDetailsFragment extends Fragment implements OnClickListen
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
+		
+		getActivity().getActionBar().setTitle(R.string.court_info);
+		
 		View v = inflater.inflate(R.layout.fragment_court_info_details, null);
 		
 		mModel = (TextView) v.findViewById(R.id.court_model);

@@ -11,8 +11,8 @@ import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.jason.controller.GThreadExecutor;
 import com.jason.controller.HttpCallback;
 import com.jason.controller.HttpRequest;
+import com.jason.golf.adapters.OrderAdapter;
 import com.jason.golf.classes.GOrder;
-import com.jason.golf.classes.OrderAdapter;
 import com.jason.golf.R;
 
 import android.app.DownloadManager.Query;
@@ -55,8 +55,7 @@ public class GOrderListFragment extends Fragment implements OnItemClickListener 
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,	Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		View v = inflater.inflate(R.layout.fragment_order_list, null);
 		mOrders = (PullToRefreshListView) v.findViewById(R.id.order_list);
@@ -149,10 +148,8 @@ public class GOrderListFragment extends Fragment implements OnItemClickListener 
 								GOrder order = new GOrder();
 								order.setOrderId(item.getString("order_id"));
 								order.setType(item.getInt("type"));
-								order.setRelationId(item
-										.getString("relation_id"));
-								order.setRelationName(item
-										.getString("relation_name"));
+								order.setRelationId(item.getString("relation_id"));
+								order.setRelationName(item.getString("relation_name"));
 								order.setTeeTime(item.getString("tee_time"));
 								order.setCount(item.getInt("count"));
 								order.setUnitprice(item.getInt("unitprice"));
@@ -160,8 +157,7 @@ public class GOrderListFragment extends Fragment implements OnItemClickListener 
 								order.setHadPay(item.getInt("had_pay"));
 								order.setPayType(item.getString("pay_type"));
 								order.setStatus(item.getString("status"));
-								order.setRecordTime(item
-										.getString("record_time"));
+								order.setRecordTime(item.getString("record_time"));
 								order.setDesc(item.getString("desc"));
 								order.setContact(item.getString("contact"));
 								order.setPhone(item.getString("phone"));

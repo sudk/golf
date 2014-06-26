@@ -157,29 +157,6 @@ public class GAccountLoginFragment extends Fragment implements OnClickListener {
 					dialog.dismiss();
 				}
 
-				@Override
-				public void timeout(String res) {
-					// TODO Auto-generated method stub
-					super.timeout(res);
-				}
-
-				@Override
-				public void malformedURL(String res) {
-					// TODO Auto-generated method stub
-					super.malformedURL(res);
-				}
-
-				@Override
-				public void ioError(String res) {
-					// TODO Auto-generated method stub
-					super.ioError(res);
-				}
-
-				@Override
-				public void other(String res) {
-					// TODO Auto-generated method stub
-					super.other(res);
-				}
 				
 			});
 			

@@ -19,7 +19,7 @@ public class GCourseFragment extends Fragment {
 
 	private FragmentTabHost mTabHost;
 
-	private TabsAdapter mTabsAdapter;
+//	private TabsAdapter mTabsAdapter;
 	private ViewPager mViewPager;
 
 	@Override
@@ -43,7 +43,7 @@ public class GCourseFragment extends Fragment {
 
 		mViewPager = (ViewPager) v.findViewById(R.id.pager);
 
-		mTabsAdapter = new TabsAdapter(this, mTabHost, mViewPager);
+//		mTabsAdapter = new TabsAdapter(this, mTabHost, mViewPager);
 //		mTabsAdapter.addTab(mTabHost.newTabSpec("One").setIndicator("One"), TabOneFragment.class, null);
 //		mTabsAdapter.addTab(mTabHost.newTabSpec("Two").setIndicator("Two"), TabTwoFragment.class, null);
 		

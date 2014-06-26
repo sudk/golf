@@ -57,6 +57,8 @@
                     android:id="@+id/competition_court"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:singleLine="true"
                     android:text="11123108912"
                     android:textSize="15sp" />
             </LinearLayout>
@@ -77,6 +79,8 @@
                     android:id="@+id/competition_date"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:singleLine="true"
                     android:text="2014年5月10日"
                     android:textColor="@color/basecolor"
                     android:textSize="15sp" />

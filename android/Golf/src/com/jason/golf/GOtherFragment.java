@@ -10,7 +10,8 @@ import org.json.JSONObject;
 import com.jason.controller.GThreadExecutor;
 import com.jason.controller.HttpCallback;
 import com.jason.controller.HttpRequest;
-import com.jason.golf.classes.AdvertisementAdapter;
+import com.jason.golf.adapters.AdvertisementAdapter;
+import com.jason.golf.adapters.OtherGridAdapter;
 import com.jason.golf.classes.GAdver;
 import com.jason.golf.R;
 
@@ -30,10 +31,13 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.webkit.WebView.FindListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-public class GOtherFragment extends Fragment implements OnClickListener {
+public class GOtherFragment extends Fragment implements OnItemClickListener {
 	
 	private ViewPager mViewPager;
 	private LinearLayout mDotContainer;
@@ -45,6 +49,8 @@ public class GOtherFragment extends Fragment implements OnClickListener {
 	private Handler mHandler;
 	
 	private int mViewPagerCurrentPosition;
+	
+	private GridView mGrid;
 	
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
@@ -60,6 +66,9 @@ public class GOtherFragment extends Fragment implements OnClickListener {
 		mViewPagerCurrentPosition = 0;
 		
 		_advers = new ArrayList<GAdver>();
+		
+		queryAders();
+		
 	}
 
 	@Override
@@ -120,38 +129,10 @@ public class GOtherFragment extends Fragment implements OnClickListener {
 		});
 		mHandler.sendEmptyMessageDelayed(1, 5000);
 		
-		queryAders();
 		
-		DisplayMetrics m = getActivity().getResources().getDisplayMetrics();
-		int widthPixels = m.widthPixels;
-		int width = (widthPixels ) / 3 - 2 * 2 - 2 * 2; 
-		
-		LinearLayout mButtons = (LinearLayout) v.findViewById(R.id.buttons1);
-		
-		for(int i=0, length=mButtons.getChildCount(); i < length ; i++){
-			View child = mButtons.getChildAt(i);
-			LayoutParams params = child.getLayoutParams(); 
-			params.height = width;
-            params.width = width;
-            child.setLayoutParams(params);
-		}
-		
-		mButtons = (LinearLayout) v.findViewById(R.id.buttons2);
-		
-		for(int i=0, length=mButtons.getChildCount(); i < length ; i++){
-			View child = mButtons.getChildAt(i);
-			LayoutParams params = child.getLayoutParams(); 
-			params.height = width;
-            params.width = width;
-            child.setLayoutParams(params);
-		}
-		
-		v.findViewById(R.id.grid_preferential).setOnClickListener(this);
-		v.findViewById(R.id.grid_trip).setOnClickListener(this);
-		v.findViewById(R.id.grid_sale).setOnClickListener(this);
-		v.findViewById(R.id.grid_ranking).setOnClickListener(this);
-		v.findViewById(R.id.grid_competition).setOnClickListener(this);
-		v.findViewById(R.id.grid_merchant).setOnClickListener(this);
+		mGrid = (GridView) v.findViewById(R.id.other_grid);
+		mGrid.setAdapter(new OtherGridAdapter(getActivity()));
+		mGrid.setOnItemClickListener(this);
 		
 		return v;
 	}
@@ -194,6 +175,8 @@ public class GOtherFragment extends Fragment implements OnClickListener {
 					}
 					
 					mAdapter.swapData(_advers);
+					
+					initilizeNavigationDots();
 					
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
@@ -242,57 +225,47 @@ public class GOtherFragment extends Fragment implements OnClickListener {
 	}
 
 	@Override
-	public void onClick(View v) {
+	public void onItemClick(AdapterView<?> parent, View view, int position,	long id) {
 		// TODO Auto-generated method stub
-		switch(v.getId()){
-		
-		case R.id.grid_preferential:
-			
+		switch(position){
+		case 0:
 			Intent preferentialIntent = new Intent(getActivity(), GPreferentialActivity.class);
 			startActivity(preferentialIntent);
-			
 			break;
-		case R.id.grid_trip:
-			
+		case 1:
 			Intent tripIntent = new Intent(getActivity(), GTripsActivity.class);
 			Bundle tripParams = new Bundle();
 			tripParams.putInt(GTripsActivity.FRAGMENT_MARK, GTripsActivity.FRAGMENT_MARK_TRIP_LIST);
 			tripIntent.putExtras(tripParams);
 			startActivity(tripIntent);
-			
 			break;
-		case R.id.grid_sale:
-			
+		case 2:
 			Intent fleeIntent = new Intent(getActivity(), GFleeMarketActivity.class);
 			Bundle fleeParams = new Bundle();
 			fleeParams.putInt(GFleeMarketActivity.FRAGMENT_MARK, GFleeMarketActivity.FRAGMENT_MARK_FLEE_LIST);
 			fleeIntent.putExtras(fleeParams);
 			startActivity(fleeIntent);
-			
-			
 			break;
-		case R.id.grid_ranking:
-			
-			
-			
-			
-			
+		case 3:
 			break;
-		case R.id.grid_competition:
+		case 4:
 			Intent competitionIntent = new Intent(getActivity(), GCompetitionActivity.class);
 			Bundle params = new Bundle();
 			params.putInt(GCompetitionActivity.FRAGMENT_MARK, GCompetitionActivity.FRAGMENT_MARK_LIST_COMPETITION);
 			competitionIntent.putExtras(params);
 			startActivity(competitionIntent);
 			break;
-			
-		case R.id.grid_merchant:
-			
+		case 5:
+
 			Intent merchantIntent = new Intent(getActivity(), GMerchantActivity.class);
 			Bundle merParams = new Bundle();
 			merParams.putInt(GMerchantActivity.FRAGMENT_MARK, GMerchantActivity.MERCHANT_LIST);
 			merchantIntent.putExtras(merParams);
 			startActivity(merchantIntent);
+			break;
+		case 6:
+			MainActivity a = (MainActivity) getActivity();
+			a.selectCourtSearch();
 			
 			break;
 		}

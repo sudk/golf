@@ -11,9 +11,9 @@ import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.jason.controller.GThreadExecutor;
 import com.jason.controller.HttpCallback;
 import com.jason.controller.HttpRequest;
+import com.jason.golf.adapters.TransrecordAdapter;
 import com.jason.golf.classes.GAccount;
 import com.jason.golf.classes.GTransrecord;
-import com.jason.golf.classes.TransrecordAdapter;
 import com.jason.golf.R;
 
 import android.os.Bundle;

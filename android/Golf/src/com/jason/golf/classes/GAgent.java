@@ -1,8 +1,9 @@
 package com.jason.golf.classes;
 
-import android.text.TextUtils;
-import android.text.style.BulletSpan;
+import org.json.JSONException;
+import org.json.JSONObject;
 
+import android.text.TextUtils;
 /*
  * 代理商
  */
@@ -38,8 +39,10 @@ public class GAgent {
 	private boolean _tips; // 小费
 	private String _payType; // 支付方式 ：0为现付，1为全额预付，2为押金
 	private String _price;
+	private String _vipprice;
+	private String _pledgePrice;
 	private String _bargainPriceDes; // 特价说明
-
+	
 	private String _teeTime;
 
 	public String getService() {
@@ -63,6 +66,39 @@ public class GAgent {
 		builder.deleteCharAt(builder.length() - 1);
 
 		return builder.toString();
+	}
+	
+	
+	public boolean initialize(JSONObject item){
+		
+		
+		try {
+			_id = item.getString("agent_id");
+			this._name = item.getString("agent_name");
+			this._courtid = item.getString("court_id");
+			_courtname = item.getString("court_name");
+			_priceremark = item.getString("remark");
+			_priceremark = item.getString("cancel_remark");
+			_green = "1".equals(item.getString("is_green"));
+			_caddie = "1".equals(item.getString("is_caddie"));
+			_car = "1".equals(item.getString("is_car"));
+			_wardrobe = "1".equals(item.getString("is_wardrobe"));
+			_meal = "1".equals(item.getString("is_meal"));
+			_insurance = "1".equals(item.getString("is_insurance"));
+			_tips = "1".equals(item.getString("is_tip"));
+			_payType = item.getString("pay_type");
+			_price = item.getString("price");
+			_vipprice = item.getString("vip_price");
+			_pledgePrice = item.getString("pledge_price");
+//			_bargainPriceDes = item.getString("special_desc");
+			
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			return false;
+		}
+		
+		
+		return true;
 	}
 
 
@@ -196,6 +232,17 @@ public class GAgent {
 		}
 
 		return p;
+	}
+	
+	public int getVipPrice(){
+		int p = 0;
+
+		if (!TextUtils.isEmpty(_vipprice) && TextUtils.isDigitsOnly(_vipprice)) {
+			p = Integer.parseInt(_vipprice);
+		}
+
+		return p;
+		
 	}
 
 	public void setPrice(String price) {

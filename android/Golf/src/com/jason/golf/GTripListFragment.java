@@ -11,16 +11,13 @@ import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.jason.controller.GThreadExecutor;
 import com.jason.controller.HttpCallback;
 import com.jason.controller.HttpRequest;
+import com.jason.golf.adapters.TripsAdapter;
 import com.jason.golf.classes.GAccount;
-import com.jason.golf.classes.GOrder;
 import com.jason.golf.classes.GTrip;
-import com.jason.golf.classes.OrderAdapter;
-import com.jason.golf.classes.TripsAdapter;
 import com.jason.golf.provider.GolfProviderConfig;
 import com.jason.golf.R;
 
 import android.app.Activity;
-import android.app.DownloadManager.Query;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.database.Cursor;
@@ -36,9 +33,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
-import android.widget.BaseAdapter;
-import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
@@ -77,8 +71,8 @@ public class GTripListFragment extends Fragment implements OnItemClickListener {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
-		View v = inflater.inflate(R.layout.fragment_order_list, null);
-		mOrders = (PullToRefreshListView) v.findViewById(R.id.order_list);
+		View v = inflater.inflate(R.layout.fragment_trip_list, null);
+		mOrders = (PullToRefreshListView) v.findViewById(R.id.trip_list);
 		mOrders.getRefreshableView().setOnItemClickListener(this);
 		mOrders.setOnRefreshListener(new PullToRefreshListView.OnRefreshListener<ListView>() {
 

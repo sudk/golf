@@ -43,13 +43,15 @@ public class MainActivity extends ActionBarActivity {
 		mTabHost = (FragmentTabHost)findViewById(android.R.id.tabhost);
         mTabHost.setup(this, getSupportFragmentManager(), R.id.main_real_content);
 
-        String indicator = getString(R.string.court);
-        mTabHost.addTab(mTabHost.newTabSpec("Curse").setIndicator(indicator), GSearchCourtFragment.class, null);
+        String indicator = "";
         
-//        mTabHost.addTab(mTabHost.newTabSpec("Preferential").setIndicator("Preferential"), GPreferentialFragment.class, null);
         indicator = getString(R.string.find);
         mTabHost.addTab(mTabHost.newTabSpec("Other").setIndicator(indicator),  GOtherFragment.class, null);
         
+        indicator = getString(R.string.court);
+        mTabHost.addTab(mTabHost.newTabSpec("Court").setIndicator(indicator), GSearchCourtFragment.class, null);
+        
+//        mTabHost.addTab(mTabHost.newTabSpec("Preferential").setIndicator("Preferential"), GPreferentialFragment.class, null);
         indicator = getString(R.string.account);
         mTabHost.addTab(mTabHost.newTabSpec("Account").setIndicator(indicator), GAccountFragment.class, null);
 
@@ -68,6 +70,10 @@ public class MainActivity extends ActionBarActivity {
 //            ImageView iv=(ImageView)tabWidget.getChildAt(i).findViewById(android.R.id.icon);
         }
         
+	}
+	
+	public void selectCourtSearch(){
+		mTabHost.setCurrentTabByTag("Court");
 	}
 	
 	private void getLoaction() {

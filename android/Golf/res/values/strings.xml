@@ -4,7 +4,6 @@
     <string name="app_name">高球生活</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_get_city">当前城市</string>
-    
     <string name="action_create">新建</string>
     <string name="action_bar_search">搜索</string>
 
@@ -22,6 +21,15 @@
     <string name="competition">赛事</string>
     <string name="merchant">特约商户</string>
 
+    <!-- 成绩 -->
+    <string name="score">成绩</string>
+    <string name="scorelist">成绩列表</string>
+    <string name="new_score">新成绩单</string>
+    <string name="score_info">成绩单简介</string>
+    <string name="score_details">新成详情</string>
+    <string name="input_team_members">输入队友</string>
+    <string name="input_court_name">输入球场名称</string>
+
     <!-- 用户信息 -->
     <string name="account_manager">账户管理</string>
     <string name="register">注册</string>
@@ -35,6 +43,7 @@
     <string name="username">姓名</string>
     <string name="email">Email</string>
     <string name="vipcard">VIP卡</string>
+    <string name="vip">VIP</string>
     <string name="order_to_pay">待支付订单</string>
     <string name="hint_input_phone_number">请输入手机号码</string>
     <string name="hint_password_length">6至16位密码</string>
@@ -49,9 +58,10 @@
     <string name="account_changepwd">修改密码</string>
     <string name="account_has_chang_pwd">完成修改密码</string>
     <string name="account_my_flea">我的寄卖</string>
+    <string name="account_my_score">我的成绩</string>
     <string name="account_my_estimate">我的评论</string>
     <string name="account_logout">退出账户</string>
-    
+
     <!-- 寄卖 -->
     <string name="flee_new_good_title">输入标题</string>
     <string name="flee_new_good_desc">简要描述寄卖货品</string>
@@ -84,10 +94,10 @@
     <string name="court_fairway_grass">球场草种</string>
     <string name="court_facilities">球场设施</string>
     <string name="court_phone">球场电话</string>
-    <string name="court_comment">球场评论</string>
-    <string name="court_brief">球场简介</string>
+    <string name="court_comment">球场评价</string>
+    <string name="court_brief">球场介绍</string>
     <string name="court_fairway_imags">球道图片</string>
-    
+
     <!-- order -->
     <string name="order_manager">订单管理</string>
     <string name="order">订单</string>
@@ -100,7 +110,7 @@
     <string name="is_cancel_order">是否撤销订单？</string>
     <string name="pay">支付</string>
     <string name="is_pay">是否支付？</string>
-    
+
     <!-- 赛事 -->
     <string name="comptition">赛事</string>
 
@@ -110,6 +120,7 @@
     <string name="no_sd_card">找不到SD卡</string>
     <string name="confirm">确定</string>
     <string name="search">搜索</string>
+    <string name="save">保存</string>
     <string name="exit">退出</string>
     <string name="is_exit">是否退出？</string>
     <string name="obtain">获取</string>
@@ -117,6 +128,10 @@
     <string name="retry">重试</string>
     <string name="network">网络</string>
     <string name="network_disconnect">网络已断开</string>
+    <string name="add">添加</string>
+    <string name="delete">删除</string>
+    <string name="edit">编辑</string>
+    <string name="detail">详情</string>
 
     <!-- XListView -->
     <string name="xlistview_header_hint_normal">下拉刷新</string>

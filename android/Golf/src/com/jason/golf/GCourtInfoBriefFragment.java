@@ -16,10 +16,9 @@ import org.json.JSONObject;
 import com.jason.controller.GThreadExecutor;
 import com.jason.controller.HttpCallback;
 import com.jason.controller.HttpRequest;
-import com.jason.golf.classes.AdvertisementAdapter;
-import com.jason.golf.classes.AgentsAdapter;
-import com.jason.golf.classes.CourtImgsAdapter;
-import com.jason.golf.classes.GAdver;
+import com.jason.golf.adapters.AgentsAdapter;
+import com.jason.golf.adapters.CourtImgsAdapter;
+import com.jason.golf.classes.GAccount;
 import com.jason.golf.classes.GAgent;
 import com.jason.golf.classes.GCourt;
 import com.jason.golf.R;
@@ -38,7 +37,6 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -116,9 +114,25 @@ public class GCourtInfoBriefFragment extends Fragment implements OnClickListener
 		
 	}
 
+	
+	
+	
+	@Override
+	public void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		
+		GolfAppliaction app = (GolfAppliaction) getActivity().getApplication();
+		GAccount acc = app.getAccount();
+		mAgentsAdapter.setIsVip(acc.isVip());
+		
+	}
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
+		
+		getActivity().getActionBar().setTitle(R.string.court_brief);
 		
 		View v = inflater.inflate(R.layout.fragment_court_info_brief, null);
 		
@@ -159,13 +173,6 @@ public class GCourtInfoBriefFragment extends Fragment implements OnClickListener
 		});
 		mHandler.sendEmptyMessageDelayed(1, 5000);
 		
-		
-		
-		
-		
-		
-		
-		
 		mAgentDate = (TextView) v.findViewById(R.id.agent_date);
 		mAgentDate.setOnClickListener(this);
 		mAgentDate.setText(String.format("%d月%d日", _month, _day));
@@ -178,29 +185,28 @@ public class GCourtInfoBriefFragment extends Fragment implements OnClickListener
 		mCourtBrief = (TextView) v.findViewById(R.id.court_brief);
 		mCourtBrief.setOnClickListener(this);
 		
-		v.findViewById(R.id.court_addr_triangle).setOnClickListener(this);;
-		v.findViewById(R.id.court_brief_triangle).setOnClickListener(this);;
+		v.findViewById(R.id.court_addr_triangle).setOnClickListener(this);
+		v.findViewById(R.id.court_brief_triangle).setOnClickListener(this);
 		
 		mSroller = (ScrollView) v.findViewById(R.id.scroller_solution);
+		
+		GolfAppliaction app = (GolfAppliaction) getActivity().getApplication();
+		GAccount acc = app.getAccount();
+		
 		mAgentList = (ListView) v.findViewById(R.id.court_agents);
-		mAgentsAdapter = new AgentsAdapter(this.getActivity(), _agents);
+		mAgentsAdapter = new AgentsAdapter(this.getActivity(), _agents, acc.isVip());
+		
 		mAgentList.setAdapter(mAgentsAdapter);
 		setListViewHeightBasedOnChildren(mAgentList);
 		
 		queryCourtInfo(_courtId);
 		quertAgents(_courtId);
 		
+		acc = null;
+		
 		return v;
 	}
 	
-	
-	
-	@Override
-	public void onDetach() {
-		// TODO Auto-generated method stub
-		super.onDetach();
-	}
-
 	private void quertAgents(final String c){
 		
 		JSONObject params = new JSONObject();
@@ -231,32 +237,16 @@ public class GCourtInfoBriefFragment extends Fragment implements OnClickListener
 						JSONObject item = data.getJSONObject(i);
 						
 						GAgent agent = new GAgent();
-						agent.setId(item.getString("agent_id"));
-						agent.setName(item.getString("agent_name"));
-						agent.setCourtid(item.getString("court_id"));
-						agent.setCourtname(item.getString("court_name"));
-						agent.setPriceremark(item.getString("remark"));
-						agent.setGreen(item.getString("is_green"));
-						agent.setCaddie(item.getString("is_caddie"));
-						agent.setCar(item.getString("is_car"));
-						agent.setWardrobe(item.getString("is_wardrobe"));
-						agent.setMeal(item.getString("is_meal"));
-						agent.setInsurance(item.getString("is_insurance"));
-						agent.setTips(item.getString("is_tip"));
-						agent.setPayType(item.getString("pay_type"));
-						agent.setPrice(item.getString("price"));
-						agent.setCancelRemark(item.getString("cancel_remark"));
-//						agent.setBargainPriceDes(item.getString("special_desc"));
 						
-						agent.setTeeTime(String.format("%d-%02d-%02d %02d:%02d", _year, _month, _day, _hour, _minute));
-						agents.add(agent);
+						if(agent.initialize(item)){
+							agent.setTeeTime(String.format("%d-%02d-%02d %02d:%02d", _year, _month, _day, _hour, _minute));
+							agents.add(agent);
+						}
 						
 					}
 					
 					mAgentsAdapter.swapData(agents);
 					setListViewHeightBasedOnChildren(mAgentList);
-					
-					
 					
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block

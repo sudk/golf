@@ -18,8 +18,8 @@ public class GAccount {
 	private String _balance; // ���
 
 	private String _type; // �Ƿ�VIP�ͻ�
-	private String _vipCardNo; // VIP����
-	private String _point; // ���
+	private String _vipCardNo; // VIP卡号
+	private String _point; // 积分
 
 	private double _latitude;
 	private double _longitude;
@@ -171,6 +171,16 @@ public class GAccount {
 		_id = null;
 		_session = null;
 		_login = false;
+	}
+	
+	public boolean isVip(){
+		
+		if(TextUtils.isEmpty(_vipCardNo)){
+			return false;
+		}else{
+			return true;
+		}
+		
 	}
 
 	@Override

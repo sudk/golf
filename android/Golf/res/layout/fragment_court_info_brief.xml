@@ -19,7 +19,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" >
             </android.support.v4.view.ViewPager>
-
         </RelativeLayout>
 
         <LinearLayout
@@ -44,8 +43,11 @@
                     android:drawableLeft="@drawable/ic_37_address_icon"
                     android:drawablePadding="10dip"
                     android:ellipsize="end"
-                    android:maxLines="2"
-                    android:text="广东省深圳市南山区沙河东路1111号" />
+                    android:paddingBottom="2dip"
+                    android:paddingTop="2dip"
+                    android:singleLine="true"
+                    android:text="广东省深圳市南山区沙河东路1111号"
+                    android:textSize="15sp" />
 
                 <TextView
                     android:id="@+id/court_addr_triangle"
@@ -77,8 +79,11 @@
                     android:drawableLeft="@drawable/iv_3_6_detail"
                     android:drawablePadding="10dip"
                     android:ellipsize="end"
-                    android:maxLines="2"
-                    android:text="广东省深圳市南山区沙河东路1111号" />
+                    android:paddingBottom="2dip"
+                    android:paddingTop="2dip"
+                    android:singleLine="true"
+                    android:text="广东省深圳市南山区沙河东路1111号"
+                    android:textSize="15sp" />
 
                 <TextView
                     android:id="@+id/court_brief_triangle"

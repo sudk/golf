@@ -6,22 +6,21 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.jason.controller.GThreadExecutor;
 import com.jason.controller.HttpCallback;
 import com.jason.controller.HttpPageRequest;
-import com.jason.controller.HttpRequest;
 import com.jason.golf.R;
-import com.jason.golf.classes.CommentAdapter;
+import com.jason.golf.adapters.CommentAdapter;
 import com.jason.golf.classes.GComment;
-import com.jason.golf.classes.GGood;
-
-import android.app.DownloadManager.Query;
+import com.jason.golf.classes.GCourt;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 import android.widget.TextView;
 
 public class GCourtInfoCommentsFragment extends Fragment {
@@ -35,6 +34,8 @@ public class GCourtInfoCommentsFragment extends Fragment {
 	private TextView mSecvice, mDesign, mFacilities, mLawn;
 	
 	private String _courtId;
+	
+	private int _page = 0;
 
 	public static Fragment Instance() {
 		// TODO Auto-generated method stub
@@ -55,7 +56,6 @@ public class GCourtInfoCommentsFragment extends Fragment {
 		hasOptionsMenu();
 		_comment = new ArrayList<GComment>();
 		mAdapter = new CommentAdapter(getActivity(), _comment);
-
 		_courtId = getArguments().getString(KEY_COURT_ID);
 
 	}
@@ -63,10 +63,37 @@ public class GCourtInfoCommentsFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
+		getActivity().getActionBar().setTitle(R.string.court_comment);
+
+		GCourtInfoActivity a = (GCourtInfoActivity) getActivity();
+		GCourt court = a.getCourt();
+		
 		View v = inflater.inflate(R.layout.fragment_court_info_comments, null);
+		
+		TextView courtName = (TextView) v.findViewById(R.id.courtname);
+		courtName.setText(court.getName());
 
 		mComments = (PullToRefreshListView) v.findViewById(R.id.comment_list);
 		mComments.setAdapter(mAdapter);
+		
+		mComments.setOnRefreshListener(new PullToRefreshListView.OnRefreshListener<ListView>() {
+
+			@Override
+			public void onRefresh(PullToRefreshBase<ListView> refreshView) {
+				// TODO Auto-generated method stub
+				queryComments(0, true);
+			}
+		});
+
+		mComments.setOnLastItemVisibleListener(new PullToRefreshListView.OnLastItemVisibleListener() {
+
+			@Override
+			public void onLastItemVisible() {
+				// TODO Auto-generated method stub
+				queryComments(_page, false);
+			}
+		});
+		
 
 		// ActionBarActivity activity = (ActionBarActivity) getActivity();
 		// ActionBar bar = activity.getSupportActionBar();
@@ -77,19 +104,19 @@ public class GCourtInfoCommentsFragment extends Fragment {
 		mFacilities = (TextView) v.findViewById(R.id.facilitie);
 		mLawn = (TextView) v.findViewById(R.id.lawn);
 		
-		queryComments();
+		queryComments(0, true);
 
 		return v;
 	}
 
-	private void queryComments() {
+	private void queryComments(int page, final boolean isRefresh) {
 		// TODO Auto-generated method stub
 		JSONObject params = new JSONObject();
 		try {
 
 			params.put("cmd", "court/comment");
 			params.put("court_id", _courtId);
-			params.put("_pg_", String.format("%d", 0));
+			params.put("_pg_", String.format("%d", page));
 
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
@@ -97,6 +124,13 @@ public class GCourtInfoCommentsFragment extends Fragment {
 		}
 
 		HttpPageRequest r = new HttpPageRequest(getActivity(), params,	new HttpCallback() {
+			
+					@Override
+					public void finalWork() {
+						// TODO Auto-generated method stub
+						super.finalWork();
+						mComments.onRefreshComplete();
+					}
 
 					@Override
 					public void sucessData(String res) {
@@ -107,10 +141,18 @@ public class GCourtInfoCommentsFragment extends Fragment {
 							JSONObject obj = new JSONObject(res);
 
 							JSONObject header = obj.getJSONObject("header");
-							mSecvice.setText(String.format("%s 分", header.getString("service_total")));
-							mDesign.setText(String.format("%s 分", header.getString("design_total")));
-							mFacilities.setText(String.format("%s 分", header.getString("facilitie_total")));
-							mLawn.setText(String.format("%s 分", header.getString("lawn_total")));
+							
+							String score = header.getString("service_total");
+							mSecvice.setText(String.format("服务：%.2f 分", Float.parseFloat(score)));
+							
+							score = header.getString("design_total");
+							mDesign.setText(String.format("设计：%.2f 分",  Float.parseFloat(score)));
+							
+							score = header.getString("facilitie_total");
+							mFacilities.setText(String.format("设施：%.2f 分",  Float.parseFloat(score)));
+							
+							score = header.getString("lawn_total");
+							mLawn.setText(String.format("草场：%.2f 分",  Float.parseFloat(score)));
 							
 							JSONArray array = obj.getJSONArray("content");
 							
@@ -122,7 +164,16 @@ public class GCourtInfoCommentsFragment extends Fragment {
 								_comment.add(c);
 							}
 							
-							mAdapter.swapData(_comment);
+//							mAdapter.swapData(_comment);
+							
+
+							if (isRefresh) {
+								mAdapter.swapData(_comment);
+								_page = 0;
+							} else {
+								mAdapter.addData(_comment);
+							}
+							_page++;
 							
 						} catch (JSONException e) {
 							// TODO Auto-generated catch block

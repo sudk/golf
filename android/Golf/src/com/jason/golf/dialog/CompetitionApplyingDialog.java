@@ -2,7 +2,7 @@ package com.jason.golf.dialog;
 
 import com.jason.golf.GOrderActivity;
 import com.jason.golf.GOrderGenerateFragment;
-import com.jason.golf.classes.AgentsAdapter;
+import com.jason.golf.adapters.AgentsAdapter;
 import com.jason.golf.classes.GCompetition;
 import com.jason.golf.R;
 

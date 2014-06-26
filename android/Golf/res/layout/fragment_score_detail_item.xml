@@ -1,0 +1,111 @@
+<FrameLayout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:id="@+id/back"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#e9e9e9"
+        android:gravity="right"
+        android:orientation="horizontal"
+        android:tag="back" >
+
+        <Button
+            android:id="@+id/edit"
+            style="@style/RectangleOrangeButton"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/edit" />
+
+        <Button
+            android:id="@+id/delete"
+            style="@style/RectangleOrangeButton"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/delete" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/front"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#e9e9e9"
+        android:orientation="vertical"
+        android:padding="10dip"
+        android:tag="front" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="5dip" >
+
+            <TextView
+                android:id="@+id/holeNo"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:ellipsize="end"
+                android:paddingLeft="10dip"
+                android:singleLine="true"
+                android:text="球洞"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tee"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:layout_weight="1"
+                android:singleLine="true"
+                android:text="Tee"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/standard"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="标准杆"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/longout"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="长杆"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/pushout"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="推杆"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/total"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="杆数"
+                android:textSize="14sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+</FrameLayout>

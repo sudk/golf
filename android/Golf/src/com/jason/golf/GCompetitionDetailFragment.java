@@ -11,7 +11,6 @@ import com.jason.controller.GThreadExecutor;
 import com.jason.controller.HttpCallback;
 import com.jason.controller.HttpRequest;
 import com.jason.golf.classes.GCompetition;
-import com.jason.golf.dialog.CompetitionApplyingDialog;
 import com.jason.golf.R;
 
 import android.content.Intent;

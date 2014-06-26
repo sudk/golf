@@ -74,6 +74,7 @@
 
         <activity
             android:name="com.jason.golf.MainActivity"
+            android:launchMode="singleTask"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
             <intent-filter>
@@ -145,6 +146,20 @@
             android:name="com.jason.golf.GCompetitionActivity"
             android:screenOrientation="portrait" >
         </activity>
+        <activity
+            android:name="com.jason.golf.GScoreActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.jason.golf.SearchCourtNameActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        
+        <activity
+            android:name="com.jason.golf.GVipActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        
         <activity
             android:name="com.jason.golf.MapActivity"
             android:configChanges="orientation|keyboardHidden"

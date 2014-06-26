@@ -11,8 +11,8 @@ import org.json.JSONObject;
 import com.jason.controller.GThreadExecutor;
 import com.jason.controller.HttpCallback;
 import com.jason.controller.HttpRequest;
+import com.jason.golf.adapters.MerchantAdapter;
 import com.jason.golf.classes.GMerchant;
-import com.jason.golf.classes.MerchantAdapter;
 import com.jason.golf.R;
 
 import android.os.Bundle;

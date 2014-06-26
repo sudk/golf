@@ -35,7 +35,7 @@ public class AddAndSubView extends LinearLayout {
 	int editTextMinHeight; // editText文本区域的最小高度
 	int editTextHeight; // editText文本区域的高度
 
-	int _maxNumber = -1;
+	int _maxNumber = 100;
 
 	public AddAndSubView(Context context) {
 		super(context);
@@ -212,11 +212,21 @@ public class AddAndSubView extends LinearLayout {
 		mainLinearLayout.addView(centerLinearLayout, 1);
 		mainLinearLayout.addView(rightLinearLayout, 2);
 
-		leftLinearLayout.addView(addButton);
+		leftLinearLayout.addView(subButton);
 		centerLinearLayout.addView(editText);
-		rightLinearLayout.addView(subButton);
+		rightLinearLayout.addView(addButton);
 
 		addView(mainLinearLayout); // 将整块视图添加进当前AddAndSubView中
+	}
+	
+	public boolean setMaxNumber(int max){
+		if(max > 0){
+			_maxNumber = max;
+			return true;
+		}else{
+			return false;
+		}
+		
 	}
 
 	/**
@@ -401,19 +411,32 @@ public class AddAndSubView extends LinearLayout {
 				editText.setText("0");
 			} else {
 				if (v.getTag().equals("+")) {
-					if (++num < 0) // 先加，再判断
+					
+					num ++;
+					
+					if ( num < 0) // 先加，再判断
 					{
 						num--;
-						Toast.makeText(context, "请输入一个大于0的数字",
-								Toast.LENGTH_SHORT).show();
+						Toast.makeText(context, "请输入一个大于0的数字", Toast.LENGTH_SHORT).show();
 
+					} else if( num > _maxNumber ){
+						
+						num = _maxNumber;
+						editText.setText(String.valueOf(num));
+
+						if (onNumChangeListener != null) {
+							onNumChangeListener.onNumChange(AddAndSubView.this,	num);
+						}
+						
+						Toast.makeText(context, String.format("请输入一个不小于%d的数字",_maxNumber), Toast.LENGTH_SHORT).show();
+						
 					} else {
 						editText.setText(String.valueOf(num));
 
 						if (onNumChangeListener != null) {
-							onNumChangeListener.onNumChange(AddAndSubView.this,
-									num);
+							onNumChangeListener.onNumChange(AddAndSubView.this,	num);
 						}
+						
 					}
 
 					// if(_maxNumber < 0 ) return ;
@@ -428,13 +451,23 @@ public class AddAndSubView extends LinearLayout {
 					if (--num < 0) // 先减，再判断
 					{
 						num++;
-						Toast.makeText(context, "请输入一个大于0的数字",
-								Toast.LENGTH_SHORT).show();
+						Toast.makeText(context, "请输入一个大于0的数字", Toast.LENGTH_SHORT).show();
+						
+					} else if( num > _maxNumber ){
+						
+						num = _maxNumber;
+						editText.setText(String.valueOf(num));
+
+						if (onNumChangeListener != null) {
+							onNumChangeListener.onNumChange(AddAndSubView.this,	num);
+						}
+						
+						Toast.makeText(context, String.format("请输入一个不小于%d的数字",_maxNumber), Toast.LENGTH_SHORT).show();
+						
 					} else {
 						editText.setText(String.valueOf(num));
 						if (onNumChangeListener != null) {
-							onNumChangeListener.onNumChange(AddAndSubView.this,
-									num);
+							onNumChangeListener.onNumChange(AddAndSubView.this,	num);
 						}
 					}
 					//

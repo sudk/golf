@@ -7,11 +7,12 @@ import mirko.android.datetimepicker.date.DatePickerDialog.OnDateSetListener;
 import mirko.android.datetimepicker.time.RadialPickerLayout;
 import mirko.android.datetimepicker.time.TimePickerDialog;
 import mirko.android.datetimepicker.time.TimePickerDialog.OnTimeSetListener;
-import net.tsz.afinal.FinalBitmap;
 
+import com.jason.golf.classes.GAccount;
 import com.jason.golf.provider.GolfProviderConfig;
 import com.jason.golf.R;
 
+import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.database.Cursor;
@@ -19,23 +20,21 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
-import android.text.format.Time;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.HorizontalScrollView;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 public class GSearchCourtFragment extends Fragment implements OnClickListener {
 
-	private static final int requestcode = 1001;
+	private static final int RequestPickCity = 1001;
+	private static final int RequestPickCourt = 1002;
 
 	private final Calendar mCalendar = Calendar.getInstance();
 
-	private TextView mSelectDate, mSelectTime, mSelectCity;
+	private TextView mSelectDate, mSelectTime, mSelectCity, mKeywords;
 
 	private String _cityId, _date, _time;
 
@@ -43,8 +42,6 @@ public class GSearchCourtFragment extends Fragment implements OnClickListener {
 
 	private TimePickerDialog mTimePickerDialog12h;
 	
-	private EditText mKeywords;
-
 	private static String pad(int c) {
 		if (c >= 10)
 			return String.valueOf(c);
@@ -87,8 +84,7 @@ public class GSearchCourtFragment extends Fragment implements OnClickListener {
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		View v = inflater.inflate(R.layout.fragment_search_court, container, false);
 		v.findViewById(R.id.select_date).setOnClickListener(this);
@@ -105,20 +101,26 @@ public class GSearchCourtFragment extends Fragment implements OnClickListener {
 		mSelectTime.setOnClickListener(this);
 		mSelectCity = (TextView) v.findViewById(R.id.select_city);
 		mSelectCity.setOnClickListener(this);
+		mKeywords = (TextView) v.findViewById(R.id.select_keywords);
+		mKeywords.setOnClickListener(this);
 		
-		mKeywords = (EditText) v.findViewById(R.id.select_keywords);
-
+		initializeCity();
+		
 		mCalendar.add(Calendar.DAY_OF_MONTH, 1);
 
 		String date = String.format("%d月%d日",
 				mCalendar.get(Calendar.MONTH) + 1,
 				mCalendar.get(Calendar.DAY_OF_MONTH));
+		
 		mSelectDate.setText(date);
+		
 		_date = String.format("%d-%02d-%02d", mCalendar.get(Calendar.YEAR),
 				mCalendar.get(Calendar.MONTH) + 1,
 				mCalendar.get(Calendar.DAY_OF_MONTH));
+		
 
 		mSelectTime.setText(String.format("9点30分"));
+		
 		_time = "09:30";
 
 		mDatePickerDialog = DatePickerDialog.newInstance(
@@ -163,6 +165,38 @@ public class GSearchCourtFragment extends Fragment implements OnClickListener {
 		return v;
 	}
 
+	private void initializeCity() {
+		// TODO Auto-generated method stub
+		
+		GolfAppliaction app = (GolfAppliaction) getActivity().getApplication();
+		GAccount acc = app.getAccount();
+		
+		String city = acc.getCity();
+		if(TextUtils.isEmpty(city))
+			return;
+		
+		ContentResolver cr = getActivity().getContentResolver();
+
+		Cursor c = cr.query(GolfProviderConfig.City.CONTENT_URI, null,
+				GolfProviderConfig.City.CITY + " like ? ", new String[] { city }, null);
+		
+		if (c == null)
+			return;
+
+		try {
+			if (c.moveToFirst()) {
+				String a = c.getString(c.getColumnIndex(GolfProviderConfig.City.CITY));
+				_cityId = c.getString(c.getColumnIndex(GolfProviderConfig.City.CITY_ID));
+				mSelectCity.setText(a);
+			}
+		} finally {
+			c.close();
+		}
+		
+		
+		
+	}
+
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
@@ -179,8 +213,7 @@ public class GSearchCourtFragment extends Fragment implements OnClickListener {
 			mTimePickerDialog12h.show(getFragmentManager(), "SelectTime");
 			break;
 		case R.id.select_city:
-			startActivityForResult(new Intent(getActivity(),
-					SelectCityActivity.class), requestcode);
+			startActivityForResult(new Intent(getActivity(), SelectCityActivity.class), RequestPickCity);
 			break;
 		case R.id.search_court:
 
@@ -195,6 +228,12 @@ public class GSearchCourtFragment extends Fragment implements OnClickListener {
 
 			startActivity(it);
 			break;
+		case R.id.select_keywords:
+			
+			Intent pickCourt = new Intent(getActivity(), SearchCourtNameActivity.class);
+			startActivityForResult(pickCourt, RequestPickCourt);
+			
+			break;
 		}
 	}
 
@@ -202,35 +241,66 @@ public class GSearchCourtFragment extends Fragment implements OnClickListener {
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		// TODO Auto-generated method stub
 		super.onActivityResult(requestCode, resultCode, data);
+		
+		switch (requestCode) {
+		case RequestPickCourt:
+			//搜索球场
+			if (resultCode == Activity.RESULT_OK) {
+				String court_name = data.getStringExtra("CourtName");
+				String city_id = data.getStringExtra("CityId");
+				
+				ContentResolver cr = getActivity().getContentResolver();
 
-		if (data == null)
-			return;
+				Cursor c = cr.query(GolfProviderConfig.City.CONTENT_URI, null,
+						GolfProviderConfig.City.CITY_ID + "=? ", new String[] { city_id }, null);
+				
+				if (c == null)
+					return;
 
-		long cityRowId = data.getLongExtra("RowID", 0);
-
-		System.out.println(String.format("requestCode = %d, RowId = %d",
-				requestCode, cityRowId));
-
-		ContentResolver cr = getActivity().getContentResolver();
-
-		Cursor c = cr.query(GolfProviderConfig.City.CONTENT_URI, null,
-				GolfProviderConfig.City._ID + "=? ", new String[] { ""
-						+ cityRowId }, null);
-
-		if (c == null)
-			return;
-
-		try {
-			if (c.moveToFirst()) {
-				String city = c.getString(c
-						.getColumnIndex(GolfProviderConfig.City.CITY));
-				_cityId = c.getString(c
-						.getColumnIndex(GolfProviderConfig.City.CITY_ID));
-				mSelectCity.setText(city);
+				try {
+					if (c.moveToFirst()) {
+						String city = c.getString(c.getColumnIndex(GolfProviderConfig.City.CITY));
+						_cityId = c.getString(c.getColumnIndex(GolfProviderConfig.City.CITY_ID));
+						mSelectCity.setText(city);
+					}
+				} finally {
+					c.close();
+				}
+				
+				mKeywords.setText(court_name);
 			}
-		} finally {
-			c.close();
+			break;
+			
+		case RequestPickCity:
+			if (data == null)
+				return;
+
+			long cityRowId = data.getLongExtra("RowID", 0);
+
+			System.out.println(String.format("requestCode = %d, RowId = %d", requestCode, cityRowId));
+
+			ContentResolver cr = getActivity().getContentResolver();
+
+			Cursor c = cr.query(GolfProviderConfig.City.CONTENT_URI, null,
+					GolfProviderConfig.City._ID + "=? ", new String[] { "" + cityRowId }, null);
+
+			if (c == null)
+				return;
+
+			try {
+				if (c.moveToFirst()) {
+					String city = c.getString(c.getColumnIndex(GolfProviderConfig.City.CITY));
+					_cityId = c.getString(c.getColumnIndex(GolfProviderConfig.City.CITY_ID));
+					mSelectCity.setText(city);
+				}
+			} finally {
+				c.close();
+			}
+			break;
+			
 		}
+
+		
 	}
 
 }

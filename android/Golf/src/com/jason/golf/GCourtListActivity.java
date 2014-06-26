@@ -11,9 +11,9 @@ import org.json.JSONObject;
 import com.jason.controller.GThreadExecutor;
 import com.jason.controller.HttpCallback;
 import com.jason.controller.HttpRequest;
+import com.jason.golf.adapters.SearchCourtListAdapter;
 import com.jason.golf.classes.GAccount;
 import com.jason.golf.classes.SearchCourtBean;
-import com.jason.golf.classes.SearchCourtListAdapter;
 import com.jason.golf.provider.GolfProviderConfig;
 import com.jason.golf.R;
 
@@ -26,6 +26,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBar.Tab;
 import android.support.v7.app.ActionBarActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Adapter;
 import android.widget.AdapterView;
@@ -34,6 +35,7 @@ import android.widget.ListView;
 
 public class GCourtListActivity extends ActionBarActivity implements
 		OnItemClickListener, android.support.v7.app.ActionBar.TabListener {
+	protected static final String TAG = GCourtListActivity.class.getName();
 
 	public static final String ARG_CITY = "SEARCH_CITY";
 	public static final String ARG_DATE = "SEARCH_DATE";
@@ -58,31 +60,6 @@ public class GCourtListActivity extends ActionBarActivity implements
 		GolfAppliaction app = (GolfAppliaction) getApplication();
 		GAccount acc = app.getAccount();
 		
-//		_courts.add(new GCourt("1001", "青之鸟高尔夫", "青岛", 34000, "0", "描述", "青岛",
-//				"2010", "果岭", "老苏", "1024", "Grass", "13305311011", "remark",
-//				"设施", "data"));
-//		_courts.add(new GCourt("1002", "青之鸟高尔夫", "青岛", 35000, "0", "描述", "青岛",
-//				"2010", "果岭", "老苏", "1024", "Grass", "13305311011", "remark",
-//				"设施", "data"));
-//		_courts.add(new GCourt("1003", "青之鸟高尔夫", "青岛", 36000, "0", "描述", "青岛",
-//				"2010", "果岭", "老苏", "1024", "Grass", "13305311011", "remark",
-//				"设施", "data"));
-//		_courts.add(new GCourt("1004", "青之鸟高尔夫", "青岛", 37000, "0", "描述", "青岛",
-//				"2010", "果岭", "老苏", "1024", "Grass", "13305311011", "remark",
-//				"设施", "data"));
-//		_courts.add(new GCourt("1005", "青之鸟高尔夫", "青岛", 58000, "0", "描述", "青岛",
-//				"2010", "果岭", "老苏", "1024", "Grass", "13305311011", "remark",
-//				"设施", "data"));
-//		_courts.add(new GCourt("1006", "青之鸟高尔夫", "青岛", 39000, "0", "描述", "青岛",
-//				"2010", "果岭", "老苏", "1024", "Grass", "13305311011", "remark",
-//				"设施", "data"));
-//		_courts.add(new GCourt("1007", "青之鸟高尔夫", "青岛", 40000, "0", "描述", "青岛",
-//				"2010", "果岭", "老苏", "1024", "Grass", "13305311011", "remark",
-//				"设施", "data"));
-//		_courts.add(new GCourt("1008", "青之鸟高尔夫", "青岛", 41000, "0", "描述", "青岛",
-//				"2010", "果岭", "老苏", "1024", "Grass", "13305311011", "remark",
-//				"设施", "data"));
-
 		mAdapter = new SearchCourtListAdapter(this, _courts);
 
 		mCourt = (ListView) findViewById(R.id.court_list);
@@ -164,15 +141,10 @@ public class GCourtListActivity extends ActionBarActivity implements
 									
 									JSONObject item = data.getJSONObject(i);
 									SearchCourtBean bean = new SearchCourtBean();
-									bean.setId(item.getString("court_id"));
-									bean.setName(item.getString("name"));
-									bean.setAddr(item.getString("addr"));
-									bean.setDistance(item.getString("distance"));
-									bean.setPrice(item.getInt("price"));
-									bean.setIcoImgUrl(item.getString("ico_img"));
-									bean.setPayType(item.getString("pay_type"));
-//									bean.setIsOfficial(item.getString("is_official"));
-									_courts.add(bean);
+									if(bean.initialize(item))
+										_courts.add(bean);
+									else
+										Log.w(TAG, "");
 								}
 								
 								mAdapter.swapData(_courts);
@@ -206,8 +178,8 @@ public class GCourtListActivity extends ActionBarActivity implements
 	}
 
 	public void initialTabs() {
-		final ActionBar bar = getSupportActionBar();
-
+		ActionBar bar = getSupportActionBar();
+		
 		if (bar.getNavigationMode() != ActionBar.NAVIGATION_MODE_TABS) {
 			bar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 		}
@@ -242,7 +214,7 @@ public class GCourtListActivity extends ActionBarActivity implements
 
 		Intent it = new Intent(this, GCourtInfoActivity.class);
 		Bundle param = new Bundle();
-		param.putString(GCourtInfoActivity.KEY_COURT_ID, court.getId());
+		param.putString(GCourtInfoActivity.KEY_COURT_ID, court.getCourtId());
 		param.putString(GCourtInfoActivity.KEY_DATE, _date);
 		param.putString(GCourtInfoActivity.KEY_TIME, _time);
 		it.putExtras(param);

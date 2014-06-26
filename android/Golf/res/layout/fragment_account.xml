@@ -1,7 +1,8 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:scrollbars="none" >
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -43,14 +44,31 @@
             android:orientation="vertical"
             android:visibility="visible" >
 
-            <TextView
-                android:id="@+id/account_phone"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dip"
-                android:drawableRight="@drawable/ic_37_triange"
-                android:paddingLeft="20dip"
-                android:text="18653157590" />
+                android:layout_margin="5dip"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingTop="5dip" >
+
+                <ImageView
+                    android:id="@+id/account_vip"
+                    android:paddingLeft="20dip"
+                    android:paddingRight="20dip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_vip_gold" />
+
+                <TextView
+                    android:id="@+id/account_phone"
+                    android:layout_width="0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="18653157590" 
+                    android:drawableRight="@drawable/ic_37_triange"/>
+
+            </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
@@ -99,8 +117,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dip"
             android:background="@drawable/block_background"
-            android:padding="1dip"
-            android:orientation="vertical" >
+            android:orientation="vertical"
+            android:padding="1dip" >
 
             <!--
             <TextView
@@ -122,25 +140,25 @@
                 style="@style/AccountTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/order_manager"
-                android:background="@drawable/account_item_background" />
+                android:background="@drawable/account_item_background"
+                android:text="@string/order_manager" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dip"
-            android:padding="1dip"
             android:background="@drawable/block_background"
-            android:orientation="vertical" >
+            android:orientation="vertical"
+            android:padding="1dip" >
 
             <TextView
                 android:id="@+id/account_recharge"
                 style="@style/AccountTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/account_recharge"
-                android:background="@drawable/account_item_background" />
+                android:background="@drawable/account_item_background"
+                android:text="@string/account_recharge" />
 
             <View
                 android:layout_width="match_parent"
@@ -154,45 +172,63 @@
                 style="@style/AccountTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/consumption_details"
-                android:background="@drawable/account_item_background" />
+                android:background="@drawable/account_item_background"
+                android:text="@string/consumption_details" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dip"
-            android:padding="1dip"
             android:background="@drawable/block_background"
-            android:orientation="vertical" >
+            android:orientation="vertical"
+            android:padding="1dip" >
 
             <TextView
                 android:id="@+id/account_change_pwd"
                 style="@style/AccountTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/account_changepwd" 
-                android:background="@drawable/account_item_background"/>
+                android:background="@drawable/account_item_background"
+                android:text="@string/account_changepwd" />
         </LinearLayout>
-        
-         <LinearLayout
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dip"
-            android:padding="1dip"
             android:background="@drawable/block_background"
-            android:orientation="vertical" >
+            android:orientation="vertical"
+            android:padding="1dip" >
 
             <TextView
                 android:id="@+id/account_my_flea"
                 style="@style/AccountTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/account_my_flea" 
-                android:background="@drawable/account_item_background"/>
+                android:background="@drawable/account_item_background"
+                android:text="@string/account_my_flea" />
         </LinearLayout>
-        
-        <!-- <LinearLayout
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dip"
+            android:background="@drawable/block_background"
+            android:orientation="vertical"
+            android:padding="1dip" >
+
+            <TextView
+                android:id="@+id/account_my_score"
+                style="@style/AccountTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/account_item_background"
+                android:text="@string/account_my_score" />
+        </LinearLayout>
+
+        <!--
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dip"
@@ -208,11 +244,8 @@
                 android:text="@string/account_my_estimate" 
                 android:background="@drawable/account_item_background"/>
         </LinearLayout>
- -->
-         
-         
-         
-         
+        -->
+
         <Button
             android:id="@+id/account_logout"
             style="@style/OrangeButton"

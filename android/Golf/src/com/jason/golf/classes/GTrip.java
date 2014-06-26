@@ -9,6 +9,21 @@ import org.json.JSONObject;
 import android.text.TextUtils;
 
 public class GTrip {
+	
+	public static String GetPayTypeDes(String payType){
+		
+		String res = "";
+
+		if ("0".equals(payType))
+			res = "球场现付";
+		if ("1".equals(payType))
+			res = "全额预付";
+		if ("2".equals(payType))
+			res = "押金";
+
+		return res;
+		
+	}
 
 	// "id": "20140417233418367952",
 	// "agent_id": "1",
@@ -96,6 +111,12 @@ public class GTrip {
 
 				}
 			}
+			
+			if(obj.has("img")){
+				_imgs.add(obj.getString("img"));
+			}
+			
+			
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			return false;

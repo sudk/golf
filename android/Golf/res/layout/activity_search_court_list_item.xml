@@ -2,10 +2,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:gravity="center_vertical"
     android:orientation="horizontal"
     android:paddingLeft="5dip"
-    android:paddingRight="5dip" 
-    android:gravity="center_vertical">
+    android:paddingRight="5dip" >
 
     <ImageView
         android:id="@+id/court_list_image"
@@ -28,32 +28,47 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dip"
             android:layout_marginRight="5dip"
+            android:ellipsize="end"
             android:gravity="center_vertical"
             android:singleLine="true"
-            android:ellipsize="end"
-            android:text="1111"
-            android:textSize="16sp" />
+            android:text="球场名称"
+            android:textSize="18sp" />
 
-        <TextView
-            android:id="@+id/court_list_distance"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dip"
-            android:layout_marginRight="10dip"
-            android:gravity="center_vertical"
-            android:text="1111"
-            android:textColor="#c7c7c7"
-            android:textSize="16sp" />
-    </LinearLayout>
+            android:layout_height="wrap_content" >
 
-    <TextView
-        android:id="@+id/court_list_price"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:padding="5dip"
-        android:text="￥500"
-        android:textColor="#ff8605"
-        android:textSize="20sp" />
+            <TextView
+                android:id="@+id/court_list_price"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:padding="5dip"
+                android:text="￥500"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/court_list_vip_price"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:padding="5dip"
+                android:text="￥450"
+                android:textColor="#ff8605"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/court_list_distance"
+                android:layout_width="0dip"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dip"
+                android:layout_marginRight="10dip"
+                android:layout_weight="1"
+                android:gravity="center_vertical|right"
+                android:text="距离"
+                android:textColor="#c7c7c7"
+                android:textSize="12sp" />
+        </LinearLayout>
+    </LinearLayout>
 
 </LinearLayout>

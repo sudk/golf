@@ -4,10 +4,25 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <LinearLayout
+    <TextView
+        android:id="@+id/courtname"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dip"
+        android:gravity="center"
+        android:padding="10dip"
+        android:text="球场名称"
+        android:textSize="18sp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dip"
+        android:layout_margin="5dip"
+        android:background="@drawable/block_divider" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical" >
 
         <LinearLayout
@@ -18,19 +33,20 @@
             android:padding="5dip" >
 
             <TextView
+                android:id="@+id/design"
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
-                android:layout_weight="3"
+                android:layout_weight="1"
                 android:gravity="center"
-                android:text="服务"
-                android:textSize="18sp" />
+                android:text="设计" />
 
             <TextView
                 android:id="@+id/service"
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
-                android:layout_weight="7"
-                android:text="70" />
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="服务" />
         </LinearLayout>
 
         <LinearLayout
@@ -39,75 +55,40 @@
             android:gravity="center_vertical"
             android:orientation="horizontal"
             android:padding="5dip" >
-
-            <TextView
-                android:layout_width="0dip"
-                android:layout_height="wrap_content"
-                android:layout_weight="3"
-                android:gravity="center"
-                android:text="设计"
-                android:textSize="18sp" />
-
-            <TextView
-                android:id="@+id/design"
-                android:layout_width="0dip"
-                android:layout_height="wrap_content"
-                android:layout_weight="7"
-                android:text="70" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:padding="5dip" >
-
-            <TextView
-                android:layout_width="0dip"
-                android:layout_height="wrap_content"
-                android:layout_weight="3"
-                android:gravity="center"
-                android:text="设施"
-                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/facilitie"
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
-                android:layout_weight="7"
-                android:text="70" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:padding="5dip" >
-
-            <TextView
-                android:layout_width="0dip"
-                android:layout_height="wrap_content"
-                android:layout_weight="3"
+                android:layout_weight="1"
                 android:gravity="center"
-                android:text="草坪"
-                android:textSize="18sp" />
+                android:text="设施" />
 
             <TextView
                 android:id="@+id/lawn"
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
-                android:layout_weight="7"
-                android:text="70" />
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="草坪" />
         </LinearLayout>
     </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dip"
+        android:layout_margin="5dip"
+        android:background="@drawable/block_divider" />
 
     <com.handmark.pulltorefresh.library.PullToRefreshListView
         android:id="@+id/comment_list"
         android:layout_width="fill_parent"
         android:layout_height="0dip"
+        android:layout_marginLeft="10dip"
+        android:layout_marginRight="10dip"
         android:layout_weight="1"
+        android:divider="@null"
+        android:dividerHeight="10dip"
         android:cacheColorHint="#00000000"
         android:fadingEdge="none"
         android:fastScrollEnabled="false"

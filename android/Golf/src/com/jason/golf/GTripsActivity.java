@@ -50,7 +50,6 @@ public class GTripsActivity extends ActionBarActivity {
 			// Commit the transaction
 			transaction.commit();
 			
-			
 			break;
 		case FRAGMENT_MARK_TRIP_INFO:
 			
@@ -62,7 +61,6 @@ public class GTripsActivity extends ActionBarActivity {
 
 			// Commit the transaction
 			transaction.commit();
-			
 			break;
 		}
 

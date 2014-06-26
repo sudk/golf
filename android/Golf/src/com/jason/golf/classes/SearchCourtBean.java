@@ -1,59 +1,86 @@
 package com.jason.golf.classes;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.w3c.dom.Text;
+
 import android.text.TextUtils;
 
 public class SearchCourtBean {
 
-	String _id;
-	String _name;
-	String _addr;
-	long _distance;
-	int _price;
-	String _icoImgUrl;
-	String _payType;
-	// boolean _isOfficial;
+	private String court_id;
+	private String name;
+	private String addr;
+	private long _distance;
+	private String price;
+	private String vip_price;
+	private String pledge_price;
+	private String ico_img;
+	private String pay_type;
 
-	String _date;
-	String _time;
+	public boolean initialize(JSONObject obj) {
 
-	public String getDate() {
-		return _date;
+		try {
+			court_id = obj.getString("court_id");
+			name = obj.getString("name");
+			addr = obj.getString("addr");
+			setDistance(obj.getString("distance"));
+			price = obj.getString("price");
+			vip_price = obj.getString("vip_price");
+			pledge_price = obj.getString("pledge_price");
+			ico_img = obj.getString("ico_img");
+			pay_type = obj.getString("pay_type");
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			return false;
+		}
+		
+		return true;
 	}
 
-	public void setDate(String date) {
-		this._date = date;
-	}
-
-	public String getTime() {
-		return _time;
-	}
-
-	public void setTime(String time) {
-		this._time = time;
-	}
-
-	public String getId() {
-		return _id;
-	}
-
-	public void setId(String _id) {
-		this._id = _id;
+	public String getCourtId() {
+		return court_id;
 	}
 
 	public String getName() {
-		return _name;
-	}
-
-	public void setName(String name) {
-		this._name = name;
+		return name;
 	}
 
 	public String getAddr() {
-		return _addr;
+		return addr;
 	}
 
-	public void setAddr(String addr) {
-		this._addr = addr;
+	public int getPrice() {
+		
+		if(TextUtils.isDigitsOnly(price)){
+			int p = Integer.parseInt(price);
+			return p;
+		}else{
+			
+			return 0;
+		}
+	}
+
+	public int getVipPrice() {
+		if(TextUtils.isDigitsOnly(vip_price)){
+			int p = Integer.parseInt(vip_price);
+			return p;
+		}else{
+			
+			return 0;
+		}
+	}
+
+	public String getPledgePrice() {
+		return pledge_price;
+	}
+
+	public String getIcoImg() {
+		return ico_img;
+	}
+
+	public String getPayType() {
+		return pay_type;
 	}
 
 	public long getDistance() {
@@ -72,35 +99,5 @@ public class SearchCourtBean {
 		}
 
 	}
-
-	public int getPrice() {
-		return _price;
-	}
-
-	public void setPrice(int price) {
-		this._price = price;
-	}
-
-	public String getIcoImgUrl() {
-		return _icoImgUrl;
-	}
-
-	public void setIcoImgUrl(String icoImgUrl) {
-		this._icoImgUrl = icoImgUrl;
-	}
-
-	public String getPayType() {
-		return _payType;
-	}
-
-	public void setPayType(String payType) {
-		this._payType = payType;
-	}
-	// public boolean isOfficial() {
-	// return _isOfficial;
-	// }
-	// public void setIsOfficial(String str) {
-	// this._isOfficial = "0".equals(str);
-	// }
 
 }

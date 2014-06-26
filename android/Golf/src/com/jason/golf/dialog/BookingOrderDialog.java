@@ -2,7 +2,6 @@ package com.jason.golf.dialog;
 
 import com.jason.golf.GOrderActivity;
 import com.jason.golf.GOrderGenerateFragment;
-import com.jason.golf.classes.AgentsAdapter;
 import com.jason.golf.classes.GAgent;
 import com.jason.golf.R;
 
@@ -19,7 +18,11 @@ public class BookingOrderDialog extends Dialog implements android.view.View.OnCl
 	
 	private GAgent _agent;
 	private String _teeTime;
+	
+	private boolean _isVip;
+	
 	private Button mOK;
+	
 	
 	private TextView mService, mName, mTeetime, mCancelRemark, mAmount;
 
@@ -28,9 +31,10 @@ public class BookingOrderDialog extends Dialog implements android.view.View.OnCl
 //		// TODO Auto-generated constructor stub
 //	}
 	
-	public BookingOrderDialog(Context context, GAgent agent){
+	public BookingOrderDialog(Context context, GAgent agent, boolean isVip){
 		super(context,R.style.OrderDialog);
 		_agent = agent;
+		_isVip = isVip;
 	}
 
 	@Override
@@ -48,8 +52,14 @@ public class BookingOrderDialog extends Dialog implements android.view.View.OnCl
 		mCancelRemark = (TextView) findViewById(R.id.dialog_order_remark);
 		mCancelRemark.setText(_agent.getCancelRemark());
 		
+		
+		
 		mAmount = (TextView) findViewById(R.id.dialog_order_amount);
-		mAmount.setText(String.format("￥%.2f %s", (float)_agent.getPrice()/100, GAgent.GetPayTypeDes(_agent.getPayType())));
+		if(_isVip){
+			mAmount.setText(String.format("Vip￥%d %s", _agent.getVipPrice()/100, GAgent.GetPayTypeDes(_agent.getPayType())));
+		}else{
+			mAmount.setText(String.format("￥%d %s", _agent.getPrice()/100, GAgent.GetPayTypeDes(_agent.getPayType())));
+		}
 		
 		mOK = (Button) findViewById(R.id.dialog_order_ok);
 		mOK.setOnClickListener(this);
@@ -59,7 +69,7 @@ public class BookingOrderDialog extends Dialog implements android.view.View.OnCl
 	public void onClick(View arg0) {
 		// TODO Auto-generated method stub
 		switch(arg0.getId()){
-		case R.id.dialog_refund_ok:
+		case R.id.dialog_order_ok:
 			
 			Intent it = new Intent(getContext(), GOrderActivity.class);
 			Bundle params = new Bundle();
@@ -70,7 +80,12 @@ public class BookingOrderDialog extends Dialog implements android.view.View.OnCl
 			params.putString(GOrderGenerateFragment.key_relation_name, _agent.getCourtname());
 			params.putString(GOrderGenerateFragment.key_tee_time, _agent.getTeeTime());
 			params.putString(GOrderGenerateFragment.key_type, GOrderGenerateFragment.TYPE);
-			params.putInt(GOrderGenerateFragment.key_unitprice, _agent.getPrice());
+			
+			if(_isVip){
+				params.putInt(GOrderGenerateFragment.key_unitprice, _agent.getVipPrice());
+			}else{
+				params.putInt(GOrderGenerateFragment.key_unitprice, _agent.getPrice());
+			}
 			
 			it.putExtras(params);
 			getContext().startActivity(it);
