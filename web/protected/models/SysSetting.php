@@ -2,12 +2,15 @@
 /**
  * --请填写模块名称--
  *寄卖商品模型
- * @author #guohao <sudk@trunkbow.com>#
+ * @author #sudk <sudk@trunkbow.com>#
  * @copyright Copyright &copy; 2003-2009 TrunkBow Co., Inc
  */
 class SysSetting extends CActiveRecord {
 
-    const VIP_START_NUM = 'vip_start_num';//vip起始卡号
+    //const VIP_START_NUM = 'vip_start_num';//vip起始卡号
+    const VIP_ONE_YEAR = 'vip_one_year';//一年VIP会费
+    const VIP_THREE_YEAR = 'vip_three_year';//三年VIP会费
+    const VIP_MEMBERS_RIGHTS = 'vip_members_rights';//vip会员权益
 
     public static function model($className=__CLASS__){
         return parent::model($className);
@@ -24,26 +27,48 @@ class SysSetting extends CActiveRecord {
          );
     }
 
-    public static function GetNewVipNumber(){
+//    public static function GetNewVipNumber(){
+//
+//        $condition="id='".SysSetting::VIP_START_NUM."' FOR UPDATE";
+//        $value=Yii::app()->db->createCommand()
+//            ->select("value")
+//            ->from("g_sys_setting")
+//            ->where($condition)
+//            ->queryScalar();
+//        $value++;
+//        $sql = 'update g_sys_setting set `value` = :value';
+//        $command = Yii::app()->db->createCommand($sql);
+//        $command->bindParam(":value", $value, PDO::PARAM_STR);
+//        $rs = $command->execute();
+//
+//        if($rs){
+//            return $value;
+//        }else{
+//            return false;
+//        }
+//
+//    }
 
-        $condition="id='".SysSetting::VIP_START_NUM."' FOR UPDATE";
-        $value=Yii::app()->db->createCommand()
-            ->select("value")
+    public static function Info($id){
+        $condition="id='{$id}'";
+        return Yii::app()->db->createCommand()
+            ->select("*")
             ->from("g_sys_setting")
             ->where($condition)
-            ->queryScalar();
-        $value++;
-        $sql = 'update g_sys_setting set `value` = :value';
-        $command = Yii::app()->db->createCommand($sql);
-        $command->bindParam(":value", $value, PDO::PARAM_STR);
-        $rs = $command->execute();
+            ->queryRow();
+    }
 
-        if($rs){
-            return $value;
-        }else{
-            return false;
+
+    public static function GetSettingKV(){
+        $rows=Yii::app()->db->createCommand()
+            ->select("*")
+            ->from("g_sys_setting")
+            ->queryAll();
+        $kv=array();
+        foreach($rows as $row){
+            $kv[$row['id']]=$row['value'];
         }
-
+        return $kv;
     }
 
    

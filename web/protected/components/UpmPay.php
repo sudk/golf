@@ -186,8 +186,8 @@ class UpmPay extends BasePay
 
                         //如果是购买VIP则给用户生成VIP卡号
                         if($order['type']==Order::TYPE_VIP){
-                            $number=SysSetting::GetNewVipNumber();
-                            User::AddVipNumber($conn,$number,$order['user_id']);
+                            //$number=SysSetting::GetNewVipNumber();
+                            User::AddVipNumber($conn,$order['user_id'],$settleAmount);
                             $desc="银联支付,购买VIP,支付成功，支付金额：".$settleAmount/100;
                         }
 

@@ -44,6 +44,7 @@ class UserController extends CMDBaseController
             case UserIdentity::ERROR_NONE:
                 //$duration = isset($form['rememberMe']) ? 3600 * 24 * 1 : 0; // 1 day
                 Yii::app()->user->login($identity);
+                User::CheckVipStatus(Yii::app()->command->cmdObj->phone);
                 //echo Yii::app()->user->id;
 //                if ($duration !== 0) {
 //                    setcookie('golf', trim($form['username']), time() + $duration, Yii::app()->request->baseUrl);

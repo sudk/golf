@@ -35,8 +35,9 @@ class BalancePay extends BasePay
 
             //如果是购买VIP则给用户生成VIP卡号
             if($row['type']==Order::TYPE_VIP){
-                $number=SysSetting::GetNewVipNumber();
-                User::AddVipNumber($conn,$number,$row['user_id']);
+                //$number=SysSetting::GetNewVipNumber();
+                //User::AddVipNumber($conn,$number,$row['user_id']);
+                User::AddVipNumber($conn,$row['user_id'],$orderAmount);
                 $desc="购买VIP,支付成功，支付金额：".$orderAmount/100;
             }
 

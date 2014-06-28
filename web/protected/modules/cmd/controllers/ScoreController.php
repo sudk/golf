@@ -7,7 +7,7 @@
 class ScoreController extends CMDBaseController
 {
     public function accessRules() {
-        return array('login' => array('list','create','update','del','dlist','dcreate','dupdate','ddel'));
+        return array('login' => array('list','create','update','del','dlist','dcreate','dupdate','ddel','phandicaps'));
     }
 
     public function actionList(){
@@ -24,6 +24,46 @@ class ScoreController extends CMDBaseController
             $msg['status']=0;
             $msg['desc']="成功";
             $msg['_pg_']=Yii::app()->command->cmdObj->_pg_;
+            $msg['data']=$rows;
+        }else{
+            $msg['status']=4;
+            $msg['desc']="没有数据";
+        }
+        echo json_encode($msg);
+        return;
+
+    }
+
+    public function actionHandicaps(){
+
+        if(Yii::app()->command->cmdObj->_pg_==null||Yii::app()->command->cmdObj->_pg_==""){
+            $msg['status']=1;
+            $msg['desc']="分页参数不能为空！";
+            echo json_encode($msg);
+            return;
+        }
+
+        $rows=Score::HandicapList(Yii::app()->command->cmdObj->_pg_,$this->pageSize);
+        if(count($rows)){
+            $msg['status']=0;
+            $msg['desc']="成功";
+            $msg['_pg_']=Yii::app()->command->cmdObj->_pg_;
+            $msg['data']=$rows;
+        }else{
+            $msg['status']=4;
+            $msg['desc']="没有数据";
+        }
+        echo json_encode($msg);
+        return;
+
+    }
+
+    public function actionPhandicaps(){
+
+        $rows=Score::PersonalHandicapList();
+        if(count($rows)){
+            $msg['status']=0;
+            $msg['desc']="成功";
             $msg['data']=$rows;
         }else{
             $msg['status']=4;
@@ -311,6 +351,9 @@ class ScoreController extends CMDBaseController
             $command->bindParam(":push_bar", Yii::app()->command->cmdObj->push_bar, PDO::PARAM_STR);
             $command->bindParam(":record_time",$record_time, PDO::PARAM_STR);
             $command->execute();
+
+            //计算差点
+            Score::CalculateHandicap($conn,Yii::app()->command->cmdObj->score_id);
             $transaction->commit();
             $msg['status']=0;
             $msg['desc']="成功";
@@ -386,6 +429,9 @@ class ScoreController extends CMDBaseController
             $command->bindParam(":push_bar", Yii::app()->command->cmdObj->push_bar, PDO::PARAM_STR);
             $command->bindParam(":id",Yii::app()->command->cmdObj->id, PDO::PARAM_STR);
             $command->execute();
+            //计算差点
+            Score::CalculateHandicap($conn,Yii::app()->command->cmdObj->score_id);
+
             $transaction->commit();
             $msg['status']=0;
             $msg['desc']="成功";
