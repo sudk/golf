@@ -244,6 +244,31 @@ class TransRecord extends CActiveRecord {
         return $rs;
     }
 
+    public static function PersonalList($page,$pageSize,$args){
+        $condition = ' 1=1 ';
+        $params = array();
+        $condition.=' AND order.user_id=:user_id';
+        $params['user_id'] = Yii::app()->user->id;
+
+        $condition.=' AND t.status=:status';
+        $params['status'] = TransRecord::STATUS_SUCCESS;
+
+        $table=self::getTable($args->month);
+        $order = 't.record_time desc';
+
+        $rows=Yii::app()->db->createCommand()
+            ->select("t.status,t.amount,t.order_id,t.trans_type,t.record_time")
+            ->from("{$table} t")
+            ->leftJoin("order","order.order_id=t.order_id")
+            ->where($condition,$params)
+            ->order($order)
+            ->limit($pageSize)
+            ->offset($page * $pageSize)
+            ->queryAll();
+
+        return $rows;
+    }
+
     public static function getTable($settdate=""){
         if($settdate==""){
             $date_str=date("Ym");
