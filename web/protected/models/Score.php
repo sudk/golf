@@ -123,8 +123,8 @@ class Score extends CActiveRecord {
         $params = array();
         $condition.= ' AND g_score.handicap is not null';
         $condition.= ' AND g_score.is_show = '.self::SHOW_YES;
-
-        return self::HandicapRows($page,$pageSize,$params,$condition);
+        $order = 'handicap DESC';
+        return self::HandicapRows($page,$pageSize,$params,$condition,$order);
     }
 
     public static function PersonalHandicapList(){
@@ -134,12 +134,12 @@ class Score extends CActiveRecord {
 
         $condition.=' AND g_score.user_id = :user_id';
         $params['user_id'] = Yii::app()->user->id;
-
-        return self::HandicapRows(0,10,$params,$condition);
+        $order = 'fee_time desc,handicap DESC';
+        return self::HandicapRows(0,10,$params,$condition,$order);
     }
 
-    private static function HandicapRows($page,$pageSize,$params,$condition){
-        $order = 'handicap DESC';
+    private static function HandicapRows($page,$pageSize,$params,$condition,$order){
+
         //print_r($args);
         $rows=Yii::app()->db->createCommand()
             ->select("g_score.fee_time,g_score.handicap,g_court.name court_name,g_user.user_name")

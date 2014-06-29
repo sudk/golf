@@ -98,13 +98,13 @@ class Card extends CActiveRecord {
         return $rs;
     }
 
-    public static function Info($type) {
+    public static function Info($id) {
 
         $condition="";
         $params=array();
-        if ($type != ''){
-            $condition.=' card_no = :card_no';
-            $params['card_no'] =$type;
+        if ($id != ''){
+            $condition.=' id = :id';
+            $params['id'] =$id;
         }else{
             return false;
         }
@@ -118,6 +118,31 @@ class Card extends CActiveRecord {
             $row['img']=Img::GetImg($row['id'],Img::TYPE_CARD);
         }
         return $row;
+    }
+
+    public static function InfoList() {
+
+        $condition="";
+        $params=array();
+
+        $condition.=' user_id = :user_id';
+        $params['user_id'] =Yii::app()->user->id;
+
+        $rows=Yii::app()->db->createCommand()
+            ->select("*")
+            ->from("g_card")
+            ->where($condition,$params)
+            ->queryAll();
+        if($rows){
+            $rs_ar=array();
+            foreach($rows as $row){
+                $row['img']=Img::GetImg($row['id'],Img::TYPE_CARD);
+                $rs_ar[]=$row;
+            }
+            return $rs_ar;
+        }else{
+            return false;
+        }
     }
 }
 

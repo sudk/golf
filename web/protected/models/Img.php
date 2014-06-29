@@ -302,7 +302,7 @@ class Img extends CActiveRecord {
             ->where($condition,$params)
             ->queryRow();
         if($row){
-            return $row['img_url'];
+            return Img::IMG_PATH.$row['img_url'];
         }else{
             return "";
         }
