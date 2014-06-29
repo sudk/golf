@@ -41,6 +41,7 @@ return array(
             'price',
             'service_comp',
             'service_route',
+            'consume_log',
             'default',
             'msg',
         ),
