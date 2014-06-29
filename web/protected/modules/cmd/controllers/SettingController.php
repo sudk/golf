@@ -26,4 +26,19 @@ class SettingController extends CMDBaseController
         echo json_encode($msg);
         return;
     }
+
+    public function actionList(){
+
+        $rows=SysSetting::InfoList();
+        if($rows){
+            $msg['status']=0;
+            $msg['desc']="成功";
+            $msg['data']=$rows;
+        }else{
+            $msg['status']=4;
+            $msg['desc']="没有数据";
+        }
+        echo json_encode($msg);
+        return;
+    }
 }

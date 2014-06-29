@@ -50,16 +50,28 @@ class SysSetting extends CActiveRecord {
 //    }
 
     public static function Info($id){
+
         $condition="id='{$id}'";
         return Yii::app()->db->createCommand()
             ->select("*")
             ->from("g_sys_setting")
             ->where($condition)
             ->queryRow();
+
+    }
+
+    public static function InfoList(){
+
+        return Yii::app()->db->createCommand()
+            ->select("*")
+            ->from("g_sys_setting")
+            ->queryAll();
+
     }
 
 
     public static function GetSettingKV(){
+
         $rows=Yii::app()->db->createCommand()
             ->select("*")
             ->from("g_sys_setting")
@@ -69,6 +81,7 @@ class SysSetting extends CActiveRecord {
             $kv[$row['id']]=$row['value'];
         }
         return $kv;
+
     }
 
    
