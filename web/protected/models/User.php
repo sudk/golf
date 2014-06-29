@@ -56,6 +56,16 @@ class User extends CActiveRecord {
         );
         return trim($s)!=""?$ar[$s]:$ar;
     }
+    
+    public static function  GetVipStatus($s = "")
+    {
+        $ar=array(
+             self::VIP_STATUS_NO=>'非会员',//非会员
+            self::VIP_STATUS_NORMAL=>'会员',//VIP
+            self::VIP_STATUS_EXPIRE=>'已过期',//已过期
+        );
+        return trim($s)!=""?$ar[$s]:$ar;
+    }
 
 
     /**

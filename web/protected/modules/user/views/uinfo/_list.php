@@ -22,7 +22,7 @@ if (is_array($rows))
         }
         $balance .= "元";
         
-        $vipstatus = User::getVipStatus();
+        $vipstatus = User::GetVipStatus();
         $vip_status = $vipstatus[$row['vip_status']]?$vipstatus[$row['vip_status']]:"";
         
         

@@ -388,7 +388,7 @@ return array(
             'site/showtask' ,
             'test/index' ,
             'test/cmd' ,
-           
+           'operator/operator/editpri' ,
         ),
         'bizRules' => '',
         'data' => ''

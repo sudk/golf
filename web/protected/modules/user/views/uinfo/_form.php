@@ -33,7 +33,7 @@ if($__model__!="edit"){
         <td class="maxname">姓名：</td>
         <td class="mivalue"><?php echo $form->activeTextField($model, 'user_name', array('title' => '本项必填', 'class' => 'input_text', 'maxlength' => 32), 'required'); ?></td>
         <?php
-        if($model->vip_status == User::VIP_STATUS_VIP)
+        if($model->vip_status == User::VIP_STATUS_NORMAL)
         {
         ?>
         <td class="maxname">VIP卡号</td>
