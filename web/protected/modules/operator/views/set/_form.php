@@ -29,7 +29,7 @@ $form = $this->beginWidget('SimpleForm', array(
         echo $form->activeHiddenField($model,'id',array());
         ?>：</td>
         <td class="mivalue"><?php 
-        if($model->id == SysSetting::VIP_RIGHT_DESC){
+        if($model->id == SysSetting::VIP_MEMBERS_RIGHTS){
             
             echo $form->activeTextArea($model,'value',array('title' => '本项必填','rows'=>'3','cols'=>'40' ),'required');
         }else{

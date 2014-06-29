@@ -23,6 +23,7 @@ return array(
             'consume_log',
             'msg',
             'systemlog',
+            'systemset',
             'agent',
             'operator',
             'default',

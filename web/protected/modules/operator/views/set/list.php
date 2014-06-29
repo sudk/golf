@@ -1,8 +1,7 @@
 <div class="title-box">
     <h1><span style="float:left;">系统设置</span></h1>
-<!--    <ul class="sift">
-        <?php //$this->renderPartial('_toolBox'); ?>
-    </ul>-->
+    <?php $this->renderPartial('_toolBox'); ?>
+   
 </div>
 <div id="datagrid">
     <?php $this->actionGrid(); ?>

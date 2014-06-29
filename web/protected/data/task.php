@@ -285,6 +285,9 @@ return array(
             'rpt/consume/detail' ,
             'rpt/recharge/grid' ,
             'rpt/recharge/list' ,
+            
+            'rpt/consume/summary' ,
+            'rpt/consume/sgrid' ,
         ),
         'bizRules' => '',
         'data' => ''
@@ -312,6 +315,17 @@ return array(
         'description' => '系统操作日志',
         'children' => array(
             'log/systemlog/grid','log/systemlog/list','log/systemlog/detail'
+        ),
+        'bizRules' => '',
+        'data' => ''
+    ),
+    
+    'systemset' => array(
+        'type' => CAuthItem::TYPE_TASK,
+        'display'=>false,
+        'description' => '系统设置',
+        'children' => array(
+            'operator/set/grid','operator/set/list','operator/set/edit'
         ),
         'bizRules' => '',
         'data' => ''

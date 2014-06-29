@@ -99,30 +99,25 @@ class SysSetting extends CActiveRecord {
         $params = array();
 
         
-        if ($args['order'] != ''){
-            $condition.=' AND `order` = :order';
-            $params['order'] = intval($args['order']);
+        if ($args['id'] != ''){
+            $condition.=' AND `id` = :id';
+            $params['id'] = intval($args['id']);
         }
         
         
-        if ($args['type'] != ''){
-            $condition.=' AND `type`=:type';
-            $params['type'] = $args['type'];
+        if ($args['value'] != ''){
+            $condition.=' AND `value`=:value';
+            $params['value'] = $args['value'];
         }
         
-        if ($args['status'] != ''){
-            $condition.=' AND status=:status';
-            $params['status'] = $args['status'];
-        }
+       
         
         
-        $total_num = Adv::model()->count($condition, $params); //总记录数
+        $total_num = self::model()->count($condition, $params); //总记录数
 
         $criteria = new CDbCriteria();
         
     	
-        $criteria->order = 'record_time  DESC';
-        
 
         $criteria->condition = $condition;
         $criteria->params = $params;
@@ -132,7 +127,7 @@ class SysSetting extends CActiveRecord {
         $pages->setCurrentPage($page);
         $pages->applyLimit($criteria);
 
-        $rows = Adv::model()->findAll($criteria);
+        $rows = self::model()->findAll($criteria);
 
         $rs['status'] = 0;
         $rs['desc'] = '成功';
