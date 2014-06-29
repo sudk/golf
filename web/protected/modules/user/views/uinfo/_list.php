@@ -22,14 +22,19 @@ if (is_array($rows))
         }
         $balance .= "元";
         
+        $vipstatus = User::getVipStatus();
+        $vip_status = $vipstatus[$row['vip_status']]?$vipstatus[$row['vip_status']]:"";
+        
+        
         $t->echo_td($row['user_name']); //
-        $t->echo_td($row['phone']);
-       
+        $t->echo_td($row['phone']);   
         $t->echo_td($balance);
         $t->echo_td($row['point']);
         $t->echo_td($row['city']);
         $t->echo_td(User::GetStatus($row['status']));
-       
+        $t->echo_td($vip_status);
+        $t->echo_td($row['vip_expire_date']);
+        $t->echo_td($row['card_no']);
         $t->echo_td($link);
         $t->end_row();
     }

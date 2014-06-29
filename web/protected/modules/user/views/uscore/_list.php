@@ -19,6 +19,7 @@ if (is_array($rows))
         $t->echo_td($row['fee_time']);
         $t->echo_td($is_show[$row['is_show']]);
         $t->echo_td($row['team_menbers']);
+        $t->echo_td($row['handicap']?$row['handicap']:"--");
         $t->echo_td($link);
         
         $t->end_row();

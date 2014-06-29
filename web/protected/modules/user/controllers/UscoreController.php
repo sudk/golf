@@ -26,9 +26,10 @@ class UscoreController extends BaseController
         $t->set_header('用户手机号', '10%', '');
         $t->set_header('所在球场', '15%', '');
         $t->set_header('洞数', '10%', '');
-        $t->set_header('开球时间', '15%', '');
+        $t->set_header('开球时间', '10%', '');
         $t->set_header('是否保密', '10%', '');
-        $t->set_header('队友', '20%', '');
+        $t->set_header('队友', '15%', '');
+        $t->set_header('差点', '10%', '');
         $t->set_header('操作', '10%', '');
         return $t;
     }
@@ -153,7 +154,7 @@ class UscoreController extends BaseController
         $page = 0;
         $list = Score::queryList($page, $this->pageSize, $args);
         //导出csv格式
-        $str = "成绩编号,所在球场,用户手机号,洞数,开球时间,队友,是否保密,洞号,Tee台,标准杆,长杆,推杆,记录时间\n";   
+        $str = "成绩编号,所在球场,用户手机号,洞数,开球时间,队友,是否保密,差点,洞号,Tee台,标准杆,长杆,推杆,记录时间\n";   
         $str = iconv('utf-8','gb2312',$str); 
         $is_show = Score::getIsShow();
         $court_list = Court::getCourtArray();
@@ -169,6 +170,7 @@ class UscoreController extends BaseController
                 $tmp_score .= $row['fee_time'].",";
                 $tmp_score .= str_replace(",", "|", $row['team_menbers']).",";        
                 $tmp_score .= $is_show[$row['is_show']].",";
+                $tmp_score .= ($row['handicap']?$row['handicap']:"--").",";
                 
                 
                 
@@ -211,6 +213,7 @@ class UscoreController extends BaseController
                     $tmp_score .= $row['fee_time'].",";
                     $tmp_score .= str_replace(",", "|", $row['team_menbers']).",";        
                     $tmp_score .= $is_show[$row['is_show']].",";
+                    $tmp_score .= ($row['handicap']?$row['handicap']:"--").",";
 
 
 

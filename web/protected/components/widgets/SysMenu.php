@@ -174,7 +174,9 @@ class SysMenu extends CWidget
         //报表管理
         $sub_menu = array();
         if(Yii::app()->user->checkAccess("rpt/consume/list"))
-            $sub_menu[] = array("title" => "消费记录", "url" => "./?r=rpt/consume/list", "match" => array('rpt\/consume\/list'));    
+            $sub_menu[] = array("title" => "消费记录", "url" => "./?r=rpt/consume/list", "match" => array('rpt\/consume\/list'));   
+        //if(Yii::app()->user->checkAccess("rpt/consume/summary"))
+            $sub_menu[] = array("title" => "消费汇总", "url" => "./?r=rpt/consume/summary", "match" => array('rpt\/consume\/summary'));    
         
         if(count($sub_menu))
         $menus['rpt'] = array("title" => "报表管理", "url" => "./?r=rpt/consume/list", "child" => $sub_menu);
@@ -193,7 +195,7 @@ class SysMenu extends CWidget
             $sub_menu[] = array("title" => "系统操作日志", "url" => "./?r=log/systemlog/list", "match" => 'log\/systemlog\/list');
         }
         //if(Yii::app()->user->checkAccess("operator/set/list"))
-            //$sub_menu[] = array("title" => "系统设置", "url" => "./?r=operator/set/list", "match" => array('operator\/set\/list'));
+            $sub_menu[] = array("title" => "系统设置", "url" => "./?r=operator/set/list", "match" => array('operator\/set\/list'));
         if(Yii::app()->user->checkAccess("msg/inbox/list")){
             $sub_menu[] = array("title" => "消息管理", "url" => "./?r=msg/inbox/list", "match" => array('msg\/inbox\/list','msg\/news\/list','msg\/outbox\/list','msg\/outbox\/new'));
             $url = "index.php?r=msg/inbox/list";

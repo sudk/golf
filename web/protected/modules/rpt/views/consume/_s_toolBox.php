@@ -52,11 +52,7 @@
             ?>
            
         </select>
-        <span style="float:left; margin:0 3px; margin-top:-3px;">操作日期从</span>
-        <input id="startdate" class="Wdate" type="text" name="q[startdate]" size="14" value="<?php echo date("Y-m-d")?>" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',skin:'whyGreen',errDealMode:0})" >
-        <span style="float:left; margin:0 5px; margin-top:-3px;">到</span>
-        <input id="enddate" class="Wdate" type="text" name="q[enddate]"  size="14"  value="<?php echo date("Y-m-d")?>" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',skin:'whyGreen',errDealMode:0})" >
-        <span style="float:left; margin:0 5px; margin-top:-3px;">&nbsp;</span>
+            <span style="float:left; margin:0 5px; margin-top:-3px;">&nbsp;</span>
         
         <select name="q[trans_type]">
             
@@ -70,7 +66,11 @@
             ?>
            
         </select>
-        <input name="q[user_isdn]" type="text" class="grayTips" value="用户手机号"/>
+        <span style="float:left; margin:0 3px; margin-top:-3px;">操作日期从</span>
+        <input id="startdate" class="Wdate" type="text" name="q[startdate]" size="14" value="<?php echo date("Y-m-d")?>" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',skin:'whyGreen',errDealMode:0})" >
+        <span style="float:left; margin:0 5px; margin-top:-3px;">到</span>
+        <input id="enddate" class="Wdate" type="text" name="q[enddate]"  size="14"  value="<?php echo date("Y-m-d")?>" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',skin:'whyGreen',errDealMode:0})" >
+        
         <input type="submit" value="" class="search_btn" />
     </li>
 </form>
@@ -83,7 +83,7 @@
     var itemQuery = function(){
         var length=arguments.length;
         if(length==1){
-            <?=$this->gridId?>.page = arguments[0];
+            <?=$this->sGridId?>.page = arguments[0];
         }
         var objs = document.getElementById("_query_form").elements;
         var i = 0;
@@ -95,8 +95,8 @@
             obj = objs.item(i);
             url += '&' + obj.name + '=' + obj.value;
         }
-<?php echo $this->gridId; ?>.condition = url;
-<?php echo $this->gridId; ?>.refresh();
+<?php echo $this->sGridId; ?>.condition = url;
+<?php echo $this->sGridId; ?>.refresh();
     }
 
 </script>

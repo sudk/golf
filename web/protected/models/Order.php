@@ -587,6 +587,15 @@ class Order extends CActiveRecord {
             
                     
             $transaction->commit();
+            //订单确认，下发短信通知用户
+            if($next_status == self::STATUS_TOBE_PAID)
+            {
+                $order_info = self::model()->findByPk($order_id);
+                $phone = $order_info['phone'];
+                $content = $order_id.",已经确认，请尽快付款";
+                $send_model = new Sms();
+                $send_rs = $send_model->send($content, $phone, 2);
+            }
             
             OrderLog::Add($order_id, "");
             
