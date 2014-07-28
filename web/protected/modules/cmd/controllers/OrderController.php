@@ -195,6 +195,10 @@ class OrderController extends CMDBaseController
 
         }
 
+        if(Yii::app()->command->cmdObj->type==Order::PAY_METHOD_BALANCE){
+
+        }
+
         $rs=Order::Pay(Yii::app()->command->cmdObj->order_id,Yii::app()->command->cmdObj->type,Yii::app()->command->cmdObj->amount);
         echo json_encode($rs);
         return;

@@ -154,6 +154,7 @@ class FleaController extends CMDBaseController
                     $command->bindParam(":img_url",$img, PDO::PARAM_STR);
                     $command->bindParam(":record_time",$record_time, PDO::PARAM_STR);
                     $command->execute();
+                    Yii::log($img."----------",'info','application.firebuglog');
                 }
             }
             $transaction->commit();
