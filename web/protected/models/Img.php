@@ -108,7 +108,7 @@ class Img extends CActiveRecord {
      * @param type $file_name
      * @return string
      */
-    public static function uploadImg($tmp_file,$tmp_name,$relation_id,$type){
+    public static function uploadImg($tmp_file,$tmp_name,$relation_id,$type,$is_save_to_db=true){
         $upload_dir = Yii::app()->params['upload_dir'];
         //路径是以目录/日期/时间+rand(100,999).png
         $upload_dir .= date('Ymd');
@@ -138,13 +138,15 @@ class Img extends CActiveRecord {
         }
         
         //add data into db
-        $model = new Img();
-        $model->relation_id = $relation_id;
-        $model->type = $type;
-        $model->img_url = $rs['url'];
-        $model->record_time = date('Y-m-d H:i:s');
-        $model->save();
-        
+        if($is_save_to_db){
+            $model = new Img();
+            $model->relation_id = $relation_id;
+            $model->type = $type;
+            $model->img_url = $rs['url'];
+            $model->record_time = date('Y-m-d H:i:s');
+            $model->save();
+        }
+
         return $rs;
     }
     
