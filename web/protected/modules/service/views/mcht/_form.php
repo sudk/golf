@@ -67,7 +67,8 @@ if($__model__!="edit"){
         <td class="maxname">绿卡优惠：</td>
         <td class="mivalue">
            <?php
-                echo $form->activeTextField($model, 'favourable', array('title' => '本项必填', 'class' => 'input_text', 'maxlength' => 64), 'required');         
+                $favourable = CourtFacilities::getFavourable();
+                echo $form->activeDropDownList($model, 'favourable',$favourable, array('title' => '本项必填'), 'required');         
             ?>
         </td>
         <td class="maxname">距球场距离：</td>
