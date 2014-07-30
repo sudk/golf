@@ -31,7 +31,7 @@ if($__model__!="edit"){
 ?>
 <table class="formList">
     <tr>
-        <td class="maxname">套餐名称：</td>
+        <td class="maxname">行程名称：</td>
         <td class="mivalue">
            <?php
                 echo $form->activeTextField($model, 'trip_name',array('title' => '本项必填', 'class' => 'input_text','onblur'=>$checkId), 'required');         
@@ -96,7 +96,7 @@ if($__model__!="edit"){
     
     <tr>
         
-        <td class="maxname">套餐图片：</td>
+        <td class="maxname">行程图片：</td>
         <td class="mivalue" colspan="3">
             <input type="file" name="trip_img" value="" class="input_text" id="trip_img"/>
         </td>
@@ -203,7 +203,7 @@ if($__model__!="edit"){
         //setLogin(id);
        // var id = $("#Operator_staffid").val();
         var e = $(obj);
-        var ti = "套餐名称已经存在！";
+        var ti = "行程名称已经存在！";
         $.ajax({
             url:'./?r=service/route/checkid',
             data:{id:id},

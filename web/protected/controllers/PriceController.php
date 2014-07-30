@@ -1179,9 +1179,9 @@ class PriceController extends AuthBaseController
      */
     public function actionCopyPolicy()
     {
-             
-        
-        $msg = Policy::copyLastMonthPolicy($now_month,$last_month);
+        $month = trim($_POST['month']);     
+        //var_dump($month);
+        $msg = Policy::copyLastMonthPolicy($month);
         
         print_r(json_encode($msg));
         exit;

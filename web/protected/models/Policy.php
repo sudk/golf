@@ -333,11 +333,11 @@ class Policy extends CActiveRecord {
         //首先 得到本代理商 上个月的 报价信息。
         //然后 复制一份，存为当前月的报价信息。
      */
-    public static function copyLastMonthPolicy()
+    public static function copyLastMonthPolicy($now_month)
     {
-        $now_month = date('Y-m');
-        $last_month = self::GetMonth("1");
-        
+        //$now_month = ;//date('Y-m');//这个是待填入的数据
+        $last_month = self::GetMonth($now_month,"1");//这个是基数
+        //var_dump($now_month);var_dump($last_month);
         $rs['status']=-1;
         $rs['msg']="复制失败！";
         
@@ -381,8 +381,8 @@ class Policy extends CActiveRecord {
                 $id_rows = $connection->createCommand($sql)->queryAll();
                 //var_dump($id_rows);
                 if($id_rows){
-                    $start_date = date('Y-m-01');
-                    $end_date = date('Y-m-t');
+                    $start_date = $now_month."-01";//date('Y-m-01');
+                    $end_date = self::GetLastDayOfMonth($start_date);//date('Y-m-t');
                     $record_time = date('Y-m-d H:i:s');
                     $creatorid = Yii::app()->user->id;
                     
@@ -399,11 +399,13 @@ class Policy extends CActiveRecord {
                             agent_id,court_id,remark,cancel_remark,is_green,
                             is_caddie,is_car,is_wardrobe,is_meal,is_insurance,
                             is_tip,pay_type,type,status,'{$record_time}','{$creatorid}' from g_policy where id ='{$old_id}'";
+                        //var_dump($sql);
                         $connection->createCommand($sql)->execute();
                         //insert Plicy Detail
                         $sql = "insert into g_policy_detail(policy_id,day,start_time,end_time,price,record_time,status,vip_price,pledge_price)
                                 select '{$id}',day,start_time,end_time,price,'{$record_time}',status,vip_price,pledge_price from g_policy_detail where policy_id='{$old_id}'";
-                            //var_dump($sql);
+                                
+                        //var_dump($sql);
                         $connection->createCommand($sql)->execute();
                         
                     }
@@ -428,10 +430,15 @@ class Policy extends CActiveRecord {
         
     }
 
-    public static function  GetMonth($sign="1")
+    public static function  GetMonth($month,$sign="1")
     {
-        //得到系统的年月
         $tmp_date=date("Ym");
+        //得到系统的年月
+        if($month!="")
+        {
+            $tmp_date = str_replace("-", "", $month);
+        }
+        
         //切割出年份
         $tmp_year=substr($tmp_date,0,4);
         //切割出月份
@@ -447,6 +454,18 @@ class Policy extends CActiveRecord {
         }
         
         
+    }
+    
+    /**
+     * 获取月份的最后一天
+     * @param type $date
+     * @return type
+     */
+    public static function GetLastDayOfMonth($date)
+    {
+    $firstday = date('Y-m-01', strtotime($date));
+    $lastday = date('Y-m-d', strtotime("$firstday +1 month -1 day"));
+    return $lastday;
     }
 
     

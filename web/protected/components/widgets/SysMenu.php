@@ -136,7 +136,7 @@ class SysMenu extends CWidget
             array_push($match, 'service\/route\/detail');
         }
         if(@count($match))
-            $sub_menu[] = array("title" => "套餐", "url" => $url, "match" =>$match);    
+            $sub_menu[] = array("title" => "行程", "url" => $url, "match" =>$match);    
         
         $url = "";
         $match = array();

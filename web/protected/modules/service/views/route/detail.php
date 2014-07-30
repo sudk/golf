@@ -1,13 +1,13 @@
 <div id="content">
     <div class="title-box">
-        <h1><span style="float:left;">套餐详细信息</span><a href="./?r=service/route/list" style="float:right;"><span class="ing_ico"></span><span>返回列表</span></a></h1>
+        <h1><span style="float:left;">行程详细信息</span><a href="./?r=service/route/list" style="float:right;"><span class="ing_ico"></span><span>返回列表</span></a></h1>
     </div>
     <div class="tab-main" id="form-container">
             
 
 <table class="formList">
     <tr>
-        <td class="maxname">套餐名称：</td>
+        <td class="maxname">行程名称：</td>
         <td class="mivalue">
            <?php
                 echo htmlspecialchars($model->trip_name);

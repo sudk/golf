@@ -46,9 +46,12 @@
     }
     
     function copyPolicy(){
-        if(!confirm("确认要复制上个月的报价单吗？本月已有报价不会被覆盖，上月无报价不复制")){return ;}
+        var month = $("#month").val();
+        if(!confirm("确认要复制上个月的报价单吗？本月已有报价不会被覆盖，上月无报价不复制。将生成"+month+"的报价单")){return ;}
+        
+        //alert(month);return;
         $.ajax({
-            //data:{},
+            data:{month:month},
             url:"index.php?r=price/copypolicy",
             dataType:"json",
             type:"POST",
