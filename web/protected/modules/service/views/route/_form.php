@@ -68,7 +68,12 @@ if($__model__!="edit"){
         <td class="maxname">支付方式：</td>
         <td class="mivalue">
            <?php
-                echo $form->activeDropDownList($model, 'pay_type',Trip::getPayType(),array('title' => '本项必填', 'class' => 'input_text'), 'required');         
+                if($model->pay_type == null){
+                    $model->pay_type = '0';
+                }
+                $pay_type =  Order::getPayType();
+                echo $pay_type[$model->pay_type];
+                echo $form->activeHiddenField($model, 'pay_type',array('title' => '本项必填'), 'required');         
             ?>
         </td>
         <td class="maxname">是否订单确认：</td>
