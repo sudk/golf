@@ -26,7 +26,7 @@
     <tr>
         <td class="name">权限：</td>
         <td class="value">
-            <div style="width:420px;">
+            <div style="width:450px;">
                 <div style=" float:left;width:200px;height:300px; border:1px solid gray;overflow-y:auto;">
                     <div style=" background-color:#F5F5F5;margin-top:0;"><span>已有权限</span></div>
                     <ul id="exitrole">
@@ -58,7 +58,7 @@
                     } ?>
                     </ul>
                 </div>
-                <div style=" float:right;width:200px;height:300px; border:1px solid gray;overflow-y:auto;">
+                <div style=" float:right;width:240px;height:300px; border:1px solid gray;overflow-y:auto;">
                     <div style=" background-color:#F5F5F5;margin-top:0;"><span>可选权限</span></div>
                     <ul id="avaliblerole">
                         <?php foreach ($model->role as $key => $value) {

@@ -156,7 +156,7 @@ class SysMenu extends CWidget
             array_push($match, 'service\/goods\/newgoods');
         }
         if(@count($match)>0)
-            $sub_menu[] = array("title" => "寄卖", "url" => $url, "match" => $match);  
+            $sub_menu[] = array("title" => "精挑细选", "url" => $url, "match" => $match);  
         
         if(Yii::app()->user->checkAccess("service/mcht/list"))
             $sub_menu[] = array("title" => "特约商户管理", "url" => "./?r=service/mcht/list", "match" => array('service\/mcht\/list','service\/mcht\/new','service\/mcht\/detail'));

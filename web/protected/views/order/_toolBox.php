@@ -1,5 +1,20 @@
 <form name="_query_form" id="_query_form" action="javascript:itemQuery(0);">
     <li>
+        <span class="sift-title">订单状态：</span>
+        <?php
+        echo CHtml::link('不限', '', array('class' => 'air', 'name' => 'qstatus[]', 'qvalue' =>''));
+        $status_list = Order::getStatus();
+            if(@count($status_list) > 0 )
+            {
+                foreach($status_list as $key=>$value)
+                {
+                    echo CHtml::link($value, '', array('qvalue'=> $key, 'name' => 'qstatus[]'));
+                }
+            }
+        
+        ?>
+    </li>
+    <li>
         <span class="sift-title">搜索：</span>
         <?php
         if(Yii::app()->user->type == Operator::TYPE_SYS){
@@ -35,23 +50,11 @@
             }
             ?>
         </select>
-        <span style="float:left; margin:0 3px; margin-top:-3px;">订单状态</span>
-        <select name="q[status]">
-            <option value="">--选择--</option>
-            <?php
-            $status_list = Order::getStatus();
-            if(@count($status_list) > 0 )
-            {
-                foreach($status_list as $key=>$value)
-                {
-                    echo '<option value="'.$key.'">'.$value.'</option>';
-                }
-            }
-            ?>
-        </select>
+        
         <span style="float:left; margin:0 5px; margin-top:-3px;">&nbsp;</span>
         
         <input name="q[order_id]" type="text" class="grayTips" value="订单编号"/>
+        <input type="hidden" name="q[status]" id="qstatus" value=''/>
         <input type="submit" value="" class="search_btn"/>
         <?php
         if(Yii::app()->user->checkAccess("order/export"))
@@ -68,8 +71,19 @@
 </form>
 <script type="text/javascript" src="js/JQdate/WdatePicker.js"></script>
 <script type="text/javascript">
- 		jQuery(document).ready(function(){
-             
+    jQuery(document).ready(function(){
+           //当前月份
+             jQuery($("a[name='qstatus[]']")).click(function () {
+                 var qvalue = jQuery(this).attr("qvalue");
+                 if (qvalue != '') {
+                     jQuery("#qstatus").attr("value", qvalue);
+                 } else {
+                     jQuery("#qstatus").attr("value", "");
+                 }
+                 jQuery($("a[name='qstatus[]']")).removeClass('air');
+                 jQuery(this).addClass('air');
+                 itemQuery(0);
+             });  
   }); 
 
     var itemQuery = function(){

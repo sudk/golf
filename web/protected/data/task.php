@@ -213,7 +213,7 @@ return array(
     'service_goods' => array(
         'type' => CAuthItem::TYPE_TASK,
         'display'=>true,
-        'description' => '特色服务-寄卖审核',
+        'description' => '特色服务-精挑细选审核',
         'children' => array(
            
             'service/goods/grid' ,
@@ -221,6 +221,22 @@ return array(
             'service/goods/audit',
             'service/goods/detail' ,
             'service/goods/del' ,
+        ),
+        'bizRules' => '',
+        'data' => ''
+    ),
+    
+    'service_goods_new' => array(
+        'type' => CAuthItem::TYPE_TASK,
+        'display'=>true,
+        'description' => '特色服务-精挑细选商品添加',
+        'children' => array(
+           
+            'service/goods/grid' ,
+            'service/goods/list' ,
+            'service/goods/newgoods',
+            'service/goods/detail' ,
+            
         ),
         'bizRules' => '',
         'data' => ''

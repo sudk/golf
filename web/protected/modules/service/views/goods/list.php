@@ -1,6 +1,6 @@
 <div id="content">
     <div class="title-box">
-        <h1><span style="float:left;">寄卖商品信息管理</span>
+        <h1><span style="float:left;">精挑细选商品信息管理</span>
             <?php
         
         if(Yii::app()->user->type == Operator::TYPE_AGENT  && Yii::app()->user->agent_id == '1')
