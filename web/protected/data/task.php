@@ -102,8 +102,8 @@ return array(
             'court/newpic' ,
             'court/loadpic' ,
             'court/delpic' ,
-            'court/comment' ,
-            'court/commentlist' ,
+            'comment/list' ,
+            'comment/grid' ,
             'court/mycomment' ,
             'court/mycommentlist',
             
@@ -124,9 +124,10 @@ return array(
             'court/showpic' ,
             'court/piclist' ,      
             'court/loadpic' ,   
-            'court/comment' ,
-            'court/commentlist' ,
+            'comment/list' ,
+            'comment/grid' ,
             'court/mycomment' ,
+            'court/mycommentlist',
             
             ),
         'bizRules' => '',

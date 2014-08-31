@@ -69,8 +69,8 @@ class SysMenu extends CWidget
         if(@count($match) >0)
             $sub_menu[] = array("title" => "球场管理", "url" => $url, "match" => $match);
         
-        if(Yii::app()->user->checkAccess("court/comment"))
-            $sub_menu[] = array("title" => "球场评论管理", "url" => "./?r=court/comment", "match" => array('court\/comment'));
+        if(Yii::app()->user->checkAccess("comment/list"))
+            $sub_menu[] = array("title" => "球场评论管理", "url" => "./?r=comment/list", "match" => array('comment\/list'));
         
         if(count($sub_menu))
         $menus['court'] = array("title" => "球场管理", "url" => ($url==""?'index.php?r=court/comment':$url), "child" => $sub_menu);

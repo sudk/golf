@@ -9,7 +9,7 @@ class AdvController extends AuthBaseController {
 
     public $defaultAction = 'list';
     public $gridId = 'list';
-    public $pageSize = 100;
+    public $pageSize = 20;
 
     /**
      * 表头

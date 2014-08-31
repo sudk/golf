@@ -11,7 +11,7 @@ class UscoreController extends BaseController
     public $defaultAction = 'list';
     public $gridId = 'list';
     public $dGridId = 'detail_list';
-    public $pageSize = 100;
+    public $pageSize = 20;
 
     /**
      * 表头

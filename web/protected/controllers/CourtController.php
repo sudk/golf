@@ -8,9 +8,9 @@ class CourtController extends AuthBaseController
     public $defaultAction = 'list';
     public $gridId = 'list';
     public $picGridId = 'pic_list';
-    public $cGridId = 'comment_list';
+
     public $mcGridId = 'my_comment_list';
-    public $pageSize = 100;
+    public $pageSize = 20;
     public $module_id = 'court';
     
     
@@ -593,66 +593,6 @@ class CourtController extends AuthBaseController
 
     
     
-    public function actionComment()
-    {
-        
-        unset($_SESSION['cur_court_id']);
-        unset($_SESSION['cur_court_name']);
-        $this->render('comment_list');
-    }
-    
-    /**
-     * 表头
-     * @return SimpleGrid
-     */
-    private function genCDataGrid()
-    {
-        
-        $t = new SimpleGrid($this->cGridId);
-        $t->url = 'index.php?r=court/commentlist';
-        $t->updateDom = 'datagrid';
-        $t->set_header('球场名称', '20%', '');
-        $t->set_header('服务', '10%', '');   
-        $t->set_header('设计', '10%', '');   
-        $t->set_header('设施', '10%', '');   
-        $t->set_header('草坪', '10%', '');        
-        $t->set_header('评分人', '10%', '');  
-        $t->set_header('评分时间', '15%', '');  
-        $t->set_header('备注', '15%', '');  
-        return $t;
-    }
-
-    
-    public function actionCommentList()
-    {
-        $page = $_GET['page'] == '' ? 0 : $_GET['page']; //当前页码
-        $_GET['page']=$_GET['page']+1;
-        $args = $_GET['q']; //查询条件
-
-
-        if ($_REQUEST['q_value'])
-        {
-            $args[$_REQUEST['q_by']] = $_REQUEST['q_value'];
-        }
-        
-        
-        $t = $this->genCDataGrid();
-        //var_dump($args);
-        $list = Comment::queryList($page, $this->pageSize, $args);
-        
-        if($list['rows'])
-        {
-            $court_list = Court::getCourtArray();
-            foreach($list['rows'] as $key=>$row)
-            {
-                $court_id = $row['court_id'];
-                $list['rows'][$key]['court_name'] = $court_list[$court_id];
-            }
-        }
-
-        $this->renderPartial('_commentlist', array('t' => $t, 'rows' => $list['rows'], 'cnt' => $list['total_num'], 'curpage' => $list['page_num']));
-    }
-    
     /**
      * 某一个球场的评论
      */
@@ -706,6 +646,9 @@ class CourtController extends AuthBaseController
         {
             $args['court_id'] = $cur_court_id;
             
+        }else
+        {
+            $args['court_id'] = $_SESSION['cur_court_id'];
         }
         $t = $this->genMCDataGrid();
         //var_dump($args);

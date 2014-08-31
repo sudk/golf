@@ -26,7 +26,7 @@
         {
         ?>
         <span>
-            <a href="javascript:void(0);" style="margin-left: 10px;margin-top: -3px;" onclick="javascript:exportScore();">导出订单</a>
+            <a href="javascript:void(0);" style="margin-left: 10px;margin-top: -3px;" onclick="javascript:exportScore();">导出会员成绩</a>
         </span>
         <?php
         }

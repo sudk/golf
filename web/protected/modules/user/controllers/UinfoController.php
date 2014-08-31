@@ -11,7 +11,7 @@ class UinfoController extends AuthBaseController
     public $defaultAction = 'list';
     public $gridId = 'list';
     public $cardGridId = 'card_list';
-    public $pageSize = 100;
+    public $pageSize = 20;
     public $module_id = 'user';
 
     /**

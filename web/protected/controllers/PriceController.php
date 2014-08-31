@@ -10,7 +10,7 @@ class PriceController extends AuthBaseController
     public $pGridId = 'policy_list';
     public $cGridId = 'custom_list';
     public $sGridId = 'special_list';
-    public $pageSize = 100;
+    public $pageSize = 20;
     public $module_id = 'price';
     
     
