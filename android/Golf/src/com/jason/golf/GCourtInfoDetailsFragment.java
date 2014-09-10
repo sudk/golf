@@ -2,9 +2,17 @@ package com.jason.golf;
 
 import java.util.ArrayList;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import net.tsz.afinal.FinalBitmap;
 
+import com.jason.controller.GThreadExecutor;
+import com.jason.controller.HttpCallback;
+import com.jason.controller.HttpRequest;
 import com.jason.golf.classes.GCourt;
+import com.jason.golf.classes.GMerchant;
 import com.jason.golf.dialog.WarnDialog;
 import com.jason.golf.R;
 
@@ -26,8 +34,10 @@ import android.widget.TextView;
 public class GCourtInfoDetailsFragment extends Fragment implements OnClickListener {
 	
 	TextView mModel, mCreatYear, mCourtArea, mGreenGrass, mData, mDesigner, mFairwayLength, mFairwayGrass, mPhone, mBrief, mFacilities, mComment;
-	LinearLayout mImages;
+	LinearLayout mImages, mFacilitiesImgs;
 	FinalBitmap _fb;
+	
+	ViewGroup.MarginLayoutParams param;
 
 	public static Fragment Instance() {
 		// TODO Auto-generated method stub
@@ -70,11 +80,17 @@ public class GCourtInfoDetailsFragment extends Fragment implements OnClickListen
 		mBrief = (TextView) v.findViewById(R.id.court_brief);
 		mFacilities = (TextView) v.findViewById(R.id.court_facilities);
 		
+		
+		
 		mComment = (TextView) v.findViewById(R.id.court_comment);
 		mComment.setOnClickListener(this);
 		
 		GCourtInfoActivity a = (GCourtInfoActivity) getActivity();
 		GCourt court = a.getCourt();
+		
+		System.out.println(court.toString());
+		
+		queryCourtFacility(court.getId());
 		
 		mModel.setText(court.getModel());
 		mCreatYear.setText(court.getCreateYear());
@@ -90,6 +106,7 @@ public class GCourtInfoDetailsFragment extends Fragment implements OnClickListen
 		
 		mImages = (LinearLayout) v.findViewById(R.id.images);
 		mImages.setOnClickListener(this);
+		mFacilitiesImgs = (LinearLayout) v.findViewById(R.id.facilities_images);
 		
 		DisplayMetrics m = getActivity().getResources().getDisplayMetrics();
 		int widthPixels = m.widthPixels;
@@ -100,7 +117,7 @@ public class GCourtInfoDetailsFragment extends Fragment implements OnClickListen
 		int imgMargin = 2;
 		
 		int imgWidth = width / 3 - imgMargin * 2;
-		ViewGroup.MarginLayoutParams param = new ViewGroup.MarginLayoutParams(imgWidth, imgWidth);
+		param = new ViewGroup.MarginLayoutParams(imgWidth, imgWidth);
 		
 		ArrayList<String> imgUrl = court.getFairwayImgs();
 		
@@ -123,6 +140,84 @@ public class GCourtInfoDetailsFragment extends Fragment implements OnClickListen
 //	    bar.setDisplayOptions(change, ActionBar.DISPLAY_HOME_AS_UP);
 	    
 		return v;
+	}
+
+	private void queryCourtFacility(String id) {
+		// TODO Auto-generated method stub
+		
+		
+		JSONObject params = new JSONObject();
+		
+		try {
+			params.put("cmd", "court/facilities");
+			params.put("court_id", id);
+			params.put("id", "");
+			params.put("facilitie_name", "");
+			params.put("type", "");
+			params.put("_pg_", "0");
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		HttpRequest r = new HttpRequest(getActivity(), params, new HttpCallback() {
+
+			@Override
+			public void sucessData(String res) {
+				// TODO Auto-generated method stub
+				try {
+					
+					JSONArray data = new JSONArray(res);
+					
+					for(int i=0; i<data.length(); i++){
+						
+						JSONObject obj = data.getJSONObject(i);
+						GMerchant m = new GMerchant();
+						m.initialize(obj);
+						
+						final String id = m.getId();
+						
+						ImageView img = new ImageView(getActivity());
+						img.setLayoutParams(param);
+						img.setPadding(2, 2, 2, 2);
+						img.setOnClickListener(new OnClickListener() {
+							
+							@Override
+							public void onClick(View v) {
+								// TODO Auto-generated method stub
+								Bundle params = new Bundle();
+								params.putString(GMerchantInfoFragment.KEY_MERCHANT_ID, id);
+								params.putInt(GMerchantActivity.FRAGMENT_MARK, GMerchantActivity.MERCHANT_INFO);
+								
+								Intent it = new Intent(getActivity(), GMerchantActivity.class);
+								it.putExtras(params);
+								startActivity(it);
+								
+							}
+						});
+						mFacilitiesImgs.addView(img);
+						
+						if(m.getImgs().size() > 0){
+							_fb.display(img, m.getImgs().get(0));
+						}
+						
+					}
+					
+//					mFacilitiesImgs
+					
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				super.sucessData(res);
+				
+			}
+			
+		});
+		
+		GThreadExecutor.execute(r);
+		
 	}
 
 	@Override

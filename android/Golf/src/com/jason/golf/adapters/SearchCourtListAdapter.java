@@ -82,7 +82,7 @@ public class SearchCourtListAdapter extends BaseAdapter {
 		
 		holder.name.setText(court.getName());
 		holder.price.setText(String.format("￥%d", court.getPrice() / 100));
-		holder.vip_price.setText(String.format("￥%d", court.getVipPrice() / 100));
+		holder.vip_price.setText(String.format("VIP ￥%d", court.getVipPrice() / 100));
 		 
 		long distance = court.getDistance();
 		if(distance < -0){

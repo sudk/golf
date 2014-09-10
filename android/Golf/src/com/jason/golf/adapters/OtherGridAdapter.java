@@ -15,13 +15,19 @@ public class OtherGridAdapter extends BaseAdapter {
 	
 	
 	private int[] Drawables = new int[]{
-			R.drawable.grid_preference,
-			R.drawable.grid_combo,
-			R.drawable.grid_sales,
-			R.drawable.grid_ranklist,
+			R.drawable.grid_court,
+			R.drawable.grid_trip,
 			R.drawable.grid_competition,
+			
+			R.drawable.grid_handicap,
+			R.drawable.grid_card,
+			R.drawable.grid_ranklist,
+			
+			R.drawable.grid_sales,
 			R.drawable.grid_merchant,
-			R.drawable.grid_court
+			
+			R.drawable.grid_grade
+			
 	};
 	
 	private Context mContext;

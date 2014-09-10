@@ -34,6 +34,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="2dip"
+            android:visibility="gone"
             android:text="比赛日期" />
     </LinearLayout>
 
@@ -211,6 +212,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dip"
-        android:text="确认并预定" />
+        android:text="确认并报名" />
 
 </LinearLayout>

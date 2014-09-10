@@ -4,6 +4,7 @@
     <string name="app_name">高球生活</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_get_city">当前城市</string>
+    <string name="action_month">月份</string>
     <string name="action_create">新建</string>
     <string name="action_bar_search">搜索</string>
 
@@ -16,10 +17,16 @@
     <string name="preferential">特惠</string>
     <string name="combo">套餐</string>
     <string name="trip">行程</string>
-    <string name="sale">寄卖</string>
-    <string name="ranking">排行榜</string>
+    <string name="sale">精挑细选</string>
+    <string name="card_pack">我的卡包</string>
+    <string name="ranking">英雄榜</string>
     <string name="competition">赛事</string>
     <string name="merchant">特约商户</string>
+    <string name="handicaps">个人差点档案</string>
+    
+    <string name="BookTrip">预定行程</string>
+    <string name="ApplyGame">赛事报名</string>
+    
 
     <!-- 成绩 -->
     <string name="score">成绩</string>
@@ -54,6 +61,7 @@
     <string name="account_recharge">账户充值</string>
     <string name="account_transfer">转账</string>
     <string name="account_withdraw">余额提现</string>
+    <string name="balance">账户余额</string>
     <string name="consumption_details">消费明细</string>
     <string name="account_changepwd">修改密码</string>
     <string name="account_has_chang_pwd">完成修改密码</string>
@@ -73,6 +81,8 @@
     <string name="flee_action_del">删除</string>
     <string name="flee_cancel_good">取消寄卖</string>
     <string name="flee_cancel_good_sucess">您的寄卖物品已经下架。</string>
+    <string name="flee_if_cancel_good">是否把此寄卖物品下架？</string>
+    <string name="no_sdcard">SD卡不可用</string>
 
     <!-- 球场搜索 -->
     <string name="search_court">搜索球场</string>
@@ -97,6 +107,8 @@
     <string name="court_comment">球场评价</string>
     <string name="court_brief">球场介绍</string>
     <string name="court_fairway_imags">球道图片</string>
+    <string name="court_facilities_imags">周边商户</string>
+    <string name="trip_imags">图片:</string>
 
     <!-- order -->
     <string name="order_manager">订单管理</string>
@@ -123,15 +135,21 @@
     <string name="save">保存</string>
     <string name="exit">退出</string>
     <string name="is_exit">是否退出？</string>
-    <string name="obtain">获取</string>
     <string name="network_time_out">网络连接超时</string>
     <string name="retry">重试</string>
     <string name="network">网络</string>
+    <string name="photo">拍照</string>
     <string name="network_disconnect">网络已断开</string>
     <string name="add">添加</string>
     <string name="delete">删除</string>
+    <string name="if_delete">是否删除照片？</string>
     <string name="edit">编辑</string>
     <string name="detail">详情</string>
+    
+    <string name="NoImg">暂时没有图片</string>
+    <string name="NoCard">暂时没有卡片数据</string>
+    <string name="NoData">暂时没有数据</string>
+    <string name="NoGame">暂时没有赛事</string>
 
     <!-- XListView -->
     <string name="xlistview_header_hint_normal">下拉刷新</string>

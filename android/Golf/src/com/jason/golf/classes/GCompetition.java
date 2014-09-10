@@ -67,6 +67,9 @@ public class GCompetition {
 			setCourtName(data.getString("court_name"));
 			setAgentName(data.getString("agent_name"));
 			
+			if("null".equals(_agentName))
+				_agentName = "";
+			
 			if (data.has("img")) {
 				setImg(data.getString("img"));
 			}
@@ -78,6 +81,8 @@ public class GCompetition {
 
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
+			e.printStackTrace();
+			
 			return false;
 		}
 

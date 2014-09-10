@@ -21,10 +21,13 @@ import org.json.JSONObject;
 import com.jason.controller.GThreadExecutor;
 import com.jason.controller.HttpCallback;
 import com.jason.controller.HttpRequest;
+import com.jason.golf.adapters.FleeImagesAdapter;
 import com.jason.golf.classes.GAccount;
+import com.jason.golf.classes.SimpleHorizontalListView;
 import com.jason.golf.dialog.WarnDialog;
 import com.jason.golf.provider.GolfProviderConfig;
 import com.jason.golf.R;
+import com.jason.network.ProtocolDefinition;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -40,6 +43,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -50,13 +54,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class GFleeMarketNewFragment extends Fragment implements OnClickListener {
+public class GFleeMarketNewFragment extends Fragment implements OnClickListener, OnItemLongClickListener, OnItemClickListener {
 
 	private static final int REQUESTCODE_CTIY = 1001;
 	private static final int REQUESTCODE_PHOTO = 1002;
@@ -69,7 +76,9 @@ public class GFleeMarketNewFragment extends Fragment implements OnClickListener 
 	
 	private EditText mTitle, mDesc, mPrice, mContact, mPhone;
 	
-	private LinearLayout mFleeImages;
+	private SimpleHorizontalListView mFleeImages;
+	
+	private FleeImagesAdapter mAdapter;
 	
 	private TextView mCity;
 	
@@ -142,7 +151,11 @@ public class GFleeMarketNewFragment extends Fragment implements OnClickListener 
 		mSubmit = (Button) v.findViewById(R.id.flee_submit);
 		mSubmit.setOnClickListener(this);
 		
-		mFleeImages = (LinearLayout) v.findViewById(R.id.flee_images);
+		mAdapter = new FleeImagesAdapter(getActivity(), _imgs);
+		mFleeImages = (SimpleHorizontalListView) v.findViewById(R.id.flee_images);
+		mFleeImages.setAdapter(mAdapter);
+		mFleeImages.setOnItemLongClickListener(this);
+		mFleeImages.setOnItemClickListener(this);
 		
 		checkSubmitButtonState();
 		
@@ -159,6 +172,70 @@ public class GFleeMarketNewFragment extends Fragment implements OnClickListener 
 		
 	}
 	
+	
+	@Override
+	public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
+		// TODO Auto-generated method stub
+		
+		WarnDialog wd = WarnDialog.newInstance(getActivity());
+		wd.setTitle(R.string.if_delete).setPositiveBtn(R.string.delete, new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				// TODO Auto-generated method stub
+				_imgs.remove(position);
+				mAdapter.notifyDataSetChanged();
+			}
+		})
+		.setNegativeBtn(R.string.cancel, new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		
+		wd.show(getFragmentManager(), "DeleteImg");
+		
+		return true;
+	}
+
+	@Override
+	public void onItemClick(AdapterView<?> parent, View view, int position,	long id) {
+		// TODO Auto-generated method stub
+		
+		if (_imgs.size() > 0) {
+
+			Bundle params = new Bundle();
+
+			String[] urls = new String[_imgs.size()];
+			for (int i = 0, length = _imgs.size(); i < length; i++) {
+				urls[i] = _imgs.get(i);
+			}
+
+//			params.putStringArray(GFleeImagesFragment.KEY_IMG_URL, urls);
+//			params.putInt(GFleeImagesFragment.KEY_IMG_POS, position);
+			
+			params.putStringArray(ShowImagesActivity.KEY_IMG_URL, urls);
+			params.putInt(ShowImagesActivity.KEY_IMG_POS, position);
+			
+			Intent imgIntent = new Intent(getActivity(), ShowImagesActivity.class);
+			imgIntent.putExtras(params);
+			startActivity(imgIntent);
+
+//			Fragment imgFragment = GFleeImagesFragment.Instance();
+//			imgFragment.setArguments(params);
+//
+//			FragmentTransaction transaction = getFragmentManager().beginTransaction();
+//			transaction.replace(R.id.container, imgFragment);
+//			transaction.addToBackStack(null);
+//
+//			// Commit the transaction
+//			transaction.commit();
+		}
+		
+	}
 	
 	/*
 	 * 
@@ -356,11 +433,31 @@ public class GFleeMarketNewFragment extends Fragment implements OnClickListener 
 					appDir.mkdirs();
 				}
 
+				f = new File(appDir.getAbsolutePath(), imageFileName);
+				
 			} else {
 				System.out.println("没有SD卡");
+
+				WarnDialog wd = WarnDialog.newInstance(getActivity());
+
+				wd.setTitle(R.string.photo)
+						.setMessage(R.string.no_sdcard)
+						.setPositiveBtn(R.string.confirm,
+								new DialogInterface.OnClickListener() {
+
+									@Override
+									public void onClick(DialogInterface dialog, int which) {
+										// TODO Auto-generated method stub
+
+									}
+								});
+
+				FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+				transaction.add(wd, "NoSdcard");
+				transaction.commitAllowingStateLoss();
+				
 			}
 
-			f = new File(appDir.getAbsolutePath(), imageFileName);
 		}
 
 	    return f;
@@ -493,9 +590,33 @@ public class GFleeMarketNewFragment extends Fragment implements OnClickListener 
 			dialog = new ProgressDialog(getActivity());
 			dialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
 			dialog.setMax(100);
+			dialog.setCanceledOnTouchOutside(false);
+			dialog.setCancelable(false);
+			dialog.setButton(DialogInterface.BUTTON_POSITIVE, getString(R.string.cancel), new DialogInterface.OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					// TODO Auto-generated method stub
+					UploadPictureTask.this.cancel(true);
+				}
+			});
+			
 			dialog.show();
 
 		}
+		
+		
+
+		@Override
+		protected void onCancelled() {
+			// TODO Auto-generated method stub
+			super.onCancelled();
+			
+			if(dialog.isShowing())
+				dialog.dismiss();
+			
+		}
+		
 
 		@Override
 		protected String doInBackground(String... params) {
@@ -508,7 +629,6 @@ public class GFleeMarketNewFragment extends Fragment implements OnClickListener 
 			else{
 				System.out.println("文件不存在！！");
 			}
-			
 			
 			System.out.println("good id is "+params[1]);
 			
@@ -555,37 +675,43 @@ public class GFleeMarketNewFragment extends Fragment implements OnClickListener 
 					int status = resObject.getInt("status");
 					if (status == 0) {
 						
-						_imgs.clear();
+//						_imgs.clear();
 						
 						JSONArray data = resObject.getJSONArray("data");
 						for (int i = 0, length = data.length(); i < length; i++) {
 							JSONObject item = data.getJSONObject(i);
 							String url = item.getString("url");
-							_imgs.add(url);
+							
+							if(_imgs.contains(url)) continue ;
+								
+							_imgs.add(String.format(ProtocolDefinition.IMAGE_BASE_URL, url));
 						}
 						
-						View v = getView();
-						DisplayMetrics m = getActivity().getResources().getDisplayMetrics();
-						int widthPixels = m.widthPixels;
+						mAdapter.notifyDataSetChanged();
 						
-						int width = (widthPixels - v.getPaddingLeft() - v.getPaddingRight()) * 3 / 4;
-						int imgMargin = 2;
-						
-						int imgWidth = width / 3 - imgMargin * 2;
-						ViewGroup.MarginLayoutParams param = new ViewGroup.MarginLayoutParams(imgWidth, imgWidth);
-						
-						int length = _imgs.size() <= 3 ? _imgs.size() : 3 ;
-						
-						mFleeImages.removeAllViews();
-						
-						for(int i=0; i<length; i++){
-							ImageView img = new ImageView(getActivity());
-							img.setLayoutParams(param);
-							img.setPadding(2, 2, 2, 2);
-							Bitmap bmp = BitmapFactory.decodeFile(mCurrentPhotoPath);
-							img.setImageBitmap(bmp);
-							mFleeImages.addView(img);
-						}
+//						
+//						View v = getView();
+//						DisplayMetrics m = getActivity().getResources().getDisplayMetrics();
+//						int widthPixels = m.widthPixels;
+//						
+//						int width = (widthPixels - v.getPaddingLeft() - v.getPaddingRight()) * 3 / 4;
+//						int imgMargin = 2;
+//						
+//						int imgWidth = width / 3 - imgMargin * 2;
+//						ViewGroup.MarginLayoutParams param = new ViewGroup.MarginLayoutParams(imgWidth, imgWidth);
+//						
+//						int length = _imgs.size() <= 3 ? _imgs.size() : 3 ;
+//						
+//						mFleeImages.removeAllViews();
+//						
+//						for(int i=0; i<length; i++){
+//							ImageView img = new ImageView(getActivity());
+//							img.setLayoutParams(param);
+//							img.setPadding(2, 2, 2, 2);
+//							Bitmap bmp = BitmapFactory.decodeFile(mCurrentPhotoPath);
+//							img.setImageBitmap(bmp);
+//							mFleeImages.addView(img);
+//						}
 
 					} else {
 
@@ -689,8 +815,8 @@ public class GFleeMarketNewFragment extends Fragment implements OnClickListener 
 						outStream.write(sb1.toString().getBytes());
 
 						long fileLength = file.length();
-						int total = 0;
-
+						
+						int hasUpload = 0;
 						Log.d("UpLoad", String.format("file's length is %.2f", (float) fileLength / 1024 ));
 						
 						
@@ -700,10 +826,13 @@ public class GFleeMarketNewFragment extends Fragment implements OnClickListener 
 						while ((len = is.read(buffer)) != -1) {
 							outStream.write(buffer, 0, len);
 
-							total += len;
-							this.publishProgress((int) (100 * total / fileLength));
+							hasUpload += len;
+							this.publishProgress((int) (100 * hasUpload / fileLength));
 
 //							Log.d("UpLoadFile",	String.format("%d/%d", total, fileLength));
+							
+							if(isCancelled()) break;
+							
 
 						}
 
@@ -749,6 +878,33 @@ public class GFleeMarketNewFragment extends Fragment implements OnClickListener 
 
 			return null;
 		}
+
+	}
+	
+	
+
+	private void setLinearLayoutBasedOnChildren(LinearLayout linearLayout) {
+
+		int childCount = linearLayout.getChildCount();
+
+		int totalWidth = 0;
+
+		for (int i = 0; i < childCount; i++) {
+
+			View v = linearLayout.getChildAt(i);
+
+			// 计算子项View 的宽高
+			v.measure(0, 0);
+
+			totalWidth += v.getMeasuredWidth() + v.getPaddingRight() + v.getPaddingLeft();
+
+		}
+
+		ViewGroup.LayoutParams params = linearLayout.getLayoutParams();
+		params.height = totalWidth;
+		
+		// params.height最后得到整个LinearLayout完整显示需要的高度
+		linearLayout.setLayoutParams(params);
 
 	}
 

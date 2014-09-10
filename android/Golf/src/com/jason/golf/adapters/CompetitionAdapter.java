@@ -79,6 +79,9 @@ public class CompetitionAdapter extends BaseAdapter {
 		}
 
 		GCompetition competition = _competitions.get(position);
+		
+		System.out.println(competition.toString());
+		
 		holder._name.setText(competition.getName());
 		holder._date.setText(competition.getStartDate());
 		holder._amount.setText(String.format("￥%.2f",(float)competition.getFee()/100));

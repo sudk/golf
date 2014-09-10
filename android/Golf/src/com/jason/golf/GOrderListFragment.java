@@ -15,16 +15,12 @@ import com.jason.golf.adapters.OrderAdapter;
 import com.jason.golf.classes.GOrder;
 import com.jason.golf.R;
 
-import android.app.DownloadManager.Query;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
-import android.widget.BaseAdapter;
-import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;

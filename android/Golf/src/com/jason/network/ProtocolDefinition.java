@@ -4,6 +4,7 @@ public class ProtocolDefinition {
 	
 	
 	public static final String COMMANDURL = "http://115.28.77.119/?r=command"; //
+	public static final String IMAGE_BASE_URL = "http://115.28.77.119/images/picture/%s";
 	
 	
 //	public class ResponseCode {

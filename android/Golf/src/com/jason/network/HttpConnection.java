@@ -14,6 +14,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.http.protocol.HTTP;
+
+import com.jason.controller.HttpRequest;
+
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
@@ -32,7 +36,7 @@ public class HttpConnection {
 
 	public HttpResponse sendRequestInPost(String command_url, String req, String session, Handler handler) {
 		
-		Message startMsg = handler.obtainMessage(10000);
+		Message startMsg = handler.obtainMessage(HttpRequest.BEGIN_TRANSMISSION);
 		handler.sendMessage(startMsg);
 
 		HttpResponse res = new HttpResponse();
@@ -58,7 +62,7 @@ public class HttpConnection {
 			reqArray = null;
 
 			res.responseCode = urlConnection.getResponseCode();
-			if (res.responseCode == 200) {
+			if (res.responseCode == HttpRequest.SUCCESS) {
 				byte[] buffer = new byte[1024];
 				ByteArrayOutputStream baos = new ByteArrayOutputStream(4 * 1024);
 				InputStream in = new BufferedInputStream(urlConnection.getInputStream());
@@ -71,30 +75,25 @@ public class HttpConnection {
 				String s = urlConnection.getHeaderField("Set-Cookie");
 				
 				if(handler != null){
-					Message msg = handler.obtainMessage(9004, s);
+					Message msg = handler.obtainMessage(HttpRequest.SAVE_SESSION, s);
 					handler.sendMessage(msg);
 				}
 				
 			} else {
-				res.content = "NetWork ERROR";
+				res.content = "发出请求无响应";
 			}
 
-			// System.out.println(String.format("Command URL: %s, req: %s", _url, req));
-			// System.out.println(String.format("Http response code: %d ; content: %s", res.responseCode, res.content));
-
 		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			res.responseCode = 9001;
+			res.responseCode = HttpRequest.IO_ERROR;
 			res.content = "Wrong Url";
 		} catch (SocketTimeoutException e) {
-			// TODO Auto-generated catch block
-			res.responseCode = 9002;
+			res.responseCode = HttpRequest.IO_ERROR;
 			res.content = "Time out";
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			res.responseCode = 9003;
+			res.responseCode = HttpRequest.IO_ERROR;
 			res.content = "Network disconnected";
 		} finally {
+			
 			if (urlConnection != null) {
 				urlConnection.disconnect();
 			}
@@ -102,8 +101,6 @@ public class HttpConnection {
 			if(handler != null){
 				Message msg = handler.obtainMessage(res.responseCode, res.content);
 				handler.sendMessage(msg);
-				
-				handler.sendEmptyMessage(10001);
 			}
 		}
 		

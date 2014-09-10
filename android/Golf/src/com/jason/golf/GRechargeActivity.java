@@ -139,13 +139,13 @@ public class GRechargeActivity extends ActionBarActivity implements
 			params.put("cmd"           , "order/create");
 			params.put("type"          ,"3" );//订单类型，0、订场；1、行程；2、赛事报名；3、充值；4、购买VIP
 			params.put("relation_id"   , acc.getId());
-			params.put("relation_name" , acc.getId());
+			params.put("relation_name" , "充值");
 			params.put("tee_time"      , sdf.format(date));
 			params.put("count"         , String.format("%d", 1));
 			params.put("unitprice"     , String.format("%d", amount * 100));
 			params.put("amount"        , String.format("%d", amount * 100));
 			params.put("pay_type"      , "1");//支付方式：0为现付，1为全额预付，2为押金
-			params.put("contact"       , acc.getId());
+			params.put("contact"       , acc.getPhone());
 			params.put("phone"         , acc.getPhone());
 			params.put("agent_id"      , "1");
 

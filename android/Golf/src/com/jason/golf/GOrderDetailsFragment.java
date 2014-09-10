@@ -33,8 +33,8 @@ import android.widget.TextView;
 public class GOrderDetailsFragment extends Fragment implements OnClickListener {
 
 	public static final String KEY_ORDER_ID = "order_id";
-	private static final String Pay_Balance = "1";
-	private static final String Pay_Yinlian = "2";
+//	private static final String Pay_Balance = "1";
+//	private static final String Pay_Yinlian = "2";
 	
 	
 	private static GOrderDetailsFragment F ;

@@ -9,8 +9,8 @@
         android:layout_height="0dip"
         android:layout_margin="10dip"
         android:layout_weight="1"
-        android:scrollbars="none"
-        android:background="@drawable/block_background" >
+        android:background="@drawable/block_background"
+        android:scrollbars="none" >
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -61,9 +61,9 @@
                     style="@style/FleeInfoEditText"
                     android:layout_width="0dip"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/money"
                     android:hint="@string/flee_new_good_price"
-                    android:inputType="numberDecimal" />
+                    android:inputType="numberDecimal"
+                    android:textColor="@color/money" />
             </LinearLayout>
 
             <View
@@ -171,13 +171,14 @@
                     android:text="照片："
                     android:textColor="@color/titlecolor" />
 
-                <LinearLayout
+                <com.jason.golf.classes.SimpleHorizontalListView
                     android:id="@+id/flee_images"
                     android:layout_width="0dip"
-                    android:layout_height="wrap_content"
                     android:layout_weight="7"
-                    android:orientation="horizontal" >
-                </LinearLayout>
+                    android:layout_height="wrap_content" >
+
+                   
+                </com.jason.golf.classes.SimpleHorizontalListView>
 
                 <Button
                     android:id="@+id/flee_add_img"
@@ -227,8 +228,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dip"
-        android:textColor="@color/white"
         android:background="@drawable/button_background"
-        android:text="保存" />
+        android:text="保存"
+        android:textColor="@color/white" />
 
 </LinearLayout>

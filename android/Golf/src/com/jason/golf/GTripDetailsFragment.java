@@ -16,6 +16,7 @@ import com.jason.golf.R;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +25,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 public class GTripDetailsFragment extends Fragment implements OnClickListener {
@@ -33,7 +35,7 @@ public class GTripDetailsFragment extends Fragment implements OnClickListener {
 	private String _tripId, _amount;
 
 	private TextView mTripName, mTripAgent, mTripStartDate, mTripEndDate,
-			mTripCourt, mTtripDesc, mPriceNormal, mPriceHoliday, mTripDesc;
+			mTripCourt, mTtripDesc, mPriceNormal, mPriceHoliday, mTripDesc, mNoImg;
 
 	private LinearLayout mTripImages;
 
@@ -86,6 +88,9 @@ public class GTripDetailsFragment extends Fragment implements OnClickListener {
 		mTripDesc = (TextView) v.findViewById(R.id.trip_desc);
 		mTriange = (ImageView) v.findViewById(R.id.trip_triange);
 		mTripImages = (LinearLayout) v.findViewById(R.id.trip_images);
+		mTripImages.setOnClickListener(this);
+		
+		mNoImg = (TextView) v.findViewById(R.id.no_img);
 		
 		mBookingTrip = (Button) v.findViewById(R.id.trip_booking);
 		mBookingTrip.setOnClickListener(this);
@@ -133,10 +138,8 @@ public class GTripDetailsFragment extends Fragment implements OnClickListener {
 							mTripStartDate.setText(_trip.getStartDate());
 							mTripEndDate.setText(_trip.getEndDate());
 
-							mPriceNormal.setText(String.format("￥%.2f",
-									(float) _trip.getNormalPrice() / 100));
-							mPriceHoliday.setText(String.format("￥%.2f",
-									(float) _trip.getHolidayPrice() / 100));
+							mPriceNormal.setText(String.format("￥%d", _trip.getNormalPrice() / 100));
+							mPriceHoliday.setText(String.format("￥%d", _trip.getHolidayPrice() / 100));
 							mTripDesc.setText(_trip.getDesc());
 
 							// mTripImages
@@ -145,29 +148,35 @@ public class GTripDetailsFragment extends Fragment implements OnClickListener {
 									.getDisplayMetrics();
 							int widthPixels = m.widthPixels;
 
-							mTriange.measure(0, 0);
+//							mTriange.measure(0, 0);
 
 							View v = getView();
 
-							int width = (widthPixels - v.getPaddingLeft()
-									- v.getPaddingRight() - mTriange
-									.getMeasuredWidth()) * 3 / 4;
+							int width = (widthPixels - v.getPaddingLeft() - v.getPaddingRight() - mTriange.getMeasuredWidth()) * 3 / 4;
 							int imgMargin = 2;
 
 							int imgWidth = width / 3 - imgMargin * 2;
-							ViewGroup.MarginLayoutParams param = new ViewGroup.MarginLayoutParams(
-									imgWidth, imgWidth);
+							ViewGroup.MarginLayoutParams param = new ViewGroup.MarginLayoutParams(imgWidth, imgWidth);
 
 							ArrayList<String> imgUrl = _trip.getImgs();
+							
+							if (imgUrl.size() > 0) {
 
-							int length = imgUrl.size() <= 3 ? imgUrl.size() : 3;
+								int length = imgUrl.size() <= 3 ? imgUrl.size()	: 3;
 
-							for (int i = 0; i < length; i++) {
-								ImageView img = new ImageView(getActivity());
-								img.setLayoutParams(param);
-								img.setPadding(2, 2, 2, 2);
-								mTripImages.addView(img);
-								_fb.display(img, imgUrl.get(i));
+								for (int i = 0; i < length; i++) {
+									ImageView img = new ImageView(getActivity());
+									img.setLayoutParams(param);
+									img.setPadding(5, 2, 5, 2);
+									mTripImages.addView(img);
+									_fb.display(img, imgUrl.get(i));
+								}
+								
+								mTripImages.setVisibility(View.VISIBLE);
+								mNoImg.setVisibility(View.GONE);
+							}else{
+								mTripImages.setVisibility(View.GONE);
+								mNoImg.setVisibility(View.VISIBLE);
 							}
 
 						} catch (JSONException e) {
@@ -191,6 +200,32 @@ public class GTripDetailsFragment extends Fragment implements OnClickListener {
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
 		switch (v.getId()) {
+		case R.id.trip_images:
+			
+			if(_trip.getImgs().size() > 0){
+				
+				Bundle params = new Bundle();
+				
+				String[] urls = new String[_trip.getImgs().size()];
+				for(int i=0,length=_trip.getImgs().size(); i<length;i++){
+					urls[i] = _trip.getImgs().get(i);
+				}
+				
+				params.putStringArray(GTripImagesFragment.KEY_IMG_URL, urls);
+				
+				Fragment imgFragment = GTripImagesFragment.Instance();
+				imgFragment.setArguments(params);
+
+				FragmentTransaction transaction = getFragmentManager().beginTransaction();
+				transaction.replace(R.id.container, imgFragment);
+				transaction.addToBackStack(null);
+
+				// Commit the transaction
+				transaction.commit();
+				
+			}
+			
+			break;
 		case R.id.trip_booking:
 			
 			GolfAppliaction app = (GolfAppliaction) getActivity().getApplication();
@@ -210,8 +245,6 @@ public class GTripDetailsFragment extends Fragment implements OnClickListener {
 				params.putString(GOrderApplyFragment.key_agent_name, _trip.getAgentName());
 				params.putString(GOrderApplyFragment.key_type, GOrderBookingTripFragment.TYPE);
 				
-				
-				
 				/*
 				 * 
 				 * 
@@ -219,11 +252,12 @@ public class GTripDetailsFragment extends Fragment implements OnClickListener {
 				 * 
 				 * 
 				 */
+				int[] prices = new int[] { 
+						_trip.getHolidayPrice(),
+						_trip.getNormalPrice()
+				} ;
 				
-				
-				params.putInt(GOrderApplyFragment.key_unitprice, _trip.getHolidayPrice());
-				
-				
+				params.putIntArray(GOrderApplyFragment.key_unitprice, prices);
 				
 				it.putExtras(params);
 				startActivity(it);
@@ -235,8 +269,6 @@ public class GTripDetailsFragment extends Fragment implements OnClickListener {
 				getActivity().startActivity(itLogin);
 				
 			}
-			
-			
 			
 			break;
 

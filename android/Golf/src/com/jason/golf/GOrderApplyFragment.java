@@ -8,15 +8,16 @@ import com.jason.controller.GThreadExecutor;
 import com.jason.controller.HttpCallback;
 import com.jason.controller.HttpRequest;
 import com.jason.golf.classes.AddAndSubView;
-import com.jason.golf.classes.GAgent;
 import com.jason.golf.classes.GCompetition;
 import com.jason.golf.dialog.WarnDialog;
 import com.jason.golf.R;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -43,7 +44,7 @@ public class GOrderApplyFragment extends Fragment implements OnClickListener {
 
 	private TextView mCompetitionName, mAgentName, mTeeTime, mAmount, mPrice, mPaytype;
 
-	private EditText mPlayerName, mPhone, mNum;
+	private EditText mPlayerName, mPhone;
 
 	private Button mSubmit;
 
@@ -75,6 +76,17 @@ public class GOrderApplyFragment extends Fragment implements OnClickListener {
 		_agentName = params.getString(key_agent_name);
 		// _orderType = params.getString(key_type);
 		_orderType = TYPE;
+	}
+	
+	
+
+	@Override
+	public void onAttach(Activity activity) {
+		// TODO Auto-generated method stub
+		super.onAttach(activity);
+		
+		ActionBarActivity a = (ActionBarActivity) activity;
+		a.getSupportActionBar().setTitle(R.string.ApplyGame);
 	}
 
 	@Override

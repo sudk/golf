@@ -150,13 +150,13 @@
                     android:text="照片："
                     android:textColor="@color/titlecolor" />
 
-                <LinearLayout
+                <com.jason.golf.classes.SimpleHorizontalListView
                     android:id="@+id/flee_good_images"
                     android:layout_width="0dip"
                     android:layout_height="wrap_content"
                     android:layout_weight="7"
                     android:orientation="horizontal" >
-                </LinearLayout>
+                </com.jason.golf.classes.SimpleHorizontalListView>
             </LinearLayout>
 
             <View

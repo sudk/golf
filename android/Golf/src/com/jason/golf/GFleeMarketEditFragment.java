@@ -23,11 +23,14 @@ import org.json.JSONObject;
 import com.jason.controller.GThreadExecutor;
 import com.jason.controller.HttpCallback;
 import com.jason.controller.HttpRequest;
+import com.jason.golf.adapters.FleeImagesAdapter;
 import com.jason.golf.classes.GAccount;
 import com.jason.golf.classes.GGood;
+import com.jason.golf.classes.SimpleHorizontalListView;
 import com.jason.golf.dialog.WarnDialog;
 import com.jason.golf.provider.GolfProviderConfig;
 import com.jason.golf.R;
+import com.jason.network.ProtocolDefinition;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -43,6 +46,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -52,14 +56,18 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class GFleeMarketEditFragment extends Fragment implements OnClickListener {
+public class GFleeMarketEditFragment extends Fragment implements OnClickListener, OnLongClickListener, OnItemClickListener, OnItemLongClickListener {
 	
 	public static final String KEY_GOOD_ID = "key_good_id";
 
@@ -75,18 +83,20 @@ public class GFleeMarketEditFragment extends Fragment implements OnClickListener
 	
 	private EditText mTitle, mDesc, mPrice, mContact, mPhone;
 	
-	private LinearLayout mFleeImages;
+	private SimpleHorizontalListView mFleeImages;
+	
+	private FleeImagesAdapter mAdapter;
 	
 	private TextView mCity;
 	
 	private TextWatcher _watcher;
 	
-	private ArrayList<String> _imgs;
+//	private ArrayList<String> _imgs;
+	
+	private GGood _good; 
 	
 	FinalBitmap _fb;
 	
-//	private String _googId = "";
-
 	public static GFleeMarketEditFragment Instance() {
 		return new GFleeMarketEditFragment();
 	}
@@ -102,17 +112,15 @@ public class GFleeMarketEditFragment extends Fragment implements OnClickListener
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		_goodId = getArguments().getString(KEY_GOOD_ID, "");
-		_imgs = new ArrayList<String>();
+//		_imgs = new ArrayList<String>();
 		
 		_fb = FinalBitmap.create(getActivity());
 		_fb.configLoadingImage(R.drawable.test_golf);
 		
-		queryGood();
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		View v = inflater.inflate(R.layout.fragment_flee_market_new, null);
 		mAddImg = (Button) v.findViewById(R.id.flee_add_img);
@@ -121,16 +129,10 @@ public class GFleeMarketEditFragment extends Fragment implements OnClickListener
 		_watcher = new TextWatcher() {
 			
 			@Override
-			public void onTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
-				// TODO Auto-generated method stub
-				
-			}
+			public void onTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {}
 			
 			@Override
-			public void beforeTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
-				// TODO Auto-generated method stub
-				
-			}
+			public void beforeTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {}
 			
 			@Override
 			public void afterTextChanged(Editable arg0) {
@@ -150,7 +152,9 @@ public class GFleeMarketEditFragment extends Fragment implements OnClickListener
 		mPhone = (EditText) v.findViewById(R.id.flee_phone);
 		mPhone.addTextChangedListener(_watcher);
 		
-		mFleeImages = (LinearLayout) v.findViewById(R.id.flee_images);
+		mFleeImages = (SimpleHorizontalListView) v.findViewById(R.id.flee_images);
+		mFleeImages.setOnItemClickListener(this);
+		mFleeImages.setOnItemLongClickListener(this);
 		
 		mCity = (TextView) v.findViewById(R.id.flee_city);
 		mCity.setOnClickListener(this);
@@ -160,7 +164,70 @@ public class GFleeMarketEditFragment extends Fragment implements OnClickListener
 		
 		checkSubmitButtonState();
 		
+		queryGood();
+		
 		return v;
+	}
+	
+	@Override
+	public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
+		// TODO Auto-generated method stub
+		
+		WarnDialog wd = WarnDialog.newInstance(getActivity());
+		wd.setTitle(R.string.if_delete).setPositiveBtn(R.string.delete, new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				// TODO Auto-generated method stub
+				_good.getImgs().remove(position);
+				mAdapter.notifyDataSetChanged();
+			}
+		})
+		.setNegativeBtn(R.string.cancel, new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		
+		wd.show(getFragmentManager(), "DeleteImg");
+		
+		return true;
+	}
+
+	@Override
+	public void onItemClick(AdapterView<?> parent, View view, int position,	long id) {
+		// TODO Auto-generated method stub
+		
+		if (_good.getImgs().size() > 0) {
+
+			Bundle params = new Bundle();
+
+			String[] urls = new String[_good.getImgs().size()];
+			for (int i = 0, length = _good.getImgs().size(); i < length; i++) {
+				urls[i] = _good.getImgs().get(i);
+			}
+
+			params.putStringArray(ShowImagesActivity.KEY_IMG_URL, urls);
+			params.putInt(ShowImagesActivity.KEY_IMG_POS, position);
+			
+			Intent imgIntent = new Intent(getActivity(), ShowImagesActivity.class);
+			imgIntent.putExtras(params);
+			startActivity(imgIntent);
+			
+//			Fragment imgFragment = GFleeImagesFragment.Instance();
+//			imgFragment.setArguments(params);
+//
+//			FragmentTransaction transaction = getFragmentManager().beginTransaction();
+//			transaction.replace(R.id.container, imgFragment);
+//			transaction.addToBackStack(null);
+//
+//			// Commit the transaction
+//			transaction.commit();
+		}
+		
 	}
 	
 	private void checkSubmitButtonState(){
@@ -178,7 +245,7 @@ public class GFleeMarketEditFragment extends Fragment implements OnClickListener
 	 * 
 	 * 
 	 * 
-	 *      获取 新建寄卖ID 
+	 *      query FleeGood info
 	 *  
 	 * 
 	 * 
@@ -216,21 +283,21 @@ public class GFleeMarketEditFragment extends Fragment implements OnClickListener
 						try {
 							JSONObject data = new JSONObject(res);
 							
-							GGood g = new GGood();
-							g.initialize(data);
+							_good = new GGood();
+							_good.initialize(data);
 							
 							
-							mTitle.setText(g.getTitle());
+							mTitle.setText(_good.getTitle());
 							
-							int p = Integer.parseInt(g.getPrice());
+							int p = Integer.parseInt(_good.getPrice());
 							
-							mPrice.setText(String.format("￥%.2f",(float)p/100));
+							mPrice.setText(String.format("%.2f",(float)p/100));
 							
-							mDesc.setText(g.getDesc());
-							mContact.setText(g.getContact());
-							mPhone.setText(g.getPhone());
+							mDesc.setText(_good.getDesc());
+							mContact.setText(_good.getContact());
+							mPhone.setText(_good.getPhone());
 							
-							_cityId = g.getCity();
+							_cityId = _good.getCity();
 							
 							ContentResolver cr = getActivity().getContentResolver();
 
@@ -250,34 +317,10 @@ public class GFleeMarketEditFragment extends Fragment implements OnClickListener
 								c.close();
 							}
 							
-							_imgs.clear();
-							_imgs.addAll(g.getImgs());
 							
-							View v = getView();
-							DisplayMetrics m = getActivity().getResources().getDisplayMetrics();
-							int widthPixels = m.widthPixels;
+							mAdapter = new FleeImagesAdapter(getActivity(), _good.getImgs());
 							
-							int width = (widthPixels - v.getPaddingLeft() - v.getPaddingRight()) * 3 / 4;
-							int imgMargin = 2;
-							
-							int imgWidth = width / 3 - imgMargin * 2;
-							ViewGroup.MarginLayoutParams param = new ViewGroup.MarginLayoutParams(imgWidth, imgWidth);
-							
-							ArrayList<String> imgUrl = g.getImgs();
-							
-							int length = imgUrl.size() <= 3 ? imgUrl.size() : 3 ;
-							
-							for(int i=0; i<length; i++){
-								ImageView img = new ImageView(getActivity());
-								img.setLayoutParams(param);
-								img.setPadding(2, 2, 2, 2);
-								mFleeImages.addView(img);
-								
-								if(imgUrl.size() > i)
-									_fb.display(img, imgUrl.get(i));
-							}
-							
-							
+							mFleeImages.setAdapter(mAdapter);
 							
 						} catch (JSONException e) {
 							// TODO Auto-generated catch block
@@ -358,21 +401,21 @@ public class GFleeMarketEditFragment extends Fragment implements OnClickListener
 		
 		try {
 			
-			params.put("cmd", "flea/create");
+			params.put("cmd", "flea/update");
 			params.put("id", _goodId);
-			params.put("title",mTitle.getText().toString());
-			params.put("city",_cityId);
-			params.put("desc",mDesc.getText().toString());
+			params.put("title", mTitle.getText().toString());
+			params.put("city", _cityId);
+			params.put("desc", mDesc.getText().toString());
 			
 			String p = mPrice.getText().toString();
-			params.put("price", Integer.parseInt(p) * 100);
+			params.put("price", (int) (Float.parseFloat(p) * 100));
 			
-			params.put("contact",mContact.getText().toString());
-			params.put("phone",mPhone.getText().toString());
+			params.put("contact", mContact.getText().toString());
+			params.put("phone", mPhone.getText().toString());
 			
 			JSONArray imgs = new JSONArray();
 			
-			for(String str : _imgs){
+			for(String str : _good.getImgs()){
 				imgs.put(str);
 			}
 			
@@ -415,6 +458,19 @@ public class GFleeMarketEditFragment extends Fragment implements OnClickListener
 			public void faildData(int code, String res) {
 				// TODO Auto-generated method stub
 				super.faildData(code, res);
+				
+				WarnDialog dialog = new WarnDialog(getActivity());
+				dialog.setTitle(R.string.sale).setMessage(res)
+				.setPositiveBtn(R.string.confirm, new DialogInterface.OnClickListener() {
+					
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						// TODO Auto-generated method stub
+						((ActionBarActivity)getActivity()).onSupportNavigateUp();
+					}
+				});
+				
+				dialog.show(getFragmentManager(), "NewGoodsFaild");
 			}
 			
 		});
@@ -499,41 +555,6 @@ public class GFleeMarketEditFragment extends Fragment implements OnClickListener
 				UploadPictureTask task = new UploadPictureTask();
 				task.execute(new String[] { mCurrentPhotoPath, _goodId});
 				
-//				File f = new File(mCurrentPhotoPath);
-//				if (f.exists()) {
-//					
-//					
-//					System.out.println(String.format("图片文件大小： %d", f.length()));
-//
-//					try {
-//						AjaxParams params = new AjaxParams();
-//						params.put("id", _fleeGoodId);
-//						params.put("my_file", f);
-////						params.put("profile_picture", f); 
-//						
-//						FinalHttp fh = new FinalHttp();
-//						fh.post("http://115.28.77.119/?r=cmd/flea/upload",
-//								params, new AjaxCallBack() {
-//									@Override
-//									public void onLoading(long count, long current) {
-//										System.out.println(String.format("count : %d; current : %d", count, current));
-//									}
-//
-//									public void onSuccess(String t) {
-//										System.out.println(String.format("onSuccess : %s", t));
-//									}
-//								});
-//
-//					} catch (FileNotFoundException e) {
-//						// TODO Auto-generated catch block
-//						e.printStackTrace();
-//					} // 上传文件
-//
-//				}else{
-//					System.out.println("文件不存在！！");
-//					
-//				}
-
 			}
 
 			break;
@@ -544,12 +565,8 @@ public class GFleeMarketEditFragment extends Fragment implements OnClickListener
 	
 	/*
 	 * 
-	 * 
 	 * 上传 寄卖物品图片。
 	 *  
-	 *  
-	 * 
-	 * 
 	 */
 	private class UploadPictureTask extends AsyncTask<String, Integer, String> {
 
@@ -596,8 +613,7 @@ public class GFleeMarketEditFragment extends Fragment implements OnClickListener
 				System.out.println("文件不存在！！");
 			}
 			
-			
-			System.out.println("good id is "+params[1]);
+			System.out.println("good id is " + params[1]);
 			
 			return uploadFile(file, params[1]);
 		}
@@ -642,37 +658,17 @@ public class GFleeMarketEditFragment extends Fragment implements OnClickListener
 					int status = resObject.getInt("status");
 					if (status == 0) {
 						
-						_imgs.clear();
+//						_imgs.clear();
 						
 						JSONArray data = resObject.getJSONArray("data");
 						for (int i = 0, length = data.length(); i < length; i++) {
 							JSONObject item = data.getJSONObject(i);
 							String url = item.getString("url");
-							_imgs.add(url);
-						}
-						
-						View v = getView();
-						DisplayMetrics m = getActivity().getResources().getDisplayMetrics();
-						int widthPixels = m.widthPixels;
-						
-						int width = (widthPixels - v.getPaddingLeft() - v.getPaddingRight()) * 3 / 4;
-						int imgMargin = 2;
-						
-						int imgWidth = width / 3 - imgMargin * 2;
-						ViewGroup.MarginLayoutParams param = new ViewGroup.MarginLayoutParams(imgWidth, imgWidth);
-						
-						int length = _imgs.size() <= 3 ? _imgs.size() : 3 ;
-						
-						mFleeImages.removeAllViews();
-						
-						for(int i=0; i<length; i++){
-							ImageView img = new ImageView(getActivity());
-							img.setLayoutParams(param);
-							img.setPadding(2, 2, 2, 2);
-							Bitmap bmp = BitmapFactory.decodeFile(mCurrentPhotoPath);
-							img.setImageBitmap(bmp);
-							mFleeImages.addView(img);
 							
+							if(!_good.getImgs().contains(url)){
+								_good.getImgs().add(String.format(ProtocolDefinition.IMAGE_BASE_URL, url));
+								mAdapter.notifyDataSetChanged();
+							}
 						}
 						
 
@@ -839,6 +835,38 @@ public class GFleeMarketEditFragment extends Fragment implements OnClickListener
 			return null;
 		}
 
+	}
+
+
+	@Override
+	public boolean onLongClick(View v) {
+		// TODO Auto-generated method stub
+		
+		final int index = (Integer) v.getTag();
+		
+		
+		WarnDialog dialog = WarnDialog.newInstance(getActivity());
+		
+		dialog.setTitle("删除").setMessage("是否删除照片？")
+		.setNegativeBtn(R.string.confirm, new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				// TODO Auto-generated method stub
+				_good.getImgs().remove(index);
+				mFleeImages.removeViewAt(index);
+			}
+		})
+		.setPositiveBtn(R.string.cancel, new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		
+		return false;
 	}
 
 }

@@ -122,8 +122,8 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:textSize="15sp"
-                    android:textColor="#9fa1a3"
-                    android:text="@string/obtain"
+                    android:textColor="@color/white"
+                    android:text="@string/sms_code"
                     style="@style/WhiteButton"/>
             </LinearLayout>
         </LinearLayout>

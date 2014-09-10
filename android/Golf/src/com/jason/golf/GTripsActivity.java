@@ -27,7 +27,7 @@ public class GTripsActivity extends ActionBarActivity {
 		setContentView(R.layout.activity_trips);
 
 		ActionBar bar = getSupportActionBar();
-		bar.setTitle(R.string.combo);
+		bar.setTitle(R.string.trip);
 		bar.setIcon(R.drawable.actionbar_icon);
 		int change = bar.getDisplayOptions() ^ ActionBar.DISPLAY_HOME_AS_UP;
 		bar.setDisplayOptions(change, ActionBar.DISPLAY_HOME_AS_UP);

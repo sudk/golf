@@ -24,12 +24,14 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
+import android.widget.TextView;
 
 public class GCompetitionListFragment extends Fragment implements OnItemClickListener {
 	
 	private PullToRefreshListView mCompetitions;
 	private CompetitionAdapter mAdapter;
 	private ArrayList<GCompetition> _competitions;
+	private TextView mNoData;
 	
 	private int _page = 0;
 
@@ -55,6 +57,8 @@ public class GCompetitionListFragment extends Fragment implements OnItemClickLis
 			Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		View v = inflater.inflate(R.layout.fragment_competition_list, null);
+		
+		mNoData = (TextView) v.findViewById(R.id.no_data);
 		
 		mAdapter = new CompetitionAdapter(getActivity(), _competitions);
 		
@@ -145,21 +149,25 @@ public class GCompetitionListFragment extends Fragment implements OnItemClickLis
 						
 						GCompetition competition = new GCompetition();
 						
-						competition.setId(item.getString("id"));
-						competition.setAgentId(item.getString("agent_id"));
-						competition.setAgentName(item.getString("agent_name"));
-						competition.setCourtId(item.getString("court_id"));
-						competition.setCourtName(item.getString("court_name"));
-						competition.setName(item.getString("name"));
-						competition.setDesc(item.getString("desc"));
-						competition.setFee(item.getString("fee"));
-						competition.setStartDate(item.getString("start_date"));
-						competition.setEndDate(item.getString("end_date"));
-						competition.setPlan(item.getString("plan"));
-						competition.setFeeInclude(item.getString("fee_include"));
-						competition.setFeeNotInclude(item.getString("fee_not_include"));
-						competition.setFeeType(item.getString("fee_type"));
-						competition.setImg(item.getString("img"));
+						competition.init(item);
+						
+//						competition.setId(item.getString("id"));
+//						competition.setAgentId(item.getString("agent_id"));
+//						competition.setAgentName(item.getString("agent_name"));
+//						competition.setCourtId(item.getString("court_id"));
+//						competition.setCourtName(item.getString("court_name"));
+//						competition.setName(item.getString("name"));
+//						competition.setDesc(item.getString("desc"));
+//						competition.setFee(item.getString("fee"));
+//						competition.setStartDate(item.getString("start_date"));
+//						competition.setEndDate(item.getString("end_date"));
+//						competition.setPlan(item.getString("plan"));
+//						competition.setFeeInclude(item.getString("fee_include"));
+//						competition.setFeeNotInclude(item.getString("fee_not_include"));
+//						competition.setFeeType(item.getString("fee_type"));
+//						competition.setImg(item.getString("img"));
+						
+//						System.out.println(competition.toString());
 						
 						_competitions.add(competition);
 					}
@@ -171,6 +179,16 @@ public class GCompetitionListFragment extends Fragment implements OnItemClickLis
 						mAdapter.appendData(_competitions);
 					}
 					_page++;
+					
+//					
+					if(mAdapter.getCount() == 0){
+						mNoData.setVisibility(View.VISIBLE);
+//						mCompetitions.setVisibility(View.GONE);
+					}else{
+						mNoData.setVisibility(View.GONE);
+//						mCompetitions.setVisibility(View.VISIBLE);
+					}
+					
 					
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
@@ -185,7 +203,8 @@ public class GCompetitionListFragment extends Fragment implements OnItemClickLis
 				
 				if (code == 4) {
 					// 没有数据
-
+					mNoData.setVisibility(View.VISIBLE);
+//					mCompetitions.setVisibility(View.GONE);
 				}
 			}
 			
@@ -221,11 +240,6 @@ public class GCompetitionListFragment extends Fragment implements OnItemClickLis
 		transaction.addToBackStack(null);
 		// Commit the transaction
 		transaction.commit();
-		
-		
-		
-		
-		
 		
 	}
 }

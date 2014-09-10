@@ -1,6 +1,10 @@
 package com.jason.golf;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+
+import mirko.android.datetimepicker.date.DatePickerDialog;
+import mirko.android.datetimepicker.date.DatePickerDialog.OnDateSetListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -19,7 +23,11 @@ import com.jason.golf.R;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -33,6 +41,15 @@ public class GTransrecordListFragment extends Fragment implements OnItemClickLis
 	private TransrecordAdapter mAdapter;
 	
 	private int _page = 0;
+	
+	 // date and time
+    private int mYear;
+    private int mMonth;
+    private int mDay;
+    private int mHour;
+    private int mMinute;
+    
+    private Calendar mCalendar;
 
 	public static GTransrecordListFragment Instance() {
 		return new GTransrecordListFragment();
@@ -49,6 +66,12 @@ public class GTransrecordListFragment extends Fragment implements OnItemClickLis
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
+		mCalendar = Calendar.getInstance();
+		
+		mYear = mCalendar.get(Calendar.YEAR);
+        mMonth = mCalendar.get(Calendar.MONTH); 
+        mDay = mCalendar.get(Calendar.DAY_OF_MONTH);
+		
 		_records = new ArrayList<GTransrecord>();
 	}
 
@@ -56,6 +79,9 @@ public class GTransrecordListFragment extends Fragment implements OnItemClickLis
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
+		
+		((ActionBarActivity)getActivity()).getSupportActionBar().setTitle(String.format("%d月份消费明细", mMonth+1));
+		
 		View v = inflater.inflate(R.layout.fragment_transrecord_list, null);
 		mRecords = (PullToRefreshListView) v.findViewById(R.id.transrecord_list);
 		mRecords.getRefreshableView().setOnItemClickListener(this);
@@ -85,6 +111,44 @@ public class GTransrecordListFragment extends Fragment implements OnItemClickLis
 		return v;
 	}
 	
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		// TODO Auto-generated method stub
+		
+		inflater.inflate(R.menu.trans_list_menu, menu);
+		
+		super.onCreateOptionsMenu(menu, inflater);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// TODO Auto-generated method stub
+		
+		switch(item.getItemId()){
+		case R.id.menu_month:
+			
+	        DatePickerDialog dialog = DatePickerDialog.newInstance(new OnDateSetListener() {
+				
+				@Override
+				public void onDateSet(DatePickerDialog dialog, int year, int monthOfYear, int dayOfMonth) {
+					// TODO Auto-generated method stub
+					mYear = year;
+					mMonth = monthOfYear;
+					
+					((ActionBarActivity)getActivity()).getSupportActionBar().setTitle(String.format("%d月份消费明细", mMonth+1));
+					
+					queryTransrecords(0, true);
+				}
+			},mYear, mMonth, mDay);
+	        
+	        dialog.show(getFragmentManager(), "SelsectDate");
+			
+			break;
+		}
+		
+		
+		return super.onOptionsItemSelected(item);
+	}
 
 	private void queryTransrecords(int page, final boolean isRefresh) {
 		// TODO Auto-generated method stub
@@ -96,9 +160,8 @@ public class GTransrecordListFragment extends Fragment implements OnItemClickLis
 		
 		try {
 			
-			params.put("cmd", "transrecord/list");
-			params.put("start_date","");
-			params.put("end_date", "");
+			params.put("cmd", "trans/list");
+			params.put("month",String.format("%d-%02d", mYear, mMonth+1));
 			params.put("_pg_", String.format("%d", page));
 
 		} catch (JSONException e) {

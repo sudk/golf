@@ -37,7 +37,7 @@
                     android:id="@+id/competition_agent"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="主办方"
+                    android:text=""
                     android:textColor="@color/titlecolor"
                     android:textSize="18sp" />
             </LinearLayout>
@@ -55,7 +55,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dip"
                     android:padding="5dip"
-                    android:text="赛事时间"
+                    android:text="报名日期："
                     android:textColor="@color/titlecolor" />
 
                 <View
@@ -101,7 +101,7 @@
                         android:layout_width="0dip"
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
-                        android:text="结束日期："
+                        android:text="截止日期："
                         android:textSize="15sp" />
 
                     <TextView

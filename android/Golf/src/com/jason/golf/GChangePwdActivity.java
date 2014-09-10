@@ -11,6 +11,7 @@ import com.jason.golf.dialog.WarnDialog;
 import com.jason.golf.R;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Handler.Callback;
@@ -28,6 +29,10 @@ public class GChangePwdActivity extends ActionBarActivity implements
 		OnClickListener, Callback, TextWatcher {
 
 	private static final int MESSAGE_TIMING = 1001;
+	
+	private static final int TIME_COUNT = 60; // 倒计时60秒
+	
+	private boolean _timeCounting = false;
 
 	private Button mGetSmsCode, mSubmitChgPwd;
 	private Handler mHandler;
@@ -41,11 +46,13 @@ public class GChangePwdActivity extends ActionBarActivity implements
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 
-		_timeCounter = 30;
+		_timeCounter = TIME_COUNT;
+		
+		String title = getIntent().getStringExtra("title");
 
 		setContentView(R.layout.activity_change_pwd);
 		ActionBar bar = getSupportActionBar();
-		bar.setTitle(R.string.account_changepwd);
+		bar.setTitle(title);
 		bar.setIcon(R.drawable.actionbar_icon);
 		int change = bar.getDisplayOptions() ^ ActionBar.DISPLAY_HOME_AS_UP;
 		bar.setDisplayOptions(change, ActionBar.DISPLAY_HOME_AS_UP);
@@ -58,9 +65,9 @@ public class GChangePwdActivity extends ActionBarActivity implements
 		mSmsCode.addTextChangedListener(this);
 
 		mGetSmsCode = (Button) findViewById(R.id.get_sms_code);
-		mGetSmsCode.setEnabled(false);
 		mSubmitChgPwd = (Button) findViewById(R.id.submit_chgpwd);
-		mSubmitChgPwd.setEnabled(false);
+		
+		checkButtongsEnable();
 
 		mGetSmsCode.setOnClickListener(this);
 		mSubmitChgPwd.setOnClickListener(this);
@@ -105,7 +112,11 @@ public class GChangePwdActivity extends ActionBarActivity implements
 
 			});
 
-			GThreadExecutor.execute(r);
+//			GThreadExecutor.execute(r);
+			
+			//为给老苏省短信钱，暂时用此代码测试 button 的enable效果，用完删掉或注册掉
+			mGetSmsCode.setEnabled(false);
+			mHandler.sendEmptyMessage(MESSAGE_TIMING);
 
 			break;
 		}
@@ -129,7 +140,11 @@ public class GChangePwdActivity extends ActionBarActivity implements
 
 			HttpRequest r = new HttpRequest(this, params, new HttpCallback() {
 				
-				
+				@Override
+				public void finalWork() {
+					// TODO Auto-generated method stub
+					super.finalWork();
+				}
 
 				@Override
 				public void faildData(int code, String res) {
@@ -153,8 +168,7 @@ public class GChangePwdActivity extends ActionBarActivity implements
 				public void sucessData(String res) {
 					// TODO Auto-generated method stub
 					mGetSmsCode.setEnabled(false);
-					mHandler.sendEmptyMessage(MESSAGE_TIMING);
-					
+					mHandler.removeMessages(MESSAGE_TIMING);
 					
 					WarnDialog dialog = new WarnDialog(GChangePwdActivity.this);
 					dialog.setTitle(R.string.account_changepwd).setMessage(R.string.account_has_chang_pwd)
@@ -168,8 +182,6 @@ public class GChangePwdActivity extends ActionBarActivity implements
 						}
 					});
 					dialog.show(getSupportFragmentManager(), "ChPwdSuccess");
-					
-					
 					
 					super.sucessData(res);
 					
@@ -192,13 +204,15 @@ public class GChangePwdActivity extends ActionBarActivity implements
 		case MESSAGE_TIMING:
 
 			_timeCounter--;
+			_timeCounting = true;
 
 			if (_timeCounter == 0) {
-				_timeCounter = 30;
+				_timeCounter = TIME_COUNT;
 				mHandler.removeMessages(MESSAGE_TIMING);
-				mGetSmsCode.setText(R.string.obtain);
-				mGetSmsCode.setEnabled(true);
-
+				mGetSmsCode.setText(R.string.sms_code);
+				_timeCounting = false;
+				checkButtongsEnable();
+//				mGetSmsCode.setEnabled(true);
 			} else {
 				mGetSmsCode.setText(String.format("(%d)", _timeCounter));
 				mHandler.sendEmptyMessageDelayed(MESSAGE_TIMING, 1000);
@@ -209,14 +223,15 @@ public class GChangePwdActivity extends ActionBarActivity implements
 
 		return false;
 	}
-
-	@Override
-	public void afterTextChanged(Editable arg0) {
-		// TODO Auto-generated method stub
-		if(mPhone.length() < 11)
-			mGetSmsCode.setEnabled(false);
-		else
-			mGetSmsCode.setEnabled(true);
+	
+	private void checkButtongsEnable(){
+		
+		if (!_timeCounting) {
+			if (mPhone.length() < 11)
+				mGetSmsCode.setEnabled(false);
+			else
+				mGetSmsCode.setEnabled(true);
+		}
 		
 		if(mPhone.length() < 11 || mPassword.length() < 6 || mSmsCode.length() != 4){
 			mSubmitChgPwd.setEnabled(false);
@@ -226,16 +241,15 @@ public class GChangePwdActivity extends ActionBarActivity implements
 	}
 
 	@Override
-	public void beforeTextChanged(CharSequence arg0, int arg1, int arg2,
-			int arg3) {
+	public void afterTextChanged(Editable arg0) {
 		// TODO Auto-generated method stub
-
+		checkButtongsEnable();
 	}
 
 	@Override
-	public void onTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
-		// TODO Auto-generated method stub
+	public void beforeTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {}
 
-	}
+	@Override
+	public void onTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {}
 
 }

@@ -89,8 +89,8 @@
                 style="@style/SearchCourtEditText"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:singleLine="true"
-                android:hint="@string/name_of_court" />
+                android:hint="@string/name_of_court"
+                android:singleLine="true" />
         </LinearLayout>
     </LinearLayout>
 
@@ -101,5 +101,16 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="30dip"
         android:text="@string/search" />
+
+    <TextView
+        android:id="@+id/preference"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dip"
+        android:background="@drawable/block_background"
+        android:gravity="center"
+        android:padding="15dip"
+        android:text="特惠日"
+        android:textSize="16sp" />
 
 </LinearLayout>

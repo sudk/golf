@@ -34,7 +34,7 @@ public class GSearchCourtFragment extends Fragment implements OnClickListener {
 
 	private final Calendar mCalendar = Calendar.getInstance();
 
-	private TextView mSelectDate, mSelectTime, mSelectCity, mKeywords;
+	private TextView mSelectDate, mSelectTime, mSelectCity, mKeywords, mPreference;
 
 	private String _cityId, _date, _time;
 
@@ -104,6 +104,9 @@ public class GSearchCourtFragment extends Fragment implements OnClickListener {
 		mKeywords = (TextView) v.findViewById(R.id.select_keywords);
 		mKeywords.setOnClickListener(this);
 		
+		mPreference = (TextView) v.findViewById(R.id.preference);
+		mPreference.setOnClickListener(this);
+		
 		initializeCity();
 		
 		mCalendar.add(Calendar.DAY_OF_MONTH, 1);
@@ -134,7 +137,7 @@ public class GSearchCourtFragment extends Fragment implements OnClickListener {
 						// .append(" ").append(pad(month + 1)).append(" ")
 						// .append(pad(year)));
 
-						mSelectDate.setText(String.format("%d月%d日", month + 1,
+						mSelectDate.setText(String.format("%d月%02d日", month + 1,
 								day));
 						_date = String.format("%d-%02d-%02d", year, month + 1,
 								day);
@@ -155,12 +158,12 @@ public class GSearchCourtFragment extends Fragment implements OnClickListener {
 						// new StringBuilder().append(pad2(hourOfDay))
 						// .append(":").append(pad(minute)).append(c));
 
-						mSelectTime.setText(String.format("%d点%d分", hourOfDay,
+						mSelectTime.setText(String.format("%02d点%02d分", hourOfDay,
 								minute));
 						_time = String.format("%02d:%02d", hourOfDay, minute);
 
 					}
-				}, 9, 30, false);
+				}, 9, 30, true);
 
 		return v;
 	}
@@ -232,6 +235,13 @@ public class GSearchCourtFragment extends Fragment implements OnClickListener {
 			
 			Intent pickCourt = new Intent(getActivity(), SearchCourtNameActivity.class);
 			startActivityForResult(pickCourt, RequestPickCourt);
+			
+			break;
+			
+		case R.id.preference:
+			
+			Intent preferentialIntent = new Intent(getActivity(), GPreferentialActivity.class);
+			startActivity(preferentialIntent);
 			
 			break;
 		}

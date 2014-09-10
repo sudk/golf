@@ -63,7 +63,7 @@ public class TripsAdapter extends BaseAdapter {
 			holder._comboImg = (ImageView) v.findViewById(R.id.combo_img);
 			holder._comboName = (TextView) v.findViewById(R.id.combo_name);
 			holder._comboCourt = (TextView) v.findViewById(R.id.combo_court);
-			holder._comboDate = (TextView) v.findViewById(R.id.combo_date);
+//			holder._comboDate = (TextView) v.findViewById(R.id.combo_date);
 			holder._comboAmount = (TextView) v.findViewById(R.id.combo_amount);
 			holder._comboPayType = (TextView) v.findViewById(R.id.combo_pay_type);
 			v.setTag(holder);
@@ -76,7 +76,7 @@ public class TripsAdapter extends BaseAdapter {
 		
 		holder._comboName.setText(trip.getTripName());
 		holder._comboCourt.setText(trip.getCourtName());
-		holder._comboDate.setText(trip.getStartDate());
+//		holder._comboDate.setText(trip.getStartDate());
 		holder._comboAmount.setText(String.format("￥%.0f" , (float)trip.getHolidayPrice() / 100));
 		holder._comboPayType.setText(GTrip.GetPayTypeDes(trip.getPayType()));
 		
@@ -102,7 +102,7 @@ public class TripsAdapter extends BaseAdapter {
 		public ImageView _comboImg;
 		public TextView _comboName;
 		public TextView _comboCourt;
-		public TextView _comboDate;
+//		public TextView _comboDate;
 		public TextView _comboAmount;
 		public TextView _comboPayType;
 	}

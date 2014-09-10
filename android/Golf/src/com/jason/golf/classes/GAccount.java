@@ -20,6 +20,9 @@ public class GAccount {
 	private String _type; // �Ƿ�VIP�ͻ�
 	private String _vipCardNo; // VIP卡号
 	private String _point; // 积分
+	
+	private int _vip_status;
+	private String _vip_expire_date;
 
 	private double _latitude;
 	private double _longitude;
@@ -171,16 +174,32 @@ public class GAccount {
 		_id = null;
 		_session = null;
 		_login = false;
+		_vip_status = 0;
 	}
 	
-	public boolean isVip(){
-		
-		if(TextUtils.isEmpty(_vipCardNo)){
-			return false;
-		}else{
+	public boolean isVip() {
+//		VIP状态：-1、为已经过期，0、为非会员，1、为正常
+		if (_vip_status == 1)
 			return true;
-		}
-		
+		else
+			return false;
+
+	}
+
+	public int getVipStatus() {
+		return _vip_status;
+	}
+
+	public void setVipStatus(int vip_status) {
+		this._vip_status = vip_status;
+	}
+
+	public String getVipExpireDate() {
+		return _vip_expire_date;
+	}
+
+	public void setVipExpireDate(String vip_expire_date) {
+		this._vip_expire_date = vip_expire_date;
 	}
 
 	@Override
@@ -190,9 +209,9 @@ public class GAccount {
 				+ ", _eamil=" + _eamil + ", _sex=" + _sex + ", _remark="
 				+ _remark + ", _balance=" + _balance + ", _type=" + _type
 				+ ", _vipCardNo=" + _vipCardNo + ", _point=" + _point
-				+ ", _latitude=" + _latitude + ", _longitude=" + _longitude
-				+ ", _login=" + _login + "]";
+				+ ", vip_status=" + _vip_status + ", vip_expire_date="
+				+ _vip_expire_date + ", _latitude=" + _latitude
+				+ ", _longitude=" + _longitude + ", _login=" + _login + "]";
 	}
-
-
+	
 }

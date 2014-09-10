@@ -39,17 +39,17 @@
         <item name="android:background">@drawable/button_background</item>
         <item name="android:textColor">@android:color/white</item>
     </style>
-    
+
     <style name="RectangleOrangeButton">
         <item name="android:background">@drawable/button_rectangle_background</item>
         <item name="android:textColor">@android:color/white</item>
     </style>
-    
+
     <style name="DialogOrderOrangeButton">
         <item name="android:background">@drawable/dialog_order_button_background</item>
         <item name="android:textColor">@android:color/white</item>
     </style>
-    
+
     <style name="DialogOrderBlueButton">
         <item name="android:background">@drawable/dialog_blue_button_background</item>
         <item name="android:textColor">@android:color/white</item>
@@ -67,6 +67,7 @@
         <item name="android:layout_weight">1</item>
         <item name="android:drawablePadding">10dip</item>
     </style>
+
     <style name="SearchCourtEditText">
         <item name="android:textSize">18sp</item>
         <item name="android:textColor">#237fca</item>
@@ -78,8 +79,8 @@
         <item name="android:drawableRight">@drawable/ic_37_triange</item>
         <item name="android:layout_weight">3</item>
     </style>
-    
-     <style name="FleeInfoTitle">
+
+    <style name="FleeInfoTitle">
         <item name="android:textSize">15sp</item>
         <item name="android:textColor">@color/titlecolor</item>
         <item name="android:gravity">center_vertical|right</item>
@@ -87,8 +88,8 @@
         <item name="android:drawablePadding">10dip</item>
         <item name="android:layout_marginLeft">3dip</item>
     </style>
-    
-     <style name="FleeInfoEditText">
+
+    <style name="FleeInfoEditText">
         <item name="android:textSize">16sp</item>
         <item name="android:background">@null</item>
         <item name="android:gravity">left</item>
@@ -96,8 +97,8 @@
         <item name="android:singleLine">true</item>
         <item name="android:layout_weight">7</item>
     </style>
-    
-     <style name="MerchantInfoTitle">
+
+    <style name="MerchantInfoTitle">
         <item name="android:textSize">15sp</item>
         <item name="android:textColor">@color/titlecolor</item>
         <item name="android:gravity">center_vertical|left</item>
@@ -105,8 +106,8 @@
         <item name="android:drawablePadding">10dip</item>
         <item name="android:layout_marginLeft">3dip</item>
     </style>
-    
-     <style name="MerchantInfoEditText">
+
+    <style name="MerchantInfoEditText">
         <item name="android:textSize">16sp</item>
         <item name="android:background">@null</item>
         <item name="android:gravity">left</item>
@@ -114,7 +115,6 @@
         <item name="android:singleLine">true</item>
         <item name="android:layout_weight">8</item>
     </style>
-
 
     <style name="AccountTextView">
         <item name="android:textSize">15sp</item>
@@ -164,7 +164,7 @@
         <item name="android:textSize">13sp</item>
         <item name="android:padding">1dip</item>
     </style>
-    
+
     <style name="OrderDetailTitle">
         <item name="android:textColor">@android:color/black</item>
         <item name="android:layout_width">0dip</item>
@@ -183,7 +183,7 @@
         <item name="android:padding">1dip</item>
         <item name="android:textSize">17sp</item>
     </style>
-    
+
     <style name="CompetitionDetailTitle">
         <item name="android:textColor">@android:color/black</item>
         <item name="android:layout_width">0dip</item>
@@ -202,19 +202,43 @@
         <item name="android:padding">1dip</item>
         <item name="android:textSize">17sp</item>
     </style>
-    
-    
+
     <style name="CourtDetailLinearLayout">
         <item name="android:layout_margin">3dip</item>
     </style>
 
-    <style name="OrderDialog" parent="@android:style/Theme.Holo.Dialog">  
-       <!--  <item name="android:windowFrame">@null</item>  
+    <style name="OrderDialog" parent="@android:style/Theme.Holo.Dialog">
+
+        <!--
+        <item name="android:windowFrame">@null</item>  
         <item name="android:windowNoTitle">true</item>//无标题  
         <item name="android:windowBackground">@null</item>//背景  
         <item name="android:windowIsFloating">true</item>//悬浮  
-        <item name="android:windowContentOverlay">@null</item>   -->
-        <item name="android:windowNoTitle">true</item> 
-    </style> 
+        <item name="android:windowContentOverlay">@null</item>
+        -->
+        <item name="android:windowNoTitle">true</item>
+    </style>
     
+     <style name="GProgressDialog" parent="@android:style/Theme.Holo.Dialog">
+         <item name="android:windowFrame">@null</item>
+         <item name="android:windowNoTitle">true</item> <!-- //无标题 -->
+         <item name="android:windowBackground">@null</item> <!-- //背景 -->
+         <item name="android:windowIsFloating">true</item> <!-- //悬浮 -->
+         <item name="android:windowContentOverlay">@null</item>
+         <item name="android:windowNoTitle">true</item>
+     </style>
+
+    <style name="CustomDialog" parent="@android:style/Theme.Dialog">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
+        <item name="android:windowSoftInputMode">stateUnspecified|adjustPan</item>
+    </style>
+
+    <style name="CustomProgressDialog" parent="@style/CustomDialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
 </resources>

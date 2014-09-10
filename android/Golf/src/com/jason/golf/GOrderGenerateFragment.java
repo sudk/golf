@@ -42,7 +42,7 @@ public class GOrderGenerateFragment extends Fragment implements OnClickListener 
 
 	private TextView mAgentName, mTeeTime, mAmount, mPrice, mPaytype;
 
-	private EditText mPlayerName, mPhone, mNum;
+	private EditText mPlayerName, mPhone;
 
 	private Button mSubmit;
 

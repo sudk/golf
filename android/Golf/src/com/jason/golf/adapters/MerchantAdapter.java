@@ -86,7 +86,8 @@ public class MerchantAdapter extends BaseAdapter {
 //		holder._payType.setText(GCompetition.GetFeeTypeDes(competition.getFeeType()));
 //		holder._courtName.setText(competition.getCourtName());
 		
-		_fb.display(holder._img, m.getImgs().get(0));
+		if(m.getImgs().size() > 0)
+			_fb.display(holder._img, m.getImgs().get(0));
 		
 		return v;
 	}

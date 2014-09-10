@@ -1,8 +1,17 @@
 package com.jason.golf;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import com.jason.controller.AppInfoContent;
+import com.jason.controller.GThreadExecutor;
+import com.jason.controller.HttpCallback;
+import com.jason.controller.HttpRequest;
 import com.jason.golf.classes.GAccount;
+import com.jason.golf.dialog.WarnDialog;
 import com.jason.golf.R;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -25,7 +34,7 @@ public class GAccountFragment extends Fragment implements OnClickListener {
 
 	private LinearLayout mButtons, mUserInfo;
 
-	private TextView mBalance, mPoints, mPhone, mFlea;
+	private TextView mBalance, mPhone, mFlea;
 	
 	private ImageView mVip;
 
@@ -58,8 +67,10 @@ public class GAccountFragment extends Fragment implements OnClickListener {
 		mUserInfo = (LinearLayout) v.findViewById(R.id.account_info);
 
 		mBalance = (TextView) v.findViewById(R.id.account_balance);
-		mPoints = (TextView) v.findViewById(R.id.account_points);
+		mBalance.setOnClickListener(this);
+		
 		mPhone = (TextView) v.findViewById(R.id.account_phone);
+		mPhone.setOnClickListener(this);
 
 		mLogout = (Button) v.findViewById(R.id.account_logout);
 		mLogout.setOnClickListener(this);
@@ -89,15 +100,17 @@ public class GAccountFragment extends Fragment implements OnClickListener {
 			mLogout.setEnabled(true);
 			mButtons.setVisibility(ViewGroup.GONE);
 			mUserInfo.setVisibility(ViewGroup.VISIBLE);
-			mPhone.setText(_account.getPhone());
-			mBalance.setText(String.format("余额：%.2f", (float) _account.getBalance() / 100));
-			mPoints.setText(String.format("积分：%d", _account.getPoint()));
 			
-			if(_account.isVip()){
-				mVip.setImageResource(R.drawable.ic_vip_red);
-			}else{
-				mVip.setImageResource(R.drawable.ic_vip_gray);
-			}
+			initializeAccountInfo(_account);
+			// mPhone.setText(_account.getPhone());
+			// mBalance.setText(String.format("￥ %.2f", (float)
+			// _account.getBalance() / 100));
+			//
+			// if(_account.isVip()){
+			// mVip.setImageResource(R.drawable.ic_vip_gold);
+			// }else{
+			// mVip.setImageResource(R.drawable.ic_vip_gray);
+			// }
 
 		} else {
 			mLogout.setEnabled(false);
@@ -140,7 +153,9 @@ public class GAccountFragment extends Fragment implements OnClickListener {
 	
 			case R.id.account_change_pwd:
 				if (_account.isLogin()) {
-					startActivity(new Intent(getActivity(), GChangePwdActivity.class));
+					Intent changePwd = new Intent(getActivity(), GChangePwdActivity.class);
+					changePwd.putExtra("title", "修改密码");
+					startActivity(changePwd);
 				} else {
 					startLoginActivity();
 				}
@@ -204,23 +219,103 @@ public class GAccountFragment extends Fragment implements OnClickListener {
 				}
 				break;
 			case R.id.account_vip:
+			case R.id.account_phone:
 				
 				if (_account.isLogin()) {
-					
-					if(!_account.isVip()){
-						startActivity(new Intent(getActivity(), GVipActivity.class));
-					}
-					
+
+					startActivity(new Intent(getActivity(), GVipActivity.class));
+
 				} else {
 					startLoginActivity();
 				}
-				
+
+				break;
+			case R.id.account_balance:
+				queryUserInfo();
 				break;
 			}
 		} finally{
 			_account = null;
 		}
 
+	}
+	
+	private void queryUserInfo(){
+		
+		JSONObject p = new JSONObject();
+		try {
+			p.put("cmd",    "user/info");
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+		
+		
+		Runnable r = new HttpRequest(getActivity(), p, new HttpCallback() {
+			
+			@Override
+			public void faildData(int code, String res) {
+				// TODO Auto-generated method stub
+				super.faildData(code, res);
+				
+			}
+
+			@Override
+			public void sucessData(String res) {
+				// TODO Auto-generated method stub
+				super.sucessData(res);
+				
+				JSONObject data;
+				try {
+					data = new JSONObject(res);
+					GolfAppliaction app = (GolfAppliaction) getActivity().getApplication();
+					GAccount acc = app.getAccount();
+					
+					acc.setName(data.getString("user_name"));
+					acc.setPhone(data.getString("phone"));
+					acc.setVipCardNo(data.getString("card_no"));
+					acc.setEamil(data.getString("email"));
+					acc.setSex(data.getString("sex"));
+					acc.setBalance(data.getString("balance"));
+					acc.setPoint(data.getString("point"));
+					
+					// Vip信息
+					acc.setVipExpireDate(data.getString("vip_expire_date"));
+					acc.setVipStatus(data.getInt("vip_status"));
+					
+					initializeAccountInfo(acc);
+					
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+			}
+			
+			@Override
+			public void finalWork() {
+				// TODO Auto-generated method stub
+			}
+
+			
+		});
+		
+		GThreadExecutor.execute(r);
+		
+	}
+	
+	private void initializeAccountInfo(GAccount acc){
+		
+		mPhone.setText(acc.getPhone());
+		mBalance.setText(String.format("￥ %.2f", (float) acc.getBalance() / 100));
+		
+		if(acc.isVip()){
+			mVip.setImageResource(R.drawable.ic_vip_gold);
+		}else{
+			mVip.setImageResource(R.drawable.ic_vip_gray);
+		}
+		
+		
 	}
 
 	private void startLoginActivity() {

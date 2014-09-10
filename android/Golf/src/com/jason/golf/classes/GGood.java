@@ -19,6 +19,14 @@ public class GGood {
 	private String _status;
 	private ArrayList<String> _imgs;
 	
+	
+	public GGood() {
+		super();
+		// TODO Auto-generated constructor stub
+		_imgs = new ArrayList<String>();
+	}
+
+
 	public boolean initialize(JSONObject item) {
 		// TODO Auto-generated method stub
 		
@@ -33,7 +41,12 @@ public class GGood {
 			_record_time = item.getString("record_time");
 			
 			JSONArray imgs = item.getJSONArray("imgs");
-			_imgs = new ArrayList<String>();
+			
+			if(_imgs == null)
+				_imgs = new ArrayList<String>();
+			
+			_imgs.clear();
+			
 			for(int i=0,length=imgs.length(); i<length; i++){
 				_imgs.add((String) imgs.get(i));
 			}

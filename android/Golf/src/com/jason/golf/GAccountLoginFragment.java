@@ -13,6 +13,7 @@ import com.jason.golf.dialog.WarnDialog;
 import com.jason.golf.R;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -62,6 +63,8 @@ public class GAccountLoginFragment extends Fragment implements OnClickListener {
 		mPhone.setText(AppInfoContent.getLoginid(getActivity()));
 		mPassword.setText(AppInfoContent.getPassword(getActivity()));
 		
+		v.findViewById(R.id.getBackPwd).setOnClickListener(this);
+		
 		mLogin = (Button) v.findViewById(R.id.login_button);
 		mLogin.setOnClickListener(this);
 		mRegister = (Button) v.findViewById(R.id.register_button);
@@ -83,8 +86,8 @@ public class GAccountLoginFragment extends Fragment implements OnClickListener {
 			String id = mPhone.getText().toString();
 			String pwd = mPassword.getText().toString();
 			
-			final ProgressDialog dialog = new ProgressDialog(getActivity());
-			dialog.show(getFragmentManager(), "Login");
+//			final ProgressDialog dialog = new ProgressDialog(getActivity());
+//			dialog.show(getFragmentManager(), "Login");
 			
 			JSONObject p = new JSONObject();
 			try {
@@ -140,6 +143,11 @@ public class GAccountLoginFragment extends Fragment implements OnClickListener {
 						acc.setRemark(data.getString("remark"));
 						acc.setBalance(data.getString("balance"));
 						acc.setPoint(data.getString("point"));
+						
+						// Vip信息
+						acc.setVipExpireDate(data.getString("vip_expire_date"));
+						acc.setVipStatus(data.getInt("vip_status"));
+						
 						getActivity().finish();
 						
 						AppInfoContent.saveAccount(getActivity(), mPhone.getText().toString(), mPassword.getText().toString());
@@ -154,7 +162,7 @@ public class GAccountLoginFragment extends Fragment implements OnClickListener {
 				@Override
 				public void finalWork() {
 					// TODO Auto-generated method stub
-					dialog.dismiss();
+//					dialog.dismiss();
 				}
 
 				
@@ -172,6 +180,14 @@ public class GAccountLoginFragment extends Fragment implements OnClickListener {
 
 			// Commit the transaction
 			transaction.commit();
+			
+			break;
+			
+		case R.id.getBackPwd:
+			
+			Intent changePwd = new Intent(getActivity(), GChangePwdActivity.class);
+			changePwd.putExtra("title", "找回密码");
+			startActivity(changePwd);
 			
 			break;
 		}

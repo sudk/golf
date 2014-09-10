@@ -11,13 +11,16 @@ import org.json.JSONObject;
 import com.jason.controller.GThreadExecutor;
 import com.jason.controller.HttpCallback;
 import com.jason.controller.HttpRequest;
+import com.jason.golf.adapters.FleeImagesAdapter;
 import com.jason.golf.classes.GGood;
+import com.jason.golf.classes.SimpleHorizontalListView;
 import com.jason.golf.dialog.WarnDialog;
 import com.jason.golf.provider.GolfProviderConfig;
 import com.jason.golf.R;
 
 import android.content.ContentResolver;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -30,11 +33,13 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class GFleeMarketInfoFragment extends Fragment {
+public class GFleeMarketInfoFragment extends Fragment implements OnItemClickListener {
 	
 	private static final int REQUESTCODE_CTIY = 1001;
 	
@@ -43,7 +48,9 @@ public class GFleeMarketInfoFragment extends Fragment {
 	
 	private TextView mTitle, mDesc, mPrice, mContact, mPhone, mCity;
 	
-	private LinearLayout mGoodImages;
+	private SimpleHorizontalListView mGoodImages;
+	
+	private FleeImagesAdapter mAdapter;
 	
 	private String _googId = "";
 	
@@ -51,7 +58,7 @@ public class GFleeMarketInfoFragment extends Fragment {
 	
 	private FinalBitmap _fb;
 	
-	
+	private GGood _good;
 
 	public static GFleeMarketInfoFragment Instance() {
 		return new GFleeMarketInfoFragment();
@@ -69,6 +76,8 @@ public class GFleeMarketInfoFragment extends Fragment {
 		super.onCreate(savedInstanceState);
 		_googId = getArguments().getString(KEY_GOOD_ID, "");
 		
+		_good = new GGood();
+		
 		_enableEdit = getArguments().getBoolean(KEY_ENABLE_EDIT, false);
 		setHasOptionsMenu(_enableEdit);
 		
@@ -77,8 +86,7 @@ public class GFleeMarketInfoFragment extends Fragment {
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		View v = inflater.inflate(R.layout.fragment_flee_market_info, null);
 		mTitle = (TextView) v.findViewById(R.id.flee_good_title);
@@ -88,10 +96,50 @@ public class GFleeMarketInfoFragment extends Fragment {
 		mPrice = (TextView) v.findViewById(R.id.flee_good_price);
 		mCity = (TextView) v.findViewById(R.id.flee_good_city);
 		
-		mGoodImages = (LinearLayout) v.findViewById(R.id.flee_good_images);
+		mAdapter = new FleeImagesAdapter(getActivity(), _good.getImgs());
+		
+		mGoodImages = (SimpleHorizontalListView) v.findViewById(R.id.flee_good_images);
+		mGoodImages.setAdapter(mAdapter);
+		mGoodImages.setOnItemClickListener(this);
 		
 		queryGood();
 		return v;
+	}
+	
+	@Override
+	public void onItemClick(AdapterView<?> parent, View view, int position,	long id) {
+		// TODO Auto-generated method stub
+		
+		if (_good.getImgs().size() > 0) {
+
+			Bundle params = new Bundle();
+
+			String[] urls = new String[_good.getImgs().size()];
+			for (int i = 0, length = _good.getImgs().size(); i < length; i++) {
+				urls[i] = _good.getImgs().get(i);
+			}
+			
+			params.putStringArray(ShowImagesActivity.KEY_IMG_URL, urls);
+			params.putInt(ShowImagesActivity.KEY_IMG_POS, position);
+			
+			Intent imgIntent = new Intent(getActivity(), ShowImagesActivity.class);
+			imgIntent.putExtras(params);
+			startActivity(imgIntent);
+
+//			params.putStringArray(GFleeImagesFragment.KEY_IMG_URL, urls);
+//			params.putInt(GFleeImagesFragment.KEY_IMG_POS, position);
+//
+//			Fragment imgFragment = GFleeImagesFragment.Instance();
+//			imgFragment.setArguments(params);
+//
+//			FragmentTransaction transaction = getFragmentManager().beginTransaction();
+//			transaction.replace(R.id.container, imgFragment);
+//			transaction.addToBackStack(null);
+//
+//			// Commit the transaction
+//			transaction.commit();
+		}
+		
 	}
 	
 	@Override
@@ -126,7 +174,7 @@ public class GFleeMarketInfoFragment extends Fragment {
 		case R.id.menu_del_good:
 			
 			WarnDialog dialog = WarnDialog.newInstance(getActivity());
-			dialog.setTitle(R.string.flee_cancel_good).setMessage(R.string.flee_cancel_good_sucess)
+			dialog.setTitle(R.string.flee_cancel_good).setMessage(R.string.flee_if_cancel_good)
 			.setPositiveBtn(R.string.confirm, new DialogInterface.OnClickListener() {
 				
 				@Override
@@ -250,21 +298,19 @@ public class GFleeMarketInfoFragment extends Fragment {
 						try {
 							JSONObject data = new JSONObject(res);
 							
-							GGood g = new GGood();
-							if(g.initialize(data)){
+							if(_good.initialize(data)){
 								
-								mTitle.setText(g.getTitle());
-								mContact.setText(g.getContact());
-								mPhone.setText(g.getPhone());
-								mDesc.setText(g.getDesc());
+								mTitle.setText(_good.getTitle());
+								mContact.setText(_good.getContact());
+								mPhone.setText(_good.getPhone());
+								mDesc.setText(_good.getDesc());
 								
-								int p = Integer.parseInt(g.getPrice());
+								int p = Integer.parseInt(_good.getPrice());
 								mPrice.setText(String.format("￥%.2f",(float)p/100));
 								
-								String cityId = g.getCity();
+								String cityId = _good.getCity();
 								ContentResolver cr = getActivity().getContentResolver();
-								Cursor c = cr.query(GolfProviderConfig.City.CONTENT_URI, null,
-										GolfProviderConfig.City.CITY_ID + "=? ", new String[] { "" + cityId }, null);
+								Cursor c = cr.query(GolfProviderConfig.City.CONTENT_URI, null, GolfProviderConfig.City.CITY_ID + "=? ", new String[] { "" + cityId }, null);
 								if (c == null)
 									return;
 								try {
@@ -276,30 +322,32 @@ public class GFleeMarketInfoFragment extends Fragment {
 									c.close();
 								}
 								
-								View v = getView();
-								DisplayMetrics m = getActivity().getResources().getDisplayMetrics();
-								int widthPixels = m.widthPixels;
+								mAdapter.notifyDataSetChanged();
 								
-								int width = (widthPixels - v.getPaddingLeft() - v.getPaddingRight()) * 3 / 4;
-								int imgMargin = 2;
-								
-								int imgWidth = width / 3 - imgMargin * 2;
-								ViewGroup.MarginLayoutParams param = new ViewGroup.MarginLayoutParams(imgWidth, imgWidth);
-								
-								ArrayList<String> imgUrl = g.getImgs();
-								
-								int length = imgUrl.size() <= 3 ? imgUrl.size() : 3 ;
-								
-								for(int i=0; i<length; i++){
-									ImageView img = new ImageView(getActivity());
-									img.setLayoutParams(param);
-									img.setPadding(2, 2, 2, 2);
-									mGoodImages.addView(img);
-									
-									if(imgUrl.size() > i)
-										_fb.display(img, imgUrl.get(i));
-								}
-								
+//								View v = getView();
+//								DisplayMetrics m = getActivity().getResources().getDisplayMetrics();
+//								int widthPixels = m.widthPixels;
+//								
+//								int width = (widthPixels - v.getPaddingLeft() - v.getPaddingRight()) * 3 / 4;
+//								int imgMargin = 2;
+//								
+//								int imgWidth = width / 3 - imgMargin * 2;
+//								ViewGroup.MarginLayoutParams param = new ViewGroup.MarginLayoutParams(imgWidth, imgWidth);
+//								
+//								ArrayList<String> imgUrl = _good.getImgs();
+//								
+//								int length = imgUrl.size() <= 3 ? imgUrl.size() : 3 ;
+//								
+//								for(int i=0; i<length; i++){
+//									ImageView img = new ImageView(getActivity());
+//									img.setLayoutParams(param);
+//									img.setPadding(2, 2, 2, 2);
+//									mGoodImages.addView(img);
+//									
+//									if(imgUrl.size() > i)
+//										_fb.display(img, imgUrl.get(i));
+//								}
+//								
 							}
 							
 
