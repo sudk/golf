@@ -1,6 +1,57 @@
 <form name="_query_form" id="_query_form" action="javascript:itemQuery(0);">
     <li>
         <span class="sift-title">搜索：</span>
+        <?php
+        if(Yii::app()->user->type == Operator::TYPE_SYS)
+        {
+            ?>
+        <span style="float:left; margin:0 3px; margin-top:-3px;">&nbsp;</span>
+            <select name="q[agent_id]">
+            
+            <option value="">--选择代理商--</option>
+            <?php
+            $agent = Agent::getAgentList();
+            foreach($agent as $key=>$value)
+            {
+                echo '<option value="',$key,'">',$value,'</option>';
+            }
+            ?>
+           
+        </select>
+            <?php
+        }else
+        {
+            ?>
+            <input type="hidden" name="q[agent_id]" value="<?php echo Yii::app()->user->agent_id;?>"/>
+                <?php
+        }
+        ?>
+            <span style="float:left; margin:0 3px; margin-top:-3px;">&nbsp;</span>
+        <select name="q[type]">
+            
+            <option value="">--选择订单类型--</option>
+            <?php
+            $type_list = Order::getOrderType();
+            foreach($type_list as $key=>$value)
+            {
+                echo '<option value="',$key,'">',$value,'</option>';
+            }
+            ?>
+           
+        </select>
+            <span style="float:left; margin:0 3px; margin-top:-3px;">&nbsp;</span>
+        <select name="q[pay_type]">
+            
+            <option value="">--选择付款类型--</option>
+            <?php
+            $pay_list = Order::getPayMethod();
+            foreach($pay_list as $key=>$value)
+            {
+                echo '<option value="',$key,'">',$value,'</option>';
+            }
+            ?>
+           
+        </select>
         <span style="float:left; margin:0 3px; margin-top:-3px;">操作日期从</span>
         <input id="startdate" class="Wdate" type="text" name="q[startdate]" size="14" value="<?php echo date("Y-m-d")?>" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',skin:'whyGreen',errDealMode:0})" >
         <span style="float:left; margin:0 5px; margin-top:-3px;">到</span>

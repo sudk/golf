@@ -4,9 +4,9 @@
         
         <input type="hidden" name="q[court_id]" value="<?php echo $cur_court_id;?>"/>
        <span style="float:left; margin:0 3px; margin-top:-3px;">查询日期</span>
-        <input id="begintime"  type="text" name="q[begin_date]" size="14" class="Wdate" value="<?php echo date('Y-m-d');?>" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',skin:'whyGreen',errDealMode:0})" >
+        <input id="begintime"  type="text" name="q[begin_date]" size="14" class="Wdate" value="" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',skin:'whyGreen',errDealMode:0})" >
         <span style="float:left; margin:0 5px; margin-top:-3px;">到</span>
-        <input id="endtime"  type="text" name="q[end_date]"  size="14" class="Wdate"  value="<?php echo date('Y-m-d');?>" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',skin:'whyGreen',errDealMode:0})" >
+        <input id="endtime"  type="text" name="q[end_date]"  size="14" class="Wdate"  value="" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',skin:'whyGreen',errDealMode:0})" >
        
         <input type="submit" value="" class="search_btn"/>
     </li>

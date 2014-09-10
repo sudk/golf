@@ -2,9 +2,7 @@
     <li>
         <span class="sift-title">搜索：</span>
         <select name="q_by">
-            <option value="card_no">会员卡号</option>
-            <option value="user_name">会员姓名</option>
-            <option value="phone">手机号</option>
+            <option value="phone">用户手机号</option>
         </select>
         <input name="q_value" type="text" class="grayTips" />
         <span style="float:left; margin:0 3px; margin-top:-3px;">所在球场</span>
@@ -23,6 +21,16 @@
         </select>
         
         <input type="submit" value="" class="search_btn"/>
+        <?php
+        if(Yii::app()->user->checkAccess("user/uscore/export"))
+        {
+        ?>
+        <span>
+            <a href="javascript:void(0);" style="margin-left: 10px;margin-top: -3px;" onclick="javascript:exportScore();">导出会员成绩</a>
+        </span>
+        <?php
+        }
+        ?>
     </li>
 </form>
 <script type="text/javascript" src="js/JQdate/WdatePicker.js"></script>
@@ -31,6 +39,9 @@
              
   }); 
 
+    var itemDetail = function(id){
+        window.location.href = 'index.php?r=user/uscore/scoredetail&id='+id;
+    }
     var itemQuery = function(){
         var length=arguments.length;
         if(length==1){
@@ -47,6 +58,24 @@
         }
 <?php echo $this->gridId; ?>.condition = url;
 <?php echo $this->gridId; ?>.refresh();
+    }
+    
+    
+    var exportScore = function()
+    {
+        var objs = document.getElementById("_query_form").elements;
+        var i = 0;
+        var cnt = objs.length;
+        var obj;
+        var url = 'index.php?r=user/uscore/export';
+        for (i = 0; i < cnt; i++) {
+            obj = objs.item(i);
+            url += '&' + obj.name + '=' + obj.value;
+        }
+        //window.location.target = '_blank';
+        //window.location.href = url;
+        window.open(url,"_blank");
+        
     }
 
 </script>

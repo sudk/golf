@@ -10,7 +10,7 @@ class PriceController extends AuthBaseController
     public $pGridId = 'policy_list';
     public $cGridId = 'custom_list';
     public $sGridId = 'special_list';
-    public $pageSize = 100;
+    public $pageSize = 20;
     public $module_id = 'price';
     
     
@@ -77,6 +77,7 @@ class PriceController extends AuthBaseController
             //用事务来处理
             $type = $_POST['Policy']['type'];
             $court_id = $model->court_id;
+            //var_dump($_POST);exit;
             if($type == Policy::TYPE_NORMAL)
             {//普通报价
                 //var_dump("insert".$type);
@@ -102,6 +103,8 @@ class PriceController extends AuthBaseController
                             'start_time'=>'',
                             'end_time'=>'',
                             'price'=>$_POST[$i.'_price'],
+                            'vip_price'=>$_POST[$i.'_vip_price'],
+                            'pledge_price'=>$_POST[$i.'_pledge_price'],
                             'status'=>$_POST[$i."_status"],
                             'record_time'=>date('Y-m-d H:i:s')
                         );
@@ -116,6 +119,8 @@ class PriceController extends AuthBaseController
                                     'start_time'=>$row,
                                     'end_time'=>$_POST[$i."_end_time"][$k],
                                     'price'=>$_POST[$i.'_d_price'][$k],
+                                    'vip_price'=>$_POST[$i.'_d_vprice'][$k],
+                                    'pledge_price'=>$_POST[$i.'_d_pprice'][$k],
                                     'status'=>$_POST[$i.'_status'],
                                     'record_time'=>date('Y-m-d H:i:s')
                                 );
@@ -153,6 +158,8 @@ class PriceController extends AuthBaseController
                                 'start_time'=>$row,
                                 'end_time'=>$_POST[$i."_end_time"][$k],
                                 'price'=>$_POST[$i.'_d_price'][$k],
+                                'vip_price'=>$_POST[$i.'_d_vprice'][$k],
+                                'pledge_price'=>$_POST[$i.'_d_pprice'][$k],
                                 'status'=>$_POST[$i.'_status'],
                                 'record_time'=>date('Y-m-d H:i:s')
                             );
@@ -183,8 +190,10 @@ class PriceController extends AuthBaseController
                 //特殊报价
                 $week_day = array();
                 $default_price = $_POST['default_price'];
-                if($default_price == ""){
-                    $msg['msg']="请提交详细报价！";
+                $default_vip = $_POST['default_vip'];
+                $default_pledge = $_POST['default_pledge'];
+                if($default_price == ""||$default_vip==""){
+                    $msg['msg']="请提交默认报价和vip报价！";
                     $msg['status']=-1;
                 }else
                 {
@@ -194,6 +203,8 @@ class PriceController extends AuthBaseController
                         'start_time'=>"",
                         'end_time'=>"",
                         'price'=>$default_price,
+                        'vip_price'=>$default_vip,
+                        'pledge_price'=>$default_pledge,
                         'status'=>$_POST['default_status'],
                         'record_time'=>date('Y-m-d H:i:s')
                     );
@@ -270,6 +281,8 @@ class PriceController extends AuthBaseController
                             'start_time'=>'',
                             'end_time'=>'',
                             'price'=>$_POST[$i.'_price'],
+                            'vip_price'=>$_POST[$i.'_vip_price'],
+                            'pledge_price'=>$_POST[$i.'_pledge_price'],
                             'status'=>$_POST[$i."_status"],
                             'record_time'=>date('Y-m-d H:i:s')
                         );
@@ -284,6 +297,8 @@ class PriceController extends AuthBaseController
                                     'start_time'=>$row,
                                     'end_time'=>$_POST[$i."_end_time"][$k],
                                     'price'=>$_POST[$i.'_d_price'][$k],
+                                    'vip_price'=>$_POST[$i.'_d_vprice'][$k],
+                                    'pledge_price'=>$_POST[$i.'_d_pprice'][$k],
                                     'status'=>$_POST[$i.'_status'],
                                     'record_time'=>date('Y-m-d H:i:s')
                                 );
@@ -317,6 +332,8 @@ class PriceController extends AuthBaseController
                                 'start_time'=>$row,
                                 'end_time'=>$_POST[$i."_end_time"][$k],
                                 'price'=>$_POST[$i.'_d_price'][$k],
+                                'vip_price'=>$_POST[$i.'_d_vprice'][$k],
+                                'pledge_price'=>$_POST[$i.'_d_pprice'][$k],
                                 'status'=>$_POST[$i.'_status'],
                                 'record_time'=>date('Y-m-d H:i:s')
                             );
@@ -343,8 +360,10 @@ class PriceController extends AuthBaseController
                 //特殊报价
                 $week_day = array();
                 $default_price = $_POST['default_price'];
-                if($default_price == ""){
-                    $msg['msg']="请提交详细报价！";
+                $default_vip = $_POST['default_vip'];
+                $default_pledge = $_POST['default_pledge'];
+                if($default_price == ""||$default_vip==""){
+                    $msg['msg']="请提交默认报价和vip报价！";
                     $msg['status']=-1;
                 }else
                 {
@@ -354,6 +373,8 @@ class PriceController extends AuthBaseController
                         'start_time'=>"",
                         'end_time'=>"",
                         'price'=>$default_price,
+                        'vip_price'=>$default_vip,
+                        'pledge_price'=>$default_pledge,
                         'status'=>$_POST['default_status'],
                         'record_time'=>date('Y-m-d H:i:s')
                     );
@@ -699,7 +720,7 @@ class PriceController extends AuthBaseController
             "小费",
             "开始日期",
             "结束日期",
-            "周一",
+            "周一(默认价格|vip价格|预付金)",
             "周二",
             "周三",
             "周四",
@@ -758,7 +779,7 @@ class PriceController extends AuthBaseController
                 '0',
                 date('Y-m-01'),
                 date('Y-m-t'),
-                '',
+                '1000|900|200',
                 '',
                 '',
                 '',
@@ -809,7 +830,7 @@ class PriceController extends AuthBaseController
             "小费",
             "开始日期",
             "结束日期",
-            "报价",
+            "报价(默认价|vip价|预付金)",
             "支付方式",
             "价格说明",
             "取消规则",
@@ -862,7 +883,7 @@ class PriceController extends AuthBaseController
                 '0',
                 date('Y-m-01'),
                 date('Y-m-01'),
-                '',
+                '1000|900|200',
                 '全额预付',
                 '',
                 '',
@@ -1058,12 +1079,32 @@ class PriceController extends AuthBaseController
                         $price = $price_seven;
                     }
                     
+                    $price_a = explode("|", $price);
+                    $price_size = @count($price_a);
+                    $default_price = "";
+                    $vip_price = "";
+                    $pledge_price = "";
+                    if($price_size == 1)
+                    {
+                        $default_price = $price_a[0];
+                    }else if($price_size == 2)
+                    {
+                        $default_price = $price_a[0];
+                        $vip_price = $price_a[1];
+                    }else if($price_size == 3)
+                    {
+                        $default_price = $price_a[0];
+                        $vip_price = $price_a[1];
+                        $pledge_price = $price_a[2];
+                    }
                     $week_day[$k] = array();              
                     $day = array(
                         'day'=>$k."",
                         'start_time'=>'',
                         'end_time'=>'',
                         'price'=>$price,
+                        'vip_price'=>$vip_price,
+                        'pledge_price'=>$pledge_price,
                         'status'=>"0",
                         'record_time'=>date('Y-m-d H:i:s')
                     );
@@ -1079,12 +1120,32 @@ class PriceController extends AuthBaseController
                 }
                 
             }else {
+                $price_a = explode("|", $default_price);
+                $price_size = count($price_a);
+                $d_price = "";
+                $vip_price = "";
+                $pledge_price = "";
+                if($price_size == 1)
+                {
+                    $d_price = $price_a[0];
+                }else if($price_size == 2)
+                {
+                    $d_price = $price_a[0];
+                    $vip_price = $price_a[1];
+                }else if($price_size == 3)
+                {
+                    $d_price = $price_a[0];
+                    $vip_price = $price_a[1];
+                    $pledge_price = $price_a[2];
+                }
                 $week_day = array();
                 $week_day['-1'][] = array(
                         'day'=>"-1",
                         'start_time'=>"",
                         'end_time'=>"",
-                        'price'=>$default_price,
+                        'price'=>$d_price,
+                        'vip_price'=>$vip_price,
+                        'pledge_price'=>$pledge_price,
                         'status'=>'0',
                         'record_time'=>date('Y-m-d H:i:s')
                     );
@@ -1118,9 +1179,9 @@ class PriceController extends AuthBaseController
      */
     public function actionCopyPolicy()
     {
-             
-        
-        $msg = Policy::copyLastMonthPolicy($now_month,$last_month);
+        $month = trim($_POST['month']);     
+        //var_dump($month);
+        $msg = Policy::copyLastMonthPolicy($month);
         
         print_r(json_encode($msg));
         exit;

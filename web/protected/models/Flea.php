@@ -64,6 +64,13 @@ class Flea extends CActiveRecord {
             $condition.=' AND status=:status';
             $params['status'] = $args['status'];
         }
+        
+        if ($args['user_id'] != ''){
+            $condition.=' AND user_id=:user_id';
+            $params['user_id'] = $args['user_id'];
+        }
+        
+        
         $total_num = Flea::model()->count($condition, $params); //总记录数
 
         $criteria = new CDbCriteria();
@@ -132,8 +139,35 @@ class Flea extends CActiveRecord {
             $params['title'] = "%".$args->title."%";
         }
 
-        $order = 'record_time DESC';
+        $condition.=' AND status = :status';
+        $params['status'] = Flea::STATUS_NORMAL;
 
+        return self::Lists($condition,$params,$pageSize,$page);
+    }
+
+    public static function MyInfoList($page, $pageSize, $args = array()) {
+
+        $condition = ' 1=1 ';
+        $params = array();
+
+        if (isset($args->city)&&$args->city != ''){
+            $condition.=' AND city = :city';
+            $params['city'] = $args->city;
+        }
+
+        if (isset($args->title)&&$args->title != ''){
+            $condition.=' AND title like :title';
+            $params['title'] = "%".$args->title."%";
+        }
+
+        $condition.=' AND user_id = :user_id';
+        $params['user_id'] = Yii::app()->user->id;
+
+        return self::Lists($condition,$params,$pageSize,$page);
+    }
+
+    private static function Lists($condition,$params,$pageSize,$page){
+        $order = 'record_time DESC';
         $rows=Yii::app()->db->createCommand()
             ->select("*")
             ->from("g_flea")
@@ -142,7 +176,6 @@ class Flea extends CActiveRecord {
             ->limit($pageSize)
             ->offset($page * $pageSize)
             ->queryAll();
-
         if($rows){
             $rows_tmp=array();
             foreach($rows as $row){
@@ -150,7 +183,6 @@ class Flea extends CActiveRecord {
                 $rows_tmp[]=$row;
             }
         }
-
         return $rows_tmp;
     }
 
@@ -163,6 +195,7 @@ class Flea extends CActiveRecord {
         if($row){
             $row['imgs']=Img::GetImgs($id,Img::TYPE_FLEA);
         }
+        return $row;
     }
     
 }

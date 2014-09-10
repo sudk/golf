@@ -12,7 +12,7 @@ if (is_array($rows))
         $link = "";
         $status = $row['status'];
         $link .= CHtml::link('详情',"javascript:itemLog('{$row['order_id']}')", array());
-        if(Yii::app()->user->type == Operator::TYPE_AGENT)
+        if(true)
         {
             $edit_array = array(Order::STATUS_TOBE_CONFIRM,Order::STATUS_TOBE_PAID);
             if(in_array($status,$edit_array))
@@ -25,7 +25,7 @@ if (is_array($rows))
                 //$link .= CHtml::link('删除',"javascript:itemDelete('{$row['order_id']}');", array());
             }
             
-            $next_opt = Order::getNextStatus($status, $row['pay_type']);
+            $next_opt = Order::getNextStatus($status, $row['pay_type'],$row['type']);
             //var_dump($next_opt);var_dump($status);var_dump($row['pay_type']);
             if(@count($next_opt)>0)
             {

@@ -108,7 +108,7 @@ class Img extends CActiveRecord {
      * @param type $file_name
      * @return string
      */
-    public static function uploadImg($tmp_file,$tmp_name,$relation_id,$type){
+    public static function uploadImg($tmp_file,$tmp_name,$relation_id,$type,$is_save_to_db=true){
         $upload_dir = Yii::app()->params['upload_dir'];
         //路径是以目录/日期/时间+rand(100,999).png
         $upload_dir .= date('Ymd');
@@ -125,6 +125,7 @@ class Img extends CActiveRecord {
         $new_file_name = $new_file_path.".".$suffix;
         
         $rs['status'] = 0;
+        $rs['msg'] = '成功';
         $rs['url'] = date('Ymd')."/".$file.".".$suffix;
         if(!move_uploaded_file($tmp_file, $new_file_name))
         {
@@ -137,13 +138,15 @@ class Img extends CActiveRecord {
         }
         
         //add data into db
-        $model = new Img();
-        $model->relation_id = $relation_id;
-        $model->type = $type;
-        $model->img_url = $rs['url'];
-        $model->record_time = date('Y-m-d H:i:s');
-        $model->save();
-        
+        if($is_save_to_db){
+            $model = new Img();
+            $model->relation_id = $relation_id;
+            $model->type = $type;
+            $model->img_url = $rs['url'];
+            $model->record_time = date('Y-m-d H:i:s');
+            $model->save();
+        }
+
         return $rs;
     }
     
@@ -301,10 +304,14 @@ class Img extends CActiveRecord {
             ->where($condition,$params)
             ->queryRow();
         if($row){
-            return $row['img_url'];
+            return Img::IMG_PATH.$row['img_url'];
         }else{
             return "";
         }
+    }
+
+    public static function GetBasePath($url){
+        return str_replace(Img::IMG_PATH,'',$url);
     }
 }
 

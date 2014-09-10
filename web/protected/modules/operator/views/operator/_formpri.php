@@ -40,15 +40,15 @@ $pass_r="required";
     </tr>
     <tr>
         <td class="maxname">QQ：</td>
-        <td class="mivalue"><?php echo $form->activeTextField($model, 'qq', array('title' => 'QQ号码', 'class' => 'input_text', 'maxlength' => 32), 'number'); ?></td>
+        <td class="mivalue"><?php echo $form->activeTextField($model, 'qq', array('title' => 'QQ号码', 'class' => 'input_text', 'maxlength' => 32,'value'=>$model->qq==""?"":$model->qq), 'number'); ?></td>
         <td class="maxname">账号：</td>
         <td class="mivalue"><?php echo $model->id; ?></td>
     </tr>
     <tr>
         <td class="maxname">登陆密码：</td>
-        <td class="mivalue"><?php echo $form->activePasswordField($model, 'password', array('title' => '本项必填', 'class' => 'input_text', 'maxlength' => 16), $pass_r); ?></td>
+        <td class="mivalue"><?php echo $form->activePasswordField($model, 'password', array('title' => '本项必填', 'class' => 'input_text', 'maxlength' => 16,'value'=>""), $pass_r); ?></td>
         <td class="maxname">确认登陆密码：</td>
-        <td class="mivalue"><?php echo $form->activePasswordField($model, 'passwordc', array('title' => '本项必填', 'class' => 'input_text', 'maxlength' => 16), $pass_r); ?></td>
+        <td class="mivalue"><?php echo $form->activePasswordField($model, 'passwordc', array('title' => '本项必填', 'class' => 'input_text', 'maxlength' => 16,'value'=>''), $pass_r); ?></td>
     </tr>
     <tr>
         <td class="maxname">状态：</td>

@@ -5,7 +5,7 @@
 
 return array(
     'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
-    'name'=>'青之鸟高尔夫管理系统',
+    'name'=>'高球生活管理系统',
     'language' => 'zh_cn',
     // preloading 'log' component
     'preload'=>array('log'),

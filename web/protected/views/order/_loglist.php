@@ -28,8 +28,12 @@ if (is_array($rows))
         else if($status == Order::STATUS_TOBE_CANCEL)
         {
             $status_text = '<span style="color:gray">'.$status_list[$status].'</span>';
+        }else{
+            $status_text = '<span style="color:black">'.$status_list[$status].'</span>';
         }
-        
+        $desc = "<div style='width:200px;'>";
+        $desc .= $row['desc'];
+        $desc .= "</div>";
         $t->echo_td($num);
         $t->echo_td($row['record_time']); //
         //$t->echo_td($row['order_id']); //
@@ -37,7 +41,7 @@ if (is_array($rows))
 //        $t->echo_td($row['operator_id']); //
 //        $t->echo_td($opt_type[$row['operator_type']]); //
         $t->echo_td($row['serial_number']); //
-        $t->echo_td("");//备注信息，以后要显示，交易关闭原因，退款原因，退款拒绝原因
+        $t->echo_td($desc);//备注信息，以后要显示，交易关闭原因，退款原因，退款拒绝原因
         $t->end_row();
     }
 }

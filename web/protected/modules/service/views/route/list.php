@@ -1,6 +1,6 @@
 <div id="content">
     <div class="title-box">
-        <h1>套餐管理<a href="./?r=service/route/new" style="float:right;"><span class="add_ico"></span><span>套餐添加</span></a>
+        <h1>行程管理<a href="./?r=service/route/new" style="float:right;"><span class="add_ico"></span><span>行程添加</span></a>
         </h1>
         <ul class="sift">
             <?php $this->renderPartial('_toolBox'); ?>
@@ -14,7 +14,7 @@
     <script type="text/javascript">
         var itemEdit = function (id) {
         tipsWindown(
-            "编辑套餐信息", // title：窗口标题
+            "编辑行程信息", // title：窗口标题
             "iframe:index.php?r=service/route/edit&id=" + id, // Url：弹窗所加截的页面路径
             "900", // width：窗体宽度
             "520", // height：窗体高度
@@ -32,7 +32,7 @@
     
    
     var itemDelete = function(id,name){
-        if(!confirm("确认要删除套餐["+name+"]吗？")){return ;}
+        if(!confirm("确认要删除行程["+name+"]吗？")){return ;}
         $.ajax({
             data:{id:id},
             url:"index.php?r=service/route/del",

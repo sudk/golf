@@ -32,8 +32,23 @@ if($__model__!="edit"){
     <tr>
         <td class="maxname">姓名：</td>
         <td class="mivalue"><?php echo $form->activeTextField($model, 'user_name', array('title' => '本项必填', 'class' => 'input_text', 'maxlength' => 32), 'required'); ?></td>
-        <td class="maxname">会员卡：</td>
-        <td class="mivalue"><?php echo $form->activeTextField($model, 'card_no', array('title' => '本项必填', 'class' => 'input_text', 'maxlength' => 32), ''); ?></td>
+        <?php
+        if($model->vip_status == User::VIP_STATUS_NORMAL)
+        {
+        ?>
+        <td class="maxname">VIP卡号</td>
+        <td class="mivalue"><?php 
+        
+        echo $form->activeTextField($model, 'card_no', array('title' => '本项必填', 'class' => 'input_text'), 'required'); ?></td>
+        <?php
+        }else
+        {
+            ?>
+        <td class="maxname">&nbsp;</td>
+               <td class="mivalue">&nbsp;</td> 
+            <?php
+        }
+        ?>
     </tr>
     
     <tr>

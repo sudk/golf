@@ -70,17 +70,17 @@
     
     </tr>
     <?php
-    
-    if(@count($model['imgs']) > 0)
+    $pic_rows = Img::model()->findAll("relation_id='".$model['id']."' and type='".Img::TYPE_COMPETITION."'");
+    if(@count($pic_rows) > 0)
     {
-        foreach($model['imgs'] as $img_url)
+        foreach($pic_rows as $row)
         {
     ?>
     <tr>
         
         <td class="maxname">赛事图片：</td>
         <td class="mivalue" colspan="3">
-            <img src="index.php?r=court/loadpic&name=<?php echo $img_url;?>" style="width:100px;"/>
+            <img src="index.php?r=court/loadpic&name=<?php echo $row['img_url'];?>" style="width:100px;"/>
         </td>
     </tr>
     <?php

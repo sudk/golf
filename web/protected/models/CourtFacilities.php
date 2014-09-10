@@ -7,7 +7,13 @@
  */
 class CourtFacilities extends CActiveRecord {
 
-    
+    const TYPE_FOOD=1;
+    const TYPE_LIVE=2;
+    const TYPE_PLAY=3;
+    const TYPE_SHOPING=4;
+    const TYPE_MEETING=5;
+    const TYPE_ORDER=6;
+    //1、美食；2、住宿；3、娱乐；4、购物；5、会议；6、其它
 
     public static function model($className=__CLASS__){
         return parent::model($className);
@@ -34,17 +40,25 @@ class CourtFacilities extends CActiveRecord {
    public static function getType($s = null)
    {
        $rs = array(
-           '1'=>'吃',
-           '2'=>'住',
-           '3'=>'行',
-           '4'=>'游',
-           '5'=>'购',
-           '6'=>'娱',
+           self::TYPE_FOOD=>'美食',
+           self::TYPE_LIVE=>'住宿',
+           self::TYPE_PLAY=>'娱乐',
+           self::TYPE_SHOPING=>'购物',
+           self::TYPE_MEETING=>'会议',
+           self::TYPE_ORDER=>'其它',
        );
        
        return $s ? $rs[$s] : $rs;
    }
 
+   
+   public static function getFavourable()
+   {
+       return array(
+           '1'=> '是',
+           '0'=>'否',
+       );
+   }
    
 
     /**
@@ -134,29 +148,25 @@ class CourtFacilities extends CActiveRecord {
             $params['type'] = $args->type;
         }
 
+        if (isset($args->city)&&$args->city != ''){
+            $condition.=' AND g_court.city = :city';
+            $params['city'] = $args->city;
+        }
+
         if (isset($args->facilitie_name)&&$args->facilitie_name != ''){
             $condition.=' AND g_court_facilities.facilitie_name like :facilitie_name';
             $params['facilitie_name'] = "%".$args->facilitie_name."%";
         }
 
         if (isset($args->court_name)&&$args->court_name != ''){
-            $condition.=' AND g_court.court_name like :court_name';
+            $condition.=' AND g_court.name like :court_name';
             $params['court_name'] = "%".$args->court_name."%";
         }
-
-
-        $total_num = Yii::app()->db->createCommand()
-            ->select("count(1)")
-            ->from("g_court_facilities")
-            ->leftJoin('g_court',"g_court_facilities.court_id=g_court.court_id")
-            ->where($condition,$params)
-            ->queryScalar();
-
 
         $order = 'record_time DESC';
 
         $rows=Yii::app()->db->createCommand()
-            ->select("g_court_facilities.*,g_court.name court_name")
+            ->select("g_court_facilities.*,g_court.name court_name,g_court.city city")
             ->from("g_court_facilities")
             ->leftJoin('g_court',"g_court_facilities.court_id=g_court.court_id")
             ->where($condition,$params)
@@ -173,15 +183,7 @@ class CourtFacilities extends CActiveRecord {
             }
         }
 
-        $rs['status'] = 0;
-        $rs['desc'] = '成功';
-        $rs['page_num'] = ($page + 1);
-        $rs['total_num'] = $total_num;
-        $rs['total_page'] = ceil($total_num/$pageSize);
-        $rs['num_of_page'] = $pageSize;
-        $rs['rows'] = $rows_tmp;
-
-        return $rs;
+        return $rows_tmp;
     }
 
 
@@ -199,7 +201,7 @@ class CourtFacilities extends CActiveRecord {
         }
 
         $row=Yii::app()->db->createCommand()
-            ->select("g_court_facilities.*,g_court.name court_name")
+            ->select("g_court_facilities.*,g_court.name court_name,g_court.city city")
             ->from("g_court_facilities")
             ->leftJoin('g_court',"g_court_facilities.court_id=g_court.court_id")
             ->where($condition,$params)

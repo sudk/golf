@@ -10,6 +10,7 @@ class ConsumeController extends AuthBaseController
 
     public $defaultAction = 'list';
     public $gridId = 'list';
+    public $sGridId = 'summary_list';
     public $pageSize = 20;
 
     /**
@@ -23,12 +24,14 @@ class ConsumeController extends AuthBaseController
         $t->updateDom = 'datagrid';
         $t->set_header('序号', '5%', '');
         $t->set_header('交易类型', '10%', '');
-        $t->set_header('流水号', '15%', '');
+        $t->set_header('订单类型', '10%', '');
+        $t->set_header('付款类型', '10%', '');
+        $t->set_header('流水号', '10%', '');
         $t->set_header('交易金额', '10%', '');
-        $t->set_header('关联流水号', '15%', '');
-        $t->set_header('客户编号', '10%', '');
+        $t->set_header('关联流水号', '10%', '');
+        $t->set_header('客户', '10%', '');
         $t->set_header('交易状态', '10%', '');
-        $t->set_header('记录时间', '15%', '');
+        $t->set_header('记录时间', '10%', '');
         return $t;
     }
 
@@ -118,6 +121,71 @@ class ConsumeController extends AuthBaseController
             print_r($e);
         }
         return $str;
+    }
+    
+    
+    
+    /**
+     * 表头
+     * @return SimpleGrid
+     */
+    private function genSDataGrid()
+    {
+        $t = new SimpleGrid($this->sGridId);
+        $t->url = 'index.php?r=rpt/consume/sgrid';
+        $t->updateDom = 'datagrid';
+        $t->set_header('代理商', '5%', '');
+        
+        $t->set_header('订单类型', '10%', '');
+        $t->set_header('付款类型', '10%', '');   
+        $t->set_header('交易类型', '10%', '');
+        $t->set_header('收入金额', '10%', '');
+        $t->set_header('交易笔数', '10%', '');
+        return $t;
+    }
+
+    /**
+     * 查询
+     */
+    public function actionSGrid()
+    {
+        $page = $_GET['page'] == '' ? 0 : $_GET['page']; //当前页码
+        $_GET['page']=$_GET['page']+1;
+        $args = $_GET['q']; //查询条件
+
+
+        if ($_REQUEST['q_value'])
+        {
+            $args[$_REQUEST['q_by']] = $_REQUEST['q_value'];
+        }
+
+        if(!$args['startdate']){
+            $args['startdate']=date("Y-m-d");
+        }
+
+        if(!$args['enddate']){
+            $args['enddate']=date("Y-m-d");
+        }
+        
+        if($args['user_isdn'] == '用户手机号'){
+            $args['user_isdn'] = "";
+        }
+        //print_r($args);
+        $t = $this->genSDataGrid();
+        
+        $list = TransRecord::querySummary($page, $this->pageSize, $args);
+
+        $this->renderPartial('_summary', array('t' => $t, 'list' => $list));
+    }
+
+    
+
+    /**
+     * 列表
+     */
+    public function actionSummary()
+    {
+        $this->render('summary');
     }
 
 }

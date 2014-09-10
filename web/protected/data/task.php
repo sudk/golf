@@ -6,22 +6,7 @@ return array(
         'display'=>true,
         'description' => '会员管理',
         'children' => array(
-             'user/card/grid' ,
-            'user/card/list' ,
-            'user/card/new' ,
-            'user/card/edit' ,
-            'user/card/checkid' ,
-            'user/card/del' ,
-            'user/card/detail' ,
-            'user/ucard/grid' ,
-            'user/ucard/list' ,
-            'user/ucard/new' ,
-            'user/ucard/edit' ,
-            'user/ucard/editpri' ,
-            'user/ucard/checkid' ,
-            'user/ucard/checkloginid' ,
-            'user/ucard/del' ,
-            'user/ucard/detail' ,
+             
             'user/uinfo/grid' ,
             'user/uinfo/list' ,
             'user/uinfo/edit' ,
@@ -31,6 +16,14 @@ return array(
             'user/uscore/grid' ,
             'user/uscore/list' ,
             'user/uscore/detail' ,
+            'user/uscore/dgrid',
+            'user/uscore/scoredetail',
+            'user/uinfo/mycard',
+            'user/uinfo/cardlist',
+            'user/uinfo/newcard',
+            'user/uinfo/delcard',
+            'user/uscore/export',
+           
         ),
         'bizRules' => '',
         'data' => ''
@@ -40,21 +33,19 @@ return array(
         'display'=>true,
         'description' => '会员管理-查看',
         'children' => array(
-            'user/card/grid' ,
-            'user/card/list' ,
-           
-            'user/card/detail' ,
-            'user/ucard/grid' ,
-            'user/ucard/list' ,
-            'user/ucard/detail' ,
+            
             
             'user/uinfo/grid' ,
             'user/uinfo/list' ,
             'user/uinfo/detail' ,
+            'user/uinfo/mycard',
+            'user/uinfo/cardlist',
             
             'user/uscore/grid' ,
             'user/uscore/list' ,
             'user/uscore/detail' ,
+            'user/uscore/dgrid',
+            'user/uscore/scoredetail',
         ),
         'bizRules' => '',
         'data' => ''
@@ -73,6 +64,7 @@ return array(
             'order/nextstatus',
             'order/confirmstatus',
             'order/del',
+            'order/export',
         ),
         'bizRules' => '',
         'data' => ''
@@ -110,8 +102,8 @@ return array(
             'court/newpic' ,
             'court/loadpic' ,
             'court/delpic' ,
-            'court/comment' ,
-            'court/commentlist' ,
+            'comment/list' ,
+            'comment/grid' ,
             'court/mycomment' ,
             'court/mycommentlist',
             
@@ -132,9 +124,10 @@ return array(
             'court/showpic' ,
             'court/piclist' ,      
             'court/loadpic' ,   
-            'court/comment' ,
-            'court/commentlist' ,
+            'comment/list' ,
+            'comment/grid' ,
             'court/mycomment' ,
+            'court/mycommentlist',
             
             ),
         'bizRules' => '',
@@ -191,7 +184,7 @@ return array(
     'service_comp' => array(
         'type' => CAuthItem::TYPE_TASK,
         'display'=>true,
-        'description' => '特色服务-赛事管理',
+        'description' => '特色服务-套餐管理',
         'children' => array(
             'service/competition/grid' ,
             'service/competition/list' ,
@@ -221,18 +214,37 @@ return array(
     'service_goods' => array(
         'type' => CAuthItem::TYPE_TASK,
         'display'=>true,
-        'description' => '特色服务-寄卖审核',
+        'description' => '特色服务-精挑细选审核',
         'children' => array(
            
             'service/goods/grid' ,
             'service/goods/list' ,
-            'service/goods/audit' ,
+            'service/goods/audit',
             'service/goods/detail' ,
             'service/goods/del' ,
         ),
         'bizRules' => '',
         'data' => ''
     ),
+    
+    'service_goods_new' => array(
+        'type' => CAuthItem::TYPE_TASK,
+        'display'=>true,
+        'description' => '特色服务-精挑细选商品添加',
+        'children' => array(
+           
+            'service/goods/grid' ,
+            'service/goods/list' ,
+            'service/goods/newgoods',
+            'service/goods/detail' ,
+            
+        ),
+        'bizRules' => '',
+        'data' => ''
+    ),
+    
+    
+    
     'service_mcht' => array(
         'type' => CAuthItem::TYPE_TASK,
         'display'=>true,
@@ -290,6 +302,9 @@ return array(
             'rpt/consume/detail' ,
             'rpt/recharge/grid' ,
             'rpt/recharge/list' ,
+            
+            'rpt/consume/summary' ,
+            'rpt/consume/sgrid' ,
         ),
         'bizRules' => '',
         'data' => ''
@@ -317,6 +332,17 @@ return array(
         'description' => '系统操作日志',
         'children' => array(
             'log/systemlog/grid','log/systemlog/list','log/systemlog/detail'
+        ),
+        'bizRules' => '',
+        'data' => ''
+    ),
+    
+    'systemset' => array(
+        'type' => CAuthItem::TYPE_TASK,
+        'display'=>false,
+        'description' => '系统设置',
+        'children' => array(
+            'operator/set/grid','operator/set/list','operator/set/edit'
         ),
         'bizRules' => '',
         'data' => ''
@@ -379,7 +405,7 @@ return array(
             'site/showtask' ,
             'test/index' ,
             'test/cmd' ,
-           
+           'operator/operator/editpri' ,
         ),
         'bizRules' => '',
         'data' => ''

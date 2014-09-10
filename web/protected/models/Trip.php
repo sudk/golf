@@ -34,7 +34,7 @@ class Trip extends CActiveRecord {
        $rs = array(
            '0'=>'现付',
            '1'=>'全额预付',
-           '2'=>'押金',
+           '2'=>'部分预付',
          
        );
        
@@ -107,14 +107,16 @@ class Trip extends CActiveRecord {
             ->queryScalar();
         $order = 'g_trip.record_time DESC';
         $rows=Yii::app()->db->createCommand()
-            ->select("g_trip.*,g_court.name court_name,g_agent.agent_name")
+            ->select("g_trip.*,g_court.name court_name,g_agent.agent_name,concat('".Img::IMG_PATH."',g_img.img_url) img")
             ->from("g_trip")
             ->leftJoin("g_court","g_trip.court_id=g_court.court_id")
             ->leftJoin("g_agent","g_trip.agent_id=g_agent.id")
+            ->leftJoin("g_img","g_trip.id=g_img.relation_id and g_img.type=".Img::TYPE_TRIP)
             ->where($condition,$params)
             ->order($order)
             ->limit($pageSize)
             ->offset($page * $pageSize)
+            ->group("g_trip.id")
             ->queryAll();
 
         $rs['status'] = 0;

@@ -35,6 +35,8 @@ class MUserIdentity extends CUserIdentity
             return false;
         }
 
+        //echo crypt($this->password,$user->passwd);
+
         if (substr(crypt($this->password,$user->passwd),0,strlen($user->passwd)) != $user->passwd) {
             $this->errorCode = self::ERROR_PASSWORD_INVALID;
             return false;

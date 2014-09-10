@@ -37,11 +37,11 @@
     }
     
     var itemPic=function(id,name){
-        window.location.href = 'index.php?r=court/showpic&id='+id+'&name='+name;
+        window.location.href = encodeURI('index.php?r=court/showpic&id='+id+'&name='+name);
     }
     
     var itemComment=function(id,name){
-        window.location.href = 'index.php?r=court/mycomment&id='+id+'&name='+name;
+        window.location.href = encodeURI('index.php?r=court/mycomment&id='+id+'&name='+name);
     }
    
     var itemDelete = function(id,name){

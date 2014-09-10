@@ -3,15 +3,25 @@ $t->echo_grid_header();
 if (is_array($rows))
 {
 	$j = 1;
+        $is_show = Score::getIsShow();
+        $court_list = Court::getCourtArray();
     foreach ($rows as $i => $row)
     {
-        $t->begin_row("onclick","getDetail(this,'{$row['id']}');");
-		$num = ($curpage-1)*$this->pageSize + $j++;
+        //$t->begin_row("onclick","getDetail(this,'{$row['id']}');");
+        $num = ($curpage-1)*$this->pageSize + $j++;
+        $link = "";
         
-		$t->echo_td($num);
-        $t->echo_td($row['user_id']); //
-        $t->echo_td($row['court_id']);
-        $t->echo_td($row['record_time']);
+        $link .= CHtml::link('详情',"javascript:itemDetail('{$row['id']}')", array());
+        $t->echo_td($num);
+        $t->echo_td($row['user_phone']); //
+        $t->echo_td($court_list[$row['court_id']]);
+        $t->echo_td($row['holes']);
+        $t->echo_td($row['fee_time']);
+        $t->echo_td($is_show[$row['is_show']]);
+        $t->echo_td($row['team_menbers']);
+        $t->echo_td($row['handicap']?$row['handicap']:"--");
+        $t->echo_td($link);
+        
         $t->end_row();
     }
 }

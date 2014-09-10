@@ -186,7 +186,7 @@ class OrderController extends CMDBaseController
             $msg['status']=2;
             $msg['desc']="订单ID不能为空！";
             echo json_encode($msg);
-
+            return;
         }
         if(!isset(Yii::app()->command->cmdObj->amount)||Yii::app()->command->cmdObj->amount==''){
             $msg['status']=3;
@@ -194,10 +194,62 @@ class OrderController extends CMDBaseController
             echo json_encode($msg);
 
         }
+
+        if(Yii::app()->command->cmdObj->type==Order::PAY_METHOD_BALANCE){
+
+        }
+
         $rs=Order::Pay(Yii::app()->command->cmdObj->order_id,Yii::app()->command->cmdObj->type,Yii::app()->command->cmdObj->amount);
         echo json_encode($rs);
         return;
 
+    }
+
+    public function actionApplyrefund(){
+
+        if(!isset(Yii::app()->command->cmdObj->order_id)||Yii::app()->command->cmdObj->order_id==''){
+            $msg['status']=2;
+            $msg['desc']="订单ID不能为空！";
+            echo json_encode($msg);
+            return;
+        }
+        if(!isset(Yii::app()->command->cmdObj->desc)||Yii::app()->command->cmdObj->desc==''){
+            $msg['status']=4;
+            $msg['desc']="请填写退款理由！";
+            echo json_encode($msg);
+            return;
+        }
+        $order=Order::Info(Yii::app()->command->cmdObj->order_id);
+
+        $status=$order['status'];
+        if($status!=Order::STATUS_TOBE_SUCCESS){
+            $msg['status']=5;
+            $msg['desc']="当前状态不允许申请退款！";
+            echo json_encode($msg);
+            return;
+        }
+
+        $conn=Yii::app()->db;
+        $transaction = $conn->beginTransaction();
+        $status=Order::STATUS_WAIT_REFUND;
+        try{
+            Order::ChangeStatus($conn,$status,Yii::app()->command->cmdObj->order_id);
+            Order::ChangeDesc($conn,Yii::app()->command->cmdObj->order_id,Yii::app()->command->cmdObj->desc);
+            $transaction->commit();
+            //OrderLog::Add($orderNumber,$serial_number);
+            //return array('status'=>0,'desc'=>'成功');
+            $msg['status']=0;
+            $msg['desc']="退款申请成功，等待业务员受理！";
+            echo json_encode($msg);
+
+        }catch (Exception $e){
+
+            $transaction->rollBack();
+            $msg['status']=3;
+            $msg['desc']="失败！";
+            echo json_encode($msg);
+
+        }
     }
 
 }

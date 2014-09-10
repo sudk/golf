@@ -27,7 +27,7 @@ if (is_array($rows))
         
         $link_url = htmlspecialchars($row['link_url']);
         
-        $link_url_txt = "<span title='".$link_url."'>[查看]</span>";
+        $link_url_txt = $link_url;//"<span title='".$link_url."'>[查看]</span>";
         
 	$t->echo_td($num); 
         $t->echo_td($row['order']); //学校编号

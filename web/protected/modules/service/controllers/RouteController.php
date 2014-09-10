@@ -10,7 +10,7 @@ class RouteController extends AuthBaseController
 
     public $defaultAction = 'list';
     public $gridId = 'list';
-    public $pageSize = 100;
+    public $pageSize = 20;
 
     /**
      * 表头
@@ -45,7 +45,7 @@ class RouteController extends AuthBaseController
             $args[$_REQUEST['q_by']] = $_REQUEST['q_value'];
         }
         
-        if($args['trip_name'] == "套餐名称"){
+        if($args['trip_name'] == "行程名称"){
             $args['trip_name'] = "";
         }
 

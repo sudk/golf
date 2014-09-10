@@ -12,6 +12,7 @@ class Order extends CActiveRecord {
     const TYPE_TRIP = '1';
     const TYPE_COMPETITION = '2';
     const TYPE_RECHARGE = '3';
+    const TYPE_VIP = '4';//购买VIP
 
     /**
      * 支付方法
@@ -42,6 +43,8 @@ class Order extends CActiveRecord {
     CONST STATUS_REFUSE_REFUND = '7';
     
     public $court_phone;
+    public $next_status;
+    public $refund;
 
     public static function model($className=__CLASS__){
         return parent::model($className);
@@ -65,7 +68,7 @@ class Order extends CActiveRecord {
      * @param type $pay_type
      * @return boolean
      */
-    public static function getNextStatus($cur_status='0',$pay_type='0')
+    public static function getNextStatus($cur_status='0',$pay_type='0',$type='0')
     {
         if($cur_status==null)
         {
@@ -114,15 +117,21 @@ class Order extends CActiveRecord {
                     'status'=>self::STATUS_ORDER_OVER,
                     'desc'=>"交易成功"
                 );
-                array_push($next, $tmp_next);
-                $tmp_next2 = array(
-                    'now_status'=>self::STATUS_TOBE_SUCCESS,
-                    'status'=>self::STATUS_NOT_PRESENT,
-                    'desc'=>"未到场"
+                $no_present = array(
+                    self::TYPE_RECHARGE,
+                    self::TYPE_VIP
                 );
+                if(!in_array($type,$no_present))
+                {
+                    array_push($next, $tmp_next);
+                    $tmp_next2 = array(
+                        'now_status'=>self::STATUS_TOBE_SUCCESS,
+                        'status'=>self::STATUS_NOT_PRESENT,
+                        'desc'=>"未到场"
+                    );
+                }
                 array_push($next, $tmp_next2);
-                $close_next['now_status'] = self::STATUS_TOBE_SUCCESS;
-                array_push($next,$close_next);
+                
                 break;
             case self::STATUS_WAIT_REFUND:
                 $tmp_next = array(
@@ -165,6 +174,7 @@ class Order extends CActiveRecord {
             self::TYPE_TRIP=>'预约行程',
             self::TYPE_COMPETITION=>'赛事报名',
             self::TYPE_RECHARGE=>'充值',
+            self::TYPE_VIP=>"购买VIP",
         );
         
         return $type?$rs[$type]:$rs;
@@ -301,6 +311,10 @@ class Order extends CActiveRecord {
         try{
             $had_pay=0;
             $status=Order::STATUS_TOBE_CONFIRM;
+            //如果是充值和购买VIP类型的订单刚不需要确认。
+            if($args->type==Order::TYPE_RECHARGE||$args->type==Order::TYPE_VIP){
+                $status=Order::STATUS_TOBE_PAID;
+            }
             $sql = "
                     insert into g_order
                     (order_id,user_id,`type`,relation_id,relation_name,tee_time,`count`,unitprice,amount,had_pay,pay_type,status,record_time,agent_id,contact,phone)
@@ -438,13 +452,64 @@ class Order extends CActiveRecord {
         }
     }
 
-    public static function Pay($order_id,$type,$amount){
+    public static function Pay($orderNumber,$type,$amount){
         $pay=Null;
         switch(strval($type)){
             case Order::PAY_METHOD_BALANCE : $pay=new BalancePay();break;
             case Order::PAY_METHOD_UPMP : $pay=new UpmPay();break;
         }
-        return $pay->Purchase($amount,"支付:".$amount,$order_id);
+        return $pay->Purchase($amount,"支付:".$amount/100,$orderNumber);
+    }
+
+    /**
+     * @param $orderNumber 订单号
+     * @param $amount 退款金额
+     * @param $sn 交易流水号
+     * @return array
+     */
+    public static function Refund($orderNumber,$amount){
+        $order=Order::OrderInfo($orderNumber);
+        if(!$order){
+            return array('status'=>5,'desc'=>'订单不存在！');
+        }
+
+        if( $order['status'] < Order::STATUS_TOBE_SUCCESS ){
+            return array('status'=>6,'desc'=>'订单没有过支付不能退款！');
+        }
+        $type=$order['type'];
+        $trans_type=TransRecord::GetPayTypeByOrderType($type);
+
+        $transRecord=TransRecord::GetByOrderNumber($orderNumber,$trans_type);
+        //print_r($transRecord);
+        if(!$transRecord){
+            return array('status'=>4,'desc'=>'没有任何的支付成功交易记录所以不能退款！');
+        }
+        $record_time=strtotime($transRecord['record_time']);
+        $now=time();
+        if(($now-$record_time)<86400){
+            return array('status'=>7,'desc'=>'支付成功后需要过24小时才能办理退款操作！');
+        }
+        if($amount<0||$amount>abs($transRecord['amount'])){
+            return array('status'=>8,'desc'=>'退款金额有误！');
+        }
+
+        $sn=$transRecord['serial_number'];
+        $pay_method=$order['pay_method'];
+        $pay=Null;
+        switch($pay_method){
+            case Order::PAY_METHOD_BALANCE :
+                $pay=new BalancePay();//余额支付
+                break;
+            case Order::PAY_METHOD_UPMP :
+                $pay=new UpmPay();//银联支付
+                $sn=$transRecord['out_serial_number'];
+                break;
+            default:
+                return array('status'=>9,'desc'=>'不支持该支付类型！');
+        }
+        
+        return $pay->Refund($orderNumber,$amount,$sn);
+
     }
 
     public static function OrderInfo($orderNumber){
@@ -459,7 +524,9 @@ class Order extends CActiveRecord {
     public static function ChangeStatus(&$conn,$status,$order_id,$orderAmount=0){
 
         $model=Order::OrderInfo($order_id);
-
+        if($model['status']==$status){
+            return false;
+        }
         if($model['status']==Order::STATUS_TOBE_PAID&&$status==Order::STATUS_TOBE_SUCCESS){
             $sql = "update g_order set had_pay=:had_pay where order_id=:order_id";
             $command = $conn->createCommand($sql);
@@ -472,14 +539,27 @@ class Order extends CActiveRecord {
         $command->bindParam(":status",$status, PDO::PARAM_STR);
         $command->bindParam(":order_id",$order_id, PDO::PARAM_STR);
         $command->execute();
+            return $model;
+    }
+
+    public static function ChangeDesc(&$conn,$order_id,$desc){
+        $sql="update g_order set `desc`=:desc where order_id=:order_id";
+        $command = $conn->createCommand($sql);
+        $command->bindParam(":desc",$desc, PDO::PARAM_STR);
+        $command->bindParam(":order_id",$order_id, PDO::PARAM_STR);
+        return $command->execute();
     }
 
     public static function ChangePayMethod(&$conn,$pay_method,$order_id){
+        $model=Order::OrderInfo($order_id);
+
         $sql = "update g_order set pay_method=:pay_method where order_id=:order_id";
         $command = $conn->createCommand($sql);
         $command->bindParam(":pay_method",$pay_method, PDO::PARAM_STR);
         $command->bindParam(":order_id",$order_id, PDO::PARAM_STR);
         $command->execute();
+
+        return $model;
     }
     
     /**
@@ -507,6 +587,15 @@ class Order extends CActiveRecord {
             
                     
             $transaction->commit();
+            //订单确认，下发短信通知用户
+            if($next_status == self::STATUS_TOBE_PAID)
+            {
+                $order_info = self::model()->findByPk($order_id);
+                $phone = $order_info['phone'];
+                $content = $order_id.",已经确认，请尽快付款";
+                $send_model = new Sms();
+                $send_rs = $send_model->send($content, $phone, 2);
+            }
             
             OrderLog::Add($order_id, "");
             

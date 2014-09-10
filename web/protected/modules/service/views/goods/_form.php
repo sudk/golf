@@ -40,7 +40,6 @@ $form = $this->beginWidget('SimpleForm', array(
     <?php
     
     $pic_rows = Img::model()->findAll("relation_id='".$model->id."'");
-    
     if(@count($pic_rows)>0)
     {
         foreach($pic_rows as $row)

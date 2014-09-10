@@ -101,7 +101,7 @@ class OrderController extends AuthBaseController
                 '人数'=>$model['count'],
                 '单价'=>(intval($model['unitprice'])/100)."元",
                 '实付'=>(intval($model['had_pay'])/100)."元",
-                '支付方式'=>$model['pay_method']?Order::getPayMethod($model['pay_method']):"",
+                '支付渠道'=>$model['pay_method']?Order::getPayMethod($model['pay_method']):"",
                 '备注'=>$model['desc'],
                     
             );
@@ -134,6 +134,10 @@ class OrderController extends AuthBaseController
             if($rs){
                 $msg['msg']="修改成功！";
                 $msg['status']=1;
+                //修改完订单内容，需要记录日志
+                $serial_number = Utils::GenerateSerialNumber();
+                
+                OrderLog::Add($model->order_id, $serial_number);
                 //$model=new Staff('modify');
             }else{
                 $msg['msg']="修改失败！";
@@ -210,14 +214,63 @@ class OrderController extends AuthBaseController
     
     public function actionNextStatus()
     {
-        $id=trim($_POST['id']);
-        $now_status = trim($_POST['ns']);
-        $next_status = trim($_POST['s']);
-        $pay_type = trim($_POST['type']);
+        $id=trim($_REQUEST['id']);
+        $now_status = trim($_REQUEST['ns']);
+        $next_status = trim($_REQUEST['s']);
+        $pay_type = trim($_REQUEST['type']);
         $model = Order::model()->findByPk($id);
+        $model->next_status = $next_status;
         if(isset($_POST['Order']))
         {
+            $model->attributes = $_POST['Order'];
             
+            $now_status = $_POST['Order']['status'];
+            $next_status = $_POST['Order']['next_status'];
+            
+            if($now_status == Order::STATUS_WAIT_REFUND && $next_status == Order::STATUS_REFUND)
+            {
+                //走退款流程  
+                
+                $order_id = $_POST['Order']['order_id'];
+                
+                //$sn = "";
+
+                $refund = intval($_POST['Order']['refund'])*100;
+                //var_dump($sn);var_dump($_POST['Order']['order_id']);var_dump($refund);exit;
+                $rs = Order::Refund($order_id,$refund);
+                //var_dump($rs);
+                if($rs['status'] == 0){
+
+                    $msg['msg']="操作成功！";
+                    $msg['status']=1;
+                    //add log
+                    //OrderLog::Add($order_id, $sn);
+                }else{
+                    $msg['msg']="操作失败！".$rs['desc'];
+                    $msg['status']=-1;
+                }
+                
+                
+            }else
+            {
+                //其他情况下，直接修改order 订单内容，然后 添加日志。
+                $model->status = $next_status;
+                $model->desc = $_POST['Order']['desc'];
+                $rs = $model->save();
+                
+                if($rs){
+                    $msg['msg']="操作成功！";
+                    $msg['status']=1;
+                    //修改完订单内容，需要记录日志
+                    $serial_number = Utils::GenerateSerialNumber();
+
+                    OrderLog::Add($model->order_id, $serial_number);
+                    //$model=new Staff('modify');
+                }else{
+                    $msg['msg']="操作失败！";
+                    $msg['status']=-1;
+                }
+            }
         }
         $this->layout = '//layouts/base';
         $this->render("next_status",array('model' => $model, 'msg' => $msg));
@@ -256,6 +309,101 @@ class OrderController extends AuthBaseController
        
         print_r(json_encode($msg));
     }
+    
+    
+    public function actionExport()
+    {
+        
+        $args = $_GET['q']; //查询条件
+
+
+        if ($_REQUEST['q_value'])
+        {
+            $args[$_REQUEST['q_by']] = $_REQUEST['q_value'];
+        }
+        
+        if($args['order_id'] == "订单编号"){
+            $args['order_id'] = "";
+        }
+        
+        if(Yii::app()->user->type == Operator::TYPE_AGENT)
+        {
+            $args['agent_id'] = Yii::app()->user->agent_id;
+        }
+        $page = 0;
+        $list = Order::queryList($page, $this->pageSize, $args);
+        //导出csv格式
+        $str = "订单编号,订单类型,下单人,联系电话,订单内容,订单数量,订单单价,应付金额,实付金额,支付方式,代理商名称,打球时间,状态,录入时间,备注\n";   
+        $str = iconv('utf-8','gb2312',$str); 
+        $type_list = Order::getOrderType();
+        $status_list = Order::getStatus();
+        $pay_type = Order::getPayType();
+        $agent_list = Agent::getAgentList();
+        if($list['rows'])
+        {
+            foreach($list['rows'] as $row)
+            {
+                $tmp_str = $row['order_id'].",";
+                $tmp_str .= $type_list[$row['type']].",";
+                $tmp_str .= $row['contact'].",";
+                $tmp_str .= $row['phone'].",";
+                $tmp_str .= $row['relation_name'].",";
+                $tmp_str .= $row['count'].",";
+                $tmp_str .= floatval(intval($row['unitprice'])/100).",";
+                $tmp_str .= floatval(intval($row['amount'])/100).",";
+                $tmp_str .= floatval(intval($row['had_pay'])/100).",";
+                $tmp_str .= $agent_list[$row['agent_id']].",";
+                $tmp_str .= $row['tee_time'].",";
+                $tmp_str .= $status_list[$row['status']].",";
+                $tmp_str .= $row['record_time'].",";
+                $tmp_str .= $row['desc']."\n";
+                
+                $str .= iconv('utf-8','gb2312',$tmp_str);
+            }
+        }
+        while(++$page < intval($list['total_page']))
+        {
+            $list = Order::queryList($page, $this->pageSize, $args);
+            if($list['rows'])
+            {
+                foreach($list['rows'] as $row)
+                {
+                    $tmp_str = $row['order_id'].",";
+                    $tmp_str .= $type_list[$row['type']].",";
+                    $tmp_str .= $row['contact'].",";
+                    $tmp_str .= $row['phone'].",";
+                    $tmp_str .= $row['relation_name'].",";
+                    $tmp_str .= $row['count'].",";
+                    $tmp_str .= floatval(intval($row['unitprice'])/100).",";
+                    $tmp_str .= floatval(intval($row['amount'])/100).",";
+                    $tmp_str .= floatval(intval($row['had_pay'])/100).",";
+                    $tmp_str .= $agent_list[$row['agent_id']].",";
+                    $tmp_str .= $row['tee_time'].",";
+                    $tmp_str .= $status_list[$row['status']].",";
+                    $tmp_str .= $row['record_time'].",";
+                    $tmp_str .= $row['desc']."\n";
+
+                    $str .= iconv('utf-8','gb2312',$tmp_str);
+                }
+            }
+        }
+        //var_dump($str);
+        $filename = "order_".date('Ymd').'.csv'; //设置文件名   
+        //exit;
+        $this->export_csv($filename,$str); //导出   
+        
+    }
+    
+    
+    private function export_csv($filename,$data)   
+    {   
+        header("Content-type:text/csv");   
+        header("Content-Disposition:attachment;filename=".$filename);   
+        header('Cache-Control:must-revalidate,post-check=0,pre-check=0');   
+        header('Expires:0');   
+        header('Pragma:public');   
+        echo $data;   
+    }  
 	
 
 }

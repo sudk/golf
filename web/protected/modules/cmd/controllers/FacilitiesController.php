@@ -30,11 +30,11 @@ class FacilitiesController extends CMDBaseController
         }
 
         $rs=CourtFacilities::InfoList(Yii::app()->command->cmdObj->_pg_,$this->pageSize,Yii::app()->command->cmdObj);
-        if($rs['rows']){
+        if($rs){
             $msg['status']=0;
             $msg['desc']="成功";
             $msg['_pg_']=Yii::app()->command->cmdObj->_pg_;
-            $msg['data']=$rs['rows'];
+            $msg['data']=$rs;
         }else{
             $msg['status']=4;
             $msg['desc']="没有数据";

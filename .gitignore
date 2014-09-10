@@ -12,7 +12,6 @@ web/protected/runtime/*
 
 web/protected/runtime/application.log
 
-*.xls
 
 web/images/*
 

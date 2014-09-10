@@ -31,7 +31,7 @@ if($__model__!="edit"){
 ?>
 <table class="formList">
     <tr>
-        <td class="maxname">套餐名称：</td>
+        <td class="maxname">行程名称：</td>
         <td class="mivalue">
            <?php
                 echo $form->activeTextField($model, 'trip_name',array('title' => '本项必填', 'class' => 'input_text','onblur'=>$checkId), 'required');         
@@ -68,7 +68,12 @@ if($__model__!="edit"){
         <td class="maxname">支付方式：</td>
         <td class="mivalue">
            <?php
-                echo $form->activeDropDownList($model, 'pay_type',Trip::getPayType(),array('title' => '本项必填', 'class' => 'input_text'), 'required');         
+                if($model->pay_type == null){
+                    $model->pay_type = '0';
+                }
+                $pay_type =  Order::getPayType();
+                echo $pay_type[$model->pay_type];
+                echo $form->activeHiddenField($model, 'pay_type',array('title' => '本项必填'), 'required');         
             ?>
         </td>
         <td class="maxname">是否订单确认：</td>
@@ -96,7 +101,7 @@ if($__model__!="edit"){
     
     <tr>
         
-        <td class="maxname">套餐图片：</td>
+        <td class="maxname">行程图片：</td>
         <td class="mivalue" colspan="3">
             <input type="file" name="trip_img" value="" class="input_text" id="trip_img"/>
         </td>
@@ -203,7 +208,7 @@ if($__model__!="edit"){
         //setLogin(id);
        // var id = $("#Operator_staffid").val();
         var e = $(obj);
-        var ti = "套餐名称已经存在！";
+        var ti = "行程名称已经存在！";
         $.ajax({
             url:'./?r=service/route/checkid',
             data:{id:id},

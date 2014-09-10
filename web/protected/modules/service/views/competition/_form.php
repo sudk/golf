@@ -100,6 +100,27 @@ if($__model__!="edit"){
         </td>
        
     </tr>
+    <?php
+    if($__model__ == 'edit')
+    {
+        $pic_rows = Img::model()->findAll("relation_id='".$competition_id."' and type='".Img::TYPE_COMPETITION."'");
+        if(@count($pic_rows) > 0)
+        {
+            foreach($pic_rows as $row)
+            {
+        ?>
+        <tr>
+
+            <td class="maxname">赛事图片：</td>
+            <td class="mivalue" colspan="3">
+                <img src="index.php?r=court/loadpic&name=<?php echo $row['img_url'];?>" style="width:100px;"/>
+            </td>
+        </tr>
+        <?php
+            }
+        }
+    }
+    ?>
     <tr class="btnBox">
         <td colspan="4">
             <span class="sBtn">

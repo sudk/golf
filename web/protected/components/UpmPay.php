@@ -5,171 +5,43 @@
  
 class UpmPay extends BasePay
 {
-    // 版本号
-    const VERSION="1.0.0";
-
-    // 编码方式
-    const CHARSET="UTF-8";
-
-    // 交易网址
-    const TRADE_URL="";
-
-    // 查询网址
-    const QUERY_URL="";
-
-    // 商户代码
-    const MER_ID="";
-
-    // 通知URL
-    const MER_BACK_END_URL="";
-
-    // 前台通知URL
-    const MER_FRONT_END_URL="";
-
-    // 返回URL
-    const MER_FRONT_RETURN_URL="";
-
-    // 加密方式
-    const SIGN_TYPE="MD5";
-
-    // 商城密匙，需要和银联商户网站上配置的一样
-    const SECURITY_KEY="";
-
-    const TRANS_STATUS_SUCCESS="00";//交易成功
-    const TRANS_STATUS_PROCESS="01";//处理中
-    const TRANS_STATUS_FALSE="02";//交易失败
-
-    const TRANS_TYPE_PURCHASE="01";//交易
-    const TRANS_TYPE_VOID="31";//交易撤销
-    const TRANS_TYPE_REFUND="04";//退货接口
-
-    // 成功应答码
-    const RESPONSE_CODE_SUCCESS = "00";
-
-    // 签名
-    const SIGNATURE = "signature";
-
-    // 签名方法
-    const SIGN_METHOD = "signMethod";
-
-    // 应答码
-    const RESPONSE_CODE = "respCode";
-
-    //const RESPONSE_SUCCESS="00";
-
-    // 应答信息
-    const RESPONSE_MSG = "respMsg";
-
-
-    //解悉同步应答字符串
-    public function parseQString($str){
-        $str_ar=explode("&",$str);
-        $params=array();
-        foreach($str_ar as $kv_str){
-            list($k,$v)=explode("=",$kv_str);
-            $params[$k]=$v;
-        }
-        if(self::verifySignature($params)){
-            return $params;
-        }else{
-            return false;
-        }
-    }
-
-    //验证收到的消息
-    public function verifySignature($params){
-        $params=self::removeEmpty($params);
-        $signature=$params[self::SIGNATURE];
-        $local_signature=self::buildSignature($params);
-        return $signature==$local_signature;
-    }
-
-    //构造签名
-    public function buildSignature($params){
-        ksort($params);
-        $str="";
-        foreach($params as $k=>$v){
-            if($k==self::SIGNATURE||$k==self::SIGN_METHOD){
-                continue;
-            }
-            $str.="{$k}=".urldecode($v)."&";
-        }
-        $str.=md5(self::SECURITY_KEY);
-        return md5($str);
-    }
-
-
-    public function buildReq($params){
-        $params=self::removeEmpty($params);
-        $signature=self::buildSignature($params);
-        $params[self::SIGNATURE]=$signature;
-        $params[self::SIGN_METHOD]=self::SIGN_TYPE;
-        $str="";
-        foreach($params as $k=>$v){
-            $str.="{$k}=".urlencode($v)."&";
-        }
-        return substr($str,0,strlen($str)-1);
-    }
-
-    //去掉空值项
-    public function removeEmpty($params){
-        $tmp_ar=array();
-        foreach($params as $k=>$v){
-            if(!$v==""){
-                $tmp_ar[$k]=$v;
-            }
-        }
-        return $tmp_ar;
-    }
-
-    //交易请求
-    public function track($params){
-        $str=self::buildReq($params);
-        $resp_str=self::HttpPos($str,self::TRADE_URL);
-        return self::parseQString($resp_str);
-    }
-
-    //查询请求
-    public function query($params){
-        $str=self::buildReq($params);
-        $resp_str=self::HttpPos($str,self::QUERY_URL);
-        return self::parseQString($resp_str);
-    }
 
     //订单推送请求
-    public function Purchase($orderAmount,$orderDescription,$orderNumber){
+    public function Purchase($orderAmount,$orderDescription,$order_id){
 
-        $serial_number=Utils::GenerateSerialNumber();
         $pay_method=Order::PAY_METHOD_UPMP;
-        //$status=Order::STATUS_TOBE_SUCCESS;
-        $row=Order::OrderInfo($orderNumber);
+        //支付时内部订单和外部订单一样可以防止重复支付
+        $out_order_number=Utils::GenerateOrderId();
+        $req['version']     		= upmp_config::$version; // 版本号
+        $req['charset']     		= upmp_config::$charset; // 字符编码
+        $req['transType']   		= "01"; // 交易类型
+        $req['merId']       		= upmp_config::$mer_id; // 商户代码
+        $req['backEndUrl']      	= upmp_config::$mer_back_end_url; // 通知URL
+        $req['frontEndUrl']     	= upmp_config::$mer_front_end_url; // 前台通知URL(可选)
+        $req['orderDescription']	= $orderDescription;// 订单描述(可选)
+        $req['orderTime']   		= date("YmdHis"); // 交易开始日期时间yyyyMMddHHmmss
+        $req['orderNumber'] 		= $out_order_number; //订单号(商户根据自己需要生成订单号)
+        $req['orderAmount'] 		= $orderAmount; // 订单金额
+        $req['orderCurrency'] 		= "156"; // 交易币种(可选)
+        $req['reqReserved']   	= $order_id;
+        //$req['reqReserved']   	= UpmpService::buildReserved($merReserved); // 商户保留域(可选)
 
-        $req['backEndUrl']=self::MER_BACK_END_URL;// 通知URL
-        $req['charset']=self::CHARSET;// 字符编码
-        $req["transType"]=self::TRANS_TYPE_PURCHASE;// 交易类型
-        $req["frontEndUrl"]=self::MER_FRONT_END_URL;// 前台通知URL
-        $req['merId']=self::MER_ID;// 商户代码
-        $req["merReserved"]="";// 商户保留域
-        $req["orderAmount"]=$orderAmount;// 订单金额
-        $req["orderCurrency"]="156";// 交易币种
-        $req["orderDescription"]=$orderDescription;// 订单描述
-        $req["orderNumber"]=$orderNumber;// 订单号
-        $req["orderTime"]=date("YmdHis");// 交易时间
-        $req["orderTimeout"]=date("YmdHis",strtotime("+1 hours"));// 订单超时时间
-        $req["sysReseverd"]="";// 系统保留域
-        $req["version"]=self::VERSION;// 协议版本
-        $rs=self::track($req);
-        if($rs){
-            $respCode=$rs[self::RESPONSE_CODE];
-            if($respCode==self::RESPONSE_CODE_SUCCESS){
+        $resp = array ();
+        $validResp = UpmpService::trade($req, $resp);
+
+        if($validResp){
+            $respCode=$resp[upmp_config::RESPONSE_CODE];
+            if("00"==$respCode){
                 $conn=Yii::app()->db;
+                $transaction = $conn->beginTransaction();
                 try{
-                    $transaction = $conn->beginTransaction();
-                    //Order::ChangeStatus($conn,$status,$orderNumber);
-                    Order::ChangePayMethod($conn,$pay_method,$orderNumber);
-                    $trans_type=TransRecord::GetPayTypeByOrderType($row['type']);
-                    $tn=$rs['tn'];
-                    TransRecord::Add($conn,$orderNumber,$trans_type,-$orderAmount,$serial_number,TransRecord::STATUS_PROCESS,$re_serial_number="",$tn,$user_id=Yii::app()->user->id,$operator_id="");
+
+                    $rs=Order::ChangePayMethod($conn,$pay_method,$order_id);
+                    $tn=$resp['tn'];
+                    if($tn){
+                        $trans_type=TransRecord::GetPayTypeByOrderType($rs['type']);
+                        TransRecord::Add($conn,$order_id,$trans_type,-$orderAmount,$out_order_number,TransRecord::STATUS_PROCESS,$re_serial_number="",$out_serial_number="",$user_id="",$operator_id="",$out_order_number,$req['orderTime']);
+                    }
                     $transaction->commit();
                     $data[]=array('tn'=>$tn);
                     return array('status'=>0,'desc'=>'成功','data'=>$data);
@@ -179,98 +51,197 @@ class UpmPay extends BasePay
                 }
 
             }else{
-                $msg=array('status'=>$respCode,'msg'=>$rs[self::RESPONSE_MSG]);
+                $msg=array('status'=>$respCode,'msg'=>$resp[upmp_config::RESPONSE_MSG]);
             }
         }else{
-            $msg=array('status'=>'1','msg'=>"请求银联接口失败");
+            $msg=array('status'=>'1','msg'=>"签名认证失败");
         }
         return $msg;
     }
 
     //交易信息查询
     public function QueryInfo($type,$orderNumber){
-        $req["charset"]=self::CHARSET;// 字符编码
-        $req["transType"]=$type;// 交易类型
-        $req["merId"]=self::MER_ID;// 商户代码
-        $req["merReserved"]="";// 商户保留域
-        $req["orderNumber"]=$orderNumber;// 订单号
-        $req["orderTime"]=date("YmdHis");// 交易时间
-        $req["sysReseverd"]="";// 系统保留域
-        $req["version"]=self::VERSION;// 协议版本
-        return self::query($req);
+        //需要填入的部分
+        $req['version']     	= upmp_config::$version; // 版本号
+        $req['charset']     	= upmp_config::$charset; // 字符编码
+        $req['transType']   	= $type; // 交易类型
+        $req['merId']       	= upmp_config::$mer_id; // 商户代码
+        $req['orderTime']   	= date("Ymd"); // 交易开始日期时间yyyyMMddHHmmss或yyyyMMdd
+        $req['orderNumber'] 	= $orderNumber; // 订单号
 
+//        // 保留域填充方法
+//        $merReserved['test']   	= "test";
+//        $req['merReserved']   	= UpmpService::buildReserved($merReserved); // 商户保留域(可选)
+
+        $resp = array ();
+        $validResp = UpmpService::query($req, $resp);
+        if($validResp){
+            $this->Notice($resp);
+        }
+        print_r($resp);
     }
 
     //消费撤销接口
-    public function Void($orderNumber,$orderAmount,$qn){
-        $req["backEndUrl"]=self::MER_BACK_END_URL;// 通知URL
-        $req["charset"]=self::CHARSET;// 字符编码
-        $req["transType"]=self::TRANS_TYPE_VOID;// 交易类型
-        $req["merId"]=self::MER_ID;// 商户代码
-        $req["merReserved"]="";// 商户保留域
-        $req["orderAmount"]=$orderAmount;// 订单金额
-        $req["orderCurrency"]="156";// 交易币种
-        $req["orderNumber"]=$orderNumber;// 订单号
-        $req["orderTime"]=date("YmdHis");// 交易时间
-        $req["qn"]=$qn;// 查询流水号
-        $req["sysReseverd"]="";// 系统保留域
-        $req["version"]=self::VERSION;// 协议版本
-        return self::track($req);
+    public function Void($order_id,$orderAmount,$qn){
+        //需要填入的部分
+        $req['version']     	= upmp_config::$version; // 版本号
+        $req['charset']     	= upmp_config::$charset; // 字符编码
+        $req['transType']   	= upmp_config::TRANS_TYPE_VOID; // 交易类型
+        $req['merId']       	= upmp_config::$mer_id; // 商户代码
+        $req['backEndUrl']      = upmp_config::$mer_back_end_url; // 通知URL
+        $req['orderTime']   	= date("YmdHis"); // 交易开始日期时间yyyyMMddHHmmss（撤销交易新交易日期，非原交易日期）
+        $req['orderNumber'] 	= date("YmdHiss"); // 订单号（撤销交易新订单号，非原订单号）
+        $req['orderAmount'] 	= $orderAmount; // 订单金额
+        $req['orderCurrency'] 	= "156"; // 交易币种(可选)
+        $req['qn'] 				= $qn; // 查询流水号（原订单支付成功后获取的流水号）
+        $req['reqReserved'] 	= $order_id; // 请求方保留域(可选，用于透传商户信息)
+
+        // 保留域填充方法
+        //        $merReserved['test']   	= "test";
+        //        $req['merReserved']   	= UpmpService::buildReserved($merReserved); // 商户保留域(可选)
+
+        $resp = array ();
+        $validResp = UpmpService::trade($req, $resp);
+        if($validResp){
+            return array('status'=>0,'desc'=>'成功');
+        }else{
+            $respCode=$resp[upmp_config::RESPONSE_CODE];
+            return array('status'=>$respCode,'msg'=>$resp[upmp_config::RESPONSE_MSG]);
+        }
 
     }
 
     //退货接口
-    public function Refund($orderNumber,$orderAmount,$qn){
-        $req["backEndUrl"]=self::MER_BACK_END_URL;// 通知URL
-        $req["charset"]=self::CHARSET;// 字符编码
-        $req["transType"]=self::TRANS_TYPE_REFUND;// 交易类型
-        $req["merId"]=self::MER_ID;// 商户代码
-        $req["merReserved"]="";// 商户保留域
-        $req["orderAmount"]=$orderAmount;// 订单金额
-        $req["orderCurrency"]="156";// 交易币种
-        $req["orderNumber"]=$orderNumber;// 订单号
-        $req["orderTime"]=date("YmdHis");// 交易时间
-        $req["qn"]=$qn;// 查询流水号
-        $req["sysReseverd"]="";// 系统保留域
-        $req["version"]=self::VERSION;// 协议版本
-        return self::track($req);
+    public function Refund($order_id,$orderAmount,$sn){
+        $out_order_number=Utils::GenerateSerialNumber();
+        //需要填入的部分
+        $req['version']     	= upmp_config::$version; // 版本号
+        $req['charset']     	= upmp_config::$charset; // 字符编码
+        $req['transType']   	= "04"; // 交易类型
+        $req['merId']       	= upmp_config::$mer_id; // 商户代码
+        $req['backEndUrl']      = upmp_config::$mer_back_end_url; // 通知URL
+        $req['orderTime']   	= date("YmdHis"); // 交易开始日期时间yyyyMMddHHmmss（退货交易新交易日期，非原交易日期）
+        $req['orderNumber'] 	= $out_order_number; // 订单号（退货交易新订单号，非原交易订单号）
+        $req['orderAmount'] 	= $orderAmount; // 订单金额
+        $req['orderCurrency'] 	= "156"; // 交易币种(可选)
+        $req['qn'] 				= $sn; // 查询流水号（原订单支付成功后获取的流水号）
+        $req['reqReserved']   	= $order_id;
+        // 保留域填充方法
+        //$merReserved['order_id']   	= $order_id;
+        //$req['reqReserved']   	= UpmpService::buildReserved($merReserved);
 
-    }
+        $resp = array ();
+        $validResp = UpmpService::trade($req, $resp);
+        // 商户的业务逻辑
+        if($validResp){
+            if($resp[upmp_config::RESPONSE_CODE]==upmp_config::RESPONSE_CODE_SUCCESS){
+                try{
+                    $conn=Yii::app()->db;
+                    $transaction = $conn->beginTransaction();
+                    $desc="银联退款申请中，退款金额：".$orderAmount/100;
+                    $rs=Order::ChangeStatus($conn,Order::STATUS_REFUND,$order_id);
 
-    public function Notice($str){
-        $params=self::parseQString($str);
-        if($params){
-            $respCode=$params[self::RESPONSE_CODE];
-            if($respCode==self::RESPONSE_CODE_SUCCESS){
-                $transType=$params['transType'];
-                $transStatus=$params['transStatus'];
+                    $trans_type=TransRecord::GetCancelTypeByOrderType($rs['type']);
+                    TransRecord::Add($conn,$order_id,$trans_type,$orderAmount,$out_order_number,TransRecord::STATUS_PROCESS,$re_serial_number="",$out_serial_number="",$user_id="",$operator_id="",$out_order_number,$req['orderTime']);
+                    if($desc){
+                        Order::ChangeDesc($conn,$order_id,$desc);
+                    }
+                    $transaction->commit();
+                    return array('status'=>0,'desc'=>'已经成功向银行支付发起退款申请');
 
+                }catch (Exception $e){
+                    $transaction->rollBack();
+                }
             }else{
-                $msg=array('status'=>$respCode,'msg'=>$params[self::RESPONSE_MSG]);
+                //print_r($resp);
+                $respCode=$resp[upmp_config::RESPONSE_CODE];
+                return array('status'=>$respCode,'msg'=>$resp[upmp_config::RESPONSE_MSG]);
             }
         }else{
-            return false;
+            return array('status'=>20,'desc'=>'银行请求退款申请失败');
+        }
+
+    }
+
+    public function Notice($params){
+        Yii::log(json_encode($params),"info",'application.un_pay_log');
+        if (UpmpService::verifySignature($params)){// 服务器签名验证成功
+            if($params[upmp_config::RESPONSE_CODE]!=upmp_config::RESPONSE_CODE_SUCCESS){ echo "fail"; return false;}
+            try{
+                //请在这里加上商户的业务逻辑程序代码
+                $transStatus = $params['transStatus'];// 交易状态
+                $out_order_number = $params['orderNumber'];
+                $order_id = $params['reqReserved'];
+                $settleAmount = $params['settleAmount'];
+                //$serial_number=Utils::GenerateSerialNumber();
+                $qn=$params['qn'];
+                $desc=false;
+                $conn=Yii::app()->db;
+                $transaction = $conn->beginTransaction();
+                if (""!=$transStatus && upmp_config::TRANS_STATUS_SUCCESS==$transStatus){
+                    // 交易处理成功
+                    if($params['transType']==upmp_config::TRANS_TYPE_PURCHASE){
+                        $desc="银联支付成功，支付金额：".$settleAmount/100;
+                        $order=Order::ChangeStatus($conn,Order::STATUS_TOBE_SUCCESS,$order_id,$settleAmount);
+
+                        //如果是购买VIP则给用户生成VIP卡号
+                        if($order['type']==Order::TYPE_VIP){
+                            //$number=SysSetting::GetNewVipNumber();
+                            User::AddVipNumber($conn,$order['user_id'],$settleAmount);
+                            $desc="银联支付,购买VIP,支付成功，支付金额：".$settleAmount/100;
+                        }
+
+                        //如果是充值则给用户余额账户充上金额
+                        if($order['type']==Order::TYPE_RECHARGE){
+                            User::Recharge($conn,$settleAmount,$order['user_id']);
+                            $desc="银联支付，为账户余额充值，支付成功，支付金额：".$settleAmount/100;
+                            $d=date("YmdHis");
+                            TransRecord::Add($conn,$order_id,TransRecord::TRANS_TYPE_RECHARGE,$settleAmount,$out_order_number,TransRecord::STATUS_SUCCESS,$re_serial_number="",$out_serial_number=$qn,$user_id="",$operator_id="",$out_order_number,$d);
+                        }
+
+                    }
+                    if($params['transType']==upmp_config::TRANS_TYPE_VOID){
+                        $desc="银联消费撤销成功，金额：".$settleAmount/100;
+                        Order::ChangeStatus($conn,Order::STATUS_TOBE_CANCEL,$order_id);
+
+                    }
+                    if($params['transType']==upmp_config::TRANS_TYPE_REFUND){
+                        $desc="银联退款成功，金额：".$settleAmount/100;
+                        Order::ChangeStatus($conn,Order::STATUS_TOBE_CANCEL,$order_id);
+                    }
+                    TransRecord::ChangeStatusByOutOrderNumber($conn,$order_id,$out_order_number,$qn,TransRecord::STATUS_SUCCESS);
+
+                }else if(""!=$transStatus && upmp_config::TRANS_STATUS_FALSE==$transStatus) {
+
+                    if($params['transType']==upmp_config::TRANS_TYPE_PURCHASE){
+                        $desc="银联支付失败，支付金额：".$settleAmount/100;
+                    }
+
+                    if($params['transType']==upmp_config::TRANS_TYPE_VOID){
+                        $desc="银联消费撤销失败，支付金额：".$settleAmount/100;
+                    }
+
+                    if($params['transType']==upmp_config::TRANS_TYPE_REFUND){
+
+                        $desc="银联退款失败，支付金额：".$settleAmount/100;
+                        Order::ChangeStatus($conn,Order::STATUS_WAIT_REFUND,$order_id);
+                    }
+
+                    TransRecord::ChangeStatusByOutOrderNumber($conn,$order_id,$out_order_number,$qn,TransRecord::STATUS_FALSE);
+                }
+
+                if($desc){
+                    Order::ChangeDesc($conn,$order_id,$desc);
+                }
+                $transaction->commit();
+            }catch (Exception $e){
+                $transaction->rollBack();
+            }
+            echo "success";
+        } else {
+            // 服务器签名验证失败
+            echo "fail";
         }
     }
-
-    public function HttpPos($str,$url){
-        $tuCurl = curl_init();
-        curl_setopt($tuCurl, CURLOPT_URL,$url);
-        //curl_setopt($tuCurl, CURLOPT_VERBOSE, 0);
-        curl_setopt($tuCurl, CURLOPT_TIMEOUT,5);
-        curl_setopt($tuCurl, CURLOPT_HEADER,false);
-        curl_setopt($tuCurl, CURLOPT_RETURNTRANSFER,true);
-        curl_setopt($tuCurl, CURLOPT_POST,true);
-        curl_setopt($tuCurl, CURLOPT_POSTFIELDS,$str);
-        //curl_setopt($tuCurl, CURLOPT_HTTPHEADER,array("Cookie: n8lca91gg1gdtk0n000uhkaq97"));
-        //curl_setopt($tuCurl, CURLOPT_COOKIEFILE, '/Applications/XAMPP/htdocs/golf/web/assets/cookie.txt');
-        //curl_setopt($tuCurl, CURLOPT_COOKIEJAR, '/Applications/XAMPP/htdocs/golf/web/assets/cookie.txt');
-        $rs=curl_exec($tuCurl);
-        //list($header, $data) = explode("\n\n",$rs,2);
-        curl_close($tuCurl);
-
-        return $rs;
-    }
-
 
 }

@@ -35,7 +35,7 @@
         </select>
         <span style="float:left; margin:0 5px; margin-top:-3px;">&nbsp;</span>
         
-        <input name="q[trip_name]" type="text" class="grayTips" value="套餐名称"/>
+        <input name="q[trip_name]" type="text" class="grayTips" value="行程名称"/>
         <input type="submit" value="" class="search_btn" />
     </li>
 </form>

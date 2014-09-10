@@ -3,6 +3,7 @@
 return array(
     //图片上传路径
     'upload_dir'=>dirname(__FILE__)."/../../images/picture/",
+    "template_dir"=>dirname(__FILE__)."/../data/template/",
     'cmd_status'=>array(
         0=>'成功',
         -1=>"命令格式错误",

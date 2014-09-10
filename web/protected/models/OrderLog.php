@@ -137,9 +137,9 @@ class OrderLog extends CActiveRecord {
             ->queryRow();
 
         $sql = "insert into ".$log_table."
-                   (order_id,user_id,`type`,relation_id,relation_name,tee_time,`count`,unitprice,amount,had_pay,pay_type,status,record_time,serial_number,agent_id,contact,phone)
+                   (order_id,user_id,`type`,relation_id,relation_name,tee_time,`count`,unitprice,amount,had_pay,pay_type,status,record_time,serial_number,agent_id,contact,phone,pay_method,`desc`)
                      values
-                    (:order_id,:user_id,:type,:relation_id,:relation_name,:tee_time,:count,:unitprice,:amount,:had_pay,:pay_type,:status,:record_time,:serial_number,:agent_id,:contact,:phone)";
+                    (:order_id,:user_id,:type,:relation_id,:relation_name,:tee_time,:count,:unitprice,:amount,:had_pay,:pay_type,:status,:record_time,:serial_number,:agent_id,:contact,:phone,:pay_method,:desc)";
         $command = Yii::app()->db->createCommand($sql);
         $command->bindParam(":order_id",$row['order_id'], PDO::PARAM_STR);
         $command->bindParam(":user_id",$row['user_id'], PDO::PARAM_STR);
@@ -158,8 +158,28 @@ class OrderLog extends CActiveRecord {
         $command->bindParam(":agent_id",$row['agent_id'] , PDO::PARAM_STR);
         $command->bindParam(":contact",$row['contact'] , PDO::PARAM_STR);
         $command->bindParam(":phone",$row['phone'], PDO::PARAM_STR);
+        $command->bindParam(":pay_method",$row['pay_method'], PDO::PARAM_STR);
+        $command->bindParam(":desc",$row['desc'], PDO::PARAM_STR);
         $command->execute();
 
+    }
+    
+    /**
+     * 获取订单操作日志记录
+     * @param type $order_id
+     * @param type $status
+     * @param type $table
+     * @return type array
+     */
+    public static function getLogInfo($order_id,$status,$month)
+    {
+        $row=Yii::app()->db->createCommand()
+            ->select("*")
+            ->from("g_order_log_".$month)
+            ->where("order_id=:order_id and status=:status",array("order_id"=>$order_id,'status'=>$status))
+            ->queryRow();
+        
+        return $row;
     }
     
    
