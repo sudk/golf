@@ -1,5 +1,5 @@
 <div class="title-box">
-    <h1><span style="float:left;">会员列表</span></h1>
+    <h1><span style="float:left;">用户列表</span></h1>
     <ul class="sift">
         <?php $this->renderPartial('_toolBox'); ?>
     </ul>
@@ -28,6 +28,14 @@
     
     var itemMyCard = function(id,name){
         window.location.href = encodeURI("index.php?r=user/uinfo/mycard&id="+id+"&name="+name);
+    }
+    
+    var itemMyConsume = function(id,name){
+        window.location.href = encodeURI("index.php?r=user/uinfo/consume&id="+id+"&name="+name);
+    }
+    
+    var itemMyOrder = function(id,name){
+        window.location.href = encodeURI("index.php?r=user/uinfo/order&id="+id+"&name="+name);
     }
     
     var itemDelete = function(id,name){

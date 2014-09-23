@@ -235,6 +235,11 @@ class Order extends CActiveRecord {
         $condition = ' 1=1 ';
         $params = array();
 
+        if ($args['user_id'] != ''){
+            $condition.= ' AND user_id=:user_id';
+            $params['user_id'] = $args['user_id'];
+        }
+        
         if ($args['order_id'] != ''){
             $condition.= ' AND order_id=:order_id';
             $params['order_id'] = $args['order_id'];

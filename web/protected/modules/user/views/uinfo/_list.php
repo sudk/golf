@@ -15,6 +15,11 @@ if (is_array($rows))
         $link .= CHtml::link('重置密码',"javascript:itemResetPwd('{$row['user_id']}','{$row['user_name']}')", array());
 	
         $link .= CHtml::link('我的卡包',"javascript:itemMyCard('{$row['user_id']}','{$row['user_name']}')", array());
+        
+        $link .= CHtml::link('消费明细',"javascript:itemMyConsume('{$row['user_id']}','{$row['user_name']}')", array());
+        $link .= CHtml::link('订单明细',"javascript:itemMyOrder('{$row['user_id']}','{$row['user_name']}')", array());
+        
+        
         $balance = intval($row['balance']);
         if($balance!=0)
         {
@@ -29,8 +34,8 @@ if (is_array($rows))
         $t->echo_td($row['user_name']); //
         $t->echo_td($row['phone']);   
         $t->echo_td($balance);
-        $t->echo_td($row['point']);
-        $t->echo_td($row['city']);
+        //$t->echo_td($row['point']);
+        //$t->echo_td($row['city']);
         $t->echo_td(User::GetStatus($row['status']));
         $t->echo_td($vip_status);
         $t->echo_td($row['vip_expire_date']);

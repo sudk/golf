@@ -19,11 +19,13 @@ class SysMenu extends CWidget
         //用户管理
         $sub_menu = array();
         if(Yii::app()->user->checkAccess("user/uinfo/list"))      
-            $sub_menu[] = array("title" => "用户信息管理", "url" => "./?r=user/uinfo/list", "match" => array('user\/uinfo\/list','user\/uinfo\/edit','operator\/operator\/detail','user\/uinfo\/mycard','user\/uinfo\/newcard'));
+            $sub_menu[] = array("title" => "用户信息管理", "url" => "./?r=user/uinfo/list", "match" => array('user\/uinfo\/list','user\/uinfo\/edit','operator\/operator\/detail','user\/uinfo\/mycard','user\/uinfo\/newcard','user\/uinfo\/consume','user\/uinfo\/order'));
         if(Yii::app()->user->checkAccess("user/uscore/list"))    
             $sub_menu[] = array("title" => "用户成绩管理", "url" => "./?r=user/uscore/list", "match" => array('user\/uscore\/list','user\/uscore\/detail','user\/uscore\/scoredetail'));    
-        //$sub_menu[] = array("title" => "用户卡片管理", "url" => "./?r=user/ucard/list", "match" => 'user\/ucard\/list');
-        
+//        if(Yii::app()->user->checkAccess("user/uinfo/account"))    
+//            $sub_menu[] = array("title" => "会员账户管理", "url" => "./?r=user/uinfo/account", "match" => array('user\/uinfo\/account','user\/uinfo\/consume','user\/uinfo\/order'));    
+//                
+   
         if(count($sub_menu))
         $menus['user'] = array("title" => "用户管理", "url" => "./?r=user/uinfo/list", "child" => $sub_menu);
 
@@ -177,6 +179,16 @@ class SysMenu extends CWidget
             $sub_menu[] = array("title" => "消费记录", "url" => "./?r=rpt/consume/list", "match" => array('rpt\/consume\/list'));   
         if(Yii::app()->user->checkAccess("rpt/consume/summary"))
             $sub_menu[] = array("title" => "消费汇总", "url" => "./?r=rpt/consume/summary", "match" => array('rpt\/consume\/summary'));    
+        
+        
+        if(Yii::app()->user->checkAccess("rpt/consume/order"))
+            $sub_menu[] = array("title" => "订单报表", "url" => "./?r=rpt/consume/order", "match" => array('rpt\/consume\/order','rpt\/consume\/orderd'));    
+        if(Yii::app()->user->checkAccess("rpt/consume/agent"))
+            $sub_menu[] = array("title" => "财务报表", "url" => "./?r=rpt/consume/agent", "match" => array('rpt\/consume\/agent','rpt\/consume\/agentd'));    
+        if(Yii::app()->user->checkAccess("rpt/consume/user"))
+            $sub_menu[] = array("title" => "客户报表", "url" => "./?r=rpt/consume/user", "match" => array('rpt\/consume\/user','rpt\/consume\/userd'));    
+        if(Yii::app()->user->checkAccess("rpt/consume/balance"))
+            $sub_menu[] = array("title" => "结算报表", "url" => "./?r=rpt/consume/balance", "match" => array('rpt\/consume\/balance','rpt\/consume\/balanced'));    
         
         if(count($sub_menu))
         $menus['rpt'] = array("title" => "报表管理", "url" => "./?r=rpt/consume/list", "child" => $sub_menu);

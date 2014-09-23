@@ -70,7 +70,7 @@
     
     <tr>
         
-        <td class="maxname">备注：</td>
+        <td class="maxname">简介：</td>
         <td class="mivalue" colspan="3"><?php echo $model->desc;?></td>
     
     

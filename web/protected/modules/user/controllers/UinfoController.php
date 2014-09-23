@@ -13,6 +13,10 @@ class UinfoController extends AuthBaseController
     public $cardGridId = 'card_list';
     public $pageSize = 20;
     public $module_id = 'user';
+    
+    public $aGridId = 'account_list';
+    public $cGridId = 'consume_list';
+    public $oGridId = 'order_list';
 
     /**
      * 表头
@@ -27,8 +31,8 @@ class UinfoController extends AuthBaseController
         $t->set_header('姓名', '10%', '');
         $t->set_header('电话', '8%', ''); 
         $t->set_header('账户余额', '8%', '','');
-        $t->set_header('账户积分', '8%', '','');
-        $t->set_header('所在城市', '8%', '','');
+        //$t->set_header('账户积分', '8%', '','');
+        //$t->set_header('所在城市', '8%', '','');
         $t->set_header('状态', '8%', '');
         $t->set_header('VIP状态', '8%', '');
         $t->set_header('VIP有效期', '10%', '');
@@ -130,7 +134,9 @@ class UinfoController extends AuthBaseController
         Operatorlog::addLog($log_args);
         print_r(json_encode($msg));
     }
-    
+    /**
+     * 删除。删除个人信息，个人成绩
+     */
     public function actionDel(){
         $id=$_POST['id'];
         $info = User::model()->findByPk($id);
@@ -167,7 +173,8 @@ class UinfoController extends AuthBaseController
                 'E-Mail'=>$model['email'],
                 '性别'=>User::GetSex(intval($model['sex'])),
                 '备注'=>$model['remark'],
-                '注册时间'=>$model['record_time']
+                '注册时间'=>$model['record_time'],
+                '所在城市'=>$model['city'],
             );
             $msg['detail']=Utils::MakeDetailTable($detail);
         } else {
@@ -300,5 +307,183 @@ class UinfoController extends AuthBaseController
     }
 
 
+    /**
+     * 表头
+     * @return SimpleGrid
+     */
+    private function genADataGrid()
+    {
+        $t = new SimpleGrid($this->aGridId);
+        $t->url = 'index.php?r=user/uinfo/agrid';
+        $t->updateDom = 'datagrid';
+       
+        $t->set_header('姓名', '10%', '');
+        $t->set_header('电话', '8%', ''); 
+        $t->set_header('账户余额', '8%', '','');
+        $t->set_header('会员卡号', '12%', '');
+        $t->set_header('操作', '20%', '');
+        return $t;
+    }
+
+    /**
+     * 查询
+     */
+    public function actionAGrid()
+    {
+        $page = $_GET['page'] == '' ? 0 : $_GET['page']; //当前页码
+        $_GET['page']=$_GET['page']+1;
+        $args = $_GET['q']; //查询条件
+
+
+        if ($_REQUEST['q_value'])
+        {
+            $args[$_REQUEST['q_by']] = $_REQUEST['q_value'];
+        }
+        //var_dump($args);
+        $t = $this->genADataGrid();
+
+        $list = User::queryList($page, $this->pageSize, $args);
+
+        $this->renderPartial('_alist', array('t' => $t, 'rows' => $list['rows'], 'cnt' => $list['total_num']));
+    }
+
+    /**
+     * 列表
+     */
+    public function actionAccount()
+    {
+        $this->render('account_list');
+    }
+    
+    /**
+     * 表头
+     * @return SimpleGrid
+     */
+    private function genCDataGrid()
+    {
+        $t = new SimpleGrid($this->cGridId);
+        $t->url = 'index.php?r=user/uinfo/cgrid';
+        $t->updateDom = 'datagrid';
+       
+        $t->set_header('序号', '5%', '');
+        $t->set_header('交易类型', '10%', '');
+        $t->set_header('订单类型', '10%', '');
+        $t->set_header('付款类型', '10%', '');
+        $t->set_header('流水号', '10%', '');
+        $t->set_header('交易金额', '10%', '');
+        $t->set_header('关联流水号', '10%', '');
+        $t->set_header('交易状态', '10%', '');
+        $t->set_header('记录时间', '10%', '');
+        
+        return $t;
+    }
+
+    /**
+     * 查询
+     */
+    public function actionCGrid()
+    {
+        $page = $_GET['page'] == '' ? 0 : $_GET['page']; //当前页码
+        $_GET['page']=$_GET['page']+1;
+        $args = $_GET['q']; //查询条件
+
+
+        if ($_REQUEST['q_value'])
+        {
+            $args[$_REQUEST['q_by']] = $_REQUEST['q_value'];
+        }
+        if(!$args['startdate']){
+            $args['startdate']=date("Y-m-d");
+        }
+
+        if(!$args['enddate']){
+            $args['enddate']=date("Y-m-d");
+        }
+        
+        if(!isset($args['user_id'])){
+            $args['user_id'] = $_SESSION['cur_user_id'];
+        }
+        //var_dump($args);
+        $t = $this->genCDataGrid();
+
+        $list = TransRecord::queryList($page, $this->pageSize, $args);
+
+        $this->renderPartial('_clist', array('t' => $t, 'rows' => $list['rows'], 'cnt' => $list['total_num']));
+    }
+
+    /**
+     * 列表
+     */
+    public function actionConsume()
+    {
+        $id = trim($_GET['id']);
+        $name=trim($_GET['name']);
+        
+        $_SESSION['cur_user_id'] = $id;
+        $_SESSION['cur_user_name'] = $name;
+        
+        $this->render('consume_list');
+    }
+    
+    /**
+     * 表头
+     * @return SimpleGrid
+     */
+    private function genODataGrid()
+    {
+        $t = new SimpleGrid($this->oGridId);
+        $t->url = 'index.php?r=user/uinfo/ogrid';
+        $t->updateDom = 'datagrid';
+       
+        $t->set_header('订单编号', '15%', '');
+        $t->set_header('订单类型', '10%', '');   
+        
+        $t->set_header('商品名称', '15%', '');
+        $t->set_header('订单金额', '8%', '');
+        $t->set_header('支付方式', '8%', '');
+        $t->set_header('状态', '8%', '');
+        $t->set_header('下单时间', '8%', '');
+        return $t;
+    }
+
+    /**
+     * 查询
+     */
+    public function actionOGrid()
+    {
+        $page = $_GET['page'] == '' ? 0 : $_GET['page']; //当前页码
+        $_GET['page']=$_GET['page']+1;
+        $args = $_GET['q']; //查询条件
+
+
+        if ($_REQUEST['q_value'])
+        {
+            $args[$_REQUEST['q_by']] = $_REQUEST['q_value'];
+        }
+        
+        if(!isset($args['user_id'])){
+            $args['user_id'] = $_SESSION['cur_user_id'];
+        }
+        //var_dump($args);
+        $t = $this->genODataGrid();
+
+        $list = Order::queryList($page, $this->pageSize, $args);
+
+        $this->renderPartial('_olist', array('t' => $t, 'rows' => $list['rows'], 'cnt' => $list['total_num']));
+    }
+
+    /**
+     * 列表
+     */
+    public function actionOrder()
+    {
+        $id = trim($_GET['id']);
+        $name=trim($_GET['name']);
+        
+        $_SESSION['cur_user_id'] = $id;
+        $_SESSION['cur_user_name'] = $name;
+        
+        $this->render('order_list');
+    }
 
 }

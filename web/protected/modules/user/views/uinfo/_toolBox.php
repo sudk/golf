@@ -1,13 +1,18 @@
 <form name="_query_form" id="_query_form" action="javascript:itemQuery(0);">
     <li>
         <span class="sift-title">搜索：</span>
-        <select name="q_by">
+<!--        <select name="q_by">
             <option value="user_name">姓名</option>
             <option value="card_no">会员卡号</option>
         </select>
-        <input type="hidden" name="q[status]" id="qstatus" value=''/>
-       
-        <input name="q_value" type="text" class="grayTips" />
+        <input name="q_value" type="text" class="grayTips" />-->
+        <input type="hidden" name="q[status]" id="qstatus" value=''/>       
+        <span style="float:left; margin:0 5px; margin-top:-3px;">姓名</span>
+        <input name="q[user_name]" type="text" class="grayTips" maxlength="32"/>
+        <span style="float:left; margin:0 5px; margin-top:-3px;">会员卡号</span>
+        <input name="q[card_no]" type="text" class="grayTips" maxlength="32"/>
+        <span style="float:left; margin:0 5px; margin-top:-3px;">电话</span>
+        <input name="q[phone]" type="text" class="grayTips" maxlength="12"/>
         <input type="submit" value="" class="search_btn"/>
     </li>
     <li>

@@ -67,18 +67,112 @@ class PriceController extends AuthBaseController
         $this->render('list');
     }
     
-    
+    private function getServiceArray($service)
+    {
+        if(!$service || @count($service) == 0)
+        {
+            return array();
+        }
+        //一共7个 1-7对于关系 is_green is_caddie is_car is_wardrobe is_meal is_insurance is_tip
+        $list = array();
+        for($i = 1; $i <= 7 ; $i++)
+        {
+            switch ($i) {
+                case 1:
+                    if(in_array($i."",$service))
+                    {
+                        $list['is_green'] = '1';
+                    }else
+                    {
+                        $list['is_green'] = '0';
+                    }
+
+                    break;
+                case 2:
+                    if(in_array($i."",$service))
+                    {
+                        $list['is_caddie'] = '1';
+                    }else
+                    {
+                        $list['is_caddie'] = '0';
+                    }
+
+                    break;
+                case 3:
+                    if(in_array($i."",$service))
+                    {
+                        $list['is_car'] = '1';
+                    }else
+                    {
+                        $list['is_car'] = '0';
+                    }
+
+                    break;
+                case 4:
+                    if(in_array($i."",$service))
+                    {
+                        $list['is_wardrobe'] = '1';
+                    }else
+                    {
+                        $list['is_wardrobe'] = '0';
+                    }
+
+                    break;
+                case 5:
+                    if(in_array($i."",$service))
+                    {
+                        $list['is_meal'] = '1';
+                    }else
+                    {
+                        $list['is_meal'] = '0';
+                    }
+
+                    break;
+                case 6:
+                    if(in_array($i."",$service))
+                    {
+                        $list['is_insurance'] = '1';
+                    }else
+                    {
+                        $list['is_insurance'] = '0';
+                    }
+
+                    break;
+                case 7:
+                    if(in_array($i."",$service))
+                    {
+                        $list['is_tip'] = '1';
+                    }else
+                    {
+                        $list['is_tip'] = '0';
+                    }
+
+                    break;
+
+                default:
+                    break;
+            }
+        }
+        return $list;
+        
+    }
     public function actionNewPolicy(){
         $court_id = trim($_GET['id']);
         $type = trim($_GET['tag']);//创建报价单类型
         $model=new Policy('create');
+        $service = array('1','2','3','4','5','6','7');
         if($_POST['Policy']){
-            
+            $service = $_POST['service'];
+            $service_detail = $this->getServiceArray($service);
             //用事务来处理
             $type = $_POST['Policy']['type'];
             $court_id = $model->court_id;
-            //var_dump($_POST);exit;
-            if($type == Policy::TYPE_NORMAL)
+            //var_dump($_POST);var_dump($service_detail);exit;
+            if(!$service||@count($service) == 0||@count($service_detail) == 0)
+            {
+                $msg['msg']="服务内容必填！";
+                $msg['status']=-1;
+            }else if($type == Policy::TYPE_NORMAL)
             {//普通报价
                 //var_dump("insert".$type);
                 $one_price = $_POST['1_price'];
@@ -131,12 +225,20 @@ class PriceController extends AuthBaseController
                     }
                     //得到所有Policy的内容
                     $policy = $_POST['Policy'];
+                    $policy['is_green'] = $service_detail['is_green'];
+                    $policy['is_caddie'] = $service_detail['is_caddie'];
+                    $policy['is_car'] = $service_detail['is_car'];
+                    $policy['is_wardrobe'] = $service_detail['is_wardrobe'];
+                    $policy['is_meal'] = $service_detail['is_meal'];
+                    $policy['is_insurance'] = $service_detail['is_insurance'];
+                    $policy['is_tip'] = $service_detail['is_tip'];
+                    
                     $policy['status'] = Policy::STATUS_NORMAL;
                     $policy['record_time']=date("Y-m-d H:i:s");
                     $policy['creatorid'] = Yii::app()->user->id;
                     $policy['agent_id'] = Yii::app()->user->agent_id;
                     $policy['id'] = $model->agent_id.date("YmdHis").rand(1000,9999);
-                    //var_dump($week_day);
+                    
                     $msg = Policy::insertRecord($policy, $week_day);
                     $model = new Policy('create');
                 }
@@ -175,6 +277,14 @@ class PriceController extends AuthBaseController
                 }else{
                     //得到所有Policy的内容
                     $policy = $_POST['Policy'];
+                    $policy['is_green'] = $service_detail['is_green'];
+                    $policy['is_caddie'] = $service_detail['is_caddie'];
+                    $policy['is_car'] = $service_detail['is_car'];
+                    $policy['is_wardrobe'] = $service_detail['is_wardrobe'];
+                    $policy['is_meal'] = $service_detail['is_meal'];
+                    $policy['is_insurance'] = $service_detail['is_insurance'];
+                    $policy['is_tip'] = $service_detail['is_tip'];
+                    
                     $policy['status'] = Policy::STATUS_NORMAL;
                     $policy['record_time']=date("Y-m-d H:i:s");
                     $policy['creatorid'] = Yii::app()->user->id;
@@ -209,6 +319,14 @@ class PriceController extends AuthBaseController
                         'record_time'=>date('Y-m-d H:i:s')
                     );
                     $policy = $_POST['Policy'];
+                    $policy['is_green'] = $service_detail['is_green'];
+                    $policy['is_caddie'] = $service_detail['is_caddie'];
+                    $policy['is_car'] = $service_detail['is_car'];
+                    $policy['is_wardrobe'] = $service_detail['is_wardrobe'];
+                    $policy['is_meal'] = $service_detail['is_meal'];
+                    $policy['is_insurance'] = $service_detail['is_insurance'];
+                    $policy['is_tip'] = $service_detail['is_tip'];
+                    
                     $policy['status'] = Policy::STATUS_NORMAL;
                     $policy['record_time']=date("Y-m-d H:i:s");
                     $policy['creatorid'] = Yii::app()->user->id;
@@ -227,13 +345,14 @@ class PriceController extends AuthBaseController
             
         }
             
-        $model->is_green = '1';
-        $model->is_caddie = '1';
-        $model->is_car = '1';
-        $model->is_wardrobe = '1';
-        $model->is_meal = '1';
-        $model->is_insurance = '1';
-        $model->is_tip = '1';
+        $model->is_green = in_array('1',$service) ? '1':'0';
+        $model->is_caddie = in_array('2',$service) ? '1':'0';
+        $model->is_car = in_array('3',$service) ? '1':'0';
+        $model->is_wardrobe = in_array('4',$service) ? '1':'0';
+        $model->is_meal = in_array('5',$service) ? '1':'0';
+        $model->is_insurance = in_array('6',$service) ? '1':'0';
+        $model->is_tip = in_array('7',$service) ? '1':'0';
+        
         $model->type = $type;//Policy::TYPE_NORMAL;
         $model->pay_type = '1';
         
@@ -253,10 +372,19 @@ class PriceController extends AuthBaseController
         //var_dump($model->attributes);
         if($_POST['Policy']){
             
+            $service = $_POST['service'];
+            $service_detail = $this->getServiceArray($service);
+            
+            
             //用事务来处理
             $type = $_POST['Policy']['type'];
             $court_id = $_POST['Policy']['court_id'];
-            if($type == Policy::TYPE_NORMAL)
+            if(!$service||@count($service) == 0||@count($service_detail) == 0)
+            {
+                $msg['msg']="服务内容必填！";
+                $msg['status']=-1;
+            }
+            else if($type == Policy::TYPE_NORMAL)
             {//普通报价
                 //var_dump("insert".$type);
                 $one_price = $_POST['1_price'];
@@ -309,7 +437,13 @@ class PriceController extends AuthBaseController
                     }
                     //得到所有Policy的内容
                     $policy = $_POST['Policy'];
-                    
+                    $policy['is_green'] = $service_detail['is_green'];
+                    $policy['is_caddie'] = $service_detail['is_caddie'];
+                    $policy['is_car'] = $service_detail['is_car'];
+                    $policy['is_wardrobe'] = $service_detail['is_wardrobe'];
+                    $policy['is_meal'] = $service_detail['is_meal'];
+                    $policy['is_insurance'] = $service_detail['is_insurance'];
+                    $policy['is_tip'] = $service_detail['is_tip'];
                     //var_dump($week_day);var_dump($policy);
                     $msg = Policy::updateRecord($policy, $week_day);
                     $model = Policy::model()->findByPk($policy['id']);
@@ -349,7 +483,13 @@ class PriceController extends AuthBaseController
                 }else{
                     //得到所有Policy的内容
                     $policy = $_POST['Policy'];
-                    
+                    $policy['is_green'] = $service_detail['is_green'];
+                    $policy['is_caddie'] = $service_detail['is_caddie'];
+                    $policy['is_car'] = $service_detail['is_car'];
+                    $policy['is_wardrobe'] = $service_detail['is_wardrobe'];
+                    $policy['is_meal'] = $service_detail['is_meal'];
+                    $policy['is_insurance'] = $service_detail['is_insurance'];
+                    $policy['is_tip'] = $service_detail['is_tip'];
                     //var_dump($week_day);
                     $msg = Policy::updateRecord($policy, $week_day);
                 }
@@ -381,6 +521,13 @@ class PriceController extends AuthBaseController
                    
                     //得到所有Policy的内容
                     $policy = $_POST['Policy'];
+                    $policy['is_green'] = $service_detail['is_green'];
+                    $policy['is_caddie'] = $service_detail['is_caddie'];
+                    $policy['is_car'] = $service_detail['is_car'];
+                    $policy['is_wardrobe'] = $service_detail['is_wardrobe'];
+                    $policy['is_meal'] = $service_detail['is_meal'];
+                    $policy['is_insurance'] = $service_detail['is_insurance'];
+                    $policy['is_tip'] = $service_detail['is_tip'];
                     //var_dump($week_day);var_dump($policy);
                     $msg = Policy::updateRecord($policy, $week_day);
                     //$model = new Policy('create');

@@ -23,6 +23,13 @@ return array(
             'user/uinfo/newcard',
             'user/uinfo/delcard',
             'user/uscore/export',
+            
+            'user/uinfo/agrid' ,
+            'user/uinfo/account' ,
+            'user/uinfo/cgrid' ,
+            'user/uinfo/consume' ,
+            'user/uinfo/ogrid' ,
+            'user/uinfo/order' ,
            
         ),
         'bizRules' => '',
@@ -40,6 +47,12 @@ return array(
             'user/uinfo/detail' ,
             'user/uinfo/mycard',
             'user/uinfo/cardlist',
+            'user/uinfo/agrid' ,
+            'user/uinfo/account' ,
+            'user/uinfo/cgrid' ,
+            'user/uinfo/consume' ,
+            'user/uinfo/ogrid' ,
+            'user/uinfo/order' ,
             
             'user/uscore/grid' ,
             'user/uscore/list' ,
@@ -305,6 +318,26 @@ return array(
             
             'rpt/consume/summary' ,
             'rpt/consume/sgrid' ,
+            
+            'rpt/consume/agent' ,
+            'rpt/consume/agrid' ,
+             'rpt/consume/agentd' ,
+            'rpt/consume/adgrid' ,
+            
+            'rpt/consume/order' ,
+            'rpt/consume/ogrid' ,
+             'rpt/consume/orderd' ,
+            'rpt/consume/odgrid' ,
+            
+            'rpt/consume/user' ,
+            'rpt/consume/ugrid' ,
+             'rpt/consume/userd' ,
+            'rpt/consume/udgrid' ,
+            
+            'rpt/consume/balance' ,
+            'rpt/consume/bgrid' ,
+             'rpt/consume/balanced' ,
+            'rpt/consume/bdgrid' ,
         ),
         'bizRules' => '',
         'data' => ''

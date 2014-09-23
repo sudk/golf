@@ -91,7 +91,7 @@ if($__model__!="edit"){
     </tr>
    <tr>
         
-        <td class="maxname">备注：</td>
+        <td class="maxname">简介：</td>
         <td class="mivalue" colspan="3">
             <?php
             echo $form->activeTextArea($model,'desc',array('title'=>'不多于512个字符','id'=>'desc'),'');

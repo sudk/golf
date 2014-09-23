@@ -45,7 +45,7 @@ echo $form->activeHiddenField($model, 'order_id', array(), '');
     <tr>
         <td class="maxname">打球时间：</td>
         <td class="mivalue">
-            <?php echo $form->activeTextField($model, 'tee_time',  array('title' => '本项必选',  'class' => 'Wdate input_text',"onfocus"=>"WdatePicker({dateFmt:'yyyy-MM-dd',skin:'whyGreen',errDealMode:0})"), 'required'); ?>
+            <?php echo $form->activeTextField($model, 'tee_time',  array('title' => '本项必选',  'class' => 'Wdate input_text',"onfocus"=>"WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',skin:'whyGreen',errDealMode:0})"), 'required'); ?>
         </td>
        
     </tr>

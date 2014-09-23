@@ -97,7 +97,36 @@ if($__model__=="edit"){
                 echo $form->activeRadioButtonList($model, 'pay_type',Trip::getPayType(), array('title' => '本项必填', 'class' => 'input_text','template'=>'<span class="check">{input}{label}</span>','separator'=>' '), 'required');         
             ?>
         </td>
+<!--        <td class="maxname">包含18洞果岭:</td>
+        <td class="mivalue"><?php 
+        $flag_list = Policy::getYesOrNot();
+        echo $form->activeRadioButtonList($model, 'is_green',$flag_list, array('title' => '本项必填', 'class' => 'input_text','value'=>'0','template'=>'<span class="check">{input}{label}</span>','separator'=>' '), 'required'); ?>
+        </td>  -->
     </tr>
+<!--    <tr>
+        <td class="maxname">包含球童:</td>
+        <td class="mivalue">
+           <?php
+               echo $form->activeRadioButtonList($model, 'is_caddie',$flag_list, array('title' => '本项必填', 'class' => 'input_text','template'=>'<span class="check">{input}{label}</span>','separator'=>' '), 'required'); ?></td> 
+        <td class="maxname">包含球车:</td>
+        <td class="mivalue"><?php echo $form->activeRadioButtonList($model, 'is_car',$flag_list, array('title' => '本项必填', 'class' => 'input_text','template'=>'<span class="check">{input}{label}</span>','separator'=>' '), 'required'); ?></td> 
+    </tr>
+    <tr>
+        <td class="maxname">包含衣柜:</td>
+        <td class="mivalue">
+           <?php
+             echo $form->activeRadioButtonList($model, 'is_wardrobe',$flag_list, array('title' => '本项必填', 'class' => 'input_text','template'=>'<span class="check">{input}{label}</span>','separator'=>' '), 'required'); ?></td> 
+        <td class="maxname">包含简餐:</td>
+        <td class="mivalue"><?php echo $form->activeRadioButtonList($model, 'is_meal',$flag_list, array('title' => '本项必填', 'class' => 'input_text','template'=>'<span class="check">{input}{label}</span>','separator'=>' '), 'required'); ?></td> 
+    </tr>
+    <tr class="line">
+        <td class="maxname">包含保险:</td>
+        <td class="mivalue">
+           <?php
+               echo $form->activeRadioButtonList($model, 'is_insurance',$flag_list, array('title' => '本项必填', 'class' => 'input_text','template'=>'<span class="check">{input}{label}</span>','separator'=>' '), 'required'); ?></td> 
+        <td class="maxname">包含小费:</td>
+        <td class="mivalue"><?php echo $form->activeRadioButtonList($model, 'is_tip',$flag_list, array('title' => '本项必填', 'class' => 'input_text','template'=>'<span class="check">{input}{label}</span>','separator'=>' '), 'required'); ?></td> 
+    </tr>-->
     <tr class="line">
         <td class="maxname">包含内容:</td>
         <td class="mivalue" colspan="3">
