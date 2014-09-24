@@ -30,7 +30,7 @@ class BalancePay extends BasePay
 
             $trans_type=TransRecord::GetPayTypeByOrderType($row['type']);
             $desc="余额支付成功，支付金额：".$orderAmount/100;
-            TransRecord::Add($conn,$orderNumber,$trans_type,-$orderAmount,$serial_number,TransRecord::STATUS_SUCCESS,$re_serial_number="",$out_serial_number="",$user_id=Yii::app()->user->id,$operator_id="");
+            TransRecord::Add($conn,$orderNumber,$trans_type,-$orderAmount,$serial_number,TransRecord::STATUS_SUCCESS,$re_serial_number="",$out_serial_number="",$user_id=$row['user_id'],$operator_id="");
 
 
             //如果是购买VIP则给用户生成VIP卡号
@@ -85,7 +85,7 @@ class BalancePay extends BasePay
 
             $trans_type=TransRecord::GetCancelTypeByOrderType($order['type']);
 
-            TransRecord::Add($conn,$orderNumber,$trans_type,$orderAmount,$serial_number,TransRecord::STATUS_SUCCESS,$re_serial_number="",$out_serial_number="",$user_id="",$operator_id="");
+            TransRecord::Add($conn,$orderNumber,$trans_type,$orderAmount,$serial_number,TransRecord::STATUS_SUCCESS,$re_serial_number="",$out_serial_number="",$user_id=$order['user_id'],$operator_id="");
 
             Order::ChangeDesc($conn,$orderNumber,"余额退款成功，退款金额：".$orderAmount/100);
 

@@ -40,7 +40,7 @@ class UpmPay extends BasePay
                     $tn=$resp['tn'];
                     if($tn){
                         $trans_type=TransRecord::GetPayTypeByOrderType($rs['type']);
-                        TransRecord::Add($conn,$order_id,$trans_type,-$orderAmount,$out_order_number,TransRecord::STATUS_PROCESS,$re_serial_number="",$out_serial_number="",$user_id="",$operator_id="",$out_order_number,$req['orderTime']);
+                        TransRecord::Add($conn,$order_id,$trans_type,-$orderAmount,$out_order_number,TransRecord::STATUS_PROCESS,$re_serial_number="",$out_serial_number="",$user_id=$rs['user_id'],$operator_id="",$out_order_number,$req['orderTime']);
                     }
                     $transaction->commit();
                     $data[]=array('tn'=>$tn);
@@ -142,7 +142,7 @@ class UpmPay extends BasePay
                     $rs=Order::ChangeStatus($conn,Order::STATUS_REFUND,$order_id);
 
                     $trans_type=TransRecord::GetCancelTypeByOrderType($rs['type']);
-                    TransRecord::Add($conn,$order_id,$trans_type,$orderAmount,$out_order_number,TransRecord::STATUS_PROCESS,$re_serial_number="",$out_serial_number="",$user_id="",$operator_id="",$out_order_number,$req['orderTime']);
+                    TransRecord::Add($conn,$order_id,$trans_type,$orderAmount,$out_order_number,TransRecord::STATUS_PROCESS,$re_serial_number="",$out_serial_number="",$user_id=$rs['user_id'],$operator_id="",$out_order_number,$req['orderTime']);
                     if($desc){
                         Order::ChangeDesc($conn,$order_id,$desc);
                     }

@@ -154,7 +154,7 @@ class FleaController extends CMDBaseController
                     $command->bindParam(":img_url",$img, PDO::PARAM_STR);
                     $command->bindParam(":record_time",$record_time, PDO::PARAM_STR);
                     $command->execute();
-                    Yii::log($img."----------",'info','application.firebuglog');
+                    //Yii::log($img."----------",'info','application.firebuglog');
                 }
             }
             $transaction->commit();
@@ -259,6 +259,7 @@ class FleaController extends CMDBaseController
             $msg['status']=0;
             $msg['desc']="成功，等管理员审核后才能显示。";
         }catch (Exception $e){
+            //Yii::log($e->getMessage(),'info','application.firebuglog');
             $transaction->rollBack();
             $msg['status']=8;
             $msg['desc']="保存失败";
