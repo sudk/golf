@@ -1,5 +1,5 @@
 <div class="title-box">
-    <h1><span style="float:left;">我的订单[用户姓名：<?php echo $_SESSION['cur_user_name'];?>]</span>
+    <h1><span style="float:left;">我的订单[用户手机号：<?php echo $_SESSION['cur_user_isdn'];?>]</span>
         <a href="./?r=user/uinfo/list" style="float:right;margin-left: 15px;"><span class="ing_ico"></span><span>返回用户列表</span></a>
         
     </h1>

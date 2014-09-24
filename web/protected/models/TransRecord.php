@@ -270,7 +270,7 @@ class TransRecord extends CActiveRecord {
             $condition.= ( $condition == '') ? ' t.agent_id=\''.$args['agent_id'].'\'' : ' AND t.agent_id=\''.$args['agent_id'].'\'';
         }
         
-        
+        //var_dump($condition);
         $table="g_order";
         $total_num = 1;
         //0、等待确认；1、等待付款；2、付款完成；3、交易关闭 ，4-未到场  5-交易成功，6-等待退款 7-拒绝退款 8-退款中

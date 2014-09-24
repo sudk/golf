@@ -421,6 +421,8 @@ class UinfoController extends AuthBaseController
         
         $_SESSION['cur_user_id'] = $id;
         $_SESSION['cur_user_name'] = $name;
+        $info = User::model()->findByPk($id);
+        $_SESSION['cur_user_isdn'] = $info['phone'];
         
         $this->render('consume_list');
     }
@@ -482,7 +484,8 @@ class UinfoController extends AuthBaseController
         
         $_SESSION['cur_user_id'] = $id;
         $_SESSION['cur_user_name'] = $name;
-        
+        $info = User::model()->findByPk($id);
+        $_SESSION['cur_user_isdn'] = $info['phone'];
         $this->render('order_list');
     }
 
