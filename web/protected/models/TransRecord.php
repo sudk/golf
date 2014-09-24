@@ -1122,7 +1122,7 @@ class TransRecord extends CActiveRecord {
     public static function PersonalList($page,$pageSize,$args){
         $condition = ' 1=1 ';
         $params = array();
-        $condition.=' AND order.user_id=:user_id';
+        $condition.=' AND t.user_id=:user_id';
         $params['user_id'] = Yii::app()->user->id;
 
         $condition.=' AND t.status=:status';
@@ -1134,7 +1134,7 @@ class TransRecord extends CActiveRecord {
         $rows=Yii::app()->db->createCommand()
             ->select("t.status,t.amount,t.order_id,t.trans_type,t.record_time")
             ->from("{$table} t")
-            ->leftJoin("order","order.order_id=t.order_id")
+            //->leftJoin("order","order.order_id=t.order_id")
             ->where($condition,$params)
             ->order($order)
             ->limit($pageSize)
