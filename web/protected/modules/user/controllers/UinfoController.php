@@ -365,7 +365,7 @@ class UinfoController extends AuthBaseController
         $t->url = 'index.php?r=user/uinfo/cgrid';
         $t->updateDom = 'datagrid';
        
-        $t->set_header('序号', '5%', '');
+        //$t->set_header('序号', '5%', '');
         $t->set_header('交易类型', '10%', '');
         $t->set_header('订单类型', '10%', '');
         $t->set_header('付款类型', '10%', '');

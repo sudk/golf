@@ -126,8 +126,8 @@ class TransRecord extends CActiveRecord {
         }
         if($args['pay_type']!="")
         {
-            $condition.= ( $condition == '') ? ' s.pay_type=:pay_type' : ' AND s.pay_type=:pay_type';
-            $params['pay_type'] = $args['pay_type'];
+            $condition.= ( $condition == '') ? ' s.pay_method=:pay_method' : ' AND s.pay_method=:pay_method';
+            $params['pay_method'] = $args['pay_type'];
         }
         if($args['user_isdn'] != "")
         {
@@ -150,7 +150,7 @@ class TransRecord extends CActiveRecord {
     	
 
         $rows = Yii::app()->db->createCommand()
-            ->select("t.*,s.agent_id,s.type,s.pay_type,s.phone")
+            ->select("t.*,s.agent_id,s.type,s.pay_method,s.phone")
             ->from($table." t")
                 ->leftJoin("g_order s", "s.order_id=t.order_id")
             ->where($condition, $params)

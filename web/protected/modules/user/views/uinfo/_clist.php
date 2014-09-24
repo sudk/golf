@@ -11,9 +11,9 @@ if (is_array($rows))
     foreach ($rows as $i => $row)
     {
 
-	$num = ($curpage-1)*$this->pageSize + $j++;
+	$num = ($curpage)*$this->pageSize + $j++;
         //$t->begin_row("onclick","getDetail(this,'{$row['id']}','{$row['recordtime']}');");
-        $t->echo_td($num); 
+        //$t->echo_td($num); 
         $t->echo_td($trans_type[$row['trans_type']]); //学校编号
         $t->echo_td($order_type[$row['type']]); //学校编号
         $t->echo_td($order_pay[$row['pay_type']]); //学校编号
