@@ -11,7 +11,7 @@ if (is_array($rows))
         {
             $link .= CHtml::link('删除',"javascript:itemDelete('{$row['id']}');", array());
         }
-        $img_info = Img::GetImg($row['id'], Img::TYPE_CARD);
+        $img_info = Img::GetImg($row['id'],Img::TYPE_CARD,true);
         $img = "";
         if($img_info!="")
         {

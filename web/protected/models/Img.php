@@ -294,7 +294,7 @@ class Img extends CActiveRecord {
         }
         return $rows_tmp;
     }
-    public static function GetImg($relation_id,$type){
+    public static function GetImg($relation_id,$type,$no_path=false){
         $condition="relation_id=:relation_id and type=:type";
         $params=array('relation_id'=>$relation_id,'type'=>$type);
 
@@ -304,7 +304,11 @@ class Img extends CActiveRecord {
             ->where($condition,$params)
             ->queryRow();
         if($row){
-            return Img::IMG_PATH.$row['img_url'];
+            if($no_path){
+                return $row['img_url'];
+            }else{
+                return Img::IMG_PATH.$row['img_url'];
+            }
         }else{
             return "";
         }
