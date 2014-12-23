@@ -419,7 +419,7 @@ class CourtController extends AuthBaseController
     {
         $name = trim($_GET['name']);
         $upload_dir = Yii::app()->params['upload_dir'];
-        
+        $name=str_replace(Img::IMG_PATH,"",$name);
         $file_name = $upload_dir.$name;
         $img_array = getimagesize($file_name);
 	$mime = $img_array['mime'];
