@@ -31,6 +31,10 @@ if (is_array($rows))
             {
                 foreach($next_opt as $opt)
                 {
+                    if($opt['now_status']==Order::STATUS_TOBE_CONFIRM){
+                        $link .= CHtml::link($opt['desc'],"javascript:itemConfirm('{$row['order_id']}','{$opt['now_status']}`{$opt['status']}`{$row['pay_type']}');", array());
+                        continue;
+                    }
                     $link .= CHtml::link($opt['desc'],"javascript:itemNextStatus('{$row['order_id']}','{$opt['now_status']}','{$opt['status']}','{$row['pay_type']}','{$opt['desc']}');", array());
                 }
             }

@@ -2,7 +2,7 @@
 /*
  * 订单管理
  */
-class OrderController extends AuthBaseController
+class OrderController extends BaseController
 {
 
     public $defaultAction = 'list';
@@ -129,6 +129,7 @@ class OrderController extends AuthBaseController
             $model->phone = trim($_POST['Order']['phone']);
             $model->count = trim($_POST['Order']['count']);
             $model->tee_time = trim($_POST['Order']['tee_time']);
+            $model->last_pay_time = trim($_POST['Order']['last_pay_time']);
             
             $rs = $model->save();
             if($rs){
@@ -292,6 +293,44 @@ class OrderController extends AuthBaseController
         
        
         print_r(json_encode($rs));
+    }
+
+
+    public function actionConfirm(){
+        $id = trim($_GET['id']);
+        $status_str=$_GET['status_str'];
+        $model=Order::model()->findByPk($id);
+        if($_POST['Order'])
+        {
+            $model->attributes = $_POST['Order'];
+            $model->amount = intval($_POST['Order']['amount'])*100;
+            $model->contact = trim($_POST['Order']['contact']);
+            $model->phone = trim($_POST['Order']['phone']);
+            $model->count = trim($_POST['Order']['count']);
+            $model->tee_time = trim($_POST['Order']['tee_time']);
+            $model->last_pay_time = trim($_POST['Order']['last_pay_time']);
+            $rs = $model->save();
+            if($rs){
+                $status_ar=explode("`",$status_str);
+                $now_status = $status_ar[0];
+                $next_status = $status_ar[1];
+                $pay_type = $status_ar[2];
+                Order::dealOrderStatus($id,$now_status,$next_status,$pay_type);
+                $msg['msg']="操作成功！";
+                $msg['status']=1;
+                //修改完订单内容，需要记录日志
+                $serial_number = Utils::GenerateSerialNumber();
+                OrderLog::Add($model->order_id, $serial_number);
+                //$model=new Staff('modify');
+            }else{
+                $msg['msg']="修改失败！";
+                $msg['status']=0;
+            }
+        }
+        $model->amount = intval($model->amount)/100;
+        $model->unitprice = intval($model->unitprice)/100;
+        $this->layout = '//layouts/base';
+        $this->render("confirm",array('model' => $model, 'msg' => $msg));
     }
     
     /**
