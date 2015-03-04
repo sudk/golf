@@ -81,9 +81,9 @@ class Order extends CActiveRecord {
             'desc'=>'交易关闭'
         );
         $next = array();
-        if($pay_type == '0')
+        if($pay_type == '0' && $cur_status==self::STATUS_TOBE_CONFIRM)
         {
-         
+
             $tmp_next = array(
                 'now_status'=>self::STATUS_TOBE_CONFIRM,
                 'status'=>self::STATUS_ORDER_OVER,
