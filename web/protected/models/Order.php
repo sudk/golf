@@ -343,6 +343,9 @@ class Order extends CActiveRecord {
             $command->bindParam(":status",$status,PDO::PARAM_STR);
             $command->bindParam(":record_time",$record_time,PDO::PARAM_STR);
             //$command->bindParam(":desc", $args->desc, PDO::PARAM_STR);
+            if(!$args->agent_id){//如果没有代理商则默认为官方代理
+                $args->agent_id=1;
+            }
             $command->bindParam(":agent_id",$args->agent_id,PDO::PARAM_STR);
             $command->bindParam(":contact",$args->contact,PDO::PARAM_STR);
             $command->bindParam(":phone",$args->phone,PDO::PARAM_STR);
