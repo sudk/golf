@@ -324,9 +324,9 @@ class Order extends CActiveRecord {
             }
             $sql = "
                     insert into g_order
-                    (order_id,user_id,`type`,relation_id,relation_name,tee_time,`count`,unitprice,amount,had_pay,pay_type,status,record_time,agent_id,contact,phone)
+                    (order_id,user_id,`type`,relation_id,relation_name,tee_time,`count`,unitprice,amount,had_pay,pay_type,status,record_time,special_node,agent_id,contact,phone)
                      values
-                    (:order_id,:user_id,:type,:relation_id,:relation_name,:tee_time,:count,:unitprice,:amount,:had_pay,:pay_type,:status,:record_time,:agent_id,:contact,:phone)
+                    (:order_id,:user_id,:type,:relation_id,:relation_name,:tee_time,:count,:unitprice,:amount,:had_pay,:pay_type,:status,:record_time,:special_node,:agent_id,:contact,:phone)
             ";
             $command = $conn->createCommand($sql);
             $command->bindParam(":order_id", $order_id,PDO::PARAM_STR);
@@ -342,7 +342,7 @@ class Order extends CActiveRecord {
             $command->bindParam(":pay_type",$args->pay_type,PDO::PARAM_STR);
             $command->bindParam(":status",$status,PDO::PARAM_STR);
             $command->bindParam(":record_time",$record_time,PDO::PARAM_STR);
-            //$command->bindParam(":desc", $args->desc, PDO::PARAM_STR);
+            $command->bindParam(":special_node", $args->special_node, PDO::PARAM_STR);
             if(!$args->agent_id){//如果没有代理商则默认为官方代理
                 $args->agent_id=1;
             }

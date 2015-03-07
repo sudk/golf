@@ -104,6 +104,7 @@ class OrderController extends BaseController
                 '支付渠道'=>$model['pay_method']?Order::getPayMethod($model['pay_method']):"",
                 '备注'=>$model['desc'],
                 '最晚付款时间'=>$model['last_pay_time'],
+                '特别说明'=>$model['special_node'],
                     
             );
             //还要把状态修改的过程展示在这里
