@@ -192,11 +192,17 @@ class OrderController extends CMDBaseController
             $msg['status']=3;
             $msg['desc']="支付金额不能为空！";
             echo json_encode($msg);
-
+            return;
         }
 
         if(Yii::app()->command->cmdObj->type==Order::PAY_METHOD_BALANCE){
-
+            $operator = Operator::model()->find('id=:id ', array(':id' => Yii::app()->user->id));
+            if (crypt(Yii::app()->command->cmdObj->password,$operator->password) != $operator->password) {
+                $msg['status']=4;
+                $msg['desc']="密码错误！";
+                echo json_encode($msg);
+                return;
+            }
         }
 
         $rs=Order::Pay(Yii::app()->command->cmdObj->order_id,Yii::app()->command->cmdObj->type,Yii::app()->command->cmdObj->amount);
