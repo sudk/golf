@@ -112,9 +112,9 @@ class OrderController extends CMDBaseController
             echo json_encode($msg);
             return;
         }
-        if(!Yii::app()->command->cmdObj->amount){
+        if(!is_numeric(Yii::app()->command->cmdObj->amount)){
             $msg['status']=8;
-            $msg['desc']="购买数量不能为空！";
+            $msg['desc']="购买金额不能为空！";
             echo json_encode($msg);
             return;
         }
