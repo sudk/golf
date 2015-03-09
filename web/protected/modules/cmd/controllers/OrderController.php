@@ -196,7 +196,7 @@ class OrderController extends CMDBaseController
         }
 
         if(Yii::app()->command->cmdObj->type==Order::PAY_METHOD_BALANCE){
-            $user=User::model()->find('phone=:phone ', array(':phone' => Yii::app()->user->id));
+            $user=User::model()->find('user_id=:user_id ', array(':user_id' => Yii::app()->user->id));
             if (substr(crypt(Yii::app()->command->cmdObj->password,$user->passwd),0,strlen($user->passwd)) != $user->passwd) {
                 $msg['status']=4;
                 $msg['desc']="密码错误！";
