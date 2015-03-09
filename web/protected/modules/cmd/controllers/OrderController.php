@@ -106,7 +106,7 @@ class OrderController extends CMDBaseController
             echo json_encode($msg);
             return;
         }
-        if(!Yii::app()->command->cmdObj->unitprice){
+        if(!is_numeric(Yii::app()->command->cmdObj->unitprice)){
             $msg['status']=7;
             $msg['desc']="单价不能为空！";
             echo json_encode($msg);
