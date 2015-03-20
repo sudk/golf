@@ -78,6 +78,7 @@ return array(
         'rpt'=>array(),
         'user'=>array(),
         'service'=>array(),
+        'trip'=>array(),
     ),
    
     // application-level parameters that can be accessed
