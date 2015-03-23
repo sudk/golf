@@ -28,7 +28,7 @@ class CtripController extends CController
         $t->set_header('参加人数', '8%', '');
         //$t->set_header('状态', '8%', '');
         $t->set_header('下单时间', '8%', '');
-        $t->set_header('操作', '20%', '');
+        //$t->set_header('操作', '20%', '');
         return $t;
     }
 

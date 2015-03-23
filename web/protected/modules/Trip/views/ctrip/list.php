@@ -50,7 +50,7 @@
         var detail="";
         $.ajax({
             data:{id:objid},
-            url:"./?r=order/detail",
+            url:"./?r=trip/ctrip/detail",
             type:"POST",
             dataType:"json",
             beforeSend:function(){

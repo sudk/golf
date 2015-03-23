@@ -15,7 +15,7 @@ if (is_array($rows))
         $t->echo_td($row['m_count']);
         //$t->echo_td($row['status']);
         $t->echo_td($row['record_time']);
-        $t->echo_td($link);
+        //$t->echo_td($link);
         $t->end_row();
     }
 }
