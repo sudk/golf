@@ -6196,3 +6196,37 @@ Stack trace:
 #18 {main}
 REQUEST_URI=/golf/web/index.php?r=trip/ctrip/add
 ---
+2015/03/24 00:00:51 [error] [php] file_put_contents(/Applications/XAMPP/xamppfiles/htdocs/golf/web/protected/data/operation.php): failed to open stream: Permission denied (/Applications/XAMPP/xamppfiles/htdocs/golf/web/protected/controllers/SiteController.php:312)
+Stack trace:
+#0 /Applications/XAMPP/xamppfiles/htdocs/golf/web/framework/web/CController.php(308): CInlineAction->runWithParams()
+#1 /Applications/XAMPP/xamppfiles/htdocs/golf/web/framework/web/filters/CFilterChain.php(133): SiteController->runAction()
+#2 /Applications/XAMPP/xamppfiles/htdocs/golf/web/framework/web/filters/CFilter.php(40): CFilterChain->run()
+#3 /Applications/XAMPP/xamppfiles/htdocs/golf/web/framework/web/CController.php(1145): CAccessControlFilter->filter()
+#4 /Applications/XAMPP/xamppfiles/htdocs/golf/web/framework/web/filters/CInlineFilter.php(58): SiteController->filterAccessControl()
+#5 /Applications/XAMPP/xamppfiles/htdocs/golf/web/framework/web/filters/CFilterChain.php(130): CInlineFilter->filter()
+#6 /Applications/XAMPP/xamppfiles/htdocs/golf/web/framework/web/CController.php(291): CFilterChain->run()
+#7 /Applications/XAMPP/xamppfiles/htdocs/golf/web/framework/web/CController.php(265): SiteController->runActionWithFilters()
+#8 /Applications/XAMPP/xamppfiles/htdocs/golf/web/framework/web/CWebApplication.php(282): SiteController->run()
+#9 /Applications/XAMPP/xamppfiles/htdocs/golf/web/framework/web/CWebApplication.php(141): CWebApplication->runController()
+#10 /Applications/XAMPP/xamppfiles/htdocs/golf/web/framework/base/CApplication.php(169): CWebApplication->processRequest()
+#11 /Applications/XAMPP/xamppfiles/htdocs/golf/web/index.php(20): CWebApplication->run()
+REQUEST_URI=/golf/web/index.php?r=site/updateoperation
+in /Applications/XAMPP/xamppfiles/htdocs/golf/web/protected/controllers/SiteController.php (312)
+in /Applications/XAMPP/xamppfiles/htdocs/golf/web/index.php (20)
+2015/03/24 00:00:56 [error] [php] file_put_contents(/Applications/XAMPP/xamppfiles/htdocs/golf/web/protected/data/operation.php): failed to open stream: Permission denied (/Applications/XAMPP/xamppfiles/htdocs/golf/web/protected/controllers/SiteController.php:312)
+Stack trace:
+#0 /Applications/XAMPP/xamppfiles/htdocs/golf/web/framework/web/CController.php(308): CInlineAction->runWithParams()
+#1 /Applications/XAMPP/xamppfiles/htdocs/golf/web/framework/web/filters/CFilterChain.php(133): SiteController->runAction()
+#2 /Applications/XAMPP/xamppfiles/htdocs/golf/web/framework/web/filters/CFilter.php(40): CFilterChain->run()
+#3 /Applications/XAMPP/xamppfiles/htdocs/golf/web/framework/web/CController.php(1145): CAccessControlFilter->filter()
+#4 /Applications/XAMPP/xamppfiles/htdocs/golf/web/framework/web/filters/CInlineFilter.php(58): SiteController->filterAccessControl()
+#5 /Applications/XAMPP/xamppfiles/htdocs/golf/web/framework/web/filters/CFilterChain.php(130): CInlineFilter->filter()
+#6 /Applications/XAMPP/xamppfiles/htdocs/golf/web/framework/web/CController.php(291): CFilterChain->run()
+#7 /Applications/XAMPP/xamppfiles/htdocs/golf/web/framework/web/CController.php(265): SiteController->runActionWithFilters()
+#8 /Applications/XAMPP/xamppfiles/htdocs/golf/web/framework/web/CWebApplication.php(282): SiteController->run()
+#9 /Applications/XAMPP/xamppfiles/htdocs/golf/web/framework/web/CWebApplication.php(141): CWebApplication->runController()
+#10 /Applications/XAMPP/xamppfiles/htdocs/golf/web/framework/base/CApplication.php(169): CWebApplication->processRequest()
+#11 /Applications/XAMPP/xamppfiles/htdocs/golf/web/index.php(20): CWebApplication->run()
+REQUEST_URI=/golf/web/index.php?r=site/updateoperation
+in /Applications/XAMPP/xamppfiles/htdocs/golf/web/protected/controllers/SiteController.php (312)
+in /Applications/XAMPP/xamppfiles/htdocs/golf/web/index.php (20)

@@ -57,6 +57,10 @@ class TripCustom extends CActiveRecord {
             $condition.=' AND t.agent_id=:agent_id';
             $params['agent_id'] = $args['agent_id'];
         }
+        if ($args['id'] != ''){
+            $condition.=' AND t.id=:id';
+            $params['id'] = $args['id'];
+        }
         
         if ($args['trip_name'] != ''){
             $condition.=' AND t.trip_name like :trip_name';

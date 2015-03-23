@@ -4,7 +4,7 @@ if (is_array($rows))
 {
     foreach ($rows as $i => $row)
     {
-        $t->begin_row("onclick","getDetail(this,'{$row['order_id']}');");
+        $t->begin_row("onclick","getDetail(this,'{$row['id']}');");
         $link = "";
         
         $t->echo_td($row['id']);
