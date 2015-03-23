@@ -26,7 +26,7 @@ class CtripController extends CController
         $t->set_header('联系人', '15%', '');
         $t->set_header('联系电话', '8%', '');
         $t->set_header('参加人数', '8%', '');
-        $t->set_header('状态', '8%', '');
+        //$t->set_header('状态', '8%', '');
         $t->set_header('下单时间', '8%', '');
         $t->set_header('操作', '20%', '');
         return $t;
@@ -63,6 +63,19 @@ class CtripController extends CController
         $this->renderPartial('_list', array('t' => $t, 'rows' => $list['rows'], 'cnt' => $list['total_num'], 'curpage' => $list['page_num']));
     }
 
+
+    public function actionConfirm(){
+        $trip_id=$_POST['trip_id'];
+        if($trip_id){
+            $sql="update `g_trip_custom` set status=3 where id='$trip_id'";
+            $command = Yii::app()->db->createCommand($sql);
+            $command->execute();
+        }
+
+    }
+
+
+
     /**
      * 列表
      */
@@ -78,32 +91,23 @@ class CtripController extends CController
         $id = $_POST['id'];
         $model =  Yii::app()->db->createCommand()
             ->select("*")
-            ->from("g_order st")
-            ->where("st.order_id='{$id}'")
+            ->from("g_trip_custom st")
+            ->where("id='{$id}'")
             ->queryRow();
-            
-        $court = Yii::app()->db->createCommand()
-                ->select('phone')
-                ->from('g_court t')
-                ->where("t.court_id='{$model['relation_id']}'")
-                ->queryRow();
-                
-        
-         
         $msg['status'] = true;
         if ($model) {
             $detail=array(
-                '球场电话'=>$court['phone'],
-                '客户电话'=>$model['phone'],
-               '打球时间'=>$model['tee_time'],
-                '人数'=>$model['count'],
-                '单价'=>(intval($model['unitprice'])/100)."元",
-                '实付'=>(intval($model['had_pay'])/100)."元",
-                '支付渠道'=>$model['pay_method']?Order::getPayMethod($model['pay_method']):"",
-                '备注'=>$model['desc'],
-                '最晚付款时间'=>$model['last_pay_time'],
-                '特别说明'=>$model['special_node'],
-                    
+                '定制'=>$model['d_count']."天".$model['n_count']."晚".$model['f_count']."场球",
+                '酒店类型'=>$model['hotel_type'],
+               '酒店等级'=>$model['hotel_star'],
+                '入住天数'=>$model['live_count'],
+                '客房类型'=>$model['room_type'],
+                '客房数量'=>$model['room_count'],
+                '特别要求'=>$model['desc'],
+                '用车需求'=>$model['car_require'],
+                '汽车类型'=>$model['car_type'],
+                '留言'=>$model['remark'],
+                '开球时间'=>$model['tee_time']
             );
             //还要把状态修改的过程展示在这里
             $msg['detail']=Utils::MakeDetailTable($detail);

@@ -33,6 +33,7 @@ class SysMenu extends CWidget
         $sub_menu = array();
         if(Yii::app()->user->checkAccess("order/list"))   
             $sub_menu[] = array("title" => "订单管理", "url" => "./?r=order/list", "match" => array('order\/list','order\/log'));
+            $sub_menu[] = array("title" => "定制行程", "url" => "./?r=trip/ctrip/list", "match" => array('trip\/ctrip\/list','trip\/ctrip\/detail'));
       
         if(count($sub_menu))
         $menus['order'] = array("title" => "订单管理", "url" => "./?r=order/list", "child" => $sub_menu);

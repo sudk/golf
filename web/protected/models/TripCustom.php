@@ -7,8 +7,19 @@
  */
 class TripCustom extends CActiveRecord {
 
+    const STATUS_0=0;
+    CONST STATUS_1=1;
+
     public static function model($className=__CLASS__){
         return parent::model($className);
+    }
+
+    public static function GetStatus($status){
+        $ar=array(
+            ''=>'--请选择--',
+            self::STATUS_0=>'待确认',
+            self::STATUS_1=>'已确认',
+        );
     }
 
     public function tableName(){

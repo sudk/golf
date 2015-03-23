@@ -176,7 +176,7 @@ class Order extends CActiveRecord {
             self::TYPE_COMPETITION=>'赛事报名',
             self::TYPE_RECHARGE=>'充值',
             self::TYPE_VIP=>"购买VIP",
-            self::TYPE_TRIP_CUSTOM=>'定制行程',
+            //self::TYPE_TRIP_CUSTOM=>'定制行程',
         );
         
         return $type?$rs[$type]:$rs;
