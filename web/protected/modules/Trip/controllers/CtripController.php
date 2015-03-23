@@ -2,13 +2,28 @@
 /*
  * 定制行程
  */
-class CtripController extends CController
+class CtripController extends BaseController
 {
 
     public $layout='//layouts/mbase';
     public $defaultAction = 'list';
     public $gridId = 'list';
     public $pageSize = 20;
+
+    public function accessRules() {
+        return array(
+            array('allow',
+                'actions' => array('add'),
+                'users' => array('*'),
+            ),
+            array('allow',
+                'users' => array('@'),
+            ),
+            array('deny',
+                'actions' => array(),
+            ),
+        );
+    }
     
 
     /**
