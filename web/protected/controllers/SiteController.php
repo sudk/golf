@@ -282,8 +282,10 @@ class SiteController extends BaseController {
 //                    continue;
                 //$actions = Utils::getControllersActions($module_name);
                 $actions = array();
-                exec(Yii::app()->basePath . '/yiic reflect run --m=' . $module_name, $actions);
-                //print_r($actions);
+                exec('sudo php '.Yii::app()->basePath . '/yiic reflect run --m=' . $module_name, $actions);
+                echo "1111111111".'php '.Yii::app()->basePath . '/yiic reflect run --m=' . $module_name;
+                print_r($actions);
+//                echo "2222222222";
                 if (count($actions) > 0) {
                     foreach ($actions as $action) {
                         if (strpos($action, '/') > 0)
